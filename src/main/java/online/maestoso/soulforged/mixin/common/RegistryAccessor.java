@@ -9,7 +9,7 @@ import java.util.function.Supplier;
 
 @Mixin(Registry.class)
 public interface RegistryAccessor {
-    @Invoker("create") public static<T> Registry<T> create(RegistryKey<? extends Registry<T>> key, Supplier<T> defaultEntry) {
+    @Invoker("create") static<T> Registry<T> create(RegistryKey<? extends Registry<T>> key, Supplier<T> defaultEntry) {
         throw new AssertionError();
     }
 }
