@@ -4,6 +4,7 @@
   "package": "online.maestoso.soulforged.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "common.RegistryAccessor"
   ],
   "client": [
   ],
