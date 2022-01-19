@@ -1,10 +1,17 @@
 package online.maestoso.soulforged.material;
 
+import net.minecraft.item.Items;
+import net.minecraft.tag.ItemTags;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Pair;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
+
+import org.apache.commons.collections4.ListUtils;
 import online.maestoso.soulforged.Soulforged;
 import online.maestoso.soulforged.mixin.common.RegistryAccessor;
+
+import java.util.List;
 
 @SuppressWarnings("unused")
 public class Materials {

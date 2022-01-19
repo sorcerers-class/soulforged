@@ -1,5 +1,11 @@
 package online.maestoso.soulforged.material;
 
+import net.minecraft.item.Item;
+import net.minecraft.tag.ItemTags;
+import net.minecraft.util.Pair;
+
+import java.util.List;
+import java.util.Optional;
 public class Material {
     private double hardness;
     private double edgeholding;
@@ -8,6 +14,7 @@ public class Material {
     private int durability;
     private int heat;
     private int padding;
+    private List<Pair<List<Item>, Float>> items;
 
     public Material(double hardness, double edgeholding, int workability, int density, int durability, int heat, int padding) {
         this.hardness = hardness;
@@ -17,6 +24,7 @@ public class Material {
         this.durability = durability;
         this.heat = heat;
         this.padding = padding;
+        this.items = items;
     }
 
     /**
