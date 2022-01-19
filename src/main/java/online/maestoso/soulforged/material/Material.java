@@ -4,6 +4,7 @@ import net.minecraft.item.Item;
 import net.minecraft.tag.ItemTags;
 import net.minecraft.util.Pair;
 
+import java.awt.*;
 import java.util.List;
 import java.util.Optional;
 public class Material {
@@ -14,9 +15,9 @@ public class Material {
     private int durability;
     private int heat;
     private int padding;
-    private List<Pair<List<Item>, Float>> items;
+    private Color color;
 
-    public Material(double hardness, double edgeholding, int workability, int density, int durability, int heat, int padding) {
+    public Material(double hardness, double edgeholding, int workability, int density, int durability, int heat, int padding, Color color) {
         this.hardness = hardness;
         this.edgeholding = edgeholding;
         this.workability = workability;
@@ -24,7 +25,7 @@ public class Material {
         this.durability = durability;
         this.heat = heat;
         this.padding = padding;
-        this.items = items;
+        this.color = color;
     }
 
     /**
@@ -95,5 +96,13 @@ public class Material {
 
     public void setPadding(int padding) {
         this.padding = padding;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 }
