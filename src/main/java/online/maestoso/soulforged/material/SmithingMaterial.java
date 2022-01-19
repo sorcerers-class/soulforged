@@ -1,13 +1,8 @@
 package online.maestoso.soulforged.material;
 
-import net.minecraft.item.Item;
-import net.minecraft.tag.ItemTags;
-import net.minecraft.util.Pair;
-
 import java.awt.*;
-import java.util.List;
-import java.util.Optional;
-public class Material {
+
+public class SmithingMaterial {
     private double hardness;
     private double edgeholding;
     private int workability;
@@ -17,7 +12,7 @@ public class Material {
     private int padding;
     private Color color;
 
-    public Material(double hardness, double edgeholding, int workability, int density, int durability, int heat, int padding, Color color) {
+    public SmithingMaterial(double hardness, double edgeholding, int workability, int density, int durability, int heat, int padding, int miningLevel, Color color) {
         this.hardness = hardness;
         this.edgeholding = edgeholding;
         this.workability = workability;
