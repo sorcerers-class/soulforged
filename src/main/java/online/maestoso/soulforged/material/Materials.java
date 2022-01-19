@@ -6,6 +6,7 @@ import net.minecraft.util.registry.RegistryKey;
 import online.maestoso.soulforged.Soulforged;
 import online.maestoso.soulforged.mixin.common.RegistryAccessor;
 
+@SuppressWarnings("unused")
 public class Materials {
 
     public static final RegistryKey<Registry<Material>> TOOL_MATERIALS_REGISTRY_KEY = RegistryKey.ofRegistry(new Identifier("soulforged", "tool_materials"));
