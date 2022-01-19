@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 import java.util.function.Supplier;
 
 @Mixin(Registry.class)
+@SuppressWarnings("unused")
 public interface RegistryAccessor {
     @Invoker("create") static<T> Registry<T> create(RegistryKey<? extends Registry<T>> key, Supplier<T> defaultEntry) {
         throw new AssertionError();
