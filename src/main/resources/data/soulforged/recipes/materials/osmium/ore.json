@@ -1,0 +1,8 @@
+{
+  "type": "soulforged:workstation_material",
+  "ingredient": {
+    "tag": "c:osmium_ores"
+  },
+  "result": "soulforged:osmium",
+  "count": 1
+}

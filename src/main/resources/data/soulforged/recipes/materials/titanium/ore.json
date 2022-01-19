@@ -1,0 +1,8 @@
+{
+  "type": "soulforged:workstation_material",
+  "ingredient": {
+    "tag": "c:titanium_ores"
+  },
+  "result": "soulforged:titanium",
+  "count": 1
+}

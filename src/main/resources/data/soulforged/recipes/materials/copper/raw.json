@@ -1,0 +1,8 @@
+{
+  "type": "soulforged:workstation_material",
+  "ingredient": {
+    "item": "minecraft:raw_copper"
+  },
+  "result": "soulforged:copper",
+  "count": 1
+}

@@ -1,0 +1,8 @@
+{
+  "type": "soulforged:workstation_material",
+  "ingredient": {
+    "item": "soulforged:neutronium"
+  },
+  "result": "soulforged:neutronium",
+  "count": 1
+}

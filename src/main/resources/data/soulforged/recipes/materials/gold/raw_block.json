@@ -1,0 +1,8 @@
+{
+  "type": "soulforged:workstation_material",
+  "ingredient": {
+    "item": "minecraft:raw_gold_block"
+  },
+  "result": "soulforged:gold",
+  "count": 9
+}

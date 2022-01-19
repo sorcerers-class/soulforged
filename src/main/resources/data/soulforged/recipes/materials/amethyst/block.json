@@ -1,0 +1,8 @@
+{
+  "type": "soulforged:workstation_material",
+  "ingredient": {
+    "item": "minecraft:amethyst_block"
+  },
+  "result": "soulforged:amethyst",
+  "count": 4
+}

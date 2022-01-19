@@ -1,0 +1,8 @@
+{
+  "type": "soulforged:workstation_material",
+  "ingredient": {
+    "item": "soulforged:witherbone"
+  },
+  "result": "soulforged:witherbone",
+  "count": 1
+}

@@ -1,0 +1,8 @@
+{
+  "type": "soulforged:workstation_material",
+  "ingredient": {
+    "item": "soulforged:netherium"
+  },
+  "result": "soulforged:netherium",
+  "count": 1
+}

@@ -1,0 +1,8 @@
+{
+  "type": "soulforged:workstation_material",
+  "ingredient": {
+    "tag": "minecraft:stone_tool_materials"
+  },
+  "result": "soulforged:stone",
+  "count": 1
+}

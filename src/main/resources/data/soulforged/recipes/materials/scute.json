@@ -1,0 +1,8 @@
+{
+  "type": "soulforged:workstation_material",
+  "ingredient": {
+    "item": "minecraft:scute"
+  },
+  "result": "soulforged:scute",
+  "count": 1
+}

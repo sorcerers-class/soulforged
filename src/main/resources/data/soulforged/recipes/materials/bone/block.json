@@ -1,0 +1,8 @@
+{
+  "type": "soulforged:workstation_material",
+  "ingredient": {
+    "item": "minecraft:bone_block"
+  },
+  "result": "soulforged:bone",
+  "count": 3
+}

@@ -1,0 +1,8 @@
+{
+  "type": "soulforged:workstation_material",
+  "ingredient": {
+    "item": "soulforged:slime_weave"
+  },
+  "result": "soulforged:slime_weave",
+  "count": 1
+}

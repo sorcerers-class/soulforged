@@ -8,7 +8,7 @@ import java.util.List;
 public class CorundumMaterial extends CrystalMaterial {
     private final CorundumTypes type;
     public CorundumMaterial(CorundumTypes type) {
-        super(8, 8, 1, 390, 680);
+        super(8, 8, 4, 390, 680);
         this.type = type;
     }
 

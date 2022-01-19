@@ -1,0 +1,8 @@
+{
+  "type": "soulforged:workstation_material",
+  "ingredient": {
+    "item": "soulforged:scales"
+  },
+  "result": "soulforged:scales",
+  "count": 1
+}

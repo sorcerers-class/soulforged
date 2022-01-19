@@ -1,0 +1,8 @@
+{
+  "type": "soulforged:workstation_material",
+  "ingredient": {
+    "tag": "c:lead_blocks"
+  },
+  "result": "soulforged:lead",
+  "count": 9
+}

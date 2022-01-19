@@ -1,0 +1,11 @@
+{
+  "type": "soulforged:workstation_material",
+  "ingredient": {
+    "tag": "c:lead_nuggets"
+  },
+  "result": "soulforged:lead",
+  "fractional_count": {
+    "numerator": 1,
+    "denominator": 9
+  }
+}

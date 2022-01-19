@@ -1,0 +1,8 @@
+{
+  "type": "soulforged:workstation_material",
+  "ingredient": {
+    "item": "soulforged:void_metal"
+  },
+  "result": "soulforged:void_metal",
+  "count": 9
+}

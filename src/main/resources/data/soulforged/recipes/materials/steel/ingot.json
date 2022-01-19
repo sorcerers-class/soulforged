@@ -1,0 +1,8 @@
+{
+  "type": "soulforged:workstation_material",
+  "ingredient": {
+    "tag": "c:steel_ingots"
+  },
+  "result": "soulforged:steel",
+  "count": 1
+}

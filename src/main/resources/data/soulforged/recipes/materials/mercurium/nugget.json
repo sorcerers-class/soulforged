@@ -1,0 +1,11 @@
+{
+  "type": "soulforged:workstation_material",
+  "ingredient": {
+    "item": "soulforged:mercurium"
+  },
+  "result": "soulforged:mercurium",
+  "fractional_count": {
+    "numerator": 1,
+    "denominator": 9
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "type": "soulforged:workstation_material",
+  "ingredient": {
+    "tag": "minecraft:netherite_ingot"
+  },
+  "result": "soulforged:netherite",
+  "count": 1
+}

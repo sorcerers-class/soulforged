@@ -1,0 +1,8 @@
+{
+  "type": "soulforged:workstation_material",
+  "ingredient": {
+    "item": "minecraft:leather"
+  },
+  "result": "soulforged:leather",
+  "count": 1
+}

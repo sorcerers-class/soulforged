@@ -1,0 +1,8 @@
+{
+  "type": "soulforged:workstation_material",
+  "ingredient": {
+    "item": "soulforged:divinium"
+  },
+  "result": "soulforged:divinium",
+  "count": 9
+}

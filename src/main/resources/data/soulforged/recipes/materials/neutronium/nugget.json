@@ -1,0 +1,11 @@
+{
+  "type": "soulforged:workstation_material",
+  "ingredient": {
+    "item": "soulforged:neutronium"
+  },
+  "result": "soulforged:neutronium",
+  "fractional_count": {
+    "numerator": 1,
+    "denominator": 9
+  }
+}

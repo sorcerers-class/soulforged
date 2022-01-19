@@ -1,0 +1,8 @@
+{
+  "type": "soulforged:workstation_material",
+  "ingredient": {
+    "tag": "c:raw_lead"
+  },
+  "result": "soulforged:lead",
+  "count": 1
+}

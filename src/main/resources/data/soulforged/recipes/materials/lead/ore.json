@@ -1,0 +1,8 @@
+{
+  "type": "soulforged:workstation_material",
+  "ingredient": {
+    "tag": "c:lead_ores"
+  },
+  "result": "soulforged:lead",
+  "count": 1
+}

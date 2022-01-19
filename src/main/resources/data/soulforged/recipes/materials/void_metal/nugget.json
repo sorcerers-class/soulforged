@@ -1,0 +1,11 @@
+{
+  "type": "soulforged:workstation_material",
+  "ingredient": {
+    "item": "soulforged:void_metal"
+  },
+  "result": "soulforged:void_metal",
+  "fractional_count": {
+    "numerator": 1,
+    "denominator": 9
+  }
+}
