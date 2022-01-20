@@ -10,11 +10,8 @@ public class ToolType {
     private final AttackProperties hcAttack;
     private final AttackProperties dcAttack;
 
-    @FunctionalInterface
-    public interface MiningSpeedGetter {
-        float getMiningSpeed(BlockState state, SmithingMaterial mat);
-    }
-    public ToolType(AttackProperties defaultAttack, Optional<AttackProperties> hcAttack, Optional<AttackProperties> dcAttack, MiningSpeedGetter miningSpeed) {
+
+    public ToolType(AttackProperties defaultAttack, Optional<AttackProperties> hcAttack, Optional<AttackProperties> dcAttack, MiningSpeedProcessor miningSpeed, RightClickEventProcessor rightClick) {
 
         this.defaultAttack = defaultAttack;
         this.hcAttack = hcAttack.orElse(defaultAttack);

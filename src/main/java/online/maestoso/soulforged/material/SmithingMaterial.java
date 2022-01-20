@@ -10,9 +10,11 @@ public class SmithingMaterial {
     private int durability;
     private int heat;
     private int padding;
+    private int miningLevel;
+    private float miningSpeed;
     private Color color;
 
-    public SmithingMaterial(double hardness, double edgeholding, int workability, int density, int durability, int heat, int padding, int miningLevel, Color color) {
+    public SmithingMaterial(double hardness, double edgeholding, int workability, int density, int durability, int heat, int padding, int miningLevel, float miningSpeed, Color color) {
         this.hardness = hardness;
         this.edgeholding = edgeholding;
         this.workability = workability;
@@ -20,6 +22,8 @@ public class SmithingMaterial {
         this.durability = durability;
         this.heat = heat;
         this.padding = padding;
+        this.miningLevel = miningLevel;
+        this.miningSpeed = miningSpeed;
         this.color = color;
     }
 
@@ -99,5 +103,13 @@ public class SmithingMaterial {
 
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    public int getMiningLevel() {
+        return miningLevel;
+    }
+
+    public float getMiningSpeed() {
+        return miningSpeed;
     }
 }
