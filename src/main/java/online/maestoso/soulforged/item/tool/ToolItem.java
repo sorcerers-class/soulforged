@@ -104,7 +104,8 @@ public class ToolItem extends Item {
 
     @Override
     public float getMiningSpeedMultiplier(ItemStack stack, BlockState state) {
-        MiningSpeedProcessor msp = ToolTypes.TOOL_TYPES_REGISTRY.get(new Identifier(stack.getNbt().getString("sf_tool_type"))).getMiningSpeed();
+        assert stack.getNbt() != null;
+        MiningSpeedProcessor msp = Objects.requireNonNull(ToolTypes.TOOL_TYPES_REGISTRY.get(new Identifier(stack.getNbt().getString("sf_tool_type")))).getMiningSpeed();
         return msp.getMiningSpeed(state, SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(new Identifier(stack.getNbt().getCompound("sf_head").getString("material"))));
     }
 
@@ -158,12 +159,7 @@ public class ToolItem extends Item {
 
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
-        return super.useOnBlock(context);
-    }
-
-    @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        return super.use(world, user, hand);
+        return Objects.requireNonNull(ToolTypes.TOOL_TYPES_REGISTRY.get(Identifier.tryParse(Objects.requireNonNull(Objects.requireNonNull(context.getPlayer()).getMainHandStack().getNbt()).getString("sf_tool_type")))).getRightClick().onRightClick(context);
     }
 
     @Override
@@ -175,4 +171,5 @@ public class ToolItem extends Item {
     public boolean canRepair(ItemStack stack, ItemStack ingredient) {
         return false;
     }
+
 }
