@@ -30,29 +30,29 @@ public class RightClickEventProcessors {
         Optional<BlockState> tryDecreaseOxidation = Oxidizable.getDecreasedOxidationState(blockState);
         Optional<BlockState> tryUnwax = Optional.ofNullable(HoneycombItem.WAXED_TO_UNWAXED_BLOCKS.get().get(blockState.getBlock())).map(block -> block.getStateWithProperties(blockState));
         ItemStack itemStack = ctx.getStack();
-        Optional<Object> actionExecuted = Optional.empty();
+        Optional<BlockState> actionExecuted = Optional.empty();
 
         if (tryStripLog.isPresent()) {
             world.playSound(playerEntity, blockPos, SoundEvents.ITEM_AXE_STRIP, SoundCategory.BLOCKS, 1.0f, 1.0f);
 
-            actionExecuted = Optional.of(tryStripLog);
+            actionExecuted = tryStripLog;
         } else if (tryDecreaseOxidation.isPresent()) {
             world.playSound(playerEntity, blockPos, SoundEvents.ITEM_AXE_SCRAPE, SoundCategory.BLOCKS, 1.0f, 1.0f);
 
             world.syncWorldEvent(playerEntity, WorldEvents.BLOCK_SCRAPED, blockPos, 0);
-            actionExecuted = Optional.of(tryDecreaseOxidation);
+            actionExecuted = tryDecreaseOxidation;
         } else if (tryUnwax.isPresent()) {
             world.playSound(playerEntity, blockPos, SoundEvents.ITEM_AXE_WAX_OFF, SoundCategory.BLOCKS, 1.0f, 1.0f);
 
             world.syncWorldEvent(playerEntity, WorldEvents.WAX_REMOVED, blockPos, 0);
-            actionExecuted = Optional.of(tryUnwax);
+            actionExecuted = tryUnwax;
         }
 
         if (actionExecuted.isPresent()) {
             if (playerEntity instanceof ServerPlayerEntity) {
                 Criteria.ITEM_USED_ON_BLOCK.trigger((ServerPlayerEntity)playerEntity, blockPos, itemStack);
             }
-            world.setBlockState(blockPos, (BlockState) actionExecuted.get(), Block.NOTIFY_ALL | Block.REDRAW_ON_MAIN_THREAD);
+            world.setBlockState(blockPos, actionExecuted.get(), Block.NOTIFY_ALL | Block.REDRAW_ON_MAIN_THREAD);
             return ActionResult.success(world.isClient);
         }
         return ActionResult.PASS;
