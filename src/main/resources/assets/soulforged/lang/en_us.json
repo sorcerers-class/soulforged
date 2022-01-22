@@ -1,0 +1,69 @@
+{
+  "item.soulforged.tool.material.wood": "Wooden",
+  "item.soulforged.tool.material.stone": "Stone",
+  "item.soulforged.tool.material.leather": "Leather",
+  "item.soulforged.tool.material.flint": "Flint",
+  "item.soulforged.tool.material.bone": "Bone",
+  "item.soulforged.tool.material.wool": "Woolen",
+  "item.soulforged.tool.material.scute": "Turtle",
+  "item.soulforged.tool.material.spider_weave": "Spidersilk Woven",
+  "item.soulforged.tool.material.slime_weave": "Slime Woven",
+
+  "item.soulforged.tool.material.iron": "Iron",
+  "item.soulforged.tool.material.copper": "Copper",
+  "item.soulforged.tool.material.gold": "Gold",
+  "item.soulforged.tool.material.silver": "Silver",
+  "item.soulforged.tool.material.lead": "Lead",
+  "item.soulforged.tool.material.steel": "Steel",
+
+  "item.soulforged.tool.material.amethyst": "Amethyst",
+  "item.soulforged.tool.material.emerald": "Emerald",
+  "item.soulforged.tool.material.diamond": "Diamond",
+  "item.soulforged.tool.material.obsidian": "Obsidian",
+
+  "item.soulforged.tool.material.witherbone": "Witherbone",
+  "item.soulforged.tool.material.endicite": "Endicite",
+  "item.soulforged.tool.material.monster_leather": "Monster Leather",
+  "item.soulforged.tool.material.scales": "Scale",
+
+  "item.soulforged.tool.material.sapphire": "Sapphire",
+  "item.soulforged.tool.material.ruby": "Ruby",
+  "item.soulforged.tool.material.lotus_gem": "Padparadscha",
+  "item.soulforged.tool.material.star_gem": "Star Gem",
+
+  "item.soulforged.tool.material.osmium": "Osmium",
+  "item.soulforged.tool.material.netherite": "Netherite",
+  "item.soulforged.tool.material.aluminium": "Aluminium",
+  "item.soulforged.tool.material.titanium": "Titanium",
+
+  "item.soulforged.tool.material.void_metal": "Void Metal",
+  "item.soulforged.tool.material.netherium": "Netherium",
+  "item.soulforged.tool.material.neutronium": "Neutronium",
+  "item.soulforged.tool.material.divinium": "Divinium",
+  "item.soulforged.tool.material.star_metal": "Star Metal",
+  "item.soulforged.tool.material.mercurium": "Mercurium",
+  "item.soulforged.tool.material.eternicite": "Eternicite",
+
+  "item.soulforged.tool.type.shortsword": "%s Shortsword",
+  "item.soulforged.tool.type.broadsword": "%s Broadsword",
+  "item.soulforged.tool.type.longsword": "%s Longsword",
+  "item.soulforged.tool.type.greatsword": "%s Greatsword",
+  "item.soulforged.tool.type.rapier": "%s Rapier",
+
+  "item.soulforged.tool.type.shortspear": "%s Shortspear",
+  "item.soulforged.tool.type.longspear": "%s Longspear",
+  "item.soulforged.tool.type.javelin": "%s Javelin",
+
+  "item.soulforged.tool.type.mace": "%s Mace",
+  "item.soulforged.tool.type.morningstar": "%s Morningstar",
+
+  "item.soulforged.tool.type.greataxe": "%s Greataxe",
+
+  "item.soulforged.tool.type.greathammer": "%s Greathammer",
+  "item.soulforged.tool.type.warhammer": "%s Warhammer",
+
+  "item.soulforged.tool.type.axe": "%s Axe",
+  "item.soulforged.tool.type.pickaxe": "%s Pickaxe",
+  "item.soulforged.tool.type.shovel": "%s Shovel",
+  "item.soulforged.tool.type.hoe": "%s Hoe"
+}

@@ -1,7 +1,5 @@
 package online.maestoso.soulforged.material;
 
-import java.awt.*;
-
 public class SmithingMaterial {
     private double hardness;
     private double edgeholding;
@@ -12,9 +10,9 @@ public class SmithingMaterial {
     private int padding;
     private int miningLevel;
     private float miningSpeed;
-    private Color color;
+    private float predicate;
 
-    public SmithingMaterial(double hardness, double edgeholding, int workability, int density, int durability, int heat, int padding, int miningLevel, float miningSpeed, Color color) {
+    public SmithingMaterial(double hardness, double edgeholding, int workability, int density, int durability, int heat, int padding, int miningLevel, float miningSpeed, float predicate) {
         this.hardness = hardness;
         this.edgeholding = edgeholding;
         this.workability = workability;
@@ -24,7 +22,7 @@ public class SmithingMaterial {
         this.padding = padding;
         this.miningLevel = miningLevel;
         this.miningSpeed = miningSpeed;
-        this.color = color;
+        this.predicate = predicate;
     }
 
     /**
@@ -97,19 +95,15 @@ public class SmithingMaterial {
         this.padding = padding;
     }
 
-    public Color getColor() {
-        return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
     public int getMiningLevel() {
         return miningLevel;
     }
 
     public float getMiningSpeed() {
         return miningSpeed;
+    }
+
+    public float getPredicate() {
+        return predicate;
     }
 }

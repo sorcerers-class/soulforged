@@ -1,11 +1,14 @@
 package online.maestoso.soulforged.item.tool;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 
 import net.minecraft.block.BlockState;
 
 import net.minecraft.client.item.TooltipContext;
 
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
@@ -16,8 +19,10 @@ import net.minecraft.item.ItemUsageContext;
 
 import net.minecraft.nbt.NbtCompound;
 
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 
@@ -165,6 +170,18 @@ public class ToolItem extends Item {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         super.appendTooltip(stack, world, tooltip, context);
+    }
+
+    @Override
+    @Environment(EnvType.CLIENT)
+    public Text getName(ItemStack stack) {
+        NbtCompound nbt = stack.getNbt();
+        assert nbt != null;
+        ToolType type = ToolTypes.TOOL_TYPES_REGISTRY.get(new Identifier(nbt.getString("sf_tool_type")));
+        SmithingMaterial mat = SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(new Identifier(nbt.getCompound("sf_head").getString("material")));
+        String matLocalized = I18n.translate("item.soulforged.tool.material." + Objects.requireNonNull(SmithingMaterials.SMITHING_MATERIALS_REGISTRY.getId(mat)).getPath());
+        return new LiteralText(I18n.translate("item.soulforged.tool.type." + Objects.requireNonNull(ToolTypes.TOOL_TYPES_REGISTRY.getId(type)).getPath(), matLocalized));
+
     }
 
     @Override
