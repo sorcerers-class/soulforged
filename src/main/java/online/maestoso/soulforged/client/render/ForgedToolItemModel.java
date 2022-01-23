@@ -2,13 +2,16 @@ package online.maestoso.soulforged.client.render;
 
 import com.mojang.datafixers.util.Pair;
 
+import net.fabricmc.fabric.api.client.model.BakedModelManagerHelper;
 import net.fabricmc.fabric.api.client.model.ModelProviderContext;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 
 import net.minecraft.block.BlockState;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.model.*;
+import net.minecraft.client.render.model.json.JsonUnbakedModel;
 import net.minecraft.client.render.model.json.ModelOverrideList;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.texture.Sprite;
@@ -26,6 +29,8 @@ import net.minecraft.world.BlockRenderView;
 
 import online.maestoso.soulforged.Soulforged;
 
+import online.maestoso.soulforged.item.tool.ForgedToolTypes;
+import online.maestoso.soulforged.material.SmithingMaterials;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -36,7 +41,6 @@ public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBake
     private static final Identifier ITEM_HANDHELD_MODEL = new Identifier("minecraft:item/handheld");
     private final ModelProviderContext context;
     private ModelTransformation transformation;
-    private ItemStack stack;
 
     public ForgedToolItemModel(ModelProviderContext context) {
         this.context = context;
@@ -52,12 +56,18 @@ public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBake
         String binding_mat = new Identifier(nbt.getCompound("sf_binding").getString("material")).getPath();
         String handle_mat = new Identifier(nbt.getCompound("sf_handle").getString("material")).getPath();
 
-        FabricBakedModel head = (FabricBakedModel)this.context.loadModel(new Identifier("soulforged", String.format("item/part/%s/head/%s", type, head_mat)));
-        FabricBakedModel binding = (FabricBakedModel)this.context.loadModel(new Identifier("soulforged", String.format("item/part/%s/head/%s", type, binding_mat)));
-        FabricBakedModel handle = (FabricBakedModel)this.context.loadModel(new Identifier("soulforged", String.format("item/part/%s/head/%s", type, handle_mat)));
+        MinecraftClient inst = MinecraftClient.getInstance();
+        FabricBakedModel head = (FabricBakedModel) BakedModelManagerHelper.getModel(inst.getBakedModelManager(), new Identifier(String.format("soulforged:item/part/%s/head/%s", type, head_mat)));
+        FabricBakedModel binding = (FabricBakedModel) BakedModelManagerHelper.getModel(inst.getBakedModelManager(), new Identifier(String.format("soulforged:item/part/%s/head/%s", type, binding_mat)));
+        FabricBakedModel handle = (FabricBakedModel) BakedModelManagerHelper.getModel(inst.getBakedModelManager(), new Identifier(String.format("soulforged:item/part/%s/head/%s", type, handle_mat)));
+
         System.out.println("Attempting to emit quads for ForgedToolItemModel");
+
+        assert head != null;
         head.emitItemQuads(stack, randomSupplier, context);
+        assert binding != null;
         binding.emitItemQuads(stack, randomSupplier, context);
+        assert handle != null;
         handle.emitItemQuads(stack, randomSupplier, context);
     }
 
@@ -70,15 +80,30 @@ public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBake
     @Override
     public BakedModel bake(ModelLoader loader, Function<SpriteIdentifier, Sprite> textureGetter, ModelBakeSettings rotationContainer, Identifier modelId) {
         Soulforged.LOGGER.info("Attempting to bake ForgedToolItemModel");
-        return null;
+        JsonUnbakedModel defaultItemModel = (JsonUnbakedModel) loader.getOrLoadModel(ITEM_HANDHELD_MODEL);
+        transformation = defaultItemModel.getTransformations();
+
+        return this;
     }
 
     @Override
     public Collection<Identifier> getModelDependencies() {
-        return List.of(ITEM_HANDHELD_MODEL);
+        ArrayList<Identifier> parts = new ArrayList<>();
+        ForgedToolTypes.TOOL_TYPES_REGISTRY.getIds().forEach((Identifier type) ->
+                SmithingMaterials.SMITHING_MATERIALS_REGISTRY.getIds().forEach((Identifier material) -> {
+                    parts.add(new Identifier(String.format("soulforged:item/part/%s/head/%s", type.getPath(), material.getPath())));
+                    parts.add(new Identifier(String.format("soulforged:item/part/%s/binding/%s", type.getPath(), material.getPath())));
+                    parts.add(new Identifier(String.format("soulforged:item/part/%s/handle/%s", type.getPath(), material.getPath())));
+                }
+                )
+        );
+        parts.add(ITEM_HANDHELD_MODEL);
+
+        return parts;
     }
     // Below is all the stuff I don't care about. It's down here because I don't care about it.
     @Override public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction face, Random random) {
+        Soulforged.LOGGER.fatal("Call to ForgedToolItemModel.getQuads");
         return List.of();
     }
     @Override public boolean useAmbientOcclusion() {

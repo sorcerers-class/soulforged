@@ -11,7 +11,6 @@ import org.jetbrains.annotations.Nullable;
 
 public class SoulforgedModelProvider implements ModelResourceProvider {
     public static final Identifier FORGED_TOOL_MODEL = new Identifier("soulforged:item/tool");
-
     @Override
     public @Nullable UnbakedModel loadModelResource(Identifier resourceId, ModelProviderContext context) throws ModelProviderException {
         if(resourceId.equals(FORGED_TOOL_MODEL)) {
