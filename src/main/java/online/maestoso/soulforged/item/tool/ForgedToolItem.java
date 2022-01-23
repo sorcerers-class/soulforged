@@ -1,5 +1,7 @@
 package online.maestoso.soulforged.item.tool;
 
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
@@ -9,16 +11,19 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
 
 import net.minecraft.client.resource.language.I18n;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
+import net.minecraft.item.*;
 
 import net.minecraft.nbt.NbtCompound;
 
+import net.minecraft.tag.BlockTags;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 
@@ -38,6 +43,9 @@ import java.util.List;
 import java.util.Objects;
 
 public class ForgedToolItem extends Item {
+    static final int head = 0;
+    static final int binding = 1;
+    static final int handle = 2;
     public ForgedToolItem() {
         super(new FabricItemSettings()
                 .rarity(Rarity.RARE)
@@ -47,15 +55,22 @@ public class ForgedToolItem extends Item {
     }
 
     @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+    public int getEnchantability() {
+        return -1;
+    }
+
+    public static double calcAttackSpeed(ItemStack stack) {
+        return (getWeight(stack) / 800) / ForgedToolTypes.TOOL_TYPES_REGISTRY.get(new Identifier(stack.getNbt().getString("sf_tool_type"))).getDefaultAttack().speed();
+    }
+    public static double calcDamage(ItemStack stack) {
         NbtCompound nbt = stack.getNbt();
         assert nbt != null;
         ForgedToolPart head = ForgedToolParts.TOOL_PARTS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_head").getString("type"))),
                 binding = ForgedToolParts.TOOL_PARTS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_binding").getString("type"))),
                 handle = ForgedToolParts.TOOL_PARTS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_handle").getString("type")));
         SmithingMaterial mhead = SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_head").getString("material"))),
-                        mbinding = SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_binding").getString("material"))),
-                         mhandle = SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_handle").getString("material")));
+                mbinding = SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_binding").getString("material"))),
+                mhandle = SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_handle").getString("material")));
 
         assert mhead != null;
         double head_edgeholding =  mhead.getEdgeholding();
@@ -72,7 +87,11 @@ public class ForgedToolItem extends Item {
 
         double effective_weight = head_weight + binding_weight + (0.25 * handle_weight);
         double total_blunt_damage = (((effective_weight/100) + (head_hardness*0.25))*type.getDefaultAttack().bluntDamage())*0.8;
-        target.damage(DamageSource.player((PlayerEntity) attacker), (float) (total_blunt_damage + total_piercing_damage));
+        return total_blunt_damage + total_piercing_damage;
+    }
+    public static int calcDurability(ItemStack stack) {
+        NbtCompound nbt = stack.getNbt();
+        assert nbt != null;
         if (!nbt.contains("sf_damage")) {
             int head_dura = (int) (Objects.requireNonNull(ForgedToolParts.TOOL_PARTS_REGISTRY.get(new Identifier(nbt.getCompound("sf_head").getString("type")))).durability() * Objects.requireNonNull(SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(new Identifier(nbt.getCompound("sf_head").getString("material")))).getDurability());
             int binding_dura = (int) (Objects.requireNonNull(ForgedToolParts.TOOL_PARTS_REGISTRY.get(new Identifier(nbt.getCompound("sf_binding").getString("type")))).durability() * Objects.requireNonNull(SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(new Identifier(nbt.getCompound("sf_binding").getString("material")))).getDurability());
@@ -86,26 +105,48 @@ public class ForgedToolItem extends Item {
             nbt.getCompound("sf_binding").putInt("damage", binding_dura);
             nbt.getCompound("sf_handle").putInt("damage", handle_dura);
         }
-        int head_durability = nbt.getCompound("sf_head").getInt("damage");
-        int head_max = nbt.getCompound("sf_head").getInt("max_damage");
-        nbt.getCompound("sf_head").putInt("damage", head_durability - 1);
-        int head_damage = (head_durability / head_max) * 256 - 1;
+        int[] durability = getDurabilities(stack);
+        int[] max_durability = getMaxDurabilities(stack);
 
-        int binding_durability = nbt.getCompound("sf_binding").getInt("damage");
-        int binding_max = nbt.getCompound("sf_binding").getInt("max_damage");
-        nbt.getCompound("sf_binding").putInt("damage", binding_durability - 1);
-        int binding_damage = (binding_durability / binding_max) * 256 - 1;
+        nbt.getCompound("sf_head").putInt("damage", durability[head] - 1);
+        int head_damage = (durability[head] / max_durability[head]) * 256 - 1;
 
-        int handle_durability = nbt.getCompound("sf_handle").getInt("damage");
-        int handle_max = nbt.getCompound("sf_handle").getInt("max_damage");
-        nbt.getCompound("sf_handle").putInt("damage", handle_durability - 1);
-        int handle_damage = (handle_durability / handle_max) * 256 - 1;
+        nbt.getCompound("sf_binding").putInt("damage", durability[binding] - 1);
+        int binding_damage = (durability[binding] / max_durability[binding]) * 256 - 1;
 
-        stack.setDamage(256 - Math.min(Math.min(handle_damage, binding_damage), head_damage));
+        nbt.getCompound("sf_handle").putInt("damage", durability[handle] - 1);
+        int handle_damage = (durability[handle] / max_durability[handle]) * 256 - 1;
 
+        return 256 - Math.min(Math.min(handle_damage, binding_damage), head_damage);
+    }
+    public static int[] getDurabilities(ItemStack stack) {
+        return new int[]{stack.getNbt().getCompound("sf_head").getInt("damage"), stack.getNbt().getCompound("sf_binding").getInt("damage"), stack.getNbt().getCompound("sf_handle").getInt("damage")};
+    }
+    public static int[] getMaxDurabilities(ItemStack stack) {
+        return new int[]{stack.getNbt().getCompound("sf_head").getInt("max_damage"), stack.getNbt().getCompound("sf_binding").getInt("max_damage"), stack.getNbt().getCompound("sf_handle").getInt("max_damage")};
+    }
+    @Override
+    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        stack.setDamage(calcDurability(stack));
+        NbtCompound nbt = stack.getNbt();
+        if(!nbt.getBoolean("sf_set")) {
+
+        }
+        target.damage(DamageSource.player((PlayerEntity) attacker), (float) calcDamage(stack));
         return true;
     }
+    public static double getWeight(ItemStack stack) {
+        NbtCompound nbt = stack.getNbt();
 
+        ForgedToolPart head = ForgedToolParts.TOOL_PARTS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_head").getString("type"))),
+                binding = ForgedToolParts.TOOL_PARTS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_binding").getString("type"))),
+                handle = ForgedToolParts.TOOL_PARTS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_handle").getString("type")));
+        SmithingMaterial mhead = SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_head").getString("material"))),
+                mbinding = SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_binding").getString("material"))),
+                mhandle = SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_handle").getString("material")));
+        return (head.weight() * mhead.getDensity()) + (binding.weight() * mbinding.getDensity()) + (0.25 * handle.weight() * mhandle.getDensity());
+
+    }
     @Override
     public float getMiningSpeedMultiplier(ItemStack stack, BlockState state) {
         assert stack.getNbt() != null;
@@ -115,40 +156,7 @@ public class ForgedToolItem extends Item {
 
     @Override
     public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
-        if (!world.isClient && state.getHardness(world, pos) != 0.0f) {
-            NbtCompound nbt = stack.getNbt();
-            if (nbt != null) {
-                if (!nbt.contains("sf_damage")) {
-                    int head_dura = (int) (Objects.requireNonNull(ForgedToolParts.TOOL_PARTS_REGISTRY.get(new Identifier(nbt.getCompound("sf_head").getString("type")))).durability() * Objects.requireNonNull(SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(new Identifier(nbt.getCompound("sf_head").getString("material")))).getDurability());
-                    int binding_dura = (int) (Objects.requireNonNull(ForgedToolParts.TOOL_PARTS_REGISTRY.get(new Identifier(nbt.getCompound("sf_binding").getString("type")))).durability() * Objects.requireNonNull(SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(new Identifier(nbt.getCompound("sf_binding").getString("material")))).getDurability());
-                    int handle_dura = (int) (Objects.requireNonNull(ForgedToolParts.TOOL_PARTS_REGISTRY.get(new Identifier(nbt.getCompound("sf_handle").getString("type")))).durability() * Objects.requireNonNull(SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(new Identifier(nbt.getCompound("sf_handle").getString("material")))).getDurability());
-
-                    nbt.getCompound("sf_head").putInt("max_damage", head_dura);
-                    nbt.getCompound("sf_binding").putInt("max_damage", binding_dura);
-                    nbt.getCompound("sf_handle").putInt("max_damage", handle_dura);
-
-                    nbt.getCompound("sf_head").putInt("damage", head_dura);
-                    nbt.getCompound("sf_binding").putInt("damage", binding_dura);
-                    nbt.getCompound("sf_handle").putInt("damage", handle_dura);
-                }
-                int head_durability = nbt.getCompound("sf_head").getInt("damage");
-                int head_max = nbt.getCompound("sf_head").getInt("max_damage");
-                nbt.getCompound("sf_head").putInt("damage", head_durability - 1);
-                int head_damage = (head_durability / head_max) * 256 - 1;
-
-                int binding_durability = nbt.getCompound("sf_binding").getInt("damage");
-                int binding_max = nbt.getCompound("sf_binding").getInt("max_damage");
-                nbt.getCompound("sf_binding").putInt("damage", binding_durability - 1);
-                int binding_damage = (binding_durability / binding_max) * 256 - 1;
-
-                int handle_durability = nbt.getCompound("sf_handle").getInt("damage");
-                int handle_max = nbt.getCompound("sf_handle").getInt("max_damage");
-                nbt.getCompound("sf_handle").putInt("damage", handle_durability - 1);
-                int handle_damage = (handle_durability / handle_max) * 256 - 1;
-
-                stack.setDamage(256 - Math.min(Math.min(handle_damage, binding_damage), head_damage));
-            }
-        }
+        stack.setDamage(calcDurability(stack));
         return true;
     }
 
@@ -167,8 +175,11 @@ public class ForgedToolItem extends Item {
     }
 
     @Override
+    @Environment(EnvType.CLIENT)
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
+        tooltip.add(Text.of(I18n.translate("item.soulforged.tool.tooltip.weight", Math.round(getWeight(stack) * 100.0) / 100.0)));
+        tooltip.add(Text.of(I18n.translate("item.soulforged.tool.tooltip.speed", Math.round(calcAttackSpeed(stack) * 100.0) / 100.0)));
+        tooltip.add(Text.of(I18n.translate("item.soulforged.tool.tooltip.attack", Math.round(calcDamage(stack) * 100.0) / 100.0)));
     }
 
     @Override

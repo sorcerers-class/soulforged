@@ -65,5 +65,9 @@
   "item.soulforged.tool.type.axe": "%s Axe",
   "item.soulforged.tool.type.pickaxe": "%s Pickaxe",
   "item.soulforged.tool.type.shovel": "%s Shovel",
-  "item.soulforged.tool.type.hoe": "%s Hoe"
+  "item.soulforged.tool.type.hoe": "%s Hoe",
+
+  "item.soulforged.tool.tooltip.weight":"Weight: %g",
+  "item.soulforged.tool.tooltip.speed": "Speed: %f",
+  "item.soulforged.tool.tooltip.attack": "Damage: %f"
 }
