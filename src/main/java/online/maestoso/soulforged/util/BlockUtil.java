@@ -15,7 +15,7 @@ public class BlockUtil {
     public static boolean isMineable(BlockState state, ItemStack tool) {
         if(BlockTags.PICKAXE_MINEABLE.contains(state.getBlock())) {
             assert tool.getNbt() != null;
-            int level = Objects.requireNonNull(SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(new Identifier(tool.getNbt().getCompound("sf_head").getString("material")))).getMiningLevel();
+            int level = Objects.requireNonNull(SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(new Identifier(tool.getNbt().getCompound("sf_head").getString("material")))).miningLevel();
             if(BlockTags.PICKAXE_MINEABLE.contains(state.getBlock())) {
                 if (Objects.requireNonNull(ForgedToolTypes.TOOL_TYPES_REGISTRY.get(new Identifier(tool.getNbt().getString("sf_tool_type")))).getMiningSpeed() == MiningSpeedProcessors.PICKAXE) {
                     return level >= MiningLevelManager.getRequiredMiningLevel(state);
