@@ -1,11 +1,8 @@
 package online.maestoso.soulforged.item.tool;
 
-import net.minecraft.block.BlockState;
-import online.maestoso.soulforged.material.SmithingMaterial;
-
 import java.util.Optional;
 
-public class ToolType {
+public class ForgedToolType {
     private final AttackProperties defaultAttack;
     private final MiningSpeedProcessor miningSpeed;
     private final RightClickEventProcessor rightClick;
@@ -13,7 +10,7 @@ public class ToolType {
     private final AttackProperties dcAttack;
 
 
-    public ToolType(AttackProperties defaultAttack, Optional<AttackProperties> hcAttack, Optional<AttackProperties> dcAttack, MiningSpeedProcessor miningSpeed, RightClickEventProcessor rightClick) {
+    public ForgedToolType(AttackProperties defaultAttack, Optional<AttackProperties> hcAttack, Optional<AttackProperties> dcAttack, MiningSpeedProcessor miningSpeed, RightClickEventProcessor rightClick) {
 
         this.defaultAttack = defaultAttack;
         this.miningSpeed = miningSpeed;
