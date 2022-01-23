@@ -1,8 +1,8 @@
 package online.maestoso.soulforged.material;
 
-public enum CorundumTypes {
-    SAPPHIRE,
+public enum Classifiers {
     RUBY,
+    SAPPHIRE,
     LOTUS,
     STAR
 }
