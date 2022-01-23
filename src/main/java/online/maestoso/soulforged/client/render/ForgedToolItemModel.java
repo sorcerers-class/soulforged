@@ -45,11 +45,10 @@ import java.util.function.Supplier;
 
 public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBakedModel {
     private static final Identifier ITEM_HANDHELD_MODEL = new Identifier("minecraft:item/handheld");
-    private final ModelProviderContext context;
+    private static HashMap<String, FabricBakedModel> PART_MODELS = new HashMap<>();
     private ModelTransformation transformation;
 
-    public ForgedToolItemModel(ModelProviderContext context) {
-        this.context = context;
+    public ForgedToolItemModel() {
     }
     @Environment(EnvType.CLIENT)
     @Override
@@ -63,60 +62,46 @@ public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBake
         String binding_mat = new Identifier(nbt.getCompound("sf_binding").getString("material")).getPath();
         String handle_mat = new Identifier(nbt.getCompound("sf_handle").getString("material")).getPath();
 
-        MinecraftClient inst = MinecraftClient.getInstance();
-        FabricBakedModel head = (FabricBakedModel) inst.getBakedModelManager().getModel(new ModelIdentifier(String.format("soulforged:item/part/%s/head/%s", type, head_mat)));
-        FabricBakedModel binding = (FabricBakedModel) inst.getBakedModelManager().getModel(new ModelIdentifier(String.format("soulforged:item/part/%s/head/%s", type, binding_mat)));
-        FabricBakedModel handle = (FabricBakedModel) inst.getBakedModelManager().getModel(new ModelIdentifier(String.format("soulforged:item/part/%s/head/%s", type, handle_mat)));
+        String head = head_mat + "_" + type + "_" + "head";
+        String binding = binding_mat + "_" + type + "_" + "binding";
+        String handle = handle_mat + "_" + type + "_" + "handle";
 
-        head.emitItemQuads(stack, randomSupplier, context);
-        binding.emitItemQuads(stack, randomSupplier, context);
-        handle.emitItemQuads(stack, randomSupplier, context);
+        PART_MODELS.get(head).emitItemQuads(stack, randomSupplier, context);
+        PART_MODELS.get(binding).emitItemQuads(stack, randomSupplier, context);
+        PART_MODELS.get(handle).emitItemQuads(stack, randomSupplier, context);
     }
 
     @Override
     public Collection<SpriteIdentifier> getTextureDependencies(Function<Identifier, UnbakedModel> unbakedModelGetter, Set<Pair<String, String>> unresolvedTextureReferences) {
-        ArrayList<SpriteIdentifier> parts = new ArrayList<>();
-        ForgedToolTypes.TOOL_TYPES_REGISTRY.getIds().forEach((Identifier type) ->
-                SmithingMaterials.SMITHING_MATERIALS_REGISTRY.getIds().forEach((Identifier material) -> {
-                            if(SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(material).canIntoTool()) {
-                                //These 100% aren't block textures, I really have no clue what's going on here
-                                parts.add(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier(String.format("soulforged:item/part/%s/head/%s", type.getPath(), material.getPath()))));
-                                parts.add(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier(String.format("soulforged:item/part/%s/binding/%s", type.getPath(), material.getPath()))));
-                                parts.add(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier(String.format("soulforged:item/part/%s/handle/%s", type.getPath(), material.getPath()))));
-                            }
-                        }
-                )
-        );
-
-        return parts;
+       return Collections.emptyList();
     }
 
     @Nullable
     @Override
     public BakedModel bake(ModelLoader loader, Function<SpriteIdentifier, Sprite> textureGetter, ModelBakeSettings rotationContainer, Identifier modelId) {
-        Soulforged.LOGGER.info("Attempting to bake ForgedToolItemModel");
         JsonUnbakedModel defaultItemModel = (JsonUnbakedModel) loader.getOrLoadModel(ITEM_HANDHELD_MODEL);
         transformation = defaultItemModel.getTransformations();
+
+        if(PART_MODELS.isEmpty()) {
+            ForgedToolTypes.TOOL_TYPES_REGISTRY.forEach(raw_type ->
+                    SmithingMaterials.SMITHING_MATERIALS_REGISTRY.forEach(raw_material -> {
+                        String material = Objects.requireNonNull(SmithingMaterials.SMITHING_MATERIALS_REGISTRY.getId(raw_material)).getPath();
+                        if(raw_material.canIntoTool()) {
+                            String type = Objects.requireNonNull(ForgedToolTypes.TOOL_TYPES_REGISTRY.getId(raw_type)).getPath();
+                            PART_MODELS.put(material + "_" + type + "_" + "head", (FabricBakedModel) loader.bake(new ModelIdentifier(new Identifier(String.format("soulforged:part/%s/head/%s", type, material)), "inventory"), ModelRotation.X0_Y0));
+                            PART_MODELS.put(material + "_" + type + "_" + "binding", (FabricBakedModel) loader.bake(new ModelIdentifier(new Identifier(String.format("soulforged:part/%s/binding/%s", type, material)), "inventory"), ModelRotation.X0_Y0));
+                            PART_MODELS.put(material + "_" + type + "_" + "handle", (FabricBakedModel) loader.bake(new ModelIdentifier(new Identifier(String.format("soulforged:part/%s/handle/%s", type, material)), "inventory"), ModelRotation.X0_Y0));
+                        }
+                    })
+            );
+        }
 
         return this;
     }
 
     @Override
     public Collection<Identifier> getModelDependencies() {
-        ArrayList<Identifier> parts = new ArrayList<>();
-        ForgedToolTypes.TOOL_TYPES_REGISTRY.getIds().forEach((Identifier type) ->
-                SmithingMaterials.SMITHING_MATERIALS_REGISTRY.getIds().forEach((Identifier material) -> {
-                    if(SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(material).canIntoTool()) {
-                        parts.add(new Identifier(String.format("soulforged:item/part/%s/head/%s", type.getPath(), material.getPath())));
-                        parts.add(new Identifier(String.format("soulforged:item/part/%s/binding/%s", type.getPath(), material.getPath())));
-                        parts.add(new Identifier(String.format("soulforged:item/part/%s/handle/%s", type.getPath(), material.getPath())));
-                    }
-                }
-                )
-        );
-        parts.add(ITEM_HANDHELD_MODEL);
-
-        return parts;
+        return Collections.emptyList();
     }
     // Below is all the stuff I don't care about. It's down here because I don't care about it.
     @Override public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction face, Random random) {
@@ -136,8 +121,9 @@ public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBake
         return false;
     }
     @Override public Sprite getParticleSprite() {
-        return null;
+        return MinecraftClient.getInstance().getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).apply(new Identifier("block/cobblestone"));
     }
+
     @Override public ModelTransformation getTransformation() {
         return transformation;
     }

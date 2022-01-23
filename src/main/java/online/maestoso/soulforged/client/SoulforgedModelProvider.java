@@ -15,7 +15,7 @@ public class SoulforgedModelProvider implements ModelResourceProvider {
     public @Nullable UnbakedModel loadModelResource(Identifier resourceId, ModelProviderContext context) throws ModelProviderException {
         if(resourceId.equals(FORGED_TOOL_MODEL)) {
             Soulforged.LOGGER.info("Attempting to load model for soulforged:item/tool");
-            return new ForgedToolItemModel(context);
+            return new ForgedToolItemModel();
         } else return null;
     }
 }
