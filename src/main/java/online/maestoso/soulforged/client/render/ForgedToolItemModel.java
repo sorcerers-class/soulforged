@@ -9,6 +9,7 @@ import net.fabricmc.fabric.api.client.model.ModelProviderContext;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 
+import net.fabricmc.fabric.mixin.client.texture.MixinSpriteAtlasTexture;
 import net.minecraft.block.BlockState;
 
 import net.minecraft.client.MinecraftClient;
@@ -17,6 +18,7 @@ import net.minecraft.client.render.model.json.JsonUnbakedModel;
 import net.minecraft.client.render.model.json.ModelOverrideList;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.texture.Sprite;
+import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.SpriteIdentifier;
 
@@ -24,6 +26,7 @@ import net.minecraft.item.ItemStack;
 
 import net.minecraft.nbt.NbtCompound;
 
+import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -72,7 +75,20 @@ public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBake
 
     @Override
     public Collection<SpriteIdentifier> getTextureDependencies(Function<Identifier, UnbakedModel> unbakedModelGetter, Set<Pair<String, String>> unresolvedTextureReferences) {
-        return Collections.emptyList();
+        ArrayList<SpriteIdentifier> parts = new ArrayList<>();
+        ForgedToolTypes.TOOL_TYPES_REGISTRY.getIds().forEach((Identifier type) ->
+                SmithingMaterials.SMITHING_MATERIALS_REGISTRY.getIds().forEach((Identifier material) -> {
+                            if(SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(material).canIntoTool()) {
+                                //These 100% aren't block textures, I really have no clue what's going on here
+                                parts.add(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier(String.format("soulforged:item/part/%s/head/%s", type.getPath(), material.getPath()))));
+                                parts.add(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier(String.format("soulforged:item/part/%s/binding/%s", type.getPath(), material.getPath()))));
+                                parts.add(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier(String.format("soulforged:item/part/%s/handle/%s", type.getPath(), material.getPath()))));
+                            }
+                        }
+                )
+        );
+
+        return parts;
     }
 
     @Nullable
