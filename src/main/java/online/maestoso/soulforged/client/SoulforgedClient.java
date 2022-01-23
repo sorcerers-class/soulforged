@@ -6,6 +6,6 @@ import net.fabricmc.api.ClientModInitializer;
 public class SoulforgedClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        SoulforgedModelPredicates.register();
+
     }
 }
