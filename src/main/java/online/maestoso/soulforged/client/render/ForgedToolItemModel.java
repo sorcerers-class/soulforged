@@ -2,6 +2,8 @@ package online.maestoso.soulforged.client.render;
 
 import com.mojang.datafixers.util.Pair;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.model.BakedModelManagerHelper;
 import net.fabricmc.fabric.api.client.model.ModelProviderContext;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
@@ -15,6 +17,7 @@ import net.minecraft.client.render.model.json.JsonUnbakedModel;
 import net.minecraft.client.render.model.json.ModelOverrideList;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.texture.Sprite;
+import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.SpriteIdentifier;
 
 import net.minecraft.item.ItemStack;
@@ -45,6 +48,7 @@ public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBake
     public ForgedToolItemModel(ModelProviderContext context) {
         this.context = context;
     }
+    @Environment(EnvType.CLIENT)
     @Override
     public void emitItemQuads(ItemStack stack, Supplier<Random> randomSupplier, RenderContext context) {
         NbtCompound nbt = stack.getNbt();
@@ -57,17 +61,12 @@ public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBake
         String handle_mat = new Identifier(nbt.getCompound("sf_handle").getString("material")).getPath();
 
         MinecraftClient inst = MinecraftClient.getInstance();
-        FabricBakedModel head = (FabricBakedModel) BakedModelManagerHelper.getModel(inst.getBakedModelManager(), new Identifier(String.format("soulforged:item/part/%s/head/%s", type, head_mat)));
-        FabricBakedModel binding = (FabricBakedModel) BakedModelManagerHelper.getModel(inst.getBakedModelManager(), new Identifier(String.format("soulforged:item/part/%s/head/%s", type, binding_mat)));
-        FabricBakedModel handle = (FabricBakedModel) BakedModelManagerHelper.getModel(inst.getBakedModelManager(), new Identifier(String.format("soulforged:item/part/%s/head/%s", type, handle_mat)));
+        FabricBakedModel head = (FabricBakedModel) inst.getBakedModelManager().getModel(new ModelIdentifier(String.format("soulforged:item/part/%s/head/%s", type, head_mat)));
+        FabricBakedModel binding = (FabricBakedModel) inst.getBakedModelManager().getModel(new ModelIdentifier(String.format("soulforged:item/part/%s/head/%s", type, binding_mat)));
+        FabricBakedModel handle = (FabricBakedModel) inst.getBakedModelManager().getModel(new ModelIdentifier(String.format("soulforged:item/part/%s/head/%s", type, handle_mat)));
 
-        System.out.println("Attempting to emit quads for ForgedToolItemModel");
-
-        assert head != null;
         head.emitItemQuads(stack, randomSupplier, context);
-        assert binding != null;
         binding.emitItemQuads(stack, randomSupplier, context);
-        assert handle != null;
         handle.emitItemQuads(stack, randomSupplier, context);
     }
 
@@ -91,9 +90,11 @@ public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBake
         ArrayList<Identifier> parts = new ArrayList<>();
         ForgedToolTypes.TOOL_TYPES_REGISTRY.getIds().forEach((Identifier type) ->
                 SmithingMaterials.SMITHING_MATERIALS_REGISTRY.getIds().forEach((Identifier material) -> {
-                    parts.add(new Identifier(String.format("soulforged:item/part/%s/head/%s", type.getPath(), material.getPath())));
-                    parts.add(new Identifier(String.format("soulforged:item/part/%s/binding/%s", type.getPath(), material.getPath())));
-                    parts.add(new Identifier(String.format("soulforged:item/part/%s/handle/%s", type.getPath(), material.getPath())));
+                    if(SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(material).canIntoTool()) {
+                        parts.add(new Identifier(String.format("soulforged:item/part/%s/head/%s", type.getPath(), material.getPath())));
+                        parts.add(new Identifier(String.format("soulforged:item/part/%s/binding/%s", type.getPath(), material.getPath())));
+                        parts.add(new Identifier(String.format("soulforged:item/part/%s/handle/%s", type.getPath(), material.getPath())));
+                    }
                 }
                 )
         );
