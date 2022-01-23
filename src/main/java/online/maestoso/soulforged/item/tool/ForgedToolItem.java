@@ -52,10 +52,10 @@ public class ForgedToolItem extends Item {
         assert nbt != null;
         ForgedToolPart head = ForgedToolParts.TOOL_PARTS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_head").getString("type"))),
                 binding = ForgedToolParts.TOOL_PARTS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_binding").getString("type"))),
-                shaft = ForgedToolParts.TOOL_PARTS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_shaft").getString("type")));
+                handle = ForgedToolParts.TOOL_PARTS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_handle").getString("type")));
         SmithingMaterial mhead = SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_head").getString("material"))),
                         mbinding = SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_binding").getString("material"))),
-                         mshaft = SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_shaft").getString("material")));
+                         mhandle = SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_handle").getString("material")));
 
         assert mhead != null;
         double head_edgeholding =  mhead.getEdgeholding();
@@ -68,23 +68,23 @@ public class ForgedToolItem extends Item {
         assert head != null;
         double head_weight = head.weight() * mhead.getDensity(),
                 binding_weight = Objects.requireNonNull(binding).weight() * Objects.requireNonNull(mbinding).getDensity(),
-                shaft_weight = Objects.requireNonNull(shaft).weight() * Objects.requireNonNull(mshaft).getDensity();
+                handle_weight = Objects.requireNonNull(handle).weight() * Objects.requireNonNull(mhandle).getDensity();
 
-        double effective_weight = head_weight + binding_weight + (0.25 * shaft_weight);
+        double effective_weight = head_weight + binding_weight + (0.25 * handle_weight);
         double total_blunt_damage = (((effective_weight/100) + (head_hardness*0.25))*type.getDefaultAttack().bluntDamage())*0.8;
         target.damage(DamageSource.player((PlayerEntity) attacker), (float) (total_blunt_damage + total_piercing_damage));
         if (!nbt.contains("sf_damage")) {
             int head_dura = (int) (Objects.requireNonNull(ForgedToolParts.TOOL_PARTS_REGISTRY.get(new Identifier(nbt.getCompound("sf_head").getString("type")))).durability() * Objects.requireNonNull(SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(new Identifier(nbt.getCompound("sf_head").getString("material")))).getDurability());
             int binding_dura = (int) (Objects.requireNonNull(ForgedToolParts.TOOL_PARTS_REGISTRY.get(new Identifier(nbt.getCompound("sf_binding").getString("type")))).durability() * Objects.requireNonNull(SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(new Identifier(nbt.getCompound("sf_binding").getString("material")))).getDurability());
-            int shaft_dura = (int) (Objects.requireNonNull(ForgedToolParts.TOOL_PARTS_REGISTRY.get(new Identifier(nbt.getCompound("sf_shaft").getString("type")))).durability() * Objects.requireNonNull(SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(new Identifier(nbt.getCompound("sf_shaft").getString("material")))).getDurability());
+            int handle_dura = (int) (Objects.requireNonNull(ForgedToolParts.TOOL_PARTS_REGISTRY.get(new Identifier(nbt.getCompound("sf_handle").getString("type")))).durability() * Objects.requireNonNull(SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(new Identifier(nbt.getCompound("sf_handle").getString("material")))).getDurability());
 
             nbt.getCompound("sf_head").putInt("max_damage", head_dura);
             nbt.getCompound("sf_binding").putInt("max_damage", binding_dura);
-            nbt.getCompound("sf_shaft").putInt("max_damage", shaft_dura);
+            nbt.getCompound("sf_handle").putInt("max_damage", handle_dura);
 
             nbt.getCompound("sf_head").putInt("damage", head_dura);
             nbt.getCompound("sf_binding").putInt("damage", binding_dura);
-            nbt.getCompound("sf_shaft").putInt("damage", shaft_dura);
+            nbt.getCompound("sf_handle").putInt("damage", handle_dura);
         }
         int head_durability = nbt.getCompound("sf_head").getInt("damage");
         int head_max = nbt.getCompound("sf_head").getInt("max_damage");
@@ -96,12 +96,12 @@ public class ForgedToolItem extends Item {
         nbt.getCompound("sf_binding").putInt("damage", binding_durability - 1);
         int binding_damage = (binding_durability / binding_max) * 256 - 1;
 
-        int shaft_durability = nbt.getCompound("sf_shaft").getInt("damage");
-        int shaft_max = nbt.getCompound("sf_shaft").getInt("max_damage");
-        nbt.getCompound("sf_shaft").putInt("damage", shaft_durability - 1);
-        int shaft_damage = (shaft_durability / shaft_max) * 256 - 1;
+        int handle_durability = nbt.getCompound("sf_handle").getInt("damage");
+        int handle_max = nbt.getCompound("sf_handle").getInt("max_damage");
+        nbt.getCompound("sf_handle").putInt("damage", handle_durability - 1);
+        int handle_damage = (handle_durability / handle_max) * 256 - 1;
 
-        stack.setDamage(256 - Math.min(Math.min(shaft_damage, binding_damage), head_damage));
+        stack.setDamage(256 - Math.min(Math.min(handle_damage, binding_damage), head_damage));
 
         return true;
     }
@@ -121,15 +121,15 @@ public class ForgedToolItem extends Item {
                 if (!nbt.contains("sf_damage")) {
                     int head_dura = (int) (Objects.requireNonNull(ForgedToolParts.TOOL_PARTS_REGISTRY.get(new Identifier(nbt.getCompound("sf_head").getString("type")))).durability() * Objects.requireNonNull(SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(new Identifier(nbt.getCompound("sf_head").getString("material")))).getDurability());
                     int binding_dura = (int) (Objects.requireNonNull(ForgedToolParts.TOOL_PARTS_REGISTRY.get(new Identifier(nbt.getCompound("sf_binding").getString("type")))).durability() * Objects.requireNonNull(SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(new Identifier(nbt.getCompound("sf_binding").getString("material")))).getDurability());
-                    int shaft_dura = (int) (Objects.requireNonNull(ForgedToolParts.TOOL_PARTS_REGISTRY.get(new Identifier(nbt.getCompound("sf_shaft").getString("type")))).durability() * Objects.requireNonNull(SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(new Identifier(nbt.getCompound("sf_shaft").getString("material")))).getDurability());
+                    int handle_dura = (int) (Objects.requireNonNull(ForgedToolParts.TOOL_PARTS_REGISTRY.get(new Identifier(nbt.getCompound("sf_handle").getString("type")))).durability() * Objects.requireNonNull(SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(new Identifier(nbt.getCompound("sf_handle").getString("material")))).getDurability());
 
                     nbt.getCompound("sf_head").putInt("max_damage", head_dura);
                     nbt.getCompound("sf_binding").putInt("max_damage", binding_dura);
-                    nbt.getCompound("sf_shaft").putInt("max_damage", shaft_dura);
+                    nbt.getCompound("sf_handle").putInt("max_damage", handle_dura);
 
                     nbt.getCompound("sf_head").putInt("damage", head_dura);
                     nbt.getCompound("sf_binding").putInt("damage", binding_dura);
-                    nbt.getCompound("sf_shaft").putInt("damage", shaft_dura);
+                    nbt.getCompound("sf_handle").putInt("damage", handle_dura);
                 }
                 int head_durability = nbt.getCompound("sf_head").getInt("damage");
                 int head_max = nbt.getCompound("sf_head").getInt("max_damage");
@@ -141,12 +141,12 @@ public class ForgedToolItem extends Item {
                 nbt.getCompound("sf_binding").putInt("damage", binding_durability - 1);
                 int binding_damage = (binding_durability / binding_max) * 256 - 1;
 
-                int shaft_durability = nbt.getCompound("sf_shaft").getInt("damage");
-                int shaft_max = nbt.getCompound("sf_shaft").getInt("max_damage");
-                nbt.getCompound("sf_shaft").putInt("damage", shaft_durability - 1);
-                int shaft_damage = (shaft_durability / shaft_max) * 256 - 1;
+                int handle_durability = nbt.getCompound("sf_handle").getInt("damage");
+                int handle_max = nbt.getCompound("sf_handle").getInt("max_damage");
+                nbt.getCompound("sf_handle").putInt("damage", handle_durability - 1);
+                int handle_damage = (handle_durability / handle_max) * 256 - 1;
 
-                stack.setDamage(256 - Math.min(Math.min(shaft_damage, binding_damage), head_damage));
+                stack.setDamage(256 - Math.min(Math.min(handle_damage, binding_damage), head_damage));
             }
         }
         return true;

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "soulforged:item/part/warhammer/shaft/stone"
+    "layer0": "soulforged:item/part/pickaxe/handle/stone"
   }
 }

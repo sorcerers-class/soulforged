@@ -25,64 +25,10 @@ import java.util.function.Supplier;
 
 public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBakedModel {
 
-    @Override
-    public boolean isVanillaAdapter() {
-        return false;
-    }
-
-    @Override
-    public void emitBlockQuads(BlockRenderView blockView, BlockState state, BlockPos pos, Supplier<Random> randomSupplier, RenderContext context) {
-
-    }
 
     @Override
     public void emitItemQuads(ItemStack stack, Supplier<Random> randomSupplier, RenderContext context) {
 
-    }
-
-    @Override
-    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction face, Random random) {
-        return List.of();
-    }
-
-    @Override
-    public boolean useAmbientOcclusion() {
-        return false;
-    }
-
-    @Override
-    public boolean hasDepth() {
-        return false;
-    }
-
-    @Override
-    public boolean isSideLit() {
-        return false;
-    }
-
-    @Override
-    public boolean isBuiltin() {
-        return false;
-    }
-
-    @Override
-    public Sprite getParticleSprite() {
-        return null;
-    }
-
-    @Override
-    public ModelTransformation getTransformation() {
-        return null;
-    }
-
-    @Override
-    public ModelOverrideList getOverrides() {
-        return null;
-    }
-
-    @Override
-    public Collection<Identifier> getModelDependencies() {
-        return null;
     }
 
     @Override
@@ -95,4 +41,41 @@ public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBake
     public BakedModel bake(ModelLoader loader, Function<SpriteIdentifier, Sprite> textureGetter, ModelBakeSettings rotationContainer, Identifier modelId) {
         return null;
     }
+    @Override
+    public Collection<Identifier> getModelDependencies() {
+        return null;
+    }
+    // Below is all the stuff I don't care about. It's down here because I don't care about it.
+    @Override public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction face, Random random) {
+        return List.of();
+    }
+    @Override public boolean useAmbientOcclusion() {
+        return false;
+    }
+    @Override public boolean hasDepth() {
+        return false;
+    }
+    @Override public boolean isSideLit() {
+        return false;
+    }
+    @Override public boolean isBuiltin() {
+        return false;
+    }
+    @Override public Sprite getParticleSprite() {
+        return null;
+    }
+    @Override public ModelTransformation getTransformation() {
+        return null;
+    }
+    @Override public ModelOverrideList getOverrides() {
+        return null;
+    }
+    @Override public boolean isVanillaAdapter() {
+        return false;
+    }
+    @Override public void emitBlockQuads(BlockRenderView blockView, BlockState state, BlockPos pos, Supplier<Random> randomSupplier, RenderContext context) {
+
+    }
+
+
 }
