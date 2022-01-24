@@ -45,7 +45,7 @@ import java.util.function.Supplier;
 
 public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBakedModel {
     private static final Identifier ITEM_HANDHELD_MODEL = new Identifier("minecraft:item/handheld");
-    private static HashMap<String, FabricBakedModel> PART_MODELS = new HashMap<>();
+    private static final HashMap<String, BakedModel> PART_MODELS = new HashMap<>();
     private ModelTransformation transformation;
 
     public ForgedToolItemModel() {
@@ -66,9 +66,9 @@ public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBake
         String binding = binding_mat + "_" + type + "_" + "binding";
         String handle = handle_mat + "_" + type + "_" + "handle";
 
-        PART_MODELS.get(head).emitItemQuads(stack, randomSupplier, context);
-        PART_MODELS.get(binding).emitItemQuads(stack, randomSupplier, context);
-        PART_MODELS.get(handle).emitItemQuads(stack, randomSupplier, context);
+        context.fallbackConsumer().accept(PART_MODELS.get(head));
+        context.fallbackConsumer().accept(PART_MODELS.get(binding));
+        context.fallbackConsumer().accept(PART_MODELS.get(handle));
     }
 
     @Override
@@ -88,9 +88,9 @@ public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBake
                         String material = Objects.requireNonNull(SmithingMaterials.SMITHING_MATERIALS_REGISTRY.getId(raw_material)).getPath();
                         if(raw_material.canIntoTool()) {
                             String type = Objects.requireNonNull(ForgedToolTypes.TOOL_TYPES_REGISTRY.getId(raw_type)).getPath();
-                            PART_MODELS.put(material + "_" + type + "_" + "head", (FabricBakedModel) loader.bake(new ModelIdentifier(new Identifier(String.format("soulforged:part/%s/head/%s", type, material)), "inventory"), ModelRotation.X0_Y0));
-                            PART_MODELS.put(material + "_" + type + "_" + "binding", (FabricBakedModel) loader.bake(new ModelIdentifier(new Identifier(String.format("soulforged:part/%s/binding/%s", type, material)), "inventory"), ModelRotation.X0_Y0));
-                            PART_MODELS.put(material + "_" + type + "_" + "handle", (FabricBakedModel) loader.bake(new ModelIdentifier(new Identifier(String.format("soulforged:part/%s/handle/%s", type, material)), "inventory"), ModelRotation.X0_Y0));
+                            PART_MODELS.put(material + "_" + type + "_" + "head", loader.bake(new ModelIdentifier("soulforged:" + material + "_" + type + "_" + "head", "inventory"), ModelRotation.X0_Y0));
+                            PART_MODELS.put(material + "_" + type + "_" + "binding", loader.bake(new ModelIdentifier("soulforged:" + material + "_" + type + "_" + "binding", "inventory"), ModelRotation.X0_Y0));
+                            PART_MODELS.put(material + "_" + type + "_" + "handle", loader.bake(new ModelIdentifier("soulforged:" + material + "_" + type + "_" + "handle", "inventory"), ModelRotation.X0_Y0));
                         }
                     })
             );
