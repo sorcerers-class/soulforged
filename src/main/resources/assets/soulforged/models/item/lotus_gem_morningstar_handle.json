@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "soulforged:lotus_gem_morningstar_handle"
+  }
+}

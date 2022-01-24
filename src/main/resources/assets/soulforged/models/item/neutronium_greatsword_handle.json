@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "soulforged:neutronium_greatsword_handle"
+  }
+}
