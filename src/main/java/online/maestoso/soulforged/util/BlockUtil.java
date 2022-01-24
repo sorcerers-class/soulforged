@@ -1,12 +1,18 @@
 package online.maestoso.soulforged.util;
 
 import net.fabricmc.fabric.api.mininglevel.v1.MiningLevelManager;
+
 import net.minecraft.block.BlockState;
+
 import net.minecraft.item.ItemStack;
+
 import net.minecraft.tag.BlockTags;
+
 import net.minecraft.util.Identifier;
+
 import online.maestoso.soulforged.item.tool.MiningSpeedProcessors;
 import online.maestoso.soulforged.item.tool.ForgedToolTypes;
+
 import online.maestoso.soulforged.material.SmithingMaterials;
 
 import java.util.Objects;

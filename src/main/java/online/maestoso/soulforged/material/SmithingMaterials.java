@@ -7,7 +7,6 @@ import net.minecraft.util.registry.RegistryKey;
 import online.maestoso.soulforged.Soulforged;
 import online.maestoso.soulforged.mixin.common.RegistryAccessor;
 
-import java.awt.*;
 import java.util.Optional;
 
 @SuppressWarnings("unused")

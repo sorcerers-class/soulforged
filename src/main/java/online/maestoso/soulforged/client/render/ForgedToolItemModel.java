@@ -4,21 +4,21 @@ import com.mojang.datafixers.util.Pair;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.model.BakedModelManagerHelper;
-import net.fabricmc.fabric.api.client.model.ModelProviderContext;
+
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 
-import net.fabricmc.fabric.mixin.client.texture.MixinSpriteAtlasTexture;
 import net.minecraft.block.BlockState;
 
 import net.minecraft.client.MinecraftClient;
+
 import net.minecraft.client.render.model.*;
 import net.minecraft.client.render.model.json.JsonUnbakedModel;
 import net.minecraft.client.render.model.json.ModelOverrideList;
 import net.minecraft.client.render.model.json.ModelTransformation;
+
 import net.minecraft.client.texture.Sprite;
-import net.minecraft.client.texture.SpriteAtlasTexture;
+
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.SpriteIdentifier;
 
@@ -37,6 +37,7 @@ import online.maestoso.soulforged.Soulforged;
 
 import online.maestoso.soulforged.item.tool.ForgedToolTypes;
 import online.maestoso.soulforged.material.SmithingMaterials;
+
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;

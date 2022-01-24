@@ -1,10 +1,10 @@
 package online.maestoso.soulforged.item;
 
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.Item;
+
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
+
 import online.maestoso.soulforged.item.tool.ForgedToolItem;
 
 @SuppressWarnings("unused")

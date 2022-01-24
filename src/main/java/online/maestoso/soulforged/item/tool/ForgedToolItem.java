@@ -1,21 +1,16 @@
 package online.maestoso.soulforged.item.tool;
 
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 
 import net.minecraft.block.BlockState;
 
 import net.minecraft.client.item.TooltipContext;
-
 import net.minecraft.client.resource.language.I18n;
-import net.minecraft.entity.EquipmentSlot;
+
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 
@@ -23,7 +18,6 @@ import net.minecraft.item.*;
 
 import net.minecraft.nbt.NbtCompound;
 
-import net.minecraft.tag.BlockTags;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 
@@ -34,6 +28,7 @@ import net.minecraft.world.World;
 
 import online.maestoso.soulforged.item.tool.part.ForgedToolPart;
 import online.maestoso.soulforged.item.tool.part.ForgedToolParts;
+
 import online.maestoso.soulforged.material.SmithingMaterial;
 import online.maestoso.soulforged.material.SmithingMaterials;
 

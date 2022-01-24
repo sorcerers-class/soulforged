@@ -3,6 +3,7 @@ package online.maestoso.soulforged.item.tool.part;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
+
 import online.maestoso.soulforged.mixin.common.RegistryAccessor;
 
 @SuppressWarnings("unused")

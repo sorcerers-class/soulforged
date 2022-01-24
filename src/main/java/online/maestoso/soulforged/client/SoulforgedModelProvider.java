@@ -3,10 +3,15 @@ package online.maestoso.soulforged.client;
 import net.fabricmc.fabric.api.client.model.ModelProviderContext;
 import net.fabricmc.fabric.api.client.model.ModelProviderException;
 import net.fabricmc.fabric.api.client.model.ModelResourceProvider;
+
 import net.minecraft.client.render.model.UnbakedModel;
+
 import net.minecraft.util.Identifier;
+
 import online.maestoso.soulforged.Soulforged;
+
 import online.maestoso.soulforged.client.render.ForgedToolItemModel;
+
 import org.jetbrains.annotations.Nullable;
 
 public class SoulforgedModelProvider implements ModelResourceProvider {
