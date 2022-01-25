@@ -24,6 +24,7 @@ import net.minecraft.client.util.SpriteIdentifier;
 
 import net.minecraft.item.ItemStack;
 
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 
 import net.minecraft.screen.PlayerScreenHandler;
@@ -35,6 +36,7 @@ import net.minecraft.world.BlockRenderView;
 
 import online.maestoso.soulforged.Soulforged;
 
+import online.maestoso.soulforged.item.SoulforgedItems;
 import online.maestoso.soulforged.item.tool.ForgedToolType;
 import online.maestoso.soulforged.item.tool.ForgedToolTypes;
 import online.maestoso.soulforged.material.SmithingMaterial;
@@ -50,7 +52,7 @@ public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBake
     private static final Identifier ITEM_HANDHELD_MODEL = new Identifier("minecraft:item/handheld");
     private static final HashMap<String, BakedModel> PART_MODELS = new HashMap<>();
     private ModelTransformation transformation;
-    private enum ModelToolParts {
+    public enum ModelToolParts {
         HEAD,
         BINDING,
         HANDLE
@@ -72,9 +74,9 @@ public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBake
         String binding = modelNameConcatenation(binding_mat, type, ModelToolParts.BINDING);
         String handle = modelNameConcatenation(handle_mat, type, ModelToolParts.HANDLE);
 
-        context.fallbackConsumer().accept(PART_MODELS.get(head));
-        context.fallbackConsumer().accept(PART_MODELS.get(binding));
-        context.fallbackConsumer().accept(PART_MODELS.get(handle));
+        context.fallbackConsumer().accept(MinecraftClient.getInstance().getItemRenderer().getModel(new ItemStack(SoulforgedItems.TOOL_PARTS.get(new Identifier("soulforged", head)), 1), MinecraftClient.getInstance().world, null, 1));
+        context.fallbackConsumer().accept(MinecraftClient.getInstance().getItemRenderer().getModel(new ItemStack(SoulforgedItems.TOOL_PARTS.get(new Identifier("soulforged", binding)), 1), MinecraftClient.getInstance().world, null, 1));
+        context.fallbackConsumer().accept(MinecraftClient.getInstance().getItemRenderer().getModel(new ItemStack(SoulforgedItems.TOOL_PARTS.get(new Identifier("soulforged", handle)), 1), MinecraftClient.getInstance().world, null, 1));
     }
 
     @Nullable
