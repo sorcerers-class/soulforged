@@ -84,17 +84,6 @@ public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBake
     public BakedModel bake(ModelLoader loader, Function<SpriteIdentifier, Sprite> textureGetter, ModelBakeSettings rotationContainer, Identifier modelId) {
         JsonUnbakedModel defaultItemModel = (JsonUnbakedModel) loader.getOrLoadModel(ITEM_HANDHELD_MODEL);
         transformation = defaultItemModel.getTransformations();
-        if(PART_MODELS.isEmpty()) {
-            ForgedToolTypes.TOOL_TYPES_REGISTRY.forEach(type ->
-                    SmithingMaterials.SMITHING_MATERIALS_REGISTRY.forEach(material -> {
-                        if(material.canIntoTool()) {
-                            PART_MODELS.put(getModelName(material, type, ModelToolParts.HEAD), loader.bake(new ModelIdentifier(new Identifier("soulforged", getModelName(material, type, ModelToolParts.HEAD)), "inventory"), rotationContainer));
-                            PART_MODELS.put(getModelName(material, type, ModelToolParts.BINDING), loader.bake(new ModelIdentifier(new Identifier("soulforged", getModelName(material, type, ModelToolParts.BINDING)), "inventory"), rotationContainer));
-                            PART_MODELS.put(getModelName(material, type, ModelToolParts.HANDLE), loader.bake(new ModelIdentifier(new Identifier("soulforged", getModelName(material, type, ModelToolParts.HANDLE)), "inventory"), rotationContainer));
-                        }
-                    })
-            );
-        }
         return this;
     }
 
