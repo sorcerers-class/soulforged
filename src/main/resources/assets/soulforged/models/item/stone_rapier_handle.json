@@ -1,5 +1,6 @@
 {
+  "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "soulforged:stone_rapier_handle"
+    "layer0": "soulforged:item/stone_rapier_handle"
   }
 }
