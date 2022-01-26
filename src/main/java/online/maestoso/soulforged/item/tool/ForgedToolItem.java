@@ -24,6 +24,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 
@@ -58,7 +59,7 @@ public class ForgedToolItem extends Item {
     }
 
     public static double calcAttackSpeed(ItemStack stack) {
-        return 1 / ((getWeight(stack) / 800) / ForgedToolTypes.TOOL_TYPES_REGISTRY.get(new Identifier(stack.getNbt().getString("sf_tool_type"))).getDefaultAttack().speed());
+        return 1 / ((getWeight(stack) / 800) / ForgedToolTypes.TOOL_TYPES_REGISTRY.get(new Identifier(stack.getNbt().getString("sf_tool_type"))).defaultAttack().speed());
     }
     public static double calcDamage(ItemStack stack) {
         NbtCompound nbt = stack.getNbt();
@@ -75,7 +76,7 @@ public class ForgedToolItem extends Item {
         double head_hardness = mhead.hardness();
         ForgedToolType type = ForgedToolTypes.TOOL_TYPES_REGISTRY.get(Identifier.tryParse(nbt.getString("sf_tool_type")));
         assert type != null;
-        double piercing_damage = type.getDefaultAttack().piercingDamage();
+        double piercing_damage = type.defaultAttack().piercingDamage();
         double total_piercing_damage = ((head_edgeholding + (head_hardness * 0.75)) / 2) * piercing_damage;
 
         assert head != null;
@@ -84,7 +85,7 @@ public class ForgedToolItem extends Item {
                 handle_weight = Objects.requireNonNull(handle).weight() * Objects.requireNonNull(mhandle).density();
 
         double effective_weight = head_weight + binding_weight + (0.25 * handle_weight);
-        double total_blunt_damage = (((effective_weight/100) + (head_hardness*0.25))*type.getDefaultAttack().bluntDamage())*0.8;
+        double total_blunt_damage = (((effective_weight/100) + (head_hardness*0.25))*type.defaultAttack().bluntDamage())*0.8;
         return total_blunt_damage + total_piercing_damage;
     }
     public static int calcDurability(ItemStack stack) {
@@ -149,7 +150,7 @@ public class ForgedToolItem extends Item {
     @Override
     public float getMiningSpeedMultiplier(ItemStack stack, BlockState state) {
         assert stack.getNbt() != null;
-        MiningSpeedProcessor msp = Objects.requireNonNull(ForgedToolTypes.TOOL_TYPES_REGISTRY.get(new Identifier(stack.getNbt().getString("sf_tool_type")))).getMiningSpeed();
+        MiningSpeedProcessor msp = Objects.requireNonNull(ForgedToolTypes.TOOL_TYPES_REGISTRY.get(new Identifier(stack.getNbt().getString("sf_tool_type")))).miningSpeed();
         return msp.getMiningSpeed(state, SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(new Identifier(stack.getNbt().getCompound("sf_head").getString("material"))));
     }
 
@@ -170,15 +171,47 @@ public class ForgedToolItem extends Item {
 
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
-        return Objects.requireNonNull(ForgedToolTypes.TOOL_TYPES_REGISTRY.get(Identifier.tryParse(Objects.requireNonNull(Objects.requireNonNull(context.getPlayer()).getMainHandStack().getNbt()).getString("sf_tool_type")))).getRightClick().onRightClick(context);
+        return Objects.requireNonNull(ForgedToolTypes.TOOL_TYPES_REGISTRY.get(Identifier.tryParse(Objects.requireNonNull(Objects.requireNonNull(context.getPlayer()).getMainHandStack().getNbt()).getString("sf_tool_type")))).rightClick().onRightClick(context);
     }
 
     @Override
     @Environment(EnvType.CLIENT)
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        tooltip.add(Text.of(I18n.translate("item.soulforged.tool.tooltip.weight", Math.round(getWeight(stack) * 100.0) / 100.0) + " / "
-                + I18n.translate("item.soulforged.tool.tooltip.speed", Math.round((1 / calcAttackSpeed(stack)) * 100.0) / 100.0) + " / "
-                + I18n.translate("item.soulforged.tool.tooltip.attack", Math.round(calcDamage(stack) * 100.0) / 100.0)));
+        NbtCompound nbt = stack.getNbt();
+
+        String type = new Identifier(nbt.getString("sf_tool_type")).getPath();
+        String head_material = new Identifier(nbt.getCompound("sf_head").getString("material")).getPath();
+        String head_type = new Identifier(nbt.getCompound("sf_head").getString("type")).getPath();
+        String binding_material = new Identifier(nbt.getCompound("sf_binding").getString("material")).getPath();
+        String binding_type = new Identifier(nbt.getCompound("sf_binding").getString("type")).getPath();
+        String handle_material = new Identifier(nbt.getCompound("sf_handle").getString("material")).getPath();
+        String handle_type = new Identifier(nbt.getCompound("sf_handle").getString("type")).getPath();
+        ForgedToolType tool_type = ForgedToolTypes.TOOL_TYPES_REGISTRY.get(new Identifier(nbt.getString("sf_tool_type")));
+        assert tool_type != null;
+        boolean hc = tool_type.hcAttack().isPresent();
+        boolean dc = tool_type.dcAttack().isPresent();
+
+        //tooltip.add(new TranslatableText("item.soulforged.tool.type." + type + ".desc").formatted(Formatting.GRAY, Formatting.ITALIC));
+        tooltip.add(new TranslatableText("item.soulforged.part." + head_type, new TranslatableText("item.soulforged.tool.material." + head_material))
+                .append(" + ").formatted(Formatting.RESET)
+                .append(new TranslatableText("item.soulforged.part." + binding_type, new TranslatableText("item.soulforged.tool.material." + binding_material)))
+                .append(" + ").formatted(Formatting.RESET)
+                .append(new TranslatableText("item.soulforged.part." + handle_type, new TranslatableText("item.soulforged.tool.material." + handle_material)))
+                .formatted(Formatting.GOLD)
+        );
+        tooltip.add(new LiteralText("")
+                .append(new TranslatableText("item.soulforged.tool.tooltip.weight", Math.round(getWeight(stack) * 100.0) / 100.0).formatted(Formatting.BLUE, Formatting.BOLD))
+                .append(" / ").formatted(Formatting.RESET)
+                .append(new TranslatableText("item.soulforged.tool.tooltip.speed", Math.round((1 / calcAttackSpeed(stack)) * 100.0) / 100.0).formatted(Formatting.GREEN, Formatting.BOLD))
+                .append(" / ").formatted(Formatting.RESET)
+                .append(new TranslatableText("item.soulforged.tool.tooltip.attack", Math.round(calcDamage(stack) * 100.0) / 100.0).formatted(Formatting.RED, Formatting.BOLD))
+        );
+        tooltip.add(new TranslatableText("item.soulforged.tool.tooltip.defaultattack", new TranslatableText("item.soulforged.tool.tooltip.attacktype." + tool_type.defaultAttack().category().name().toLowerCase()), new TranslatableText("item.soulforged.tool.tooltip.attackdirection." + tool_type.defaultAttack().type().name().toLowerCase())).formatted(Formatting.DARK_PURPLE));
+        tooltip.add(new LiteralText("")
+                .append(hc ? new TranslatableText("item.soulforged.tool.tooltip.hc.true", new TranslatableText("item.soulforged.tool.tooltip.attacktype." + tool_type.hcAttack().get().category().name().toLowerCase()), new TranslatableText("item.soulforged.tool.tooltip.attackdirection." + tool_type.hcAttack().get().type().name().toLowerCase())).formatted(Formatting.DARK_GREEN) : new TranslatableText("item.soulforged.tool.tooltip.dc.false").formatted(Formatting.DARK_RED, Formatting.BOLD))
+                .append("; ")
+                .append(dc ? new TranslatableText("item.soulforged.tool.tooltip.dc.true", new TranslatableText("item.soulforged.tool.tooltip.attacktype." + tool_type.dcAttack().get().category().name().toLowerCase()), new TranslatableText("item.soulforged.tool.tooltip.attackdirection." + tool_type.dcAttack().get().type().name().toLowerCase())).formatted(Formatting.DARK_GREEN) : new TranslatableText("item.soulforged.tool.tooltip.hc.false").formatted(Formatting.DARK_RED, Formatting.BOLD))
+        );
     }
 
     @Override
@@ -188,8 +221,8 @@ public class ForgedToolItem extends Item {
         assert nbt != null;
         ForgedToolType type = ForgedToolTypes.TOOL_TYPES_REGISTRY.get(new Identifier(nbt.getString("sf_tool_type")));
         SmithingMaterial mat = SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(new Identifier(nbt.getCompound("sf_head").getString("material")));
-        String matLocalized = I18n.translate("item.soulforged.tool.material." + Objects.requireNonNull(SmithingMaterials.SMITHING_MATERIALS_REGISTRY.getId(mat)).getPath());
-        return new LiteralText(I18n.translate("item.soulforged.tool.type." + Objects.requireNonNull(ForgedToolTypes.TOOL_TYPES_REGISTRY.getId(type)).getPath(), matLocalized));
+        TranslatableText matLocalized = new TranslatableText("item.soulforged.tool.material." + Objects.requireNonNull(SmithingMaterials.SMITHING_MATERIALS_REGISTRY.getId(mat)).getPath());
+        return new TranslatableText("item.soulforged.tool.type." + Objects.requireNonNull(ForgedToolTypes.TOOL_TYPES_REGISTRY.getId(type)).getPath(), matLocalized);
 
     }
 

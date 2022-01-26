@@ -45,29 +45,94 @@
   "item.soulforged.tool.material.eternicite": "Eternicite",
 
   "item.soulforged.tool.type.shortsword": "%s Shortsword",
+  "item.soulforged.tool.type.shortsword.desc": "",
   "item.soulforged.tool.type.broadsword": "%s Broadsword",
+  "item.soulforged.tool.type.broadsword.desc": "",
   "item.soulforged.tool.type.longsword": "%s Longsword",
+  "item.soulforged.tool.type.longsword.desc": "",
   "item.soulforged.tool.type.greatsword": "%s Greatsword",
+  "item.soulforged.tool.type.greatsword.desc": "",
   "item.soulforged.tool.type.rapier": "%s Rapier",
+  "item.soulforged.tool.type.rapier.desc": "\"You killed my father. Prepare to die.\"",
 
   "item.soulforged.tool.type.shortspear": "%s Shortspear",
+  "item.soulforged.tool.type.shortspear.desc": "",
   "item.soulforged.tool.type.longspear": "%s Longspear",
+  "item.soulforged.tool.type.longspear.desc": "",
   "item.soulforged.tool.type.javelin": "%s Javelin",
+  "item.soulforged.tool.type.javelin.desc": "",
 
   "item.soulforged.tool.type.mace": "%s Mace",
+  "item.soulforged.tool.type.mace.desc": "",
   "item.soulforged.tool.type.morningstar": "%s Morningstar",
+  "item.soulforged.tool.type.morningstar.desc": "",
 
   "item.soulforged.tool.type.greataxe": "%s Greataxe",
+  "item.soulforged.tool.type.greataxe.desc": "",
 
   "item.soulforged.tool.type.greathammer": "%s Greathammer",
+  "item.soulforged.tool.type.greathammer.desc": "",
   "item.soulforged.tool.type.warhammer": "%s Warhammer",
+  "item.soulforged.tool.type.warhammer.desc": "",
 
   "item.soulforged.tool.type.axe": "%s Axe",
+  "item.soulforged.tool.type.axe.desc": "",
   "item.soulforged.tool.type.pickaxe": "%s Pickaxe",
+  "item.soulforged.tool.type.pickaxe.desc": "\"I have a pickaxe, and I'll put it through your teeth!\"",
   "item.soulforged.tool.type.shovel": "%s Shovel",
+  "item.soulforged.tool.type.shovel.desc": "",
   "item.soulforged.tool.type.hoe": "%s Hoe",
+  "item.soulforged.tool.type.hoe.desc": "",
 
-  "item.soulforged.tool.tooltip.weight":"WT: %g",
-  "item.soulforged.tool.tooltip.speed": "SPD: %f",
-  "item.soulforged.tool.tooltip.attack": "ATK: %f"
+  "item.soulforged.tool.tooltip.part": "Parts:",
+  "item.soulforged.tool.tooltip.weight":"Weight: %f",
+  "item.soulforged.tool.tooltip.speed": "Speed: %f",
+  "item.soulforged.tool.tooltip.attack": "Total Attack: %f",
+  "item.soulforged.tool.tooltip.defaultattack": "Default Crit: %s, %s",
+  "item.soulforged.tool.tooltip.hc.true": "HC Crit: %s, %s",
+  "item.soulforged.tool.tooltip.hc.false": "No HC Crit",
+  "item.soulforged.tool.tooltip.dc.true": "DC Crit: %s, %s",
+  "item.soulforged.tool.tooltip.dc.false": "No DC Crit",
+
+  "item.soulforged.tool.tooltip.attacktype.crushing": "Crushing",
+  "item.soulforged.tool.tooltip.attacktype.slashing": "Slashing",
+  "item.soulforged.tool.tooltip.attacktype.thrusting": "Thrusting",
+
+  "item.soulforged.tool.tooltip.attackdirection.side": "Side",
+  "item.soulforged.tool.tooltip.attackdirection.forward": "Forward",
+  "item.soulforged.tool.tooltip.attackdirection.down": "Down",
+
+  "item.soulforged.part.handle": "%s Handle",
+  "item.soulforged.part.long_handle": "%s Long Handle",
+
+  "item.soulforged.part.short_shaft": "%s Short Shaft",
+  "item.soulforged.part.long_shaft": "%s Long Shaft",
+  "item.soulforged.part.very_long_shaft": "%s Very Long Shaft",
+  "item.soulforged.part.javelin_shaft": "%s Javelin Shaft",
+
+  "item.soulforged.part.binding": "%s Binding",
+  "item.soulforged.part.tough_binding": "%s Tough Binding",
+
+  "item.soulforged.part.slim_hilt": "%s Slim Hilt",
+  "item.soulforged.part.hilt": "%s Hilt",
+  "item.soulforged.part.wide_hilt": "%s Wide Hilt",
+
+  "item.soulforged.part.shortsword_blade": "%s Shortsword Blade",
+  "item.soulforged.part.broadsword_blade": "%s Broadsword Blade",
+  "item.soulforged.part.longsword_blade": "%s Longsword Blade",
+  "item.soulforged.part.greatsword_blade": "%s Greatsword Blade",
+  "item.soulforged.part.rapier_blade": "%s Rapier Blade",
+
+  "item.soulforged.part.spearhead": "%s Spearhead",
+  "item.soulforged.part.macehead": "%s Mace Head",
+  "item.soulforged.part.morningstar_head": "%s Morningstar Head",
+
+  "item.soulforged.part.greataxe_head": "%s Greataxe Head",
+  "item.soulforged.part.greathammer_head": "%s Greathammer Head",
+  "item.soulforged.part.warhammer_head": "%s Warhammer Head",
+
+  "item.soulforged.part.axe_head": "%s Axe Head",
+  "item.soulforged.part.pickaxe_head": "%s Pickaxe Head",
+  "item.soulforged.part.shovel_head": "%s Shovel Head",
+  "item.soulforged.part.hoe_head": "%s Hoe Head"
 }
