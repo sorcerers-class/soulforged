@@ -10,7 +10,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.resource.language.I18n;
 
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 
@@ -99,18 +102,19 @@ public class ForgedToolItem extends Item {
             nbt.getCompound("sf_head").putInt("damage", head_dura);
             nbt.getCompound("sf_binding").putInt("damage", binding_dura);
             nbt.getCompound("sf_handle").putInt("damage", handle_dura);
+            nbt.putBoolean("sf_damage", true);
         }
         int[] durability = getDurabilities(stack);
         int[] max_durability = getMaxDurabilities(stack);
 
         nbt.getCompound("sf_head").putInt("damage", durability[head] - 1);
-        int head_damage = (durability[head] / max_durability[head]) * 256 - 1;
+        int head_damage = (int) (((float) durability[head] / (float) max_durability[head]) * 256);
 
         nbt.getCompound("sf_binding").putInt("damage", durability[binding] - 1);
-        int binding_damage = (durability[binding] / max_durability[binding]) * 256 - 1;
+        int binding_damage = (int) (((float) durability[binding] / (float) max_durability[binding]) * 256);
 
         nbt.getCompound("sf_handle").putInt("damage", durability[handle] - 1);
-        int handle_damage = (durability[handle] / max_durability[handle]) * 256 - 1;
+        int handle_damage = (int) (((float) durability[handle] / (float) max_durability[handle]) * 256);
 
         return 256 - Math.min(Math.min(handle_damage, binding_damage), head_damage);
     }
@@ -122,11 +126,10 @@ public class ForgedToolItem extends Item {
     }
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        stack.addAttributeModifier(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier("AF8B6E3F-3328-4C0A-AA36-5BA2BB9DBEF3", calcAttackSpeed(stack), EntityAttributeModifier.Operation.MULTIPLY_BASE), EquipmentSlot.MAINHAND);
         stack.setDamage(calcDurability(stack));
         NbtCompound nbt = stack.getNbt();
-        if(!nbt.getBoolean("sf_set")) {
 
-        }
         target.damage(DamageSource.player((PlayerEntity) attacker), (float) calcDamage(stack));
         return true;
     }

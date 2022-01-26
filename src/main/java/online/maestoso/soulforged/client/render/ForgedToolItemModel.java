@@ -51,7 +51,9 @@ import java.util.function.Supplier;
 public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBakedModel {
     private static final Identifier ITEM_HANDHELD_MODEL = new Identifier("minecraft:item/handheld");
     private static final HashMap<String, BakedModel> PART_MODELS = new HashMap<>();
+
     private ModelTransformation transformation;
+
     public enum ModelToolParts {
         HEAD,
         BINDING,
