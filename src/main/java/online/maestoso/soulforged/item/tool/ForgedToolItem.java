@@ -128,11 +128,12 @@ public class ForgedToolItem extends Item {
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if(!stack.getAttributeModifiers(EquipmentSlot.MAINHAND).containsKey(EntityAttributes.GENERIC_ATTACK_SPEED))
-            stack.addAttributeModifier(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier("AF8B6E3F-3328-4C0A-AA36-5BA2BB9DBEF3", calcAttackSpeed(stack) - 4, EntityAttributeModifier.Operation.ADDITION), EquipmentSlot.MAINHAND);
+            stack.addAttributeModifier(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier("f106b032-3216-4ff6-9919-36cf09d350f5", calcAttackSpeed(stack) - 4, EntityAttributeModifier.Operation.ADDITION), EquipmentSlot.MAINHAND);
+        if(!stack.getAttributeModifiers(EquipmentSlot.MAINHAND).containsKey(EntityAttributes.GENERIC_ATTACK_DAMAGE))
+            stack.addAttributeModifier(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier("06b3630e-9d10-41fe-9e10-9aad54e4f9ce", calcDamage(stack), EntityAttributeModifier.Operation.ADDITION), EquipmentSlot.MAINHAND);
         stack.setDamage(calcDurability(stack));
         NbtCompound nbt = stack.getNbt();
 
-        target.damage(DamageSource.player((PlayerEntity) attacker), (float) calcDamage(stack));
         return true;
     }
     public static double getWeight(ItemStack stack) {
@@ -208,9 +209,9 @@ public class ForgedToolItem extends Item {
         );
         tooltip.add(new TranslatableText("item.soulforged.tool.tooltip.defaultattack", new TranslatableText("item.soulforged.tool.tooltip.attacktype." + tool_type.defaultAttack().category().name().toLowerCase()), new TranslatableText("item.soulforged.tool.tooltip.attackdirection." + tool_type.defaultAttack().type().name().toLowerCase())).formatted(Formatting.DARK_PURPLE));
         tooltip.add(new LiteralText("")
-                .append(hc ? new TranslatableText("item.soulforged.tool.tooltip.hc.true", new TranslatableText("item.soulforged.tool.tooltip.attacktype." + tool_type.hcAttack().get().category().name().toLowerCase()), new TranslatableText("item.soulforged.tool.tooltip.attackdirection." + tool_type.hcAttack().get().type().name().toLowerCase())).formatted(Formatting.DARK_GREEN) : new TranslatableText("item.soulforged.tool.tooltip.dc.false").formatted(Formatting.DARK_RED, Formatting.BOLD))
+                .append(hc ? new TranslatableText("item.soulforged.tool.tooltip.hc.true", new TranslatableText("item.soulforged.tool.tooltip.attacktype." + tool_type.hcAttack().get().category().name().toLowerCase()), new TranslatableText("item.soulforged.tool.tooltip.attackdirection." + tool_type.hcAttack().get().type().name().toLowerCase())).formatted(Formatting.DARK_GREEN) : new TranslatableText("item.soulforged.tool.tooltip.hc.false").formatted(Formatting.DARK_RED, Formatting.BOLD))
                 .append("; ")
-                .append(dc ? new TranslatableText("item.soulforged.tool.tooltip.dc.true", new TranslatableText("item.soulforged.tool.tooltip.attacktype." + tool_type.dcAttack().get().category().name().toLowerCase()), new TranslatableText("item.soulforged.tool.tooltip.attackdirection." + tool_type.dcAttack().get().type().name().toLowerCase())).formatted(Formatting.DARK_GREEN) : new TranslatableText("item.soulforged.tool.tooltip.hc.false").formatted(Formatting.DARK_RED, Formatting.BOLD))
+                .append(dc ? new TranslatableText("item.soulforged.tool.tooltip.dc.true", new TranslatableText("item.soulforged.tool.tooltip.attacktype." + tool_type.dcAttack().get().category().name().toLowerCase()), new TranslatableText("item.soulforged.tool.tooltip.attackdirection." + tool_type.dcAttack().get().type().name().toLowerCase())).formatted(Formatting.DARK_GREEN) : new TranslatableText("item.soulforged.tool.tooltip.dc.false").formatted(Formatting.DARK_RED, Formatting.BOLD))
         );
     }
 
