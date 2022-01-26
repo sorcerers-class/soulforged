@@ -58,7 +58,7 @@ public class ForgedToolItem extends Item {
     }
 
     public static double calcAttackSpeed(ItemStack stack) {
-        return (getWeight(stack) / 800) / ForgedToolTypes.TOOL_TYPES_REGISTRY.get(new Identifier(stack.getNbt().getString("sf_tool_type"))).getDefaultAttack().speed();
+        return 1 / ((getWeight(stack) / 800) / ForgedToolTypes.TOOL_TYPES_REGISTRY.get(new Identifier(stack.getNbt().getString("sf_tool_type"))).getDefaultAttack().speed());
     }
     public static double calcDamage(ItemStack stack) {
         NbtCompound nbt = stack.getNbt();
@@ -126,7 +126,8 @@ public class ForgedToolItem extends Item {
     }
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        stack.addAttributeModifier(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier("AF8B6E3F-3328-4C0A-AA36-5BA2BB9DBEF3", calcAttackSpeed(stack), EntityAttributeModifier.Operation.MULTIPLY_BASE), EquipmentSlot.MAINHAND);
+        if(!stack.getAttributeModifiers(EquipmentSlot.MAINHAND).containsKey(EntityAttributes.GENERIC_ATTACK_SPEED))
+            stack.addAttributeModifier(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier("AF8B6E3F-3328-4C0A-AA36-5BA2BB9DBEF3", calcAttackSpeed(stack) - 4, EntityAttributeModifier.Operation.ADDITION), EquipmentSlot.MAINHAND);
         stack.setDamage(calcDurability(stack));
         NbtCompound nbt = stack.getNbt();
 
@@ -175,9 +176,9 @@ public class ForgedToolItem extends Item {
     @Override
     @Environment(EnvType.CLIENT)
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        tooltip.add(Text.of(I18n.translate("item.soulforged.tool.tooltip.weight", Math.round(getWeight(stack) * 100.0) / 100.0)));
-        tooltip.add(Text.of(I18n.translate("item.soulforged.tool.tooltip.speed", Math.round(calcAttackSpeed(stack) * 100.0) / 100.0)));
-        tooltip.add(Text.of(I18n.translate("item.soulforged.tool.tooltip.attack", Math.round(calcDamage(stack) * 100.0) / 100.0)));
+        tooltip.add(Text.of(I18n.translate("item.soulforged.tool.tooltip.weight", Math.round(getWeight(stack) * 100.0) / 100.0) + " / "
+                + I18n.translate("item.soulforged.tool.tooltip.speed", Math.round((1 / calcAttackSpeed(stack)) * 100.0) / 100.0) + " / "
+                + I18n.translate("item.soulforged.tool.tooltip.attack", Math.round(calcDamage(stack) * 100.0) / 100.0)));
     }
 
     @Override

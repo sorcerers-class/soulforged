@@ -67,7 +67,7 @@
   "item.soulforged.tool.type.shovel": "%s Shovel",
   "item.soulforged.tool.type.hoe": "%s Hoe",
 
-  "item.soulforged.tool.tooltip.weight":"Weight: %g",
-  "item.soulforged.tool.tooltip.speed": "Speed: %f",
-  "item.soulforged.tool.tooltip.attack": "Damage: %f"
+  "item.soulforged.tool.tooltip.weight":"WT: %g",
+  "item.soulforged.tool.tooltip.speed": "SPD: %f",
+  "item.soulforged.tool.tooltip.attack": "ATK: %f"
 }
