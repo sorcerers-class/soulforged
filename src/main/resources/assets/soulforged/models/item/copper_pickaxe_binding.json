@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "soulforged:copper_pickaxe_binding"
+    "layer0": "soulforged:item/copper_pickaxe_binding"
   }
 }
