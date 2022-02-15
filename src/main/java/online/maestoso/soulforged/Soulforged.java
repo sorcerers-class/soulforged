@@ -11,6 +11,6 @@ public class Soulforged implements ModInitializer {
     public static final Logger LOGGER = LogManager.getLogger("Soulforged");
     @Override
     public void onInitialize() {
-        SoulforgedItems.getToolParts();
+        SoulforgedItems.TOOL.asItem();
     }
 }

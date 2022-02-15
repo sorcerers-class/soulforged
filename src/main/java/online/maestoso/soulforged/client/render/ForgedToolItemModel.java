@@ -7,7 +7,9 @@ import net.fabricmc.api.Environment;
 
 import net.fabricmc.fabric.api.renderer.v1.Renderer;
 import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
+import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MeshBuilder;
+import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
@@ -57,6 +59,7 @@ public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBake
     private static final Identifier ITEM_HANDHELD_MODEL = new Identifier("minecraft:item/handheld");
     private static final HashMap<String, BakedModel> PART_MODELS = new HashMap<>();
     private ModelTransformation transformation;
+    private final HashMap<String, Mesh> meshes = new HashMap<>();
 
     public enum ModelToolParts {
         HEAD,
@@ -80,6 +83,9 @@ public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBake
         String binding_name = modelNameConcatenation(binding_mat, type, ModelToolParts.BINDING);
         String handle_name = modelNameConcatenation(handle_mat, type, ModelToolParts.HANDLE);
 
+        if(meshes.containsKey(head_name)) context.meshConsumer().accept(meshes.get(head_name));
+        if(meshes.containsKey(binding_name))context.meshConsumer().accept(meshes.get(binding_name));
+        if(meshes.containsKey(handle_name))context.meshConsumer().accept(meshes.get(handle_name));
     }
 
     @Nullable
@@ -87,22 +93,27 @@ public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBake
     public BakedModel bake(ModelLoader loader, Function<SpriteIdentifier, Sprite> textureGetter, ModelBakeSettings rotationContainer, Identifier modelId) {
         JsonUnbakedModel defaultItemModel = (JsonUnbakedModel) loader.getOrLoadModel(ITEM_HANDHELD_MODEL);
         transformation = defaultItemModel.getTransformations();
-        Vector<Sprite> sprites = new Vector<>();
-        for (SmithingMaterial mat : SmithingMaterials.SMITHING_MATERIALS_REGISTRY.stream().toList()) {
-            String mat_name = SmithingMaterials.SMITHING_MATERIALS_REGISTRY.getId(mat).getPath();
-            SpriteIdentifier head_id = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier("soulforged:item/" + mat_name + "_head"));
-            SpriteIdentifier binding_id = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier("soulforged:item/" + mat_name + "_binding"));
-            SpriteIdentifier handle_id = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier("soulforged:item/" + mat_name + "_handle"));
+        for (String mat : SmithingMaterials.SMITHING_MATERIALS_REGISTRY.getIds().stream().map(Identifier::getPath).toList()) {
+            for(String type : ForgedToolTypes.TOOL_TYPES_REGISTRY.getIds().stream().map(Identifier::getPath).toList()) {
+                for(ModelToolParts part : ModelToolParts.values()) {
+                    String id = modelNameConcatenation(mat, type, part);
 
-            sprites.add(textureGetter.apply(head_id));
-            sprites.add(textureGetter.apply(binding_id));
-            sprites.add(textureGetter.apply(handle_id));
+                    SpriteIdentifier sprite_id = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier("soulforged:item/" + id));
+                    Sprite sprite = textureGetter.apply(sprite_id);
+
+                    Renderer renderer = RendererAccess.INSTANCE.getRenderer();
+                    assert renderer != null;
+                    MeshBuilder builder = renderer.meshBuilder();
+                    QuadEmitter emitter = builder.getEmitter();
+                    
+                    emitter.square(Direction.SOUTH, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
+                    emitter.spriteBake(0, sprite, MutableQuadView.BAKE_LOCK_UV);
+                    emitter.spriteColor(0, -1, -1, -1, -1);
+                    emitter.emit();
+                    meshes.put(id, builder.build());
+                }
+            }
         }
-        Renderer renderer = RendererAccess.INSTANCE.getRenderer();
-        MeshBuilder builder = renderer.meshBuilder();
-        QuadEmitter emitter = builder.getEmitter();
-
-
         return this;
     }
 
@@ -120,7 +131,21 @@ public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBake
         return Collections.emptyList();
     }
     @Override public Collection<SpriteIdentifier> getTextureDependencies(Function<Identifier, UnbakedModel> unbakedModelGetter, Set<Pair<String, String>> unresolvedTextureReferences) {
-        return Collections.emptyList();
+        Vector<SpriteIdentifier> ids = new Vector<>();
+        for (SmithingMaterial mat : SmithingMaterials.SMITHING_MATERIALS_REGISTRY.stream().toList()) {
+            for(ForgedToolType type : ForgedToolTypes.TOOL_TYPES_REGISTRY.stream().toList()) {
+                String mat_name = SmithingMaterials.SMITHING_MATERIALS_REGISTRY.getId(mat).getPath();
+                String type_name = ForgedToolTypes.TOOL_TYPES_REGISTRY.getId(type).getPath();
+                SpriteIdentifier head_id = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier("soulforged:item/" + mat_name + "_" + type_name + "_head"));
+                SpriteIdentifier binding_id = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier("soulforged:item/" + mat_name + "_" + type_name + "_binding"));
+                SpriteIdentifier handle_id = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier("soulforged:item/" + mat_name + "_" + type_name + "_handle"));
+                Soulforged.LOGGER.info("Get models {} {} {}", head_id, binding_id, handle_id);
+                ids.add(head_id);
+                ids.add(binding_id);
+                ids.add(handle_id);
+            }
+        }
+        return ids;
     }
     @Override public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction face, Random random) {
         Soulforged.LOGGER.fatal("Call to ForgedToolItemModel.getQuads");
