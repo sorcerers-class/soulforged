@@ -5,6 +5,10 @@ import com.mojang.datafixers.util.Pair;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
+import net.fabricmc.fabric.api.renderer.v1.Renderer;
+import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
+import net.fabricmc.fabric.api.renderer.v1.mesh.MeshBuilder;
+import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 
@@ -19,6 +23,7 @@ import net.minecraft.client.render.model.json.ModelTransformation;
 
 import net.minecraft.client.texture.Sprite;
 
+import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.SpriteIdentifier;
 
@@ -51,7 +56,6 @@ import java.util.function.Supplier;
 public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBakedModel {
     private static final Identifier ITEM_HANDHELD_MODEL = new Identifier("minecraft:item/handheld");
     private static final HashMap<String, BakedModel> PART_MODELS = new HashMap<>();
-
     private ModelTransformation transformation;
 
     public enum ModelToolParts {
@@ -72,13 +76,10 @@ public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBake
         String binding_mat = new Identifier(nbt.getCompound("sf_binding").getString("material")).getPath();
         String handle_mat = new Identifier(nbt.getCompound("sf_handle").getString("material")).getPath();
 
-        String head = modelNameConcatenation(head_mat, type, ModelToolParts.HEAD);
-        String binding = modelNameConcatenation(binding_mat, type, ModelToolParts.BINDING);
-        String handle = modelNameConcatenation(handle_mat, type, ModelToolParts.HANDLE);
+        String head_name = modelNameConcatenation(head_mat, type, ModelToolParts.HEAD);
+        String binding_name = modelNameConcatenation(binding_mat, type, ModelToolParts.BINDING);
+        String handle_name = modelNameConcatenation(handle_mat, type, ModelToolParts.HANDLE);
 
-        context.fallbackConsumer().accept(MinecraftClient.getInstance().getItemRenderer().getModel(new ItemStack(SoulforgedItems.TOOL_PARTS.get(new Identifier("soulforged", head)), 1), MinecraftClient.getInstance().world, null, 1));
-        context.fallbackConsumer().accept(MinecraftClient.getInstance().getItemRenderer().getModel(new ItemStack(SoulforgedItems.TOOL_PARTS.get(new Identifier("soulforged", binding)), 1), MinecraftClient.getInstance().world, null, 1));
-        context.fallbackConsumer().accept(MinecraftClient.getInstance().getItemRenderer().getModel(new ItemStack(SoulforgedItems.TOOL_PARTS.get(new Identifier("soulforged", handle)), 1), MinecraftClient.getInstance().world, null, 1));
     }
 
     @Nullable
@@ -86,6 +87,22 @@ public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBake
     public BakedModel bake(ModelLoader loader, Function<SpriteIdentifier, Sprite> textureGetter, ModelBakeSettings rotationContainer, Identifier modelId) {
         JsonUnbakedModel defaultItemModel = (JsonUnbakedModel) loader.getOrLoadModel(ITEM_HANDHELD_MODEL);
         transformation = defaultItemModel.getTransformations();
+        Vector<Sprite> sprites = new Vector<>();
+        for (SmithingMaterial mat : SmithingMaterials.SMITHING_MATERIALS_REGISTRY.stream().toList()) {
+            String mat_name = SmithingMaterials.SMITHING_MATERIALS_REGISTRY.getId(mat).getPath();
+            SpriteIdentifier head_id = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier("soulforged:item/" + mat_name + "_head"));
+            SpriteIdentifier binding_id = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier("soulforged:item/" + mat_name + "_binding"));
+            SpriteIdentifier handle_id = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier("soulforged:item/" + mat_name + "_handle"));
+
+            sprites.add(textureGetter.apply(head_id));
+            sprites.add(textureGetter.apply(binding_id));
+            sprites.add(textureGetter.apply(handle_id));
+        }
+        Renderer renderer = RendererAccess.INSTANCE.getRenderer();
+        MeshBuilder builder = renderer.meshBuilder();
+        QuadEmitter emitter = builder.getEmitter();
+
+
         return this;
     }
 

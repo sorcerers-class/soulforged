@@ -2,34 +2,36 @@ package online.maestoso.soulforged.item.tool;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 
 import net.minecraft.block.BlockState;
 
 import net.minecraft.client.item.TooltipContext;
-import net.minecraft.client.resource.language.I18n;
 
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.damage.DamageSource;
+
 import net.minecraft.entity.player.PlayerEntity;
 
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsageContext;
 
 import net.minecraft.nbt.NbtCompound;
 
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-
 import net.minecraft.text.TranslatableText;
+
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 
 import net.minecraft.world.World;
 
+import online.maestoso.soulforged.item.SoulforgedItems;
 import online.maestoso.soulforged.item.tool.part.ForgedToolPart;
 import online.maestoso.soulforged.item.tool.part.ForgedToolParts;
 
@@ -38,6 +40,8 @@ import online.maestoso.soulforged.material.SmithingMaterials;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -59,11 +63,14 @@ public class ForgedToolItem extends Item {
     }
 
     public static double calcAttackSpeed(ItemStack stack) {
-        return 1 / ((getWeight(stack) / 800) / ForgedToolTypes.TOOL_TYPES_REGISTRY.get(new Identifier(stack.getNbt().getString("sf_tool_type"))).defaultAttack().speed());
+        assert stack.getNbt() != null;
+        return 1 / ((getWeight(stack) / 800) / Objects.requireNonNull(ForgedToolTypes.TOOL_TYPES_REGISTRY.get(new Identifier(stack.getNbt().getString("sf_tool_type")))).defaultAttack().speed());
     }
     public static double calcDamage(ItemStack stack) {
         NbtCompound nbt = stack.getNbt();
         assert nbt != null;
+        if(Arrays.stream(getDurabilities(stack)).anyMatch((i) -> i == 0))
+            return 0;
         ForgedToolPart head = ForgedToolParts.TOOL_PARTS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_head").getString("type"))),
                 binding = ForgedToolParts.TOOL_PARTS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_binding").getString("type"))),
                 handle = ForgedToolParts.TOOL_PARTS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_handle").getString("type")));
@@ -120,43 +127,60 @@ public class ForgedToolItem extends Item {
         return 256 - Math.min(Math.min(handle_damage, binding_damage), head_damage);
     }
     public static int[] getDurabilities(ItemStack stack) {
+        assert stack.getNbt() != null;
         return new int[]{stack.getNbt().getCompound("sf_head").getInt("damage"), stack.getNbt().getCompound("sf_binding").getInt("damage"), stack.getNbt().getCompound("sf_handle").getInt("damage")};
     }
     public static int[] getMaxDurabilities(ItemStack stack) {
+        assert stack.getNbt() != null;
         return new int[]{stack.getNbt().getCompound("sf_head").getInt("max_damage"), stack.getNbt().getCompound("sf_binding").getInt("max_damage"), stack.getNbt().getCompound("sf_handle").getInt("max_damage")};
+    }
+    public void breakTool(ItemStack stack, PlayerEntity user) {
+        user.sendToolBreakStatus(Hand.MAIN_HAND);
+        NbtCompound nbt = stack.getNbt();
+        user.getMainHandStack().decrement(1);
+        ItemStack broken_tool = new ItemStack(SoulforgedItems.BROKEN_TOOL, 1);
+        broken_tool.setNbt(nbt);
+        user.giveItemStack(broken_tool);
     }
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if(Arrays.stream(getDurabilities(stack)).anyMatch(i -> i < 0))
+            breakTool(stack, (PlayerEntity) attacker);
         if(!stack.getAttributeModifiers(EquipmentSlot.MAINHAND).containsKey(EntityAttributes.GENERIC_ATTACK_SPEED))
             stack.addAttributeModifier(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier("f106b032-3216-4ff6-9919-36cf09d350f5", calcAttackSpeed(stack) - 4, EntityAttributeModifier.Operation.ADDITION), EquipmentSlot.MAINHAND);
         if(!stack.getAttributeModifiers(EquipmentSlot.MAINHAND).containsKey(EntityAttributes.GENERIC_ATTACK_DAMAGE))
             stack.addAttributeModifier(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier("06b3630e-9d10-41fe-9e10-9aad54e4f9ce", calcDamage(stack), EntityAttributeModifier.Operation.ADDITION), EquipmentSlot.MAINHAND);
         stack.setDamage(calcDurability(stack));
-        NbtCompound nbt = stack.getNbt();
 
         return true;
     }
     public static double getWeight(ItemStack stack) {
         NbtCompound nbt = stack.getNbt();
 
+        assert nbt != null;
         ForgedToolPart head = ForgedToolParts.TOOL_PARTS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_head").getString("type"))),
                 binding = ForgedToolParts.TOOL_PARTS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_binding").getString("type"))),
                 handle = ForgedToolParts.TOOL_PARTS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_handle").getString("type")));
         SmithingMaterial mhead = SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_head").getString("material"))),
                 mbinding = SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_binding").getString("material"))),
                 mhandle = SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_handle").getString("material")));
+        assert head != null && mhead != null && binding != null && mbinding != null && handle != null && mhandle != null;
         return (head.weight() * mhead.density()) + (binding.weight() * mbinding.density()) + (0.25 * handle.weight() * mhandle.density());
 
     }
     @Override
     public float getMiningSpeedMultiplier(ItemStack stack, BlockState state) {
         assert stack.getNbt() != null;
+        if(Arrays.stream(getDurabilities(stack)).anyMatch((i) -> i == 0))
+            return 0;
         MiningSpeedProcessor msp = Objects.requireNonNull(ForgedToolTypes.TOOL_TYPES_REGISTRY.get(new Identifier(stack.getNbt().getString("sf_tool_type")))).miningSpeed();
         return msp.getMiningSpeed(state, SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(new Identifier(stack.getNbt().getCompound("sf_head").getString("material"))));
     }
 
     @Override
     public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
+        if(Arrays.stream(getDurabilities(stack)).anyMatch(i -> i < 0))
+            breakTool(stack, (PlayerEntity) miner);
         stack.setDamage(calcDurability(stack));
         return true;
     }
@@ -179,16 +203,20 @@ public class ForgedToolItem extends Item {
     @Environment(EnvType.CLIENT)
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         NbtCompound nbt = stack.getNbt();
+        assert nbt != null;
 
-        String type = new Identifier(nbt.getString("sf_tool_type")).getPath();
         String head_material = new Identifier(nbt.getCompound("sf_head").getString("material")).getPath();
         String head_type = new Identifier(nbt.getCompound("sf_head").getString("type")).getPath();
+
         String binding_material = new Identifier(nbt.getCompound("sf_binding").getString("material")).getPath();
         String binding_type = new Identifier(nbt.getCompound("sf_binding").getString("type")).getPath();
+
         String handle_material = new Identifier(nbt.getCompound("sf_handle").getString("material")).getPath();
         String handle_type = new Identifier(nbt.getCompound("sf_handle").getString("type")).getPath();
+
         ForgedToolType tool_type = ForgedToolTypes.TOOL_TYPES_REGISTRY.get(new Identifier(nbt.getString("sf_tool_type")));
         assert tool_type != null;
+
         boolean hc = tool_type.hcAttack().isPresent();
         boolean dc = tool_type.dcAttack().isPresent();
 
@@ -220,9 +248,11 @@ public class ForgedToolItem extends Item {
     public Text getName(ItemStack stack) {
         NbtCompound nbt = stack.getNbt();
         assert nbt != null;
+
         ForgedToolType type = ForgedToolTypes.TOOL_TYPES_REGISTRY.get(new Identifier(nbt.getString("sf_tool_type")));
         SmithingMaterial mat = SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(new Identifier(nbt.getCompound("sf_head").getString("material")));
         TranslatableText matLocalized = new TranslatableText("item.soulforged.tool.material." + Objects.requireNonNull(SmithingMaterials.SMITHING_MATERIALS_REGISTRY.getId(mat)).getPath());
+
         return new TranslatableText("item.soulforged.tool.type." + Objects.requireNonNull(ForgedToolTypes.TOOL_TYPES_REGISTRY.getId(type)).getPath(), matLocalized);
 
     }
