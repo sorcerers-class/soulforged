@@ -26,6 +26,7 @@ import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.texture.Sprite;
 
 import net.minecraft.client.texture.SpriteAtlasTexture;
+import net.minecraft.client.texture.TextureStitcher;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.SpriteIdentifier;
 
@@ -58,8 +59,10 @@ import java.util.function.Supplier;
 public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBakedModel {
     private static final Identifier ITEM_HANDHELD_MODEL = new Identifier("minecraft:item/handheld");
     private static final HashMap<String, BakedModel> PART_MODELS = new HashMap<>();
-    private ModelTransformation transformation;
+    private static final HashMap<String, Sprite> SPRITES = new HashMap<>();
     private final HashMap<String, Mesh> meshes = new HashMap<>();
+    private ModelTransformation transformation;
+
 
     public enum ModelToolParts {
         HEAD,
@@ -100,7 +103,7 @@ public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBake
 
                     SpriteIdentifier sprite_id = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier("soulforged:item/" + id));
                     Sprite sprite = textureGetter.apply(sprite_id);
-
+                    SPRITES.put(id, sprite);
                     Renderer renderer = RendererAccess.INSTANCE.getRenderer();
                     assert renderer != null;
                     MeshBuilder builder = renderer.meshBuilder();
