@@ -13,6 +13,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import online.maestoso.soulforged.Soulforged;
@@ -59,37 +60,22 @@ public class GiveToolCommand {
                     binding_part = toolRecipes.getMiddle(),
                     handle_part = toolRecipes.getRight();
             Soulforged.LOGGER.info("Head part: {}, Binding part: {}, Handle part: {}", head_part, binding_part, handle_part);
-            ItemEntity drop;
-            NbtCompound nbt = new NbtCompound();
+
             ItemStack stack = new ItemStack(SoulforgedItems.TOOL);
-            stack.getOrCreateSubNbt("sf_head");
-            stack.getOrCreateSubNbt("sf_binding");
-            stack.getOrCreateSubNbt("sf_handle");
+            assert stack.getNbt() != null;
+            stack.getNbt().putString("sf_tool_type", tool_type);
 
-            nbt.putString("sf_tool_type", tool_type);
+            stack.getOrCreateSubNbt("sf_head").putString("material", head_material);
+            stack.getSubNbt("sf_head").putString("type", head_part);
+            stack.getOrCreateSubNbt("sf_binding").putString("material", binding_material);
+            stack.getSubNbt("sf_binding").putString("type", binding_part);
+            stack.getOrCreateSubNbt("sf_handle").putString("material", handle_material);
+            stack.getSubNbt("sf_handle").putString("type", handle_part);
 
-            NbtCompound head_nbt = nbt.getCompound("sf_head");
-            head_nbt.putString("material", head_material);
-            head_nbt.putString("type", head_part);
+            target.giveItemStack(stack);
 
-            NbtCompound binding_nbt = nbt.getCompound("sf_binding");
-            binding_nbt.putString("material", binding_material);
-            binding_nbt.putString("type", binding_part);
-
-            NbtCompound handle_nbt = nbt.getCompound("sf_handle");
-            handle_nbt.putString("material", handle_material);
-            handle_nbt.putString("type", handle_part);
-
-            Soulforged.LOGGER.info("NBT: {}", nbt);
-            stack.setNbt(nbt);
-
-            drop = target.dropItem(stack, false);
-            assert drop != null;
-            drop.resetPickupDelay();
-            drop.setOwner(target.getUuid());
-            drop.setDespawnImmediately();
-            source.sendFeedback(new TranslatableText("commands.give.success.single", 1, stack.toHoverableText(), targets.iterator().next().getDisplayName()), true);
+            source.sendFeedback(new TranslatableText("commands.give.success.single", 1, stack.hasCustomName() ? stack.getName() : new LiteralText("Forged Tool"), targets.iterator().next().getDisplayName()), true);
         }
-        return 1;
+        return targets.size();
     }
 }
