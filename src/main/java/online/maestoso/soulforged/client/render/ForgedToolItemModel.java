@@ -1,5 +1,6 @@
 package online.maestoso.soulforged.client.render;
 
+import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 
 import net.fabricmc.api.EnvType;
@@ -19,6 +20,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 
 import net.minecraft.client.render.model.*;
+import net.minecraft.client.render.model.json.ItemModelGenerator;
 import net.minecraft.client.render.model.json.JsonUnbakedModel;
 import net.minecraft.client.render.model.json.ModelOverrideList;
 import net.minecraft.client.render.model.json.ModelTransformation;
@@ -50,6 +52,7 @@ import online.maestoso.soulforged.item.tool.ForgedToolTypes;
 import online.maestoso.soulforged.material.SmithingMaterial;
 import online.maestoso.soulforged.material.SmithingMaterials;
 
+import online.maestoso.soulforged.mixin.client.ItemModelGeneratorInvoker;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -86,9 +89,12 @@ public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBake
         String binding_name = modelNameConcatenation(binding_mat, type, ModelToolParts.BINDING);
         String handle_name = modelNameConcatenation(handle_mat, type, ModelToolParts.HANDLE);
 
-        if(meshes.containsKey(head_name)) context.meshConsumer().accept(meshes.get(head_name));
-        if(meshes.containsKey(binding_name))context.meshConsumer().accept(meshes.get(binding_name));
-        if(meshes.containsKey(handle_name))context.meshConsumer().accept(meshes.get(handle_name));
+        //if(meshes.containsKey(head_name)) context.meshConsumer().accept(meshes.get(head_name));
+        //if(meshes.containsKey(binding_name))context.meshConsumer().accept(meshes.get(binding_name));
+       // if(meshes.containsKey(handle_name))context.meshConsumer().accept(meshes.get(handle_name));
+        context.fallbackConsumer().accept(PART_MODELS.get(head_name));
+        context.fallbackConsumer().accept(PART_MODELS.get(binding_name));
+        context.fallbackConsumer().accept(PART_MODELS.get(handle_name));
     }
 
     @Nullable
@@ -103,8 +109,12 @@ public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBake
 
                     SpriteIdentifier sprite_id = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier("soulforged:item/" + id));
                     Sprite sprite = textureGetter.apply(sprite_id);
+
                     SPRITES.put(id, sprite);
-                    Renderer renderer = RendererAccess.INSTANCE.getRenderer();
+
+
+                    PART_MODELS.put(id, new JsonUnbakedModel(new Identifier("item/generated"),  ((ItemModelGeneratorInvoker)new ItemModelGenerator()).callAddLayerElements(0, "layer0", sprite), Map.of("layer0", Either.left(sprite_id)), false, null, transformation, List.of()).bake(loader, textureGetter, rotationContainer, modelId));
+                    /*Renderer renderer = RendererAccess.INSTANCE.getRenderer();
                     assert renderer != null;
                     MeshBuilder builder = renderer.meshBuilder();
                     QuadEmitter emitter = builder.getEmitter();
@@ -113,7 +123,7 @@ public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBake
                     emitter.spriteBake(0, sprite, MutableQuadView.BAKE_LOCK_UV);
                     emitter.spriteColor(0, -1, -1, -1, -1);
                     emitter.emit();
-                    meshes.put(id, builder.build());
+                    meshes.put(id, builder.build());*/
                 }
             }
         }
@@ -142,7 +152,6 @@ public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBake
                 SpriteIdentifier head_id = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier("soulforged:item/" + mat_name + "_" + type_name + "_head"));
                 SpriteIdentifier binding_id = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier("soulforged:item/" + mat_name + "_" + type_name + "_binding"));
                 SpriteIdentifier handle_id = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier("soulforged:item/" + mat_name + "_" + type_name + "_handle"));
-                Soulforged.LOGGER.info("Get models {} {} {}", head_id, binding_id, handle_id);
                 ids.add(head_id);
                 ids.add(binding_id);
                 ids.add(handle_id);

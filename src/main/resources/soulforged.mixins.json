@@ -4,10 +4,11 @@
   "package": "online.maestoso.soulforged.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "common.RegistryAccessor",
-    "common.CheckForgedToolHarvestabilityImpl"
+    "common.CheckForgedToolHarvestabilityImpl",
+    "common.RegistryAccessor"
   ],
   "client": [
+    "client.ItemModelGeneratorInvoker",
   ],
   "injectors": {
     "defaultRequire": 1
