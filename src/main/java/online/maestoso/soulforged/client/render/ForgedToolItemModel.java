@@ -76,10 +76,10 @@ public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBake
         String head_name = modelNameConcatenation(head_mat, type, ModelToolParts.HEAD);
         String binding_name = modelNameConcatenation(binding_mat, type, ModelToolParts.BINDING);
         String handle_name = modelNameConcatenation(handle_mat, type, ModelToolParts.HANDLE);
-
-        context.fallbackConsumer().accept(PART_MODELS.get(head_name));
-        context.fallbackConsumer().accept(PART_MODELS.get(binding_name));
-        context.fallbackConsumer().accept(PART_MODELS.get(handle_name));
+        BakedModel missingno = MinecraftClient.getInstance().getBakedModelManager().getMissingModel();
+        ((FabricBakedModel)PART_MODELS.getOrDefault(head_name, missingno)).emitItemQuads(stack, randomSupplier, context);
+        ((FabricBakedModel)PART_MODELS.getOrDefault(binding_name, missingno)).emitItemQuads(stack, randomSupplier, context);
+        ((FabricBakedModel)PART_MODELS.getOrDefault(handle_name, missingno)).emitItemQuads(stack, randomSupplier, context);
     }
 
     @Nullable
