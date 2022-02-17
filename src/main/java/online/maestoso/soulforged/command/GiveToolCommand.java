@@ -1,27 +1,31 @@
 package online.maestoso.soulforged.command;
 
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.builder.ArgumentBuilder;
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.builder.RequiredArgumentBuilder;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
+
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.command.argument.IdentifierArgumentType;
-import net.minecraft.entity.ItemEntity;
+
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.command.CommandManager;
+
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
+
 import net.minecraft.util.Identifier;
+
 import online.maestoso.soulforged.Soulforged;
 import online.maestoso.soulforged.item.SoulforgedItems;
+import online.maestoso.soulforged.item.tool.ForgedToolItem;
 import online.maestoso.soulforged.recipe.RecipeTables;
+
 import org.apache.commons.lang3.tuple.Triple;
+
 import static net.minecraft.server.command.CommandManager.*;
+
 import java.util.Collection;
+import java.util.Objects;
 
 public class GiveToolCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
@@ -48,7 +52,7 @@ public class GiveToolCommand {
                 )
         );
     }
-    public static int execute(ServerCommandSource source, Collection<ServerPlayerEntity> targets, Identifier type, Identifier head, Identifier binding, Identifier handle) throws CommandSyntaxException {
+    public static int execute(ServerCommandSource source, Collection<ServerPlayerEntity> targets, Identifier type, Identifier head, Identifier binding, Identifier handle) {
         for(ServerPlayerEntity target : targets) {
             String tool_type = type.toString(),
                     head_material = head.toString(),
@@ -66,14 +70,16 @@ public class GiveToolCommand {
             stack.getNbt().putString("sf_tool_type", tool_type);
 
             stack.getOrCreateSubNbt("sf_head").putString("material", head_material);
-            stack.getSubNbt("sf_head").putString("type", head_part);
+            Objects.requireNonNull(stack.getSubNbt("sf_head")).putString("type", head_part);
             stack.getOrCreateSubNbt("sf_binding").putString("material", binding_material);
-            stack.getSubNbt("sf_binding").putString("type", binding_part);
+            Objects.requireNonNull(stack.getSubNbt("sf_binding")).putString("type", binding_part);
             stack.getOrCreateSubNbt("sf_handle").putString("material", handle_material);
-            stack.getSubNbt("sf_handle").putString("type", handle_part);
+            Objects.requireNonNull(stack.getSubNbt("sf_handle")).putString("type", handle_part);
+
+            ForgedToolItem.calcAttackSpeed(stack);
+            ForgedToolItem.calcDamage(stack);
 
             target.giveItemStack(stack);
-
             source.sendFeedback(new TranslatableText("commands.give.success.single", 1, stack.hasCustomName() ? stack.getName() : new LiteralText("Forged Tool"), targets.iterator().next().getDisplayName()), true);
         }
         return targets.size();
