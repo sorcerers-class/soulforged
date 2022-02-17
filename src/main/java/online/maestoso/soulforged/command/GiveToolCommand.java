@@ -17,7 +17,7 @@ import net.minecraft.util.Identifier;
 
 import online.maestoso.soulforged.Soulforged;
 import online.maestoso.soulforged.item.SoulforgedItems;
-import online.maestoso.soulforged.item.tool.ForgedToolItem;
+import online.maestoso.soulforged.item.tool.ToolItem;
 import online.maestoso.soulforged.recipe.RecipeTables;
 
 import org.apache.commons.lang3.tuple.Triple;
@@ -76,8 +76,8 @@ public class GiveToolCommand {
             stack.getOrCreateSubNbt("sf_handle").putString("material", handle_material);
             Objects.requireNonNull(stack.getSubNbt("sf_handle")).putString("type", handle_part);
 
-            ForgedToolItem.calcAttackSpeed(stack);
-            ForgedToolItem.calcDamage(stack, 0);
+            ToolItem.calcAttackSpeed(stack);
+            ToolItem.calcDamage(stack, 0);
 
             target.giveItemStack(stack);
             source.sendFeedback(new TranslatableText("commands.give.success.single", 1, stack.hasCustomName() ? stack.getName() : new LiteralText("Forged Tool"), targets.iterator().next().getDisplayName()), true);

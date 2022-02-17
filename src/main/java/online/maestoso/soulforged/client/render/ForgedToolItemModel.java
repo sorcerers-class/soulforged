@@ -36,10 +36,10 @@ import net.minecraft.world.BlockRenderView;
 
 import online.maestoso.soulforged.Soulforged;
 
-import online.maestoso.soulforged.item.tool.ForgedToolType;
+import online.maestoso.soulforged.item.tool.ToolType;
 import online.maestoso.soulforged.item.tool.ForgedToolTypes;
-import online.maestoso.soulforged.material.SmithingMaterial;
-import online.maestoso.soulforged.material.SmithingMaterials;
+import online.maestoso.soulforged.material.Material;
+import online.maestoso.soulforged.material.Materials;
 
 import online.maestoso.soulforged.mixin.client.ItemModelGeneratorInvoker;
 import org.jetbrains.annotations.Nullable;
@@ -87,7 +87,7 @@ public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBake
     public BakedModel bake(ModelLoader loader, Function<SpriteIdentifier, Sprite> textureGetter, ModelBakeSettings rotationContainer, Identifier modelId) {
         JsonUnbakedModel defaultItemModel = (JsonUnbakedModel) loader.getOrLoadModel(ITEM_HANDHELD_MODEL);
         transformation = defaultItemModel.getTransformations();
-        for (String mat : SmithingMaterials.SMITHING_MATERIALS_REGISTRY.getIds().stream().map(Identifier::getPath).toList()) {
+        for (String mat : Materials.MATERIAL_REGISTRY.getIds().stream().map(Identifier::getPath).toList()) {
             for(String type : ForgedToolTypes.TOOL_TYPES_REGISTRY.getIds().stream().map(Identifier::getPath).toList()) {
                 for(ModelToolParts part : ModelToolParts.values()) {
                     String id = modelNameConcatenation(mat, type, part);
@@ -106,9 +106,9 @@ public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBake
     @Override
     public Collection<SpriteIdentifier> getTextureDependencies(Function<Identifier, UnbakedModel> unbakedModelGetter, Set<Pair<String, String>> unresolvedTextureReferences) {
         Vector<SpriteIdentifier> ids = new Vector<>();
-        for (SmithingMaterial mat : SmithingMaterials.SMITHING_MATERIALS_REGISTRY.stream().toList()) {
-            for(ForgedToolType type : ForgedToolTypes.TOOL_TYPES_REGISTRY.stream().toList()) {
-                String mat_name = Objects.requireNonNull(SmithingMaterials.SMITHING_MATERIALS_REGISTRY.getId(mat)).getPath();
+        for (Material mat : Materials.MATERIAL_REGISTRY.stream().toList()) {
+            for(ToolType type : ForgedToolTypes.TOOL_TYPES_REGISTRY.stream().toList()) {
+                String mat_name = Objects.requireNonNull(Materials.MATERIAL_REGISTRY.getId(mat)).getPath();
                 String type_name = Objects.requireNonNull(ForgedToolTypes.TOOL_TYPES_REGISTRY.getId(type)).getPath();
                 SpriteIdentifier head_id = new SpriteIdentifier(new Identifier("textures/atlas/blocks.png"), new Identifier("soulforged:item/tools/" + type_name + "/" + mat_name + "/head"));
                 SpriteIdentifier binding_id = new SpriteIdentifier(new Identifier("textures/atlas/blocks.png"), new Identifier("soulforged:item/tools/" + type_name + "/" + mat_name + "/binding"));

@@ -35,8 +35,8 @@ import online.maestoso.soulforged.item.tool.attack.AttackProperties;
 import online.maestoso.soulforged.item.tool.part.ForgedToolPart;
 import online.maestoso.soulforged.item.tool.part.ForgedToolParts;
 
-import online.maestoso.soulforged.material.SmithingMaterial;
-import online.maestoso.soulforged.material.SmithingMaterials;
+import online.maestoso.soulforged.material.Material;
+import online.maestoso.soulforged.material.Materials;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -44,11 +44,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class ForgedToolItem extends Item {
+public class ToolItem extends Item {
     static final int head = 0;
     static final int binding = 1;
     static final int handle = 2;
-    public ForgedToolItem() {
+    public ToolItem() {
         super(new FabricItemSettings()
                 .rarity(Rarity.RARE)
                 .fireproof()
@@ -73,16 +73,16 @@ public class ForgedToolItem extends Item {
         ForgedToolPart head = ForgedToolParts.TOOL_PARTS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_head").getString("type"))),
                 binding = ForgedToolParts.TOOL_PARTS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_binding").getString("type"))),
                 handle = ForgedToolParts.TOOL_PARTS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_handle").getString("type")));
-        SmithingMaterial mhead = SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_head").getString("material"))),
-                mbinding = SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_binding").getString("material"))),
-                mhandle = SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_handle").getString("material")));
+        Material mhead = Materials.MATERIAL_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_head").getString("material"))),
+                mbinding = Materials.MATERIAL_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_binding").getString("material"))),
+                mhandle = Materials.MATERIAL_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_handle").getString("material")));
 
         assert mhead != null;
 
         double head_edgeholding =  mhead.edgeholding();
         double head_hardness = mhead.hardness();
 
-        ForgedToolType type = ForgedToolTypes.TOOL_TYPES_REGISTRY.get(Identifier.tryParse(nbt.getString("sf_tool_type")));
+        ToolType type = ForgedToolTypes.TOOL_TYPES_REGISTRY.get(Identifier.tryParse(nbt.getString("sf_tool_type")));
         assert type != null;
 
         AttackProperties ap = type.defaultAttack();
@@ -113,9 +113,9 @@ public class ForgedToolItem extends Item {
         NbtCompound nbt = stack.getNbt();
         assert nbt != null;
         if (!nbt.contains("sf_damage")) {
-            int head_dura = (int) (Objects.requireNonNull(ForgedToolParts.TOOL_PARTS_REGISTRY.get(new Identifier(nbt.getCompound("sf_head").getString("type")))).durability() * Objects.requireNonNull(SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(new Identifier(nbt.getCompound("sf_head").getString("material")))).durability());
-            int binding_dura = (int) (Objects.requireNonNull(ForgedToolParts.TOOL_PARTS_REGISTRY.get(new Identifier(nbt.getCompound("sf_binding").getString("type")))).durability() * Objects.requireNonNull(SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(new Identifier(nbt.getCompound("sf_binding").getString("material")))).durability());
-            int handle_dura = (int) (Objects.requireNonNull(ForgedToolParts.TOOL_PARTS_REGISTRY.get(new Identifier(nbt.getCompound("sf_handle").getString("type")))).durability() * Objects.requireNonNull(SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(new Identifier(nbt.getCompound("sf_handle").getString("material")))).durability());
+            int head_dura = (int) (Objects.requireNonNull(ForgedToolParts.TOOL_PARTS_REGISTRY.get(new Identifier(nbt.getCompound("sf_head").getString("type")))).durability() * Objects.requireNonNull(Materials.MATERIAL_REGISTRY.get(new Identifier(nbt.getCompound("sf_head").getString("material")))).durability());
+            int binding_dura = (int) (Objects.requireNonNull(ForgedToolParts.TOOL_PARTS_REGISTRY.get(new Identifier(nbt.getCompound("sf_binding").getString("type")))).durability() * Objects.requireNonNull(Materials.MATERIAL_REGISTRY.get(new Identifier(nbt.getCompound("sf_binding").getString("material")))).durability());
+            int handle_dura = (int) (Objects.requireNonNull(ForgedToolParts.TOOL_PARTS_REGISTRY.get(new Identifier(nbt.getCompound("sf_handle").getString("type")))).durability() * Objects.requireNonNull(Materials.MATERIAL_REGISTRY.get(new Identifier(nbt.getCompound("sf_handle").getString("material")))).durability());
 
             nbt.getCompound("sf_head").putInt("max_damage", head_dura);
             nbt.getCompound("sf_binding").putInt("max_damage", binding_dura);
@@ -169,9 +169,9 @@ public class ForgedToolItem extends Item {
         ForgedToolPart head = ForgedToolParts.TOOL_PARTS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_head").getString("type"))),
                 binding = ForgedToolParts.TOOL_PARTS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_binding").getString("type"))),
                 handle = ForgedToolParts.TOOL_PARTS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_handle").getString("type")));
-        SmithingMaterial mhead = SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_head").getString("material"))),
-                mbinding = SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_binding").getString("material"))),
-                mhandle = SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_handle").getString("material")));
+        Material mhead = Materials.MATERIAL_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_head").getString("material"))),
+                mbinding = Materials.MATERIAL_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_binding").getString("material"))),
+                mhandle = Materials.MATERIAL_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_handle").getString("material")));
         assert head != null && mhead != null && binding != null && mbinding != null && handle != null && mhandle != null;
         return (head.weight() * mhead.density()) + (binding.weight() * mbinding.density()) + (0.25 * handle.weight() * mhandle.density());
 
@@ -182,7 +182,7 @@ public class ForgedToolItem extends Item {
         if(Arrays.stream(getDurabilities(stack)).anyMatch((i) -> i == 0))
             return 0;
         MiningSpeedProcessor msp = Objects.requireNonNull(ForgedToolTypes.TOOL_TYPES_REGISTRY.get(new Identifier(stack.getNbt().getString("sf_tool_type")))).miningSpeed();
-        return msp.getMiningSpeed(state, SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(new Identifier(stack.getNbt().getCompound("sf_head").getString("material"))));
+        return msp.getMiningSpeed(state, Materials.MATERIAL_REGISTRY.get(new Identifier(stack.getNbt().getCompound("sf_head").getString("material"))));
     }
 
     @Override
@@ -221,7 +221,7 @@ public class ForgedToolItem extends Item {
         String handle_material = new Identifier(nbt.getCompound("sf_handle").getString("material")).getPath();
         String handle_type = new Identifier(nbt.getCompound("sf_handle").getString("type")).getPath();
 
-        ForgedToolType tool_type = ForgedToolTypes.TOOL_TYPES_REGISTRY.get(new Identifier(nbt.getString("sf_tool_type")));
+        ToolType tool_type = ForgedToolTypes.TOOL_TYPES_REGISTRY.get(new Identifier(nbt.getString("sf_tool_type")));
         assert tool_type != null;
 
         boolean hc = tool_type.hcAttack().isPresent();
@@ -256,9 +256,9 @@ public class ForgedToolItem extends Item {
         NbtCompound nbt = stack.getNbt();
         assert nbt != null;
 
-        ForgedToolType type = ForgedToolTypes.TOOL_TYPES_REGISTRY.get(new Identifier(nbt.getString("sf_tool_type")));
-        SmithingMaterial mat = SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(new Identifier(nbt.getCompound("sf_head").getString("material")));
-        TranslatableText matLocalized = new TranslatableText("item.soulforged.tool.material." + Objects.requireNonNull(SmithingMaterials.SMITHING_MATERIALS_REGISTRY.getId(mat)).getPath());
+        ToolType type = ForgedToolTypes.TOOL_TYPES_REGISTRY.get(new Identifier(nbt.getString("sf_tool_type")));
+        Material mat = Materials.MATERIAL_REGISTRY.get(new Identifier(nbt.getCompound("sf_head").getString("material")));
+        TranslatableText matLocalized = new TranslatableText("item.soulforged.tool.material." + Objects.requireNonNull(Materials.MATERIAL_REGISTRY.getId(mat)).getPath());
 
         return new TranslatableText("item.soulforged.tool.type." + Objects.requireNonNull(ForgedToolTypes.TOOL_TYPES_REGISTRY.getId(type)).getPath(), matLocalized);
 
