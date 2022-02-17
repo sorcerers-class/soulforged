@@ -1,4 +1,4 @@
-package online.maestoso.soulforged.item.tool;
+package online.maestoso.soulforged.item.tool.attack;
 
 public enum WeaponCategories {
     CRUSHING,

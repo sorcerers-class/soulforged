@@ -8,7 +8,6 @@ import net.minecraft.block.BlockState;
 
 import net.minecraft.client.item.TooltipContext;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 
@@ -32,7 +31,7 @@ import net.minecraft.util.math.BlockPos;
 
 import net.minecraft.world.World;
 
-import online.maestoso.soulforged.Soulforged;
+import online.maestoso.soulforged.item.tool.attack.AttackProperties;
 import online.maestoso.soulforged.item.tool.part.ForgedToolPart;
 import online.maestoso.soulforged.item.tool.part.ForgedToolParts;
 
@@ -154,37 +153,12 @@ public class ForgedToolItem extends Item {
     public void breakTool(ItemStack stack, @NotNull PlayerEntity user) {
         user.sendToolBreakStatus(Hand.MAIN_HAND);
     }
-
-    private static final HashMap<Pair<UUID, UUID>, AttackEventTimer> attackEventTimers = new HashMap<>();
-    private static final Vector<Pair<UUID, UUID>> completedTimers = new Vector<>();
-    @Override
-    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        super.inventoryTick(stack, world, entity, slot, selected);
-        attackEventTimers.forEach((uuids, timer) -> {
-            timer.tick();
-            if(timer.isTimerFinished()) {
-                timer.onTimerFinished();
-                completedTimers.add(uuids);
-            }
-        });
-        for(Pair<UUID, UUID> timer : completedTimers) {
-            Soulforged.LOGGER.info("Finishing timer: {} {}", timer.getLeft(), timer.getRight());
-            attackEventTimers.remove(timer);
-        }
-        completedTimers.clear();
-    }
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if(Arrays.stream(getDurabilities(stack)).anyMatch(i -> i < 0))
             breakTool(stack, (PlayerEntity) attacker);
         if(!stack.getAttributeModifiers(EquipmentSlot.MAINHAND).containsKey(EntityAttributes.GENERIC_ATTACK_SPEED))
             stack.addAttributeModifier(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier("f106b032-3216-4ff6-9919-36cf09d350f5", calcAttackSpeed(stack) - 4, EntityAttributeModifier.Operation.ADDITION), EquipmentSlot.MAINHAND);
-        Pair<UUID, UUID> timerKey = new Pair<>(target.getUuid(), attacker.getUuid());
-        if(!attackEventTimers.containsKey(timerKey)) {
-            Soulforged.LOGGER.info("Creating timer {} {}", timerKey.getLeft(), timerKey.getRight());
-            attackEventTimers.put(timerKey, new AttackEventTimer(target, attacker, stack));
-        }
-        attackEventTimers.get(timerKey).addHit();
         stack.setDamage(calcDurability(stack));
         return true;
     }
