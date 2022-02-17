@@ -21,7 +21,6 @@ import net.minecraft.client.render.model.json.ModelTransformation;
 
 import net.minecraft.client.texture.Sprite;
 
-import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.SpriteIdentifier;
 
 import net.minecraft.item.ItemStack;
@@ -49,6 +48,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+@SuppressWarnings("deprecated")
 public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBakedModel {
     private static final Identifier ITEM_HANDHELD_MODEL = new Identifier("minecraft:item/handheld");
     private static final HashMap<String, BakedModel> PART_MODELS = new HashMap<>();
@@ -91,9 +91,9 @@ public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBake
             for(String type : ForgedToolTypes.TOOL_TYPES_REGISTRY.getIds().stream().map(Identifier::getPath).toList()) {
                 for(ModelToolParts part : ModelToolParts.values()) {
                     String id = modelNameConcatenation(mat, type, part);
-                    SpriteIdentifier sprite_id = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier("soulforged:item/" + id));
+                    SpriteIdentifier sprite_id = new SpriteIdentifier(new Identifier("textures/atlas/blocks.png"), new Identifier("soulforged:item/" + id));
                     Sprite sprite = textureGetter.apply(sprite_id);
-                    PART_MODELS.put(id, new JsonUnbakedModel(new Identifier("item/generated"),  ((ItemModelGeneratorInvoker)new ItemModelGenerator()).callAddLayerElements(0, "layer0", sprite), Map.of("layer0", Either.left(sprite_id)), false, null, transformation, List.of()).bake(loader, textureGetter, rotationContainer, modelId));
+                    PART_MODELS.put(id, new JsonUnbakedModel(new Identifier("item/handheld"),  ((ItemModelGeneratorInvoker)new ItemModelGenerator()).callAddLayerElements(0, "layer0", sprite), Map.of("layer0", Either.left(sprite_id)), false, null, transformation, List.of()).bake(loader, textureGetter, rotationContainer, modelId));
                 }
             }
         }
@@ -110,9 +110,9 @@ public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBake
             for(ForgedToolType type : ForgedToolTypes.TOOL_TYPES_REGISTRY.stream().toList()) {
                 String mat_name = Objects.requireNonNull(SmithingMaterials.SMITHING_MATERIALS_REGISTRY.getId(mat)).getPath();
                 String type_name = Objects.requireNonNull(ForgedToolTypes.TOOL_TYPES_REGISTRY.getId(type)).getPath();
-                SpriteIdentifier head_id = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier("soulforged:item/" + mat_name + "_" + type_name + "_head"));
-                SpriteIdentifier binding_id = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier("soulforged:item/" + mat_name + "_" + type_name + "_binding"));
-                SpriteIdentifier handle_id = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier("soulforged:item/" + mat_name + "_" + type_name + "_handle"));
+                SpriteIdentifier head_id = new SpriteIdentifier(new Identifier("textures/atlas/blocks.png"), new Identifier("soulforged:item/" + mat_name + "_" + type_name + "_head"));
+                SpriteIdentifier binding_id = new SpriteIdentifier(new Identifier("textures/atlas/blocks.png"), new Identifier("soulforged:item/" + mat_name + "_" + type_name + "_binding"));
+                SpriteIdentifier handle_id = new SpriteIdentifier(new Identifier("textures/atlas/blocks.png"), new Identifier("soulforged:item/" + mat_name + "_" + type_name + "_handle"));
                 ids.add(head_id);
                 ids.add(binding_id);
                 ids.add(handle_id);

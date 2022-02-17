@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "soulforged:star_metal_shortspear_head"
-  }
-}

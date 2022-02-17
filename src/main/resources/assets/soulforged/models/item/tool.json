@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:item/handheld",
-  "textures": {
-    "layer0": "soulforged:item/stone_pickaxe_head",
-    "layer1": "soulforged:item/stone_pickaxe_binding",
-    "layer2": "soulforged:item/stone_pickaxe_handle"
-  }
-}
