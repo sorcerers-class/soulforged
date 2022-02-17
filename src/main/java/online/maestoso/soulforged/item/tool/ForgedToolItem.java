@@ -6,7 +6,6 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 
 import net.minecraft.block.BlockState;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.TooltipContext;
 
 import net.minecraft.entity.Entity;
@@ -16,7 +15,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 
 import net.minecraft.item.Item;
@@ -35,7 +33,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import online.maestoso.soulforged.Soulforged;
-import online.maestoso.soulforged.item.SoulforgedItems;
 import online.maestoso.soulforged.item.tool.part.ForgedToolPart;
 import online.maestoso.soulforged.item.tool.part.ForgedToolParts;
 
@@ -46,10 +43,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class ForgedToolItem extends Item {
     static final int head = 0;
@@ -72,7 +66,7 @@ public class ForgedToolItem extends Item {
         assert stack.getNbt() != null;
         return 1 / ((getWeight(stack) / 800) / Objects.requireNonNull(ForgedToolTypes.TOOL_TYPES_REGISTRY.get(new Identifier(stack.getNbt().getString("sf_tool_type")))).defaultAttack().speed());
     }
-    public static double calcDamage(ItemStack stack) {
+    public static double calcDamage(ItemStack stack, int attackType) {
         NbtCompound nbt = stack.getNbt();
         assert nbt != null;
         if(Arrays.stream(getDurabilities(stack)).anyMatch((i) -> i == 0))
@@ -85,11 +79,26 @@ public class ForgedToolItem extends Item {
                 mhandle = SmithingMaterials.SMITHING_MATERIALS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_handle").getString("material")));
 
         assert mhead != null;
+
         double head_edgeholding =  mhead.edgeholding();
         double head_hardness = mhead.hardness();
+
         ForgedToolType type = ForgedToolTypes.TOOL_TYPES_REGISTRY.get(Identifier.tryParse(nbt.getString("sf_tool_type")));
         assert type != null;
-        double piercing_damage = type.defaultAttack().piercingDamage();
+
+        AttackProperties ap = type.defaultAttack();
+        if(attackType == 1) {
+            if(type.dcAttack().isPresent())
+                ap = type.dcAttack().get();
+            else return 2.0f;
+        }
+        if(attackType == 2) {
+            if(type.hcAttack().isPresent())
+                ap = type.hcAttack().get();
+            else return 2.0f;
+        }
+
+        double piercing_damage = ap.piercingDamage();
         double total_piercing_damage = ((head_edgeholding + (head_hardness * 0.75)) / 2) * piercing_damage;
 
         assert head != null;
@@ -101,7 +110,7 @@ public class ForgedToolItem extends Item {
         double total_blunt_damage = (((effective_weight/100) + (head_hardness*0.25))*type.defaultAttack().bluntDamage())*0.8;
         return total_blunt_damage + total_piercing_damage;
     }
-    public static int calcDurability(ItemStack stack) {
+    public static int calcDurability(@NotNull ItemStack stack) {
         NbtCompound nbt = stack.getNbt();
         assert nbt != null;
         if (!nbt.contains("sf_damage")) {
@@ -146,16 +155,23 @@ public class ForgedToolItem extends Item {
         user.sendToolBreakStatus(Hand.MAIN_HAND);
     }
 
-    private static boolean fullAttack = false;
+    private static final HashMap<Pair<UUID, UUID>, AttackEventTimer> attackEventTimers = new HashMap<>();
+    private static final Vector<Pair<UUID, UUID>> completedTimers = new Vector<>();
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-        float cooldownProgress = ((PlayerEntity)entity).getAttackCooldownProgress(0.0f);
-
-        if(cooldownProgress == 1.0f)
-            fullAttack = true;
-        else if(cooldownProgress > 0.0f && cooldownProgress < 1.0f)
-            fullAttack = false;
+        attackEventTimers.forEach((uuids, timer) -> {
+            timer.tick();
+            if(timer.isTimerFinished()) {
+                timer.onTimerFinished();
+                completedTimers.add(uuids);
+            }
+        });
+        for(Pair<UUID, UUID> timer : completedTimers) {
+            Soulforged.LOGGER.info("Finishing timer: {} {}", timer.getLeft(), timer.getRight());
+            attackEventTimers.remove(timer);
+        }
+        completedTimers.clear();
     }
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
@@ -163,11 +179,13 @@ public class ForgedToolItem extends Item {
             breakTool(stack, (PlayerEntity) attacker);
         if(!stack.getAttributeModifiers(EquipmentSlot.MAINHAND).containsKey(EntityAttributes.GENERIC_ATTACK_SPEED))
             stack.addAttributeModifier(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier("f106b032-3216-4ff6-9919-36cf09d350f5", calcAttackSpeed(stack) - 4, EntityAttributeModifier.Operation.ADDITION), EquipmentSlot.MAINHAND);
-
-
-        target.damage(DamageSource.player((PlayerEntity) attacker), fullAttack ? (float) (calcDamage(stack) - 2.0f) : 0.0f);
+        Pair<UUID, UUID> timerKey = new Pair<>(target.getUuid(), attacker.getUuid());
+        if(!attackEventTimers.containsKey(timerKey)) {
+            Soulforged.LOGGER.info("Creating timer {} {}", timerKey.getLeft(), timerKey.getRight());
+            attackEventTimers.put(timerKey, new AttackEventTimer(target, attacker, stack));
+        }
+        attackEventTimers.get(timerKey).addHit();
         stack.setDamage(calcDurability(stack));
-
         return true;
     }
     public static double getWeight(@NotNull ItemStack stack) {
@@ -209,7 +227,6 @@ public class ForgedToolItem extends Item {
     public boolean isSuitableFor(BlockState state) {
         return true;
     }
-
     @Override
     public ActionResult useOnBlock(@NotNull ItemUsageContext context) {
         return Objects.requireNonNull(ForgedToolTypes.TOOL_TYPES_REGISTRY.get(Identifier.tryParse(Objects.requireNonNull(Objects.requireNonNull(context.getPlayer()).getMainHandStack().getNbt()).getString("sf_tool_type")))).rightClick().onRightClick(context);
@@ -249,7 +266,7 @@ public class ForgedToolItem extends Item {
                 .append(" / ").formatted(Formatting.RESET)
                 .append(new TranslatableText("item.soulforged.tool.tooltip.speed", Math.round((1 / calcAttackSpeed(stack)) * 100.0) / 100.0).formatted(Formatting.GREEN, Formatting.BOLD))
                 .append(" / ").formatted(Formatting.RESET)
-                .append(new TranslatableText("item.soulforged.tool.tooltip.attack", Math.round(calcDamage(stack) * 100.0) / 100.0).formatted(Formatting.RED, Formatting.BOLD))
+                .append(new TranslatableText("item.soulforged.tool.tooltip.attack", Math.round(calcDamage(stack, 0) * 100.0) / 100.0).formatted(Formatting.RED, Formatting.BOLD))
         );
         tooltip.add(new TranslatableText("item.soulforged.tool.tooltip.defaultattack", new TranslatableText("item.soulforged.tool.tooltip.attacktype." + tool_type.defaultAttack().category().name().toLowerCase()), new TranslatableText("item.soulforged.tool.tooltip.attackdirection." + tool_type.defaultAttack().type().name().toLowerCase())).formatted(Formatting.DARK_PURPLE));
         tooltip.add(new LiteralText("")
@@ -272,7 +289,6 @@ public class ForgedToolItem extends Item {
         return new TranslatableText("item.soulforged.tool.type." + Objects.requireNonNull(ForgedToolTypes.TOOL_TYPES_REGISTRY.getId(type)).getPath(), matLocalized);
 
     }
-
     @Override
     public boolean canRepair(ItemStack stack, ItemStack ingredient) {
         return false;
