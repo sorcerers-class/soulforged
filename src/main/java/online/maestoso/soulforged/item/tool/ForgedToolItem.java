@@ -6,8 +6,10 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 
 import net.minecraft.block.BlockState;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.TooltipContext;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 
@@ -32,6 +34,7 @@ import net.minecraft.util.math.BlockPos;
 
 import net.minecraft.world.World;
 
+import online.maestoso.soulforged.Soulforged;
 import online.maestoso.soulforged.item.SoulforgedItems;
 import online.maestoso.soulforged.item.tool.part.ForgedToolPart;
 import online.maestoso.soulforged.item.tool.part.ForgedToolParts;
@@ -142,13 +145,27 @@ public class ForgedToolItem extends Item {
     public void breakTool(ItemStack stack, @NotNull PlayerEntity user) {
         user.sendToolBreakStatus(Hand.MAIN_HAND);
     }
+
+    private static boolean fullAttack = false;
+    @Override
+    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
+        super.inventoryTick(stack, world, entity, slot, selected);
+        float cooldownProgress = ((PlayerEntity)entity).getAttackCooldownProgress(0.0f);
+
+        if(cooldownProgress == 1.0f)
+            fullAttack = true;
+        else if(cooldownProgress > 0.0f && cooldownProgress < 1.0f)
+            fullAttack = false;
+    }
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if(Arrays.stream(getDurabilities(stack)).anyMatch(i -> i < 0))
             breakTool(stack, (PlayerEntity) attacker);
         if(!stack.getAttributeModifiers(EquipmentSlot.MAINHAND).containsKey(EntityAttributes.GENERIC_ATTACK_SPEED))
             stack.addAttributeModifier(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier("f106b032-3216-4ff6-9919-36cf09d350f5", calcAttackSpeed(stack) - 4, EntityAttributeModifier.Operation.ADDITION), EquipmentSlot.MAINHAND);
-        target.damage(DamageSource.player((PlayerEntity) attacker), (float) (calcDamage(stack) - attacker.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE)));
+
+
+        target.damage(DamageSource.player((PlayerEntity) attacker), fullAttack ? (float) (calcDamage(stack) - 2.0f) : 0.0f);
         stack.setDamage(calcDurability(stack));
 
         return true;
