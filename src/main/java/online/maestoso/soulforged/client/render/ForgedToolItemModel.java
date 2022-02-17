@@ -91,7 +91,7 @@ public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBake
             for(String type : ForgedToolTypes.TOOL_TYPES_REGISTRY.getIds().stream().map(Identifier::getPath).toList()) {
                 for(ModelToolParts part : ModelToolParts.values()) {
                     String id = modelNameConcatenation(mat, type, part);
-                    SpriteIdentifier sprite_id = new SpriteIdentifier(new Identifier("textures/atlas/blocks.png"), new Identifier("soulforged:item/" + id));
+                    SpriteIdentifier sprite_id = new SpriteIdentifier(new Identifier("textures/atlas/blocks.png"), new Identifier("soulforged:item/tools/" + type + "/" + mat + "/" + part.toString().toLowerCase()));
                     Sprite sprite = textureGetter.apply(sprite_id);
                     PART_MODELS.put(id, new JsonUnbakedModel(new Identifier("item/handheld"),  ((ItemModelGeneratorInvoker)new ItemModelGenerator()).callAddLayerElements(0, "layer0", sprite), Map.of("layer0", Either.left(sprite_id)), false, null, transformation, List.of()).bake(loader, textureGetter, rotationContainer, modelId));
                 }
@@ -110,9 +110,9 @@ public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBake
             for(ForgedToolType type : ForgedToolTypes.TOOL_TYPES_REGISTRY.stream().toList()) {
                 String mat_name = Objects.requireNonNull(SmithingMaterials.SMITHING_MATERIALS_REGISTRY.getId(mat)).getPath();
                 String type_name = Objects.requireNonNull(ForgedToolTypes.TOOL_TYPES_REGISTRY.getId(type)).getPath();
-                SpriteIdentifier head_id = new SpriteIdentifier(new Identifier("textures/atlas/blocks.png"), new Identifier("soulforged:item/" + mat_name + "_" + type_name + "_head"));
-                SpriteIdentifier binding_id = new SpriteIdentifier(new Identifier("textures/atlas/blocks.png"), new Identifier("soulforged:item/" + mat_name + "_" + type_name + "_binding"));
-                SpriteIdentifier handle_id = new SpriteIdentifier(new Identifier("textures/atlas/blocks.png"), new Identifier("soulforged:item/" + mat_name + "_" + type_name + "_handle"));
+                SpriteIdentifier head_id = new SpriteIdentifier(new Identifier("textures/atlas/blocks.png"), new Identifier("soulforged:item/tools/" + type_name + "/" + mat_name + "/head"));
+                SpriteIdentifier binding_id = new SpriteIdentifier(new Identifier("textures/atlas/blocks.png"), new Identifier("soulforged:item/tools/" + type_name + "/" + mat_name + "/binding"));
+                SpriteIdentifier handle_id = new SpriteIdentifier(new Identifier("textures/atlas/blocks.png"), new Identifier("soulforged:item/tools/" + type_name + "/" + mat_name + "/handle"));
                 ids.add(head_id);
                 ids.add(binding_id);
                 ids.add(handle_id);

@@ -14,6 +14,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 
 import net.minecraft.item.Item;
@@ -38,6 +39,8 @@ import online.maestoso.soulforged.item.tool.part.ForgedToolParts;
 import online.maestoso.soulforged.material.SmithingMaterial;
 import online.maestoso.soulforged.material.SmithingMaterials;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -126,21 +129,18 @@ public class ForgedToolItem extends Item {
 
         return 256 - Math.min(Math.min(handle_damage, binding_damage), head_damage);
     }
-    public static int[] getDurabilities(ItemStack stack) {
+    @Contract("_ -> new")
+    public static int @NotNull [] getDurabilities(@NotNull ItemStack stack) {
         assert stack.getNbt() != null;
         return new int[]{stack.getNbt().getCompound("sf_head").getInt("damage"), stack.getNbt().getCompound("sf_binding").getInt("damage"), stack.getNbt().getCompound("sf_handle").getInt("damage")};
     }
-    public static int[] getMaxDurabilities(ItemStack stack) {
+    @Contract("_ -> new")
+    public static int @NotNull [] getMaxDurabilities(@NotNull ItemStack stack) {
         assert stack.getNbt() != null;
         return new int[]{stack.getNbt().getCompound("sf_head").getInt("max_damage"), stack.getNbt().getCompound("sf_binding").getInt("max_damage"), stack.getNbt().getCompound("sf_handle").getInt("max_damage")};
     }
-    public void breakTool(ItemStack stack, PlayerEntity user) {
+    public void breakTool(ItemStack stack, @NotNull PlayerEntity user) {
         user.sendToolBreakStatus(Hand.MAIN_HAND);
-        NbtCompound nbt = stack.getNbt();
-        user.getMainHandStack().decrement(1);
-        ItemStack broken_tool = new ItemStack(SoulforgedItems.BROKEN_TOOL, 1);
-        broken_tool.setNbt(nbt);
-        user.giveItemStack(broken_tool);
     }
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
@@ -148,13 +148,12 @@ public class ForgedToolItem extends Item {
             breakTool(stack, (PlayerEntity) attacker);
         if(!stack.getAttributeModifiers(EquipmentSlot.MAINHAND).containsKey(EntityAttributes.GENERIC_ATTACK_SPEED))
             stack.addAttributeModifier(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier("f106b032-3216-4ff6-9919-36cf09d350f5", calcAttackSpeed(stack) - 4, EntityAttributeModifier.Operation.ADDITION), EquipmentSlot.MAINHAND);
-        if(!stack.getAttributeModifiers(EquipmentSlot.MAINHAND).containsKey(EntityAttributes.GENERIC_ATTACK_DAMAGE))
-            stack.addAttributeModifier(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier("06b3630e-9d10-41fe-9e10-9aad54e4f9ce", calcDamage(stack), EntityAttributeModifier.Operation.ADDITION), EquipmentSlot.MAINHAND);
+        target.damage(DamageSource.player((PlayerEntity) attacker), (float) (calcDamage(stack) - attacker.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE)));
         stack.setDamage(calcDurability(stack));
 
         return true;
     }
-    public static double getWeight(ItemStack stack) {
+    public static double getWeight(@NotNull ItemStack stack) {
         NbtCompound nbt = stack.getNbt();
 
         assert nbt != null;
@@ -169,7 +168,7 @@ public class ForgedToolItem extends Item {
 
     }
     @Override
-    public float getMiningSpeedMultiplier(ItemStack stack, BlockState state) {
+    public float getMiningSpeedMultiplier(@NotNull ItemStack stack, BlockState state) {
         assert stack.getNbt() != null;
         if(Arrays.stream(getDurabilities(stack)).anyMatch((i) -> i == 0))
             return 0;
@@ -195,13 +194,13 @@ public class ForgedToolItem extends Item {
     }
 
     @Override
-    public ActionResult useOnBlock(ItemUsageContext context) {
+    public ActionResult useOnBlock(@NotNull ItemUsageContext context) {
         return Objects.requireNonNull(ForgedToolTypes.TOOL_TYPES_REGISTRY.get(Identifier.tryParse(Objects.requireNonNull(Objects.requireNonNull(context.getPlayer()).getMainHandStack().getNbt()).getString("sf_tool_type")))).rightClick().onRightClick(context);
     }
 
     @Override
     @Environment(EnvType.CLIENT)
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+    public void appendTooltip(@NotNull ItemStack stack, @Nullable World world, @NotNull List<Text> tooltip, TooltipContext context) {
         NbtCompound nbt = stack.getNbt();
         assert nbt != null;
 
@@ -245,7 +244,7 @@ public class ForgedToolItem extends Item {
 
     @Override
     @Environment(EnvType.CLIENT)
-    public Text getName(ItemStack stack) {
+    public Text getName(@NotNull ItemStack stack) {
         NbtCompound nbt = stack.getNbt();
         assert nbt != null;
 
