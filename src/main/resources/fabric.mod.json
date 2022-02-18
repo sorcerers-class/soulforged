@@ -20,6 +20,7 @@
   "mixins": [
     "soulforged.mixins.json"
   ],
+  "accessWidener": "soulforged.accesswidener",
   "depends": {
     "fabricloader": ">=0.12.12",
     "fabric": "*",

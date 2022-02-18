@@ -8,6 +8,7 @@ import net.minecraft.block.BlockState;
 
 import net.minecraft.client.item.TooltipContext;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 
@@ -31,6 +32,8 @@ import net.minecraft.util.math.BlockPos;
 
 import net.minecraft.world.World;
 
+import online.maestoso.soulforged.Soulforged;
+import online.maestoso.soulforged.item.tool.attack.AttackEventTimer;
 import online.maestoso.soulforged.item.tool.attack.AttackProperties;
 import online.maestoso.soulforged.item.tool.part.ToolPart;
 import online.maestoso.soulforged.item.tool.part.ToolParts;
@@ -153,6 +156,25 @@ public class ToolItem extends Item {
     public void breakTool(ItemStack stack, @NotNull PlayerEntity user) {
         user.sendToolBreakStatus(Hand.MAIN_HAND);
     }
+
+    public static HashMap<Pair<UUID, UUID>, AttackEventTimer> attackEventTimers;
+    private static Vector<Pair<UUID, UUID>> completedTimers;
+    //@Override
+    /*public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
+        super.inventoryTick(stack, world, entity, slot, selected);
+        attackEventTimers.forEach((uuids, timer) -> {
+            timer.tick();
+            if(timer.isTimerFinished()) {
+                timer.onTimerFinished();
+                completedTimers.add(uuids);
+            }
+        });
+        for(Pair<UUID, UUID> timer : completedTimers) {
+            Soulforged.LOGGER.info("Finishing timer: {} {}", timer.getLeft(), timer.getRight());
+            attackEventTimers.remove(timer);
+        }
+        completedTimers.clear();
+    }*/
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if(Arrays.stream(getDurabilities(stack)).anyMatch(i -> i < 0))
