@@ -16,8 +16,11 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Pair;
 import net.minecraft.util.math.Vec3d;
 import online.maestoso.soulforged.item.SoulforgedItems;
+import online.maestoso.soulforged.item.tool.ToolItem;
+import online.maestoso.soulforged.item.tool.attack.AttackEventTimer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,6 +28,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Mixin(ServerPlayNetworkHandler.class)
@@ -66,6 +70,12 @@ public class ToolAttackHandlerImpl {
                     @Override
                     public void attack() {
                         System.out.println("Tried to attack with soulforged:tool!");
+                        if(!ToolItem.attackEventTimers.containsKey(new Pair<>(target.getUuid(), ToolAttackHandlerImpl.this.player.getUuid()))) {
+                            ToolItem.attackEventTimers.put(new Pair<>(target.getUuid(), ToolAttackHandlerImpl.this.player.getUuid()), new AttackEventTimer(finalTarget, ToolAttackHandlerImpl.this.player, ToolAttackHandlerImpl.this.player.getMainHandStack()));
+                        } else {
+                            Objects.requireNonNull(ToolItem.attackEventTimers.put(new Pair<>(target.getUuid(), ToolAttackHandlerImpl.this.player.getUuid()), ToolItem.attackEventTimers.get(new Pair<>(target.getUuid(), ToolAttackHandlerImpl.this.player.getUuid())))).addHit();
+                        }
+                        ToolAttackHandlerImpl.this.player.getMainHandStack().postHit(finalTarget, ToolAttackHandlerImpl.this.player);
                     }
                 });
                 ci.cancel();

@@ -157,11 +157,12 @@ public class ToolItem extends Item {
         user.sendToolBreakStatus(Hand.MAIN_HAND);
     }
 
-    public static HashMap<Pair<UUID, UUID>, AttackEventTimer> attackEventTimers;
-    private static Vector<Pair<UUID, UUID>> completedTimers;
-    //@Override
-    /*public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
+    public static HashMap<Pair<UUID, UUID>, AttackEventTimer> attackEventTimers = new HashMap<>();
+    private static final Vector<Pair<UUID, UUID>> completedTimers = new Vector<>();
+    @Override
+    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
+        if(attackEventTimers.size() > 0)
         attackEventTimers.forEach((uuids, timer) -> {
             timer.tick();
             if(timer.isTimerFinished()) {
@@ -174,7 +175,7 @@ public class ToolItem extends Item {
             attackEventTimers.remove(timer);
         }
         completedTimers.clear();
-    }*/
+    }
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if(Arrays.stream(getDurabilities(stack)).anyMatch(i -> i < 0))
