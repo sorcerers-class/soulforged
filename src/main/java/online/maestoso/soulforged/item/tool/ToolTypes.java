@@ -11,9 +11,9 @@ import online.maestoso.soulforged.mixin.common.RegistryAccessor;
 
 import java.util.Optional;
 @SuppressWarnings("unused")
-public class ForgedToolTypes {
+public class ToolTypes {
     public static final RegistryKey<Registry<ToolType>> TOOL_TYPES_REGISTRY_KEY = RegistryKey.ofRegistry(new Identifier("soulforged", "tool_types"));
-    public static final Registry<ToolType> TOOL_TYPES_REGISTRY = RegistryAccessor.create(TOOL_TYPES_REGISTRY_KEY, () -> ForgedToolTypes.SHORTSWORD);
+    public static final Registry<ToolType> TOOL_TYPES_REGISTRY = RegistryAccessor.create(TOOL_TYPES_REGISTRY_KEY, () -> ToolTypes.SHORTSWORD);
 
     public static final ToolType SHORTSWORD = register(new Identifier("soulforged", "shortsword"), new ToolType(new AttackProperties(0.7, 0.2, 10, 1.2, 0.1, WeaponCategories.THRUSTING, CritTypes.SIDE), Optional.empty(), Optional.of(new AttackProperties(0.5, 0.2, 18, 1.2, 0.8, WeaponCategories.THRUSTING, CritTypes.FORWARD)), MiningSpeedProcessors.SWORD, RightClickEventProcessors.NONE));
     public static final ToolType BROADSWORD = register(new Identifier("soulforged", "broadsword"), new ToolType(new AttackProperties(1.0, 0.2, 8, 1, 0.2, WeaponCategories.SLASHING, CritTypes.SIDE), Optional.of(new AttackProperties(0.9, 0.2, 1, 1, 0.2, WeaponCategories.SLASHING, CritTypes.SIDE)), Optional.of(new AttackProperties(0.75, 0.2, 15, 1, 0.8, WeaponCategories.THRUSTING, CritTypes.FORWARD)), MiningSpeedProcessors.SWORD, RightClickEventProcessors.NONE));

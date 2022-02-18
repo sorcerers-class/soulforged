@@ -37,7 +37,7 @@ import net.minecraft.world.BlockRenderView;
 import online.maestoso.soulforged.Soulforged;
 
 import online.maestoso.soulforged.item.tool.ToolType;
-import online.maestoso.soulforged.item.tool.ForgedToolTypes;
+import online.maestoso.soulforged.item.tool.ToolTypes;
 import online.maestoso.soulforged.material.Material;
 import online.maestoso.soulforged.material.Materials;
 
@@ -88,7 +88,7 @@ public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBake
         JsonUnbakedModel defaultItemModel = (JsonUnbakedModel) loader.getOrLoadModel(ITEM_HANDHELD_MODEL);
         transformation = defaultItemModel.getTransformations();
         for (String mat : Materials.MATERIAL_REGISTRY.getIds().stream().map(Identifier::getPath).toList()) {
-            for(String type : ForgedToolTypes.TOOL_TYPES_REGISTRY.getIds().stream().map(Identifier::getPath).toList()) {
+            for(String type : ToolTypes.TOOL_TYPES_REGISTRY.getIds().stream().map(Identifier::getPath).toList()) {
                 for(ModelToolParts part : ModelToolParts.values()) {
                     String id = modelNameConcatenation(mat, type, part);
                     SpriteIdentifier sprite_id = new SpriteIdentifier(new Identifier("textures/atlas/blocks.png"), new Identifier("soulforged:item/tools/" + type + "/" + mat + "/" + part.toString().toLowerCase()));
@@ -107,9 +107,9 @@ public class ForgedToolItemModel implements UnbakedModel, BakedModel, FabricBake
     public Collection<SpriteIdentifier> getTextureDependencies(Function<Identifier, UnbakedModel> unbakedModelGetter, Set<Pair<String, String>> unresolvedTextureReferences) {
         Vector<SpriteIdentifier> ids = new Vector<>();
         for (Material mat : Materials.MATERIAL_REGISTRY.stream().toList()) {
-            for(ToolType type : ForgedToolTypes.TOOL_TYPES_REGISTRY.stream().toList()) {
+            for(ToolType type : ToolTypes.TOOL_TYPES_REGISTRY.stream().toList()) {
                 String mat_name = Objects.requireNonNull(Materials.MATERIAL_REGISTRY.getId(mat)).getPath();
-                String type_name = Objects.requireNonNull(ForgedToolTypes.TOOL_TYPES_REGISTRY.getId(type)).getPath();
+                String type_name = Objects.requireNonNull(ToolTypes.TOOL_TYPES_REGISTRY.getId(type)).getPath();
                 SpriteIdentifier head_id = new SpriteIdentifier(new Identifier("textures/atlas/blocks.png"), new Identifier("soulforged:item/tools/" + type_name + "/" + mat_name + "/head"));
                 SpriteIdentifier binding_id = new SpriteIdentifier(new Identifier("textures/atlas/blocks.png"), new Identifier("soulforged:item/tools/" + type_name + "/" + mat_name + "/binding"));
                 SpriteIdentifier handle_id = new SpriteIdentifier(new Identifier("textures/atlas/blocks.png"), new Identifier("soulforged:item/tools/" + type_name + "/" + mat_name + "/handle"));

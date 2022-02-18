@@ -11,7 +11,7 @@ import net.minecraft.tag.BlockTags;
 import net.minecraft.util.Identifier;
 
 import online.maestoso.soulforged.item.tool.MiningSpeedProcessors;
-import online.maestoso.soulforged.item.tool.ForgedToolTypes;
+import online.maestoso.soulforged.item.tool.ToolTypes;
 
 import online.maestoso.soulforged.material.Materials;
 
@@ -23,7 +23,7 @@ public class BlockUtil {
             assert tool.getNbt() != null;
             int level = Objects.requireNonNull(Materials.MATERIAL_REGISTRY.get(new Identifier(tool.getNbt().getCompound("sf_head").getString("material")))).miningLevel();
             if(BlockTags.PICKAXE_MINEABLE.contains(state.getBlock())) {
-                if (Objects.requireNonNull(ForgedToolTypes.TOOL_TYPES_REGISTRY.get(new Identifier(tool.getNbt().getString("sf_tool_type")))).miningSpeed() == MiningSpeedProcessors.PICKAXE) {
+                if (Objects.requireNonNull(ToolTypes.TOOL_TYPES_REGISTRY.get(new Identifier(tool.getNbt().getString("sf_tool_type")))).miningSpeed() == MiningSpeedProcessors.PICKAXE) {
                     return level >= MiningLevelManager.getRequiredMiningLevel(state);
                 }
                 return false;
