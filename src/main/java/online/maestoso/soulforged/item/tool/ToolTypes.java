@@ -4,9 +4,9 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 
-import online.maestoso.soulforged.item.tool.attack.AttackProperties;
-import online.maestoso.soulforged.item.tool.attack.CritTypes;
-import online.maestoso.soulforged.item.tool.attack.WeaponCategories;
+import online.maestoso.soulforged.item.tool.combat.AttackProperties;
+import online.maestoso.soulforged.item.tool.combat.CritTypes;
+import online.maestoso.soulforged.item.tool.combat.WeaponCategories;
 import online.maestoso.soulforged.mixin.common.RegistryAccessor;
 
 import java.util.Optional;

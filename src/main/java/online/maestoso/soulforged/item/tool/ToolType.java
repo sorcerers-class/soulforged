@@ -1,6 +1,6 @@
 package online.maestoso.soulforged.item.tool;
 
-import online.maestoso.soulforged.item.tool.attack.AttackProperties;
+import online.maestoso.soulforged.item.tool.combat.AttackProperties;
 
 import java.util.Optional;
 

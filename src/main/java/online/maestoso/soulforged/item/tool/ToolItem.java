@@ -32,9 +32,8 @@ import net.minecraft.util.math.BlockPos;
 
 import net.minecraft.world.World;
 
-import online.maestoso.soulforged.Soulforged;
-import online.maestoso.soulforged.item.tool.attack.AttackEventTimer;
-import online.maestoso.soulforged.item.tool.attack.AttackProperties;
+import online.maestoso.soulforged.item.tool.combat.AttackEventTimer;
+import online.maestoso.soulforged.item.tool.combat.AttackProperties;
 import online.maestoso.soulforged.item.tool.part.ToolPart;
 import online.maestoso.soulforged.item.tool.part.ToolParts;
 
@@ -46,6 +45,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ToolItem extends Item {
     static final int head = 0;
@@ -157,8 +157,7 @@ public class ToolItem extends Item {
         user.sendToolBreakStatus(Hand.MAIN_HAND);
     }
 
-    public static HashMap<Pair<UUID, UUID>, AttackEventTimer> attackEventTimers = new HashMap<>();
-    private static final Vector<Pair<UUID, UUID>> completedTimers = new Vector<>();
+    public static ConcurrentHashMap<Pair<UUID, UUID>, AttackEventTimer> attackEventTimers = new ConcurrentHashMap<>();
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
@@ -167,14 +166,9 @@ public class ToolItem extends Item {
             timer.tick();
             if(timer.isTimerFinished()) {
                 timer.onTimerFinished();
-                completedTimers.add(uuids);
+                attackEventTimers.remove(uuids);
             }
         });
-        for(Pair<UUID, UUID> timer : completedTimers) {
-            Soulforged.LOGGER.info("Finishing timer: {} {}", timer.getLeft(), timer.getRight());
-            attackEventTimers.remove(timer);
-        }
-        completedTimers.clear();
     }
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
