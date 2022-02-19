@@ -3,6 +3,7 @@ package online.maestoso.soulforged.mixin.client;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
 import net.minecraft.client.render.RenderTickCounter;
+import online.maestoso.soulforged.Soulforged;
 import online.maestoso.soulforgedcombatdebugger.debug.gui.ImGuiRenderer;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,7 +26,9 @@ public class MinecraftClientMixin {
 
     @Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/SplashOverlay;init(Lnet/minecraft/client/MinecraftClient;)V", shift = At.Shift.BEFORE))
     private void onFinishingStartup(RunArgs args, CallbackInfo ci) {
+        Soulforged.LOGGER.info("Setting up ImGuiRenderer...");
         ImGuiRenderer.INSTANCE.setup();
+        Soulforged.LOGGER.info("Successfully set up ImGuiRenderer!");
     }
     @Inject(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;skipGameRender:Z", shift = At.Shift.BEFORE))
     private void onPreRenderEverything(boolean tick, CallbackInfo ci) {

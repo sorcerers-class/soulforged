@@ -15,19 +15,20 @@ import org.lwjgl.glfw.GLFW;
 
 @Environment(EnvType.CLIENT)
 public class ImGuiRenderer {
-    private final ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();
-    private final ImGuiImplGl3 imGuiGl3 = new ImGuiImplGl3();
-    public static final ImGuiRenderer INSTANCE = new ImGuiRenderer();
+    private ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();
+    private ImGuiImplGl3 imGuiGl3 = new ImGuiImplGl3();
+    public static ImGuiRenderer INSTANCE;
 
     public void setup() {
         ImGui.createContext();
 
-        ImGuiIO io = ImGui.getIO();
-        io.setIniFilename(null);
-        io.addConfigFlags(ImGuiConfigFlags.NavEnableKeyboard);
-        io.addConfigFlags(ImGuiConfigFlags.ViewportsEnable);
-        io.setConfigViewportsNoTaskBarIcon(true);
-        io.setConfigDockingWithShift(true);
+        ImGui.getIO().setIniFilename(null);
+        ImGui.getIO().addConfigFlags(ImGuiConfigFlags.NavEnableKeyboard);
+        ImGui.getIO().addConfigFlags(ImGuiConfigFlags.ViewportsEnable);
+        ImGui.getIO().setConfigViewportsNoTaskBarIcon(true);
+        ImGui.getIO().setConfigDockingWithShift(true);
+
+        ImGuiTheme.applyImGuiTheme();
 
         imGuiGlfw.init(MinecraftClient.getInstance().getWindow().getHandle(), true);
         imGuiGl3.init();
