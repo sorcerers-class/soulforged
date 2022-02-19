@@ -1,4 +1,4 @@
-package online.maestoso.soulforged.item.tool.combat.debug.gui;
+package online.maestoso.soulforgedcombatdebugger.debug.gui;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

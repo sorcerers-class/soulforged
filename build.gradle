@@ -23,11 +23,14 @@ dependencies {
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
+    // imgui stuff
     def imguiVersion = "1.86.2"
     implementation("io.github.spair:imgui-java-binding:$imguiVersion")
     implementation("io.github.spair:imgui-java-lwjgl3:$imguiVersion") {
         exclude(group: "org.lwjgl")
     }
+
+    // Apache common collections because why not
     implementation 'org.apache.commons:commons-collections4:4.4'
 }
 

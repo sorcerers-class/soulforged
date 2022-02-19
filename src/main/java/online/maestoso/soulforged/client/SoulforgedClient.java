@@ -8,7 +8,7 @@ import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
-import online.maestoso.soulforged.item.tool.combat.debug.gui.ImGuiScreen;
+import online.maestoso.soulforgedcombatdebugger.debug.gui.ImGuiScreen;
 import org.lwjgl.glfw.GLFW;
 
 @net.fabricmc.api.Environment(net.fabricmc.api.EnvType.CLIENT)

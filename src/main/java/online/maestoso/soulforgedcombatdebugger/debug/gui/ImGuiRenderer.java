@@ -1,7 +1,7 @@
 /*
 * ADAPTED FROM: https://git.lavender.software/hibiscus-client/hibiscus/src/branch/main/src/main/kotlin/codes/som/hibiscus/gui/ImGuiRenderer.kt
  */
-package online.maestoso.soulforged.item.tool.combat.debug.gui;
+package online.maestoso.soulforgedcombatdebugger.debug.gui;
 
 import imgui.ImGui;
 import imgui.ImGuiIO;
@@ -12,10 +12,12 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import org.lwjgl.glfw.GLFW;
+
 @Environment(EnvType.CLIENT)
 public class ImGuiRenderer {
-    private ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();
-    private ImGuiImplGl3 imGuiGl3 = new ImGuiImplGl3();
+    private final ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();
+    private final ImGuiImplGl3 imGuiGl3 = new ImGuiImplGl3();
+    public static final ImGuiRenderer INSTANCE = new ImGuiRenderer();
 
     public void setup() {
         ImGui.createContext();

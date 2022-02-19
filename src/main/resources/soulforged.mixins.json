@@ -9,7 +9,8 @@
     "common.ToolAttackHandlerImpl"
   ],
   "client": [
-    "client.ItemModelGeneratorInvoker"
+    "client.ItemModelGeneratorInvoker",
+    "client.MinecraftClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1
