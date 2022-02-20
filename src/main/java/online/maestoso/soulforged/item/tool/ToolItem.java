@@ -106,7 +106,7 @@ public class ToolItem extends Item {
                 handle_weight = Objects.requireNonNull(handle).weight() * Objects.requireNonNull(mhandle).density();
 
         double effective_weight = head_weight + binding_weight + (0.25 * handle_weight);
-        double total_blunt_damage = (((effective_weight/100) + (head_hardness*0.25))*type.defaultAttack().bluntDamage())*0.8;
+        double total_blunt_damage = (((effective_weight/100) + (head_hardness*0.25))*ap.bluntDamage())*0.8;
         return total_blunt_damage + total_piercing_damage;
     }
     public static int calcDurability(@NotNull ItemStack stack) {

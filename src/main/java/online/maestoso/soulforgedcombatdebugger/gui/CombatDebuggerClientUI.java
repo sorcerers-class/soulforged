@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import online.maestoso.soulforged.item.SoulforgedItems;
+import online.maestoso.soulforged.item.tool.ToolItem;
 import online.maestoso.soulforged.item.tool.ToolType;
 import online.maestoso.soulforged.item.tool.ToolTypes;
 import online.maestoso.soulforged.item.tool.combat.AttackProperties;
@@ -19,6 +20,9 @@ import online.maestoso.soulforged.item.tool.part.ToolPart;
 import online.maestoso.soulforged.item.tool.part.ToolParts;
 import online.maestoso.soulforged.material.Material;
 import online.maestoso.soulforged.material.Materials;
+
+import java.util.Arrays;
+import java.util.Objects;
 
 @Environment(EnvType.CLIENT)
 public class CombatDebuggerClientUI {
@@ -28,15 +32,18 @@ public class CombatDebuggerClientUI {
                             showHandleMaterialDropdown = false,
                             showHeadTypeDropdown = false,
                             showBindingTypeDropdown = false,
-                            showHandleTypeDropdown = false;
+                            showHandleTypeDropdown = false,
+                            showDamageCalcDropdown = false,
+                            showDcAttackCalc = false,
+                            showHcAttackCalc = false;
     public static void render(float delta) {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
-        if(player != null) {
+        if (player != null) {
             ImGui.setNextWindowPos(10, 10, ImGuiCond.Once);
             ImGui.setNextWindowSizeConstraints(-1, -1, 500, 500);
             ImGui.begin("SCD v1 | Current Tool", ImGuiWindowFlags.AlwaysVerticalScrollbar);
             ItemStack stack = player.getMainHandStack();
-            if(stack.getItem().equals(SoulforgedItems.TOOL)) {
+            if (stack.getItem().equals(SoulforgedItems.TOOL)) {
                 ImGui.text(stack.getName().getString());
                 assert stack.getNbt() != null;
                 NbtCompound nbt = stack.getNbt(),
@@ -44,14 +51,14 @@ public class CombatDebuggerClientUI {
                         binding = nbt.getCompound("sf_binding"),
                         handle = nbt.getCompound("sf_handle");
 
-                if(ImGui.button(String.format("Type: %s", nbt.getString("sf_tool_type"))))
+                if (ImGui.button(String.format("Type: %s", nbt.getString("sf_tool_type"))))
                     showToolTypeDropdown ^= true;
-                if(showToolTypeDropdown) {
+                if (showToolTypeDropdown) {
                     ToolType type = ToolTypes.TOOL_TYPES_REGISTRY.get(new Identifier(nbt.getString("sf_tool_type")));
                     assert type != null;
                     AttackProperties apDefault = type.defaultAttack();
                     ImGui.text(String.format(
-                                    """
+                            """
                                     Default Attack:
                                     \tPiercing Damage: %f
                                     \tBlunt Damage: %f
@@ -71,7 +78,7 @@ public class CombatDebuggerClientUI {
 
                     AttackProperties apDc = type.dcAttack().orElse(null);
                     ImGui.text(apDc != null ? String.format(
-                                    """
+                            """
                                     DC Attack:
                                     \tPiercing Damage: %f
                                     \tBlunt Damage: %f
@@ -90,7 +97,7 @@ public class CombatDebuggerClientUI {
                             : "DC Attack: None");
                     AttackProperties apHc = type.hcAttack().orElse(null);
                     ImGui.text(apHc != null ? String.format(
-                                    """
+                            """
                                     DC Attack:
                                     \tPiercing Damage: %f
                                     \tBlunt Damage: %f
@@ -111,25 +118,25 @@ public class CombatDebuggerClientUI {
                     );
                 }
                 ImGui.text("Materials:");
-                if(ImGui.button(String.format("Head: %s", head.getString("material"))))
+                if (ImGui.button(String.format("Head: %s", head.getString("material"))))
                     showHeadMaterialDropdown ^= true;
-                if(showHeadMaterialDropdown) {
+                if (showHeadMaterialDropdown) {
                     Material headMat = Materials.MATERIAL_REGISTRY.get(new Identifier(head.getString("material")));
                     assert headMat != null;
                     ImGui.text(String.format(
                             """
-                            \tHardness: %f
-                            \tEdgeholding: %f
-                            \tWorkability: %d
-                            \tDensity: %d
-                            \tHeat: %d
-                            \tPadding: %d
-                            \tMining Level: %d
-                            \tMining Speed: %f
-                            \tTool Material: %b
-                            \tArmor Material: %b
-                            \tCorundum Classifier: %s
-                            """,
+                                    \tHardness: %f
+                                    \tEdgeholding: %f
+                                    \tWorkability: %d
+                                    \tDensity: %d
+                                    \tHeat: %d
+                                    \tPadding: %d
+                                    \tMining Level: %d
+                                    \tMining Speed: %f
+                                    \tTool Material: %b
+                                    \tArmor Material: %b
+                                    \tCorundum Classifier: %s
+                                    """,
                             headMat.hardness(),
                             headMat.edgeholding(),
                             headMat.workability(),
@@ -142,25 +149,25 @@ public class CombatDebuggerClientUI {
                             headMat.classifier().isPresent() ? headMat.classifier().get() : "None"
                     ));
                 }
-                if(ImGui.button(String.format("Binding: %s", binding.getString("material"))))
+                if (ImGui.button(String.format("Binding: %s", binding.getString("material"))))
                     showBindingMaterialDropdown ^= true;
-                if(showBindingMaterialDropdown) {
+                if (showBindingMaterialDropdown) {
                     Material bindingMat = Materials.MATERIAL_REGISTRY.get(new Identifier(binding.getString("material")));
                     assert bindingMat != null;
                     ImGui.text(String.format(
                             """
-                            \tHardness: %f
-                            \tEdgeholding: %f
-                            \tWorkability: %d
-                            \tDensity: %d
-                            \tHeat: %d
-                            \tPadding: %d
-                            \tMining Level: %d
-                            \tMining Speed: %f
-                            \tTool Material: %b
-                            \tArmor Material: %b
-                            \tCorundum Classifier: %s
-                            """,
+                                    \tHardness: %f
+                                    \tEdgeholding: %f
+                                    \tWorkability: %d
+                                    \tDensity: %d
+                                    \tHeat: %d
+                                    \tPadding: %d
+                                    \tMining Level: %d
+                                    \tMining Speed: %f
+                                    \tTool Material: %b
+                                    \tArmor Material: %b
+                                    \tCorundum Classifier: %s
+                                    """,
                             bindingMat.hardness(),
                             bindingMat.edgeholding(),
                             bindingMat.workability(),
@@ -174,25 +181,25 @@ public class CombatDebuggerClientUI {
                             bindingMat.classifier().isPresent() ? bindingMat.classifier().get() : "None"
                     ));
                 }
-                if(ImGui.button(String.format("Handle: %s", handle.getString("material"))))
+                if (ImGui.button(String.format("Handle: %s", handle.getString("material"))))
                     showHandleMaterialDropdown ^= true;
-                if(showHandleMaterialDropdown) {
+                if (showHandleMaterialDropdown) {
                     Material handleMat = Materials.MATERIAL_REGISTRY.get(new Identifier(handle.getString("material")));
                     assert handleMat != null;
                     ImGui.text(String.format(
                             """
-                            \tHardness: %f
-                            \tEdgeholding: %f
-                            \tWorkability: %d
-                            \tDensity: %d
-                            \tHeat: %d
-                            \tPadding: %d
-                            \tMining Level: %d
-                            \tMining Speed: %f
-                            \tTool Material: %b
-                            \tArmor Material: %b
-                            \tCorundum Classifier: %s
-                            """,
+                                    \tHardness: %f
+                                    \tEdgeholding: %f
+                                    \tWorkability: %d
+                                    \tDensity: %d
+                                    \tHeat: %d
+                                    \tPadding: %d
+                                    \tMining Level: %d
+                                    \tMining Speed: %f
+                                    \tTool Material: %b
+                                    \tArmor Material: %b
+                                    \tCorundum Classifier: %s
+                                    """,
                             handleMat.hardness(),
                             handleMat.edgeholding(),
                             handleMat.workability(),
@@ -207,54 +214,129 @@ public class CombatDebuggerClientUI {
                     ));
                 }
                 ImGui.text("Part Types:");
-                if(ImGui.button(String.format("Head: %s", head.getString("type"))))
+                if (ImGui.button(String.format("Head: %s", head.getString("type"))))
                     showHeadTypeDropdown ^= true;
-                if(showHeadTypeDropdown) {
+                if (showHeadTypeDropdown) {
                     ToolPart headPart = ToolParts.TOOL_PARTS_REGISTRY.get(new Identifier(head.getString("type")));
                     assert headPart != null;
                     ImGui.text(String.format(
                             """
-                            \tWeight: %f
-                            \tDurability: %f
-                            """,
+                                    \tWeight: %f
+                                    \tDurability: %f
+                                    """,
                             headPart.weight(),
                             headPart.durability()));
                 }
-                if(ImGui.button(String.format("Binding: %s", binding.getString("type"))))
+                if (ImGui.button(String.format("Binding: %s", binding.getString("type"))))
                     showBindingTypeDropdown ^= true;
-                if(showBindingTypeDropdown) {
+                if (showBindingTypeDropdown) {
                     ToolPart bindingPart = ToolParts.TOOL_PARTS_REGISTRY.get(new Identifier(binding.getString("type")));
                     assert bindingPart != null;
                     ImGui.text(String.format(
                             """
-                            \tWeight: %f
-                            \tDurability: %f
-                            """,
+                                    \tWeight: %f
+                                    \tDurability: %f
+                                    """,
                             bindingPart.weight(),
                             bindingPart.durability()));
                 }
-                if(ImGui.button(String.format("Handle: %s", handle.getString("type"))))
+                if (ImGui.button(String.format("Handle: %s", handle.getString("type"))))
                     showHandleTypeDropdown ^= true;
-                if(showHandleTypeDropdown) {
+                if (showHandleTypeDropdown) {
                     ToolPart part = ToolParts.TOOL_PARTS_REGISTRY.get(new Identifier(handle.getString("type")));
                     assert part != null;
                     ImGui.text(String.format(
                             """
-                            \tWeight: %f
-                            \tDurability: %f
-                            """,
+                                    \tWeight: %f
+                                    \tDurability: %f
+                                    """,
                             part.weight(),
                             part.durability()));
                 }
+                ImGui.end();
+
+                ImGui.setNextWindowPos(500, 10, ImGuiCond.Once);
+                ImGui.setNextWindowSizeConstraints(-1.0f, -1.0f, 500.0f, 500f);
+                ImGui.begin("SCD v1 | Melee", ImGuiWindowFlags.AlwaysHorizontalScrollbar);
+                ImGui.text(String.format("Attack cooldown: %f", player.getAttackCooldownProgress(0.0f)));
+                ImGui.text(String.format("Cooldown ratio: %f", Math.pow(player.getAttackCooldownProgress(0.0f), 4)));
+
+                if (ImGui.button("Damage calc: "))
+                    showDamageCalcDropdown ^= true;
+
+                if (Arrays.stream(ToolItem.getDurabilities(stack)).anyMatch((i) -> i == 0))
+                    ImGui.text("Broken tool will have 0 damage!");
+                ToolPart phead = ToolParts.TOOL_PARTS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_head").getString("type"))),
+                        pbinding = ToolParts.TOOL_PARTS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_binding").getString("type"))),
+                        phandle = ToolParts.TOOL_PARTS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_handle").getString("type")));
+                Material mhead = Materials.MATERIAL_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_head").getString("material"))),
+                        mbinding = Materials.MATERIAL_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_binding").getString("material"))),
+                        mhandle = Materials.MATERIAL_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_handle").getString("material")));
+                assert mhead != null;
+                double head_edgeholding = mhead.edgeholding();
+                double head_hardness = mhead.hardness();
+
+                ToolType type = ToolTypes.TOOL_TYPES_REGISTRY.get(Identifier.tryParse(nbt.getString("sf_tool_type")));
+                assert type != null;
+                AttackProperties ap = type.defaultAttack();
+                if (showDcAttackCalc)
+                    ap = type.dcAttack().orElse(type.defaultAttack());
+                else if (showHcAttackCalc)
+                    ap = type.hcAttack().orElse(type.defaultAttack());
+
+                double piercing_damage = ap.piercingDamage();
+                double total_piercing_damage = ((head_edgeholding + (head_hardness * 0.75)) / 2) * piercing_damage;
+
+                assert phead != null;
+                double head_weight = phead.weight() * mhead.density(),
+                        binding_weight = Objects.requireNonNull(pbinding).weight() * Objects.requireNonNull(mbinding).density(),
+                        handle_weight = Objects.requireNonNull(phandle).weight() * Objects.requireNonNull(mhandle).density();
+
+                double effective_weight = head_weight + binding_weight + (0.25 * handle_weight);
+                double total_blunt_damage = (((effective_weight / 100) + (head_hardness * 0.25)) * ap.bluntDamage()) * 0.8;
+                double total_damage = total_piercing_damage + total_blunt_damage;
+                if (showDamageCalcDropdown) {
+                    if (ImGui.button(showDcAttackCalc ? "Hide DC Attack" : "Show DC Attack"))
+                        showDcAttackCalc ^= true;
+                    if (ImGui.button(showHcAttackCalc ? "Hide HC Attack" : "Show HC Attack"))
+                        showHcAttackCalc ^= true;
+                    ImGui.text(String.format("""
+                                    Total Piercing Damage:
+                                    \t((Edgeholding + (Head Hardness * 0.75)) / 2) * Piercing Damage
+                                    \t((%f + (%f * 0.75)) / 2) * %f = %f
+                                    Total Blunt Damage:
+                                    \t((((Head Weight + Binding Weight + (0.25 * Handle Weight))/100) + (Head Hardness * 0.25))*Blunt Damage Multiplier) * 0.8
+                                    \t((((%f + %f + (0.25 * %f))/100) + (%f * 0.25)) * %f) * 0.8 = %f
+                                    Total Damage: %f
+                                    With cooldown: Total Damage * Cooldown ^ 4
+                                    %f * %f^4 = %f
+                                    """,
+                            head_edgeholding,
+                            head_hardness,
+                            piercing_damage,
+                            total_piercing_damage,
+                            head_weight,
+                            binding_weight,
+                            handle_weight,
+                            head_hardness,
+                            ap.bluntDamage(),
+                            total_blunt_damage,
+                            total_damage,
+                            total_damage,
+                            Math.pow(player.getAttackCooldownProgress(0.0f), 4),
+                            total_damage * Math.pow(player.getAttackCooldownProgress(0.0f), 4)
+                    ));
+                } else {
+                    ImGui.text(String.format("""
+                                    Total Damage: %f
+                                    With Cooldown: %f
+                                    """,
+                            total_damage,
+                            total_damage * Math.pow(player.getAttackCooldownProgress(0.0f), 4)
+                    ));
+                }
+
             }
-            ImGui.end();
-
-            ImGui.setNextWindowPos(500, 10, ImGuiCond.Once);
-            ImGui.setNextWindowSizeConstraints(-1.0f, -1.0f, 500.0f, -1.0f);
-            ImGui.begin("SCD v1 | Melee", ImGuiWindowFlags.AlwaysAutoResize + ImGuiWindowFlags.AlwaysVerticalScrollbar);
-            ImGui.text(String.format("Attack cooldown: %f", player.getAttackCooldownProgress(0.0f)));
-            ImGui.text(String.format("Cooldown ratio: %f", Math.pow(player.getAttackCooldownProgress(0.0f), 4)));
-
             ImGui.end();
         }
     }
