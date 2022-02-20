@@ -11,14 +11,19 @@
   "environment": "*",
   "entrypoints": {
     "client": [
-      "online.maestoso.soulforged.client.SoulforgedClient"
+      "online.maestoso.soulforged.client.SoulforgedClient",
+      "online.maestoso.soulforgedcombatdebugger.CombatDebuggerClient"
+    ],
+    "server": [
+      "online.maestoso.soulforgedcombatdebugger.CombatDebuggerServer"
     ],
     "main": [
       "online.maestoso.soulforged.Soulforged"
     ]
   },
   "mixins": [
-    "soulforged.mixins.json"
+    "soulforged.mixins.json",
+    "soulforgedcombatdebugger.mixins.json"
   ],
   "accessWidener": "soulforged.accesswidener",
   "depends": {

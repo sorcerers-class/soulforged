@@ -8,7 +8,6 @@ import net.minecraft.block.BlockState;
 
 import net.minecraft.client.item.TooltipContext;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 
@@ -32,7 +31,6 @@ import net.minecraft.util.math.BlockPos;
 
 import net.minecraft.world.World;
 
-import online.maestoso.soulforged.item.tool.combat.AttackEventTimer;
 import online.maestoso.soulforged.item.tool.combat.AttackProperties;
 import online.maestoso.soulforged.item.tool.part.ToolPart;
 import online.maestoso.soulforged.item.tool.part.ToolParts;
@@ -45,7 +43,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class ToolItem extends Item {
     static final int head = 0;
@@ -155,20 +152,6 @@ public class ToolItem extends Item {
     }
     public void breakTool(ItemStack stack, @NotNull PlayerEntity user) {
         user.sendToolBreakStatus(Hand.MAIN_HAND);
-    }
-
-    public static ConcurrentHashMap<Pair<UUID, UUID>, AttackEventTimer> attackEventTimers = new ConcurrentHashMap<>();
-    @Override
-    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        super.inventoryTick(stack, world, entity, slot, selected);
-        if(attackEventTimers.size() > 0)
-        attackEventTimers.forEach((uuids, timer) -> {
-            timer.tick();
-            if(timer.isTimerFinished()) {
-                timer.onTimerFinished();
-                attackEventTimers.remove(uuids);
-            }
-        });
     }
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {

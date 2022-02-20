@@ -1,14 +1,12 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "online.maestoso.soulforged.mixin",
+  "package": "online.maestoso.soulforgedcombatdebugger.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "common.CheckToolHarvestabilityImpl",
-    "common.RegistryAccessor",
   ],
   "client": [
-    "client.ItemModelGeneratorInvoker"
+    "MinecraftClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1

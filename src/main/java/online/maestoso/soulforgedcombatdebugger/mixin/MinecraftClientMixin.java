@@ -1,10 +1,11 @@
-package online.maestoso.soulforged.mixin.client;
+package online.maestoso.soulforgedcombatdebugger.mixin;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
 import net.minecraft.client.render.RenderTickCounter;
 import online.maestoso.soulforged.Soulforged;
-import online.maestoso.soulforgedcombatdebugger.debug.gui.ImGuiRenderer;
+import online.maestoso.soulforgedcombatdebugger.gui.CombatDebuggerClientUI;
+import online.maestoso.soulforgedcombatdebugger.gui.ImGuiRenderer;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -20,6 +21,7 @@ public class MinecraftClientMixin {
     @Shadow
     private float pausedTickDelta;
 
+    private boolean hideCombatDebugger = false;
     @Shadow
     @Final
     private RenderTickCounter renderTickCounter;
@@ -38,6 +40,7 @@ public class MinecraftClientMixin {
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gl/Framebuffer;endWrite()V", shift = At.Shift.BEFORE))
     private void onPostRenderEverything(boolean tick, CallbackInfo ci) {
         float delta = this.paused ? this.pausedTickDelta : this.renderTickCounter.tickDelta;
+        CombatDebuggerClientUI.render(delta);
         ImGuiRenderer.INSTANCE.finishFrame(delta);
     }
 
