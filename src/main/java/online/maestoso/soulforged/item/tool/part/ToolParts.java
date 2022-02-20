@@ -24,7 +24,7 @@ public class ToolParts {
 
     public static final ToolPart SLIM_HILT = register(new Identifier("soulforged", "slim_hilt"), new ToolPart(0.15, 33));
     public static final ToolPart HILT = register(new Identifier("soulforged", "hilt"), new ToolPart(0.2, 30));
-    public static final ToolPart WIDE_HILT = register(new Identifier("soulforged", "wide_hilt"), new ToolPart(0.3, 28));
+    public static final ToolPart WIDE_HILT = register(new Identifier("soulforged", "wide_hilt"), new ToolPart(0.301, 28));
 
     public static final ToolPart SHORTSWORD_BLADE = register(new Identifier("soulforged", "shortsword_blade"), new ToolPart(0.75, 1));
     public static final ToolPart BROADSWORD_BLADE = register(new Identifier("soulforged", "broadsword_blade"), new ToolPart(1, 1));
@@ -41,7 +41,7 @@ public class ToolParts {
     public static final ToolPart WARHAMMER_HEAD = register(new Identifier("soulforged", "warhammer_head"), new ToolPart(1.2, 1.8));
 
     public static final ToolPart AXE_HEAD = register(new Identifier("soulforged", "axe_head"), new ToolPart(0.8, 0.95));
-    public static final ToolPart PICKAXE_HEAD = register(new Identifier("soulforged", "pickaxe_head"), new ToolPart(1, 1));
+    public static final ToolPart PICKAXE_HEAD = register(new Identifier("soulforged", "pickaxe_head"), new ToolPart(1.01, 1));
     public static final ToolPart SHOVEL_HEAD = register(new Identifier("soulforged", "shovel_head"), new ToolPart(0.5, 1));
     public static final ToolPart HOE_HEAD = register(new Identifier("soulforged", "hoe_head"), new ToolPart(0.2, 1));
 
