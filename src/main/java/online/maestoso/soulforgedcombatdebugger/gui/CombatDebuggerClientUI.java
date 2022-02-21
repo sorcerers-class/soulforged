@@ -346,6 +346,17 @@ public class CombatDebuggerClientUI {
                         packetCounter
                 ));
                 ImGui.end();
+                ImGui.begin("SCD v1 | Move Crits");
+                ImGui.text(String.format("""
+                        Facing: %s
+                        Moving: %s
+                        Adjusted Velocity: %s
+                        """,
+                        player.getYaw() % 360.0f,
+                        player.getVelocity(),
+                        player.getVelocity().rotateY((float) Math.toRadians(player.getYaw() % 360.0f))
+                ));
+                ImGui.end();
             }
         }
     }
