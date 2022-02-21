@@ -8,6 +8,7 @@ import net.minecraft.block.BlockState;
 
 import net.minecraft.client.item.TooltipContext;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 
@@ -31,6 +32,7 @@ import net.minecraft.util.math.BlockPos;
 
 import net.minecraft.world.World;
 
+import online.maestoso.soulforged.item.tool.combat.AttackHandler;
 import online.maestoso.soulforged.item.tool.combat.AttackProperties;
 import online.maestoso.soulforged.item.tool.part.ToolPart;
 import online.maestoso.soulforged.item.tool.part.ToolParts;
@@ -89,12 +91,12 @@ public class ToolItem extends Item {
         if(attackType == 1) {
             if(type.dcAttack().isPresent())
                 ap = type.dcAttack().get();
-            else return 2.0f;
+            else ap = type.defaultAttack();
         }
-        if(attackType == 2) {
-            if(type.hcAttack().isPresent())
+        if(attackType >= 3) {
+            if(type.dcAttack().isPresent())
                 ap = type.hcAttack().get();
-            else return 2.0f;
+            else ap = type.defaultAttack();
         }
 
         double piercing_damage = ap.piercingDamage();
@@ -140,6 +142,14 @@ public class ToolItem extends Item {
 
         return 256 - Math.min(Math.min(handle_damage, binding_damage), head_damage);
     }
+
+    @Override
+    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
+        for(AttackHandler ah : AttackHandler.attackHandlers.values()) {
+            ah.tick();
+        }
+    }
+
     @Contract("_ -> new")
     public static int @NotNull [] getDurabilities(@NotNull ItemStack stack) {
         assert stack.getNbt() != null;

@@ -78,6 +78,7 @@ public class GiveToolCommand {
 
             ToolItem.calcAttackSpeed(stack);
             ToolItem.calcDamage(stack, 0);
+            ToolItem.calcDurability(stack);
 
             target.giveItemStack(stack);
             source.sendFeedback(new TranslatableText("commands.give.success.single", 1, stack.hasCustomName() ? stack.getName() : new LiteralText("Forged Tool"), targets.iterator().next().getDisplayName()), true);

@@ -36,14 +36,16 @@ public class CombatDebuggerClientUI {
                             showDamageCalcDropdown = false,
                             showDcAttackCalc = false,
                             showHcAttackCalc = false;
+    public static int lastPacket = -1;
+    public static int packetCounter = 0;
+    public static int attackType = 0;
     public static void render(float delta) {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if (player != null) {
-            ImGui.setNextWindowPos(10, 10, ImGuiCond.Once);
             ImGui.setNextWindowSizeConstraints(-1, -1, 500, 500);
-            ImGui.begin("SCD v1 | Current Tool", ImGuiWindowFlags.AlwaysVerticalScrollbar);
             ItemStack stack = player.getMainHandStack();
             if (stack.getItem().equals(SoulforgedItems.TOOL)) {
+                ImGui.begin("SCD v1 | Current Tool", ImGuiWindowFlags.AlwaysVerticalScrollbar);
                 ImGui.text(stack.getName().getString());
                 assert stack.getNbt() != null;
                 NbtCompound nbt = stack.getNbt(),
@@ -254,8 +256,6 @@ public class CombatDebuggerClientUI {
                             part.durability()));
                 }
                 ImGui.end();
-
-                ImGui.setNextWindowPos(500, 10, ImGuiCond.Once);
                 ImGui.setNextWindowSizeConstraints(-1.0f, -1.0f, 500.0f, 500f);
                 ImGui.begin("SCD v1 | Melee", ImGuiWindowFlags.AlwaysHorizontalScrollbar);
                 ImGui.text(String.format("Attack cooldown: %f", player.getAttackCooldownProgress(0.0f)));
@@ -335,9 +335,18 @@ public class CombatDebuggerClientUI {
                             total_damage * Math.pow(player.getAttackCooldownProgress(0.0f), 4)
                     ));
                 }
-
+                ImGui.text(String.format("Attack type: %d", attackType));
+                ImGui.end();
+                ImGui.begin("SCD v1 | Mouse");
+                ImGui.text(String.format("""
+                        Last Packet Action: %d
+                        Packet Count: %d
+                        """,
+                        lastPacket,
+                        packetCounter
+                ));
+                ImGui.end();
             }
-            ImGui.end();
         }
     }
 }

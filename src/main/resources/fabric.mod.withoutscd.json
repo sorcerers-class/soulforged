@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "soulforged",
+  "version": "${version}",
+  "name": "Soulforged",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/soulforged/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "online.maestoso.soulforged.client.SoulforgedClient"
+    ],
+    "server": [
+    ],
+    "main": [
+      "online.maestoso.soulforged.Soulforged"
+    ]
+  },
+  "mixins": [
+    "soulforged.mixins.json"
+  ],
+  "accessWidener": "soulforged.accesswidener",
+  "depends": {
+    "fabricloader": ">=0.12.12",
+    "fabric": "*",
+    "minecraft": "1.18.1"
+  }
+}
