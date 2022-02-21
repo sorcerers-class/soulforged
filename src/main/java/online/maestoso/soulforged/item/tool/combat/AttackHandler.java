@@ -36,7 +36,7 @@ public class AttackHandler {
     }
     public void onFinish() {
         if(target != null)
-            target.damage(DamageSource.player(client), (float) ToolItem.calcDamage(client.getMainHandStack(), packets.size()) * attackCooldown);
+            target.damage(DamageSource.player(client), (float) ToolItem.calcDamage(client.getMainHandStack(), packets.size(), client.getMovementDirection(), client.getHorizontalFacing(), client, target, attackCooldown == 1.0f) * attackCooldown);
         CombatDebuggerClientUI.attackType = packets.size();
     }
     public boolean getFinished() {

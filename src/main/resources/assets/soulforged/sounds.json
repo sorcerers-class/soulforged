@@ -1,0 +1,20 @@
+{
+  "crit_thrusting":{
+    "subtitle": "subtitles.soulforged.crit_thrusting",
+    "sounds": [
+      "soulforged:crit_thrusting"
+    ]
+  },
+  "crit_crushing": {
+    "subtitle": "subtitles.soulforged.crit_crushing",
+    "sounds": [
+      "soulforged:crit_crushing"
+    ]
+  },
+  "crit_slashing": {
+    "subtitle": "subtitles.soulforged.crit_slashing",
+    "sounds": [
+      "soulforged:crit_slashing"
+    ]
+  }
+}

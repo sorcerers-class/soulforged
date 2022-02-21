@@ -26,6 +26,7 @@ import static net.minecraft.server.command.CommandManager.*;
 
 import java.util.Collection;
 import java.util.Objects;
+import java.util.Optional;
 
 public class GiveToolCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
@@ -77,7 +78,7 @@ public class GiveToolCommand {
             Objects.requireNonNull(stack.getSubNbt("sf_handle")).putString("type", handle_part);
 
             ToolItem.calcAttackSpeed(stack);
-            ToolItem.calcDamage(stack, 0);
+            ToolItem.calcDamage(stack, 0, null, null, null, null, false);
             ToolItem.calcDurability(stack);
 
             target.giveItemStack(stack);

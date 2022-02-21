@@ -23,6 +23,8 @@ import net.minecraft.item.ItemUsageContext;
 
 import net.minecraft.nbt.NbtCompound;
 
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
@@ -30,16 +32,20 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import online.maestoso.soulforged.item.tool.combat.AttackHandler;
 import online.maestoso.soulforged.item.tool.combat.AttackProperties;
+import online.maestoso.soulforged.item.tool.combat.CritTypes;
 import online.maestoso.soulforged.item.tool.part.ToolPart;
 import online.maestoso.soulforged.item.tool.part.ToolParts;
 
 import online.maestoso.soulforged.material.Material;
 import online.maestoso.soulforged.material.Materials;
 
+import online.maestoso.soulforged.sound.SoulforgedSoundEvents;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -67,7 +73,7 @@ public class ToolItem extends Item {
         assert stack.getNbt() != null;
         return 1 / ((getWeight(stack) / 800) / Objects.requireNonNull(ToolTypes.TOOL_TYPES_REGISTRY.get(new Identifier(stack.getNbt().getString("sf_tool_type")))).defaultAttack().speed());
     }
-    public static double calcDamage(ItemStack stack, int attackType) {
+    public static double calcDamage(ItemStack stack, int attackType, Direction movementDirection, Direction facing, PlayerEntity attacker, Entity target, boolean crit) {
         NbtCompound nbt = stack.getNbt();
         assert nbt != null;
         if(Arrays.stream(getDurabilities(stack)).anyMatch((i) -> i == 0))
@@ -89,16 +95,39 @@ public class ToolItem extends Item {
 
         AttackProperties ap = type.defaultAttack();
         if(attackType == 1) {
-            if(type.dcAttack().isPresent())
-                ap = type.dcAttack().get();
+            if(type.hcAttack().isPresent())
+                ap = type.hcAttack().get();
             else ap = type.defaultAttack();
         }
         if(attackType >= 3) {
             if(type.dcAttack().isPresent())
-                ap = type.hcAttack().get();
+                ap = type.dcAttack().get();
             else ap = type.defaultAttack();
         }
+        boolean movementCrit = true;
+        if(movementDirection != null && facing != null) {
+            CritTypes critType;
 
+            if(movementDirection == Direction.DOWN || movementDirection == Direction.UP) {
+                critType = CritTypes.DOWN;
+            }
+            else if(movementDirection == facing) {
+                critType = CritTypes.FORWARD;
+            }
+            else {
+                critType = CritTypes.SIDE;
+            }
+            if(ap.type() != critType || !crit) {
+                ap = type.defaultAttack();
+                movementCrit = false;
+            }
+        }
+        if(target != null && crit && movementCrit)
+        switch(ap.category()) {
+            case SLASHING -> target.getWorld().playSound(null, target.getBlockPos(), SoulforgedSoundEvents.CRIT_SLASHING, SoundCategory.PLAYERS, 1.0f, 1.0f);
+            case THRUSTING -> target.getWorld().playSound(null, target.getBlockPos(), SoulforgedSoundEvents.CRIT_THRUSTING, SoundCategory.PLAYERS, 1.0f, 1.0f);
+            case CRUSHING -> target.getWorld().playSound(null, target.getBlockPos(), SoulforgedSoundEvents.CRIT_CRUSHING, SoundCategory.PLAYERS, 1.0f, 1.0f);
+        }
         double piercing_damage = ap.piercingDamage();
         double total_piercing_damage = ((head_edgeholding + (head_hardness * 0.75)) / 2) * piercing_damage;
 
@@ -250,7 +279,7 @@ public class ToolItem extends Item {
                 .append(" / ").formatted(Formatting.RESET)
                 .append(new TranslatableText("item.soulforged.tool.tooltip.speed", Math.round((1 / calcAttackSpeed(stack)) * 100.0) / 100.0).formatted(Formatting.GREEN, Formatting.BOLD))
                 .append(" / ").formatted(Formatting.RESET)
-                .append(new TranslatableText("item.soulforged.tool.tooltip.attack", Math.round(calcDamage(stack, 0) * 100.0) / 100.0).formatted(Formatting.RED, Formatting.BOLD))
+                .append(new TranslatableText("item.soulforged.tool.tooltip.attack", Math.round(calcDamage(stack, 0, null, null, null, null, false) * 100.0) / 100.0).formatted(Formatting.RED, Formatting.BOLD))
         );
         tooltip.add(new TranslatableText("item.soulforged.tool.tooltip.defaultattack", new TranslatableText("item.soulforged.tool.tooltip.attacktype." + tool_type.defaultAttack().category().name().toLowerCase()), new TranslatableText("item.soulforged.tool.tooltip.attackdirection." + tool_type.defaultAttack().type().name().toLowerCase())).formatted(Formatting.DARK_PURPLE));
         tooltip.add(new LiteralText("")

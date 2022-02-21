@@ -134,5 +134,9 @@
   "item.soulforged.part.axe_head": "%s Axe Head",
   "item.soulforged.part.pickaxe_head": "%s Pickaxe Head",
   "item.soulforged.part.shovel_head": "%s Shovel Head",
-  "item.soulforged.part.hoe_head": "%s Hoe Head"
+  "item.soulforged.part.hoe_head": "%s Hoe Head",
+
+  "subtitles.soulforged.crit_thrusting": "Something gets impaled",
+  "subtitles.soulforged.crit_slashing": "Something gets stabbed",
+  "subtitles.soulforged.crit_crushing": "Something's bones break"
 }
