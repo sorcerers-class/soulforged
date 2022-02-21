@@ -11,11 +11,13 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Vec3d;
 import online.maestoso.soulforged.item.SoulforgedItems;
 import online.maestoso.soulforged.item.tool.ToolItem;
 import online.maestoso.soulforged.item.tool.ToolType;
 import online.maestoso.soulforged.item.tool.ToolTypes;
 import online.maestoso.soulforged.item.tool.combat.AttackProperties;
+import online.maestoso.soulforged.item.tool.combat.CritTypes;
 import online.maestoso.soulforged.item.tool.part.ToolPart;
 import online.maestoso.soulforged.item.tool.part.ToolParts;
 import online.maestoso.soulforged.material.Material;
@@ -346,15 +348,32 @@ public class CombatDebuggerClientUI {
                         packetCounter
                 ));
                 ImGui.end();
-                ImGui.begin("SCD v1 | Move Crits");
+                ImGui.begin("SCD v1 | Crits");
+                Vec3d velocity = player.getVelocity().rotateY((float) Math.toRadians(player.getYaw() % 360.0f)).multiply(-1.0f, 1.0f, 1.0f);
+                CritTypes direction;
+                if (Math.abs(velocity.y) > 0.1) {
+                    direction = CritTypes.DOWN;
+                } else if (Math.abs(velocity.x) > 0.01) {
+                    direction = CritTypes.SIDE;
+                } else if (Math.abs(velocity.z) > 0.01) {
+                    direction = CritTypes.FORWARD;
+                } else {
+                    direction = null;
+                }
                 ImGui.text(String.format("""
+                        Cooldown = 1.0: %b
                         Facing: %s
                         Moving: %s
                         Adjusted Velocity: %s
+                        Moving: %b %b %b
+                        Resultant Crit: %s
                         """,
+                        player.getAttackCooldownProgress(0.0f) == 1.0f,
                         player.getYaw() % 360.0f,
                         player.getVelocity(),
-                        player.getVelocity().rotateY((float) Math.toRadians(player.getYaw() % 360.0f))
+                        velocity,
+                        Math.abs(velocity.x) > 0.01, Math.abs(velocity.y) > 0.1, Math.abs(velocity.z) > 0.01,
+                        direction
                 ));
                 ImGui.end();
             }

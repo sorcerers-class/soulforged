@@ -73,7 +73,7 @@ public class ToolItem extends Item {
         assert stack.getNbt() != null;
         return 1 / ((getWeight(stack) / 800) / Objects.requireNonNull(ToolTypes.TOOL_TYPES_REGISTRY.get(new Identifier(stack.getNbt().getString("sf_tool_type")))).defaultAttack().speed());
     }
-    public static double calcDamage(ItemStack stack, int attackType, Direction movementDirection, Direction facing, PlayerEntity attacker, Entity target, boolean crit) {
+    public static double calcDamage(ItemStack stack, int attackType, Vec3d velocity, PlayerEntity attacker, Entity target, boolean crit) {
         NbtCompound nbt = stack.getNbt();
         assert nbt != null;
         if(Arrays.stream(getDurabilities(stack)).anyMatch((i) -> i == 0))
@@ -104,25 +104,20 @@ public class ToolItem extends Item {
                 ap = type.dcAttack().get();
             else ap = type.defaultAttack();
         }
-        boolean movementCrit = true;
-        if(movementDirection != null && facing != null) {
-            CritTypes critType;
-
-            if(movementDirection == Direction.DOWN || movementDirection == Direction.UP) {
-                critType = CritTypes.DOWN;
+        CritTypes direction;
+        if(velocity != null) {
+            if (Math.abs(velocity.y) > 0.1) {
+                direction = CritTypes.DOWN;
+            } else if (Math.abs(velocity.x) > 0.01) {
+                direction = CritTypes.SIDE;
+            } else if (Math.abs(velocity.z) > 0.01) {
+                direction = CritTypes.FORWARD;
+            } else {
+                direction = null;
             }
-            else if(movementDirection == facing) {
-                critType = CritTypes.FORWARD;
-            }
-            else {
-                critType = CritTypes.SIDE;
-            }
-            if(ap.type() != critType || !crit) {
-                ap = type.defaultAttack();
-                movementCrit = false;
-            }
-        }
-        if(target != null && crit && movementCrit)
+        } else direction = null;
+        crit &= direction == ap.type();
+        if(target != null && crit)
         switch(ap.category()) {
             case SLASHING -> target.getWorld().playSound(null, target.getBlockPos(), SoulforgedSoundEvents.CRIT_SLASHING, SoundCategory.PLAYERS, 1.0f, 1.0f);
             case THRUSTING -> target.getWorld().playSound(null, target.getBlockPos(), SoulforgedSoundEvents.CRIT_THRUSTING, SoundCategory.PLAYERS, 1.0f, 1.0f);
@@ -279,7 +274,7 @@ public class ToolItem extends Item {
                 .append(" / ").formatted(Formatting.RESET)
                 .append(new TranslatableText("item.soulforged.tool.tooltip.speed", Math.round((1 / calcAttackSpeed(stack)) * 100.0) / 100.0).formatted(Formatting.GREEN, Formatting.BOLD))
                 .append(" / ").formatted(Formatting.RESET)
-                .append(new TranslatableText("item.soulforged.tool.tooltip.attack", Math.round(calcDamage(stack, 0, null, null, null, null, false) * 100.0) / 100.0).formatted(Formatting.RED, Formatting.BOLD))
+                .append(new TranslatableText("item.soulforged.tool.tooltip.attack", Math.round(calcDamage(stack, 0, null, null, null, false) * 100.0) / 100.0).formatted(Formatting.RED, Formatting.BOLD))
         );
         tooltip.add(new TranslatableText("item.soulforged.tool.tooltip.defaultattack", new TranslatableText("item.soulforged.tool.tooltip.attacktype." + tool_type.defaultAttack().category().name().toLowerCase()), new TranslatableText("item.soulforged.tool.tooltip.attackdirection." + tool_type.defaultAttack().type().name().toLowerCase())).formatted(Formatting.DARK_PURPLE));
         tooltip.add(new LiteralText("")
