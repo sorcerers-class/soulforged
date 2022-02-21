@@ -1,10 +1,8 @@
 package online.maestoso.soulforged.mixin.common;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import online.maestoso.soulforged.item.SoulforgedItems;
 import online.maestoso.soulforged.item.tool.combat.AttackHandler;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,7 +21,6 @@ public class InteractPacketMixin {
         if(this.player != null) {
             if(this.player.getMainHandStack() != null) {
                 if(this.player.getMainHandStack().getItem() == SoulforgedItems.TOOL) {
-                    System.out.println("Received PlayerInteractEntityC2SPacket!");
                     AttackHandler.attackHandlers.get(this.player.getUuid()).setTarget(packet.getEntity(this.player.getWorld()));
                     ci.cancel();
                 }

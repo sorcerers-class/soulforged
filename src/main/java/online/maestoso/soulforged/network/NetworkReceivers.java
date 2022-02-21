@@ -6,7 +6,7 @@ import online.maestoso.soulforged.item.tool.combat.AttackHandler;
 
 public class NetworkReceivers {
     public static void register() {
-        ServerPlayNetworking.registerGlobalReceiver(NetworkIdentifiers.MOUSE_PACKET, AttackHandler::addOrModifyAttackHandler);
+        ServerPlayNetworking.registerGlobalReceiver(NetworkIdentifiers.MOUSE_PACKET, (server, client, handler, buf, responseSender) -> AttackHandler.addOrModifyAttackHandler(client, buf));
     }
 
 }
