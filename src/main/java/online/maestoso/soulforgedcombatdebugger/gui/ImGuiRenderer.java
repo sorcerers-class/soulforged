@@ -20,6 +20,9 @@ public class ImGuiRenderer {
     private final ImGuiImplGl3 imGuiGl3 = new ImGuiImplGl3();
     public static ImGuiRenderer INSTANCE;
 
+    /**
+     * Create ImGUI context, configure, apply theme, and init GLFW/GL
+     */
     public void setup() {
         ImGui.createContext();
 
@@ -36,10 +39,18 @@ public class ImGuiRenderer {
         imGuiGlfw.init(MinecraftClient.getInstance().getWindow().getHandle(), true);
         imGuiGl3.init();
     }
+
+    /**
+     * Begin a new frame.
+     */
     public void beginFrame(float delta) {
         imGuiGlfw.newFrame();
         ImGui.newFrame();
     }
+
+    /**
+     * End a frame and update the windows.
+     */
     public void finishFrame(float delta) {
         ImGui.render();
         imGuiGl3.renderDrawData(ImGui.getDrawData());

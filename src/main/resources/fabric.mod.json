@@ -15,7 +15,6 @@
       "online.maestoso.soulforgedcombatdebugger.CombatDebuggerClient"
     ],
     "server": [
-      "online.maestoso.soulforgedcombatdebugger.CombatDebuggerServer"
     ],
     "main": [
       "online.maestoso.soulforged.Soulforged"

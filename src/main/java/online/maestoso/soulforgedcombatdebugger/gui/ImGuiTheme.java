@@ -11,9 +11,13 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class ImGuiTheme {
-
+    /**
+     * Creates the ImGUI theme.
+     * @throws IOException if the font file cannot be read.
+     */
     public static void applyImGuiTheme() throws IOException {
         ImGuiStyle style = ImGui.getStyle();
+        // i don't feel like commenting all of this, so look at the documentation for ImGuiStyle
         style.setWindowPadding(10f, 10f);
         style.setPopupRounding(0f);
         style.setFramePadding(8f, 4f);
@@ -39,24 +43,28 @@ public class ImGuiTheme {
         style.setDisplaySafeAreaPadding(3f, 3f);
 
         style.setColor(ImGuiCol.Text, 1.0f, 1.0f, 1.0f, 1.0f);
-        style.setColor(ImGuiCol.WindowBg, 0.2f, 0.2f, 0.2f, 0.2f);
-        style.setColor(ImGuiCol.Border, 0.2f, 0.2f, 0.2f, 0.2f);
+        style.setColor(ImGuiCol.WindowBg, 0.1875f, 0.1875f, 0.1875f, 0.1875f);
+        style.setColor(ImGuiCol.Border, 0.1875f, 0.1875f, 0.1875f, 0.1875f);
 
         style.setColor(ImGuiCol.TitleBgActive, 0.5f, 0.0f, 1.0f, 1.0f);
         style.setColor(ImGuiCol.TitleBgCollapsed, 0.25f, 0.0f, 0.5f, 1.0f);
         style.setColor(ImGuiCol.TitleBg, 0.5f, 0.0f, 1.0f, 1.0f);
 
+        // Read ComicMono.ttf
         ImFontAtlas font = ImGui.getIO().getFonts();
         InputStream comicMono = CombatDebuggerClient.class.getResourceAsStream("/assets/soulforgedcombatdebugger/ComicMono.ttf");
         if(comicMono == null) {
-            throw new IllegalStateException("ComicMono.ttf missing!");
+            throw new IOException("ComicMono.ttf missing!");
         }
+        // Configure font to be size 20
         ImFontConfig cfg = new ImFontConfig();
         cfg.setName("Comic Mono");
         font.addFontFromMemoryTTF(comicMono.readAllBytes(), 20f, cfg);
+        // Fallback font
         ImFontConfig defaultCfg = new ImFontConfig();
         defaultCfg.setName("Monospace");
         font.addFontDefault(defaultCfg);
+        // Create theme
         font.build();
     }
 

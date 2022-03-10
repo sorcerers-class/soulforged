@@ -10,6 +10,6 @@ public class CombatDebuggerClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        ImGuiRenderer.INSTANCE = new ImGuiRenderer();
+        ImGuiRenderer.INSTANCE = new ImGuiRenderer(); // Create the ImGUI renderer instance.
     }
 }

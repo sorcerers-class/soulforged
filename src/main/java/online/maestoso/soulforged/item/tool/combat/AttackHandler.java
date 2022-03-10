@@ -1,6 +1,7 @@
 package online.maestoso.soulforged.item.tool.combat;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -19,7 +20,7 @@ public class AttackHandler {
     private boolean finished = false;
     private final float attackCooldown;
     private Entity target;
-    private Vector<Integer> packets = new Vector<>();
+    private final Vector<Integer> packets = new Vector<>();
     public AttackHandler(ServerPlayerEntity client) {
         this.client = client;
         this.addPacket(1);
@@ -27,7 +28,7 @@ public class AttackHandler {
     }
     public void tick() {
         tickCounter += 1;
-        if(tickCounter == 10) {
+        if(tickCounter == 30) {
             onFinish();
             finished = true;
         }
@@ -38,8 +39,9 @@ public class AttackHandler {
     }
     public void onFinish() {
         if(target != null)
-            target.damage(DamageSource.player(client), (float) ToolItem.calcDamage(client.getMainHandStack(), packets.size(), client.getVelocity().rotateY((float) Math.toRadians(client.getYaw() % 360.0f)).multiply(-1.0f, 1.0f, 1.0f), client, target, attackCooldown == 1.0f) * attackCooldown);
+            target.damage(DamageSource.player(client), (float) ToolItem.calcDamage(client.getMainHandStack(), packets.size(), client, target, attackCooldown));
         CombatDebuggerClientUI.attackType = packets.size();
+        client.getMainHandStack().postHit((LivingEntity) target, client);
     }
     public boolean getFinished() {
         return finished;
@@ -51,10 +53,14 @@ public class AttackHandler {
         if(attackHandlers.containsKey(client.getUuid()) && !attackHandlers.get(client.getUuid()).getFinished()) {
             AttackHandler attackHandler = attackHandlers.get(client.getUuid());
             int button = buf.readInt();
-            int action = buf.readInt();
-            attackHandler.addPacket(action);
+            if(button == 0) {
+                int action = buf.readInt();
+                attackHandler.addPacket(action);
+            }
         } else {
-            attackHandlers.put(client.getUuid(), new AttackHandler(client));
+            int button = buf.readInt();
+            if(button == 0)
+                attackHandlers.put(client.getUuid(), new AttackHandler(client));
         }
     }
 }

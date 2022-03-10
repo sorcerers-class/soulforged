@@ -78,7 +78,7 @@ public class GiveToolCommand {
             Objects.requireNonNull(stack.getSubNbt("sf_handle")).putString("type", handle_part);
 
             ToolItem.calcAttackSpeed(stack);
-            ToolItem.calcDamage(stack, 0, null, null, null, false);
+            ToolItem.calcDamage(stack, 0, null, null, null);
             ToolItem.calcDurability(stack);
 
             target.giveItemStack(stack);

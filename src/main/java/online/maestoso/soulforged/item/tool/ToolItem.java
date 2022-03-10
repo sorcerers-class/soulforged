@@ -46,6 +46,7 @@ import online.maestoso.soulforged.material.Material;
 import online.maestoso.soulforged.material.Materials;
 
 import online.maestoso.soulforged.sound.SoulforgedSoundEvents;
+import online.maestoso.soulforgedcombatdebugger.gui.CombatDebuggerClientUI;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -73,67 +74,62 @@ public class ToolItem extends Item {
         assert stack.getNbt() != null;
         return 1 / ((getWeight(stack) / 800) / Objects.requireNonNull(ToolTypes.TOOL_TYPES_REGISTRY.get(new Identifier(stack.getNbt().getString("sf_tool_type")))).defaultAttack().speed());
     }
-    public static double calcDamage(ItemStack stack, int attackType, Vec3d velocity, PlayerEntity attacker, Entity target, boolean crit) {
+    public static double calcDamage(ItemStack stack, int attackType, PlayerEntity attacker, Entity target, Float crit) {
         NbtCompound nbt = stack.getNbt();
-        assert nbt != null;
-        if(Arrays.stream(getDurabilities(stack)).anyMatch((i) -> i == 0))
-            return 0;
-        ToolPart head = ToolParts.TOOL_PARTS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_head").getString("type"))),
-                binding = ToolParts.TOOL_PARTS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_binding").getString("type"))),
-                handle = ToolParts.TOOL_PARTS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_handle").getString("type")));
-        Material mhead = Materials.MATERIAL_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_head").getString("material"))),
-                mbinding = Materials.MATERIAL_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_binding").getString("material"))),
-                mhandle = Materials.MATERIAL_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_handle").getString("material")));
+        if(nbt != null) {
+            if (Arrays.stream(getDurabilities(stack)).anyMatch((i) -> i == 0))
+                return 0;
+            ToolPart head = ToolParts.TOOL_PARTS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_head").getString("type"))),
+                    binding = ToolParts.TOOL_PARTS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_binding").getString("type"))),
+                    handle = ToolParts.TOOL_PARTS_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_handle").getString("type")));
+            Material mhead = Materials.MATERIAL_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_head").getString("material"))),
+                    mbinding = Materials.MATERIAL_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_binding").getString("material"))),
+                    mhandle = Materials.MATERIAL_REGISTRY.get(Identifier.tryParse(nbt.getCompound("sf_handle").getString("material")));
 
-        assert mhead != null;
+            assert mhead != null;
 
-        double head_edgeholding =  mhead.edgeholding();
-        double head_hardness = mhead.hardness();
+            double head_edgeholding = mhead.edgeholding();
+            double head_hardness = mhead.hardness();
 
-        ToolType type = ToolTypes.TOOL_TYPES_REGISTRY.get(Identifier.tryParse(nbt.getString("sf_tool_type")));
-        assert type != null;
+            ToolType type = ToolTypes.TOOL_TYPES_REGISTRY.get(Identifier.tryParse(nbt.getString("sf_tool_type")));
+            assert type != null;
 
-        AttackProperties ap = type.defaultAttack();
-        if(attackType == 1) {
-            if(type.hcAttack().isPresent())
-                ap = type.hcAttack().get();
-            else ap = type.defaultAttack();
-        }
-        if(attackType >= 3) {
-            if(type.dcAttack().isPresent())
-                ap = type.dcAttack().get();
-            else ap = type.defaultAttack();
-        }
-        CritTypes direction;
-        if(velocity != null) {
-            if (Math.abs(velocity.y) > 0.1) {
-                direction = CritTypes.DOWN;
-            } else if (Math.abs(velocity.x) > 0.01) {
-                direction = CritTypes.SIDE;
-            } else if (Math.abs(velocity.z) > 0.01) {
-                direction = CritTypes.FORWARD;
-            } else {
-                direction = null;
+            AttackProperties ap = type.defaultAttack();
+            if (attackType == 1) {
+                if (type.hcAttack().isPresent())
+                    ap = type.hcAttack().get();
+                else ap = type.defaultAttack();
             }
-        } else direction = null;
-        crit &= direction == ap.type();
-        if(target != null && crit)
-        switch(ap.category()) {
-            case SLASHING -> target.getWorld().playSound(null, target.getBlockPos(), SoulforgedSoundEvents.CRIT_SLASHING, SoundCategory.PLAYERS, 1.0f, 1.0f);
-            case THRUSTING -> target.getWorld().playSound(null, target.getBlockPos(), SoulforgedSoundEvents.CRIT_THRUSTING, SoundCategory.PLAYERS, 1.0f, 1.0f);
-            case CRUSHING -> target.getWorld().playSound(null, target.getBlockPos(), SoulforgedSoundEvents.CRIT_CRUSHING, SoundCategory.PLAYERS, 1.0f, 1.0f);
-        }
-        double piercing_damage = ap.piercingDamage();
-        double total_piercing_damage = ((head_edgeholding + (head_hardness * 0.75)) / 2) * piercing_damage;
+            if (attackType >= 3) {
+                if (type.dcAttack().isPresent())
+                    ap = type.dcAttack().get();
+                else ap = type.defaultAttack();
+            }
+            Vec3d velocity = Vec3d.ZERO;
+            if(attacker != null)
+                velocity = attacker.getVelocity().rotateY((float) Math.toRadians(attacker.getYaw() % 360.0f)).multiply(-1.0f, 1.0f, 1.0f);
+            CombatDebuggerClientUI.critType = ap.type();
+            if(velocity != null && ap.category() != null && target != null) {
+                switch (ap.category()) {
+                    case SLASHING -> target.getWorld().playSound(null, target.getBlockPos(), SoulforgedSoundEvents.CRIT_SLASHING, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                    case THRUSTING -> target.getWorld().playSound(null, target.getBlockPos(), SoulforgedSoundEvents.CRIT_THRUSTING, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                    case CRUSHING -> target.getWorld().playSound(null, target.getBlockPos(), SoulforgedSoundEvents.CRIT_CRUSHING, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                }
+           }
+            double piercing_damage = ap.piercingDamage();
+            double total_piercing_damage = ((head_edgeholding + (head_hardness * 0.75)) / 2) * piercing_damage;
 
-        assert head != null;
-        double head_weight = head.weight() * mhead.density(),
-                binding_weight = Objects.requireNonNull(binding).weight() * Objects.requireNonNull(mbinding).density(),
-                handle_weight = Objects.requireNonNull(handle).weight() * Objects.requireNonNull(mhandle).density();
+            assert head != null;
+            double head_weight = head.weight() * mhead.density(),
+                    binding_weight = Objects.requireNonNull(binding).weight() * Objects.requireNonNull(mbinding).density(),
+                    handle_weight = Objects.requireNonNull(handle).weight() * Objects.requireNonNull(mhandle).density();
 
-        double effective_weight = head_weight + binding_weight + (0.25 * handle_weight);
-        double total_blunt_damage = (((effective_weight/100) + (head_hardness*0.25))*ap.bluntDamage())*0.8;
-        return total_blunt_damage + total_piercing_damage;
+            double effective_weight = head_weight + binding_weight + (0.25 * handle_weight);
+            double total_blunt_damage = (((effective_weight / 100) + (head_hardness * 0.25)) * ap.bluntDamage()) * 0.8;
+            if (crit == null)
+                crit = 0.0f;
+            return (total_blunt_damage + total_piercing_damage) * crit;
+        } else return 1.0f;
     }
     public static int calcDurability(@NotNull ItemStack stack) {
         NbtCompound nbt = stack.getNbt();
@@ -274,7 +270,7 @@ public class ToolItem extends Item {
                 .append(" / ").formatted(Formatting.RESET)
                 .append(new TranslatableText("item.soulforged.tool.tooltip.speed", Math.round((1 / calcAttackSpeed(stack)) * 100.0) / 100.0).formatted(Formatting.GREEN, Formatting.BOLD))
                 .append(" / ").formatted(Formatting.RESET)
-                .append(new TranslatableText("item.soulforged.tool.tooltip.attack", Math.round(calcDamage(stack, 0, null, null, null, false) * 100.0) / 100.0).formatted(Formatting.RED, Formatting.BOLD))
+                .append(new TranslatableText("item.soulforged.tool.tooltip.attack", Math.round(calcDamage(stack, 0, null, null, null) * 100.0) / 100.0).formatted(Formatting.RED, Formatting.BOLD))
         );
         tooltip.add(new TranslatableText("item.soulforged.tool.tooltip.defaultattack", new TranslatableText("item.soulforged.tool.tooltip.attacktype." + tool_type.defaultAttack().category().name().toLowerCase()), new TranslatableText("item.soulforged.tool.tooltip.attackdirection." + tool_type.defaultAttack().type().name().toLowerCase())).formatted(Formatting.DARK_PURPLE));
         tooltip.add(new LiteralText("")

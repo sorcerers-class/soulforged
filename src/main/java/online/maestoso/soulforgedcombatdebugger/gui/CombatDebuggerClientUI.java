@@ -41,6 +41,7 @@ public class CombatDebuggerClientUI {
     public static int lastPacket = -1;
     public static int packetCounter = 0;
     public static int attackType = 0;
+    public static CritTypes critType = null;
     public static void render(float delta) {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if (player != null) {
@@ -350,16 +351,17 @@ public class CombatDebuggerClientUI {
                 ImGui.end();
                 ImGui.begin("SCD v1 | Crits");
                 Vec3d velocity = player.getVelocity().rotateY((float) Math.toRadians(player.getYaw() % 360.0f)).multiply(-1.0f, 1.0f, 1.0f);
-                CritTypes direction;
+                CritTypes direction = null;
+                if (Math.abs(velocity.z) > 0.1) {
+                    direction = CritTypes.FORWARD;
+                }
                 if (Math.abs(velocity.y) > 0.1) {
                     direction = CritTypes.DOWN;
-                } else if (Math.abs(velocity.x) > 0.01) {
-                    direction = CritTypes.SIDE;
-                } else if (Math.abs(velocity.z) > 0.01) {
-                    direction = CritTypes.FORWARD;
-                } else {
-                    direction = null;
                 }
+                if (Math.abs(velocity.x) > 0.1) {
+                    direction = CritTypes.SIDE;
+                }
+
                 ImGui.text(String.format("""
                         Cooldown = 1.0: %b
                         Facing: %s
@@ -367,13 +369,15 @@ public class CombatDebuggerClientUI {
                         Adjusted Velocity: %s
                         Moving: %b %b %b
                         Resultant Crit: %s
+                        Crit Direction: %s
                         """,
                         player.getAttackCooldownProgress(0.0f) == 1.0f,
                         player.getYaw() % 360.0f,
                         player.getVelocity(),
                         velocity,
                         Math.abs(velocity.x) > 0.01, Math.abs(velocity.y) > 0.1, Math.abs(velocity.z) > 0.01,
-                        direction
+                        direction,
+                        critType
                 ));
                 ImGui.end();
             }
