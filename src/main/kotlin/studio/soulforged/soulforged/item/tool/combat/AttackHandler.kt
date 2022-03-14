@@ -37,13 +37,15 @@ class AttackHandler(private val client: ServerPlayerEntity) {
     }
 
     fun onFinish() {
-        if (target != null) target!!.damage(
-            DamageSource.player(client), ToolItem.calcDamage(
-                client.mainHandStack, packets.size, client, target, attackCooldown
-            ).toFloat()
-        )
-        CombatDebuggerClientUI.attackType = packets.size
-        client.mainHandStack.postHit(target as LivingEntity?, client)
+        if (target != null) {
+            target!!.damage(
+                DamageSource.player(client), ToolItem.calcDamage(
+                    client.mainHandStack, packets.size, client, target, attackCooldown
+                ).toFloat()
+            )
+            CombatDebuggerClientUI.attackType = packets.size
+            client.mainHandStack.postHit(target as LivingEntity?, client)
+        }
     }
 
     fun setTarget(target: Entity?) {
