@@ -11,7 +11,8 @@
   "environment": "*",
   "entrypoints": {
     "client": [
-      "studio.soulforged.soulforged.client.SoulforgedClient"
+      "studio.soulforged.soulforged.client.SoulforgedClient",
+      "studio.soulforged.soulforgedcombatdebugger.CombatDebuggerClient"
     ],
     "server": [
     ],
@@ -20,7 +21,8 @@
     ]
   },
   "mixins": [
-    "soulforged.mixins.json"
+    "soulforged.mixins.json",
+    "soulforgedcombatdebugger.mixins.json"
   ],
   "accessWidener": "soulforged.accesswidener",
   "depends": {
