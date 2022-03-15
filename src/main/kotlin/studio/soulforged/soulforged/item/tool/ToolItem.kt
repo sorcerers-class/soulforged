@@ -30,6 +30,7 @@ import net.minecraft.util.*
 import org.jetbrains.annotations.Contract
 import studio.soulforged.soulforged.item.tool.combat.WeaponCategories
 import java.util.*
+import kotlin.math.roundToInt
 
 class ToolItem : Item(
     FabricItemSettings()
@@ -48,13 +49,12 @@ class ToolItem : Item(
         }
     }
 
-    fun breakTool(stack: ItemStack?, user: PlayerEntity) {
+    private fun breakTool(user: PlayerEntity) {
         user.sendToolBreakStatus(Hand.MAIN_HAND)
     }
 
     override fun postHit(stack: ItemStack, target: LivingEntity, attacker: LivingEntity): Boolean {
         if (Arrays.stream(getDurabilities(stack)).anyMatch { i: Int -> i < 0 }) breakTool(
-            stack,
             attacker as PlayerEntity
         )
         if (!stack.getAttributeModifiers(EquipmentSlot.MAINHAND)
@@ -81,7 +81,7 @@ class ToolItem : Item(
         return msp.getMiningSpeed(
             state,
             Materials.MATERIAL_REGISTRY[Identifier(stack.nbt!!.getCompound("sf_head").getString("material"))]
-        ) as Float
+        )
     }
 
     override fun postMine(
@@ -91,7 +91,7 @@ class ToolItem : Item(
         pos: BlockPos,
         miner: LivingEntity
     ): Boolean {
-        if (Arrays.stream(getDurabilities(stack)).anyMatch { i: Int -> i < 0 }) breakTool(stack, miner as PlayerEntity)
+        if (Arrays.stream(getDurabilities(stack)).anyMatch { i: Int -> i < 0 }) breakTool(miner as PlayerEntity)
         stack.damage = calcDurability(stack)
         return true
     }
@@ -119,34 +119,34 @@ class ToolItem : Item(
     @Environment(EnvType.CLIENT)
     override fun appendTooltip(stack: ItemStack, world: World?, tooltip: MutableList<Text>, context: TooltipContext) {
         val nbt = stack.nbt!!
-        val head_material = Identifier(nbt.getCompound("sf_head").getString("material")).path
-        val head_type = Identifier(nbt.getCompound("sf_head").getString("type")).path
-        val binding_material = Identifier(nbt.getCompound("sf_binding").getString("material")).path
-        val binding_type = Identifier(nbt.getCompound("sf_binding").getString("type")).path
-        val handle_material = Identifier(nbt.getCompound("sf_handle").getString("material")).path
-        val handle_type = Identifier(nbt.getCompound("sf_handle").getString("type")).path
-        val tool_type = ToolTypes.TOOL_TYPES_REGISTRY[Identifier(nbt.getString("sf_tool_type"))]!!
-        val hc = tool_type.hcAttack != null
-        val dc = tool_type.dcAttack != null
+        val headMaterial = Identifier(nbt.getCompound("sf_head").getString("material")).path
+        val headType = Identifier(nbt.getCompound("sf_head").getString("type")).path
+        val bindingMaterial = Identifier(nbt.getCompound("sf_binding").getString("material")).path
+        val bindingType = Identifier(nbt.getCompound("sf_binding").getString("type")).path
+        val handleMaterial = Identifier(nbt.getCompound("sf_handle").getString("material")).path
+        val handleType = Identifier(nbt.getCompound("sf_handle").getString("type")).path
+        val toolType = ToolTypes.TOOL_TYPES_REGISTRY[Identifier(nbt.getString("sf_tool_type"))]!!
+        val hc = toolType.hcAttack != null
+        val dc = toolType.dcAttack != null
 
         //tooltip.add(new TranslatableText("item.soulforged.tool.type." + type + ".desc").formatted(Formatting.GRAY, Formatting.ITALIC));
         tooltip.add(
             TranslatableText(
-                "item.soulforged.part.$head_type",
-                TranslatableText("item.soulforged.tool.material.$head_material")
+                "item.soulforged.part.$headType",
+                TranslatableText("item.soulforged.tool.material.$headMaterial")
             )
                 .append(" + ").formatted(Formatting.RESET)
                 .append(
                     TranslatableText(
-                        "item.soulforged.part.$binding_type",
-                        TranslatableText("item.soulforged.tool.material.$binding_material")
+                        "item.soulforged.part.$bindingType",
+                        TranslatableText("item.soulforged.tool.material.$bindingMaterial")
                     )
                 )
                 .append(" + ").formatted(Formatting.RESET)
                 .append(
                     TranslatableText(
-                        "item.soulforged.part.$handle_type",
-                        TranslatableText("item.soulforged.tool.material.$handle_material")
+                        "item.soulforged.part.$handleType",
+                        TranslatableText("item.soulforged.tool.material.$handleMaterial")
                     )
                 )
                 .formatted(Formatting.GOLD)
@@ -156,7 +156,7 @@ class ToolItem : Item(
                 .append(
                     TranslatableText(
                         "item.soulforged.tool.tooltip.weight",
-                        Math.round(getWeight(stack) * 100.0) / 100.0
+                        (getWeight(stack) * 100.0).roundToInt() / 100.0
                     ).formatted(
                         Formatting.BLUE, Formatting.BOLD
                     )
@@ -165,7 +165,7 @@ class ToolItem : Item(
                 .append(
                     TranslatableText(
                         "item.soulforged.tool.tooltip.speed",
-                        Math.round(1 / calcAttackSpeed(stack) * 100.0) / 100.0
+                        (1 / calcAttackSpeed(stack) * 100.0).roundToInt() / 100.0
                     ).formatted(
                         Formatting.GREEN, Formatting.BOLD
                     )
@@ -174,7 +174,7 @@ class ToolItem : Item(
                 .append(
                     TranslatableText(
                         "item.soulforged.tool.tooltip.attack",
-                        Math.round(calcDamage(stack, 0, null, null, null) * 100.0) / 100.0
+                        (calcDamage(stack, 0, null, null, null) * 100.0).roundToInt() / 100.0
                     ).formatted(
                         Formatting.RED, Formatting.BOLD
                     )
@@ -184,11 +184,11 @@ class ToolItem : Item(
             TranslatableText(
                 "item.soulforged.tool.tooltip.defaultattack",
                 TranslatableText(
-                    "item.soulforged.tool.tooltip.attacktype." + tool_type.defaultAttack.category.name
+                    "item.soulforged.tool.tooltip.attacktype." + toolType.defaultAttack.category.name
                         .lowercase(Locale.getDefault())
                 ),
                 TranslatableText(
-                    "item.soulforged.tool.tooltip.attackdirection." + tool_type.defaultAttack.type.name
+                    "item.soulforged.tool.tooltip.attackdirection." + toolType.defaultAttack.type.name
                         .lowercase(Locale.getDefault())
                 )
             ).formatted(
@@ -201,11 +201,11 @@ class ToolItem : Item(
                     if (hc) TranslatableText(
                         "item.soulforged.tool.tooltip.hc.true",
                         TranslatableText(
-                            "item.soulforged.tool.tooltip.attacktype." + tool_type.hcAttack?.category?.name
+                            "item.soulforged.tool.tooltip.attacktype." + toolType.hcAttack?.category?.name
                                 ?.lowercase(Locale.getDefault())
                         ),
                         TranslatableText(
-                            "item.soulforged.tool.tooltip.attackdirection." + (tool_type.hcAttack?.type?.name
+                            "item.soulforged.tool.tooltip.attackdirection." + (toolType.hcAttack?.type?.name
                                 ?.lowercase(Locale.getDefault())
                         )
                     ).formatted(
@@ -220,11 +220,11 @@ class ToolItem : Item(
                     if (dc) TranslatableText(
                         "item.soulforged.tool.tooltip.dc.true",
                         TranslatableText(
-                            "item.soulforged.tool.tooltip.attacktype." + tool_type.dcAttack?.category?.name
+                            "item.soulforged.tool.tooltip.attacktype." + toolType.dcAttack?.category?.name
                                 ?.lowercase(Locale.getDefault())
                         ),
                         TranslatableText(
-                            "item.soulforged.tool.tooltip.attackdirection." + tool_type.dcAttack?.type?.name
+                            "item.soulforged.tool.tooltip.attackdirection." + toolType.dcAttack?.type?.name
                                 ?.lowercase(Locale.getDefault())
                         )
                     ).formatted(
@@ -259,9 +259,9 @@ class ToolItem : Item(
     }
 
     companion object {
-        const val head = 0
-        const val binding = 1
-        const val handle = 2
+        private const val head = 0
+        private const val binding = 1
+        private const val handle = 2
         fun calcAttackSpeed(stack: ItemStack): Double {
             assert(stack.nbt != null)
             return 1 / (getWeight(stack) / 800 /
@@ -277,7 +277,6 @@ class ToolItem : Item(
             target: Entity?,
             crit: Float?
         ): Double {
-            var crit = crit
             val nbt = stack.nbt
             return if (nbt != null) {
                 if (Arrays.stream(getDurabilities(stack)).anyMatch { i: Int -> i == 0 }) return 0.0
@@ -295,8 +294,8 @@ class ToolItem : Item(
                 val mhandle =
                     Materials.MATERIAL_REGISTRY[Identifier.tryParse(nbt.getCompound("sf_handle").getString("material"))]
                 assert(mhead != null)
-                val head_edgeholding = mhead!!.edgeholding
-                val head_hardness = mhead.hardness
+                val headEdgeholding = mhead!!.edgeholding
+                val headHardness = mhead.hardness
                 val type = ToolTypes.TOOL_TYPES_REGISTRY[Identifier.tryParse(nbt.getString("sf_tool_type"))]!!
                 var ap = type.defaultAttack
                 if (attackType == 1) {
@@ -338,26 +337,29 @@ class ToolItem : Item(
                         )
                     }
                 }
-                val piercing_damage: Double = ap.piercingDamage
-                val total_piercing_damage = (head_edgeholding + head_hardness * 0.75) / 2 * piercing_damage
+                val piercingDamage: Double = ap.piercingDamage
+                val totalPiercingDamage = (headEdgeholding + headHardness * 0.75) / 2 * piercingDamage
                 assert(head != null)
-                val head_weight: Double = head?.weight!! * mhead.density
-                val binding_weight: Double =
+                val headWeight: Double = head?.weight!! * mhead.density
+                val bindingWeight: Double =
                     binding?.weight!! * mbinding?.density!!
-                val handle_weight: Double =
+                val handleWeight: Double =
                     handle?.weight!! * mhandle?.density!!
-                val effective_weight = head_weight + binding_weight + 0.25 * handle_weight
-                val total_blunt_damage: Double =
-                    (effective_weight / 100 + head_hardness * 0.25) * ap.bluntDamage * 0.8
-                if (crit == null) crit = 0.0f
-                (total_blunt_damage + total_piercing_damage) * crit
+                val effectiveWeight = headWeight + bindingWeight + 0.25 * handleWeight
+                val totalBluntDamage: Double =
+                    (effectiveWeight / 100 + headHardness * 0.25) * ap.bluntDamage * 0.8
+                return if(crit != null) {
+                    (totalBluntDamage + totalPiercingDamage) * crit
+                } else {
+                    0.0
+                }
             } else 1.0
         }
 
         fun calcDurability(stack: ItemStack): Int {
             val nbt = stack.nbt!!
             if (!nbt.contains("sf_damage")) {
-                val head_dura = (Objects.requireNonNull(
+                val headDura = (Objects.requireNonNull(
                     ToolParts.TOOL_PARTS_REGISTRY[Identifier(
                         nbt.getCompound("sf_head").getString("type")
                     )]
@@ -365,7 +367,7 @@ class ToolItem : Item(
                         Materials.MATERIAL_REGISTRY[Identifier(
                             nbt.getCompound("sf_head").getString("material")
                         )]?.durability!!)
-                val binding_dura = (
+                val bindingDura = (
                     ToolParts.TOOL_PARTS_REGISTRY[Identifier(
                         nbt.getCompound("sf_binding").getString("type")
                     )]
@@ -373,30 +375,30 @@ class ToolItem : Item(
                     Materials.MATERIAL_REGISTRY[Identifier(
                         nbt.getCompound("sf_binding").getString("material")
                     )]?.durability!!)
-                val handle_dura = (
+                val handleDura = (
                     ToolParts.TOOL_PARTS_REGISTRY[Identifier(
                         nbt.getCompound("sf_handle").getString("type")
                     )]?.durability!! *
                     Materials.MATERIAL_REGISTRY[Identifier(
                         nbt.getCompound("sf_handle").getString("material")
                     )]?.durability!!)
-                nbt.getCompound("sf_head").putInt("max_damage", head_dura.toInt())
-                nbt.getCompound("sf_binding").putInt("max_damage", binding_dura.toInt())
-                nbt.getCompound("sf_handle").putInt("max_damage", handle_dura.toInt())
-                nbt.getCompound("sf_head").putInt("damage", head_dura.toInt())
-                nbt.getCompound("sf_binding").putInt("damage", binding_dura.toInt())
-                nbt.getCompound("sf_handle").putInt("damage", handle_dura.toInt())
+                nbt.getCompound("sf_head").putInt("max_damage", headDura.toInt())
+                nbt.getCompound("sf_binding").putInt("max_damage", bindingDura.toInt())
+                nbt.getCompound("sf_handle").putInt("max_damage", handleDura.toInt())
+                nbt.getCompound("sf_head").putInt("damage", headDura.toInt())
+                nbt.getCompound("sf_binding").putInt("damage", bindingDura.toInt())
+                nbt.getCompound("sf_handle").putInt("damage", handleDura.toInt())
                 nbt.putBoolean("sf_damage", true)
             }
             val durability = getDurabilities(stack)
-            val max_durability = getMaxDurabilities(stack)
+            val maxDurability = getMaxDurabilities(stack)
             nbt.getCompound("sf_head").putInt("damage", durability[head] - 1)
-            val head_damage = (durability[head].toFloat() / max_durability[head].toFloat() * 256).toInt()
+            val headDamage = (durability[head].toFloat() / maxDurability[head].toFloat() * 256).toInt()
             nbt.getCompound("sf_binding").putInt("damage", durability[binding] - 1)
-            val binding_damage = (durability[binding].toFloat() / max_durability[binding].toFloat() * 256).toInt()
+            val bindingDamage = (durability[binding].toFloat() / maxDurability[binding].toFloat() * 256).toInt()
             nbt.getCompound("sf_handle").putInt("damage", durability[handle] - 1)
-            val handle_damage = (durability[handle].toFloat() / max_durability[handle].toFloat() * 256).toInt()
-            return 256 - Math.min(Math.min(handle_damage, binding_damage), head_damage)
+            val handleDamage = (durability[handle].toFloat() / maxDurability[handle].toFloat() * 256).toInt()
+            return 256 - handleDamage.coerceAtMost(bindingDamage).coerceAtMost(headDamage)
         }
 
         @JvmStatic

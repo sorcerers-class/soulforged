@@ -1,7 +1,6 @@
 package studio.soulforged.soulforged.recipe
 
 import java.util.HashMap
-import studio.soulforged.soulforged.recipe.RecipeTables
 import org.apache.commons.lang3.tuple.Triple
 
 object RecipeTables {

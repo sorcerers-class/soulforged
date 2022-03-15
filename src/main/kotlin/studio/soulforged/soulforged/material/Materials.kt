@@ -7,9 +7,10 @@ import studio.soulforged.soulforged.mixin.common.RegistryAccessor
 import studio.soulforged.soulforged.Soulforged
 import java.util.*
 
+@Suppress("unused")
 object Materials {
-    val MATERIAL_REGISTRY_KEY = RegistryKey.ofRegistry<Material>(Identifier("soulforged", "materials"))
-    val MATERIAL_REGISTRY =
+    private val MATERIAL_REGISTRY_KEY: RegistryKey<Registry<Material>> = RegistryKey.ofRegistry<Material>(Identifier("soulforged", "materials"))
+    val MATERIAL_REGISTRY: Registry<Material> =
         RegistryAccessor.create(MATERIAL_REGISTRY_KEY) { IRON } // This is possibly the worst way of doing this but i don't care
 
     // Earlygame Materials

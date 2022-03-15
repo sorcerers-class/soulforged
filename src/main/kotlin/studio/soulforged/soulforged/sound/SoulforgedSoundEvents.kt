@@ -3,7 +3,6 @@ package studio.soulforged.soulforged.sound
 import net.minecraft.sound.SoundEvent
 import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
-import studio.soulforged.soulforged.sound.SoulforgedSoundEvents
 
 object SoulforgedSoundEvents {
     val CRIT_THRUSTING = register("soulforged:crit_thrusting")

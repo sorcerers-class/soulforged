@@ -8,9 +8,10 @@ import studio.soulforged.soulforged.item.tool.combat.AttackProperties
 import studio.soulforged.soulforged.item.tool.combat.WeaponCategories
 import studio.soulforged.soulforged.item.tool.combat.CritTypes
 
+@Suppress("unused")
 object ToolTypes {
-    val TOOL_TYPES_REGISTRY_KEY = RegistryKey.ofRegistry<ToolType>(Identifier("soulforged", "tool_types"))
-    val TOOL_TYPES_REGISTRY = RegistryAccessor.create(TOOL_TYPES_REGISTRY_KEY) { SHORTSWORD }
+    private val TOOL_TYPES_REGISTRY_KEY: RegistryKey<Registry<ToolType>> = RegistryKey.ofRegistry<ToolType>(Identifier("soulforged", "tool_types"))
+    val TOOL_TYPES_REGISTRY: Registry<ToolType> = RegistryAccessor.create(TOOL_TYPES_REGISTRY_KEY) { SHORTSWORD }
     val SHORTSWORD = register(
         Identifier("soulforged", "shortsword"),
         ToolType(

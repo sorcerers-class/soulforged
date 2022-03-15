@@ -10,10 +10,8 @@ import imgui.gl3.ImGuiImplGl3
 import imgui.flag.ImGuiConfigFlags
 import net.fabricmc.api.Environment
 import net.minecraft.client.MinecraftClient
-import studio.soulforged.soulforgedcombatdebugger.gui.ImGuiTheme
 import java.io.IOException
 import org.lwjgl.glfw.GLFW
-import studio.soulforged.soulforgedcombatdebugger.gui.ImGuiRenderer
 
 @Environment(EnvType.CLIENT)
 class ImGuiRenderer {
@@ -42,7 +40,7 @@ class ImGuiRenderer {
     /**
      * Begin a new frame.
      */
-    fun beginFrame(delta: Float) {
+    fun beginFrame() {
         imGuiGlfw.newFrame()
         ImGui.newFrame()
     }
@@ -50,7 +48,7 @@ class ImGuiRenderer {
     /**
      * End a frame and update the windows.
      */
-    fun finishFrame(delta: Float) {
+    fun finishFrame() {
         ImGui.render()
         imGuiGl3.renderDrawData(ImGui.getDrawData())
         if (ImGui.getIO().hasConfigFlags(ImGuiConfigFlags.ViewportsEnable)) {

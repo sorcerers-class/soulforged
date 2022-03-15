@@ -4,22 +4,15 @@ import imgui.ImGui
 import studio.soulforged.soulforged.item.tool.ToolItem.Companion.getDurabilities
 import net.fabricmc.api.EnvType
 import studio.soulforged.soulforged.item.tool.combat.CritTypes
-import net.minecraft.client.network.ClientPlayerEntity
-import net.minecraft.item.ItemStack
 import studio.soulforged.soulforged.item.SoulforgedItems
 import imgui.flag.ImGuiWindowFlags
 import net.fabricmc.api.Environment
 import net.minecraft.client.MinecraftClient
-import net.minecraft.nbt.NbtCompound
 import net.minecraft.util.Identifier
-import studio.soulforged.soulforgedcombatdebugger.gui.CombatDebuggerClientUI
-import studio.soulforged.soulforged.item.tool.ToolType
 import studio.soulforged.soulforged.item.tool.ToolTypes
 import studio.soulforged.soulforged.item.tool.combat.AttackProperties
 import studio.soulforged.soulforged.material.Materials
-import studio.soulforged.soulforged.item.tool.part.ToolPart
 import studio.soulforged.soulforged.item.tool.part.ToolParts
-import net.minecraft.util.math.Vec3d
 import java.util.*
 import kotlin.math.abs
 import kotlin.math.pow
@@ -40,7 +33,7 @@ object CombatDebuggerClientUI {
     var packetCounter = 0
     var attackType = 0
     var critType: CritTypes? = null
-    fun render(delta: Float) {
+    fun render() {
         val player = MinecraftClient.getInstance().player
         if (player != null) {
             ImGui.setNextWindowSizeConstraints(-1f, -1f, 500f, 500f)
@@ -81,7 +74,7 @@ object CombatDebuggerClientUI {
                     )
                     val apDc: AttackProperties = type.dcAttack!!
                     ImGui.text(
-                        if (apDc != null) java.lang.String.format(
+                        java.lang.String.format(
                             """
                                     DC Attack:
                                     \tPiercing Damage: %f
@@ -98,11 +91,11 @@ object CombatDebuggerClientUI {
                             apDc.piercing,
                             apDc.category.toString().lowercase(Locale.getDefault()),
                             apDc.type.toString().lowercase(Locale.getDefault())
-                        ) else "DC Attack: None"
+                        )
                     )
                     val apHc: AttackProperties = type.hcAttack!!
                     ImGui.text(
-                        if (apHc != null) java.lang.String.format(
+                        java.lang.String.format(
                             """
                                     DC Attack:
                                     \tPiercing Damage: %f
@@ -120,7 +113,7 @@ object CombatDebuggerClientUI {
                             apHc.piercing,
                             apHc.category.toString().lowercase(Locale.getDefault()),
                             apHc.type.toString().lowercase(Locale.getDefault())
-                        ) else "HC Attack: None"
+                        )
                     )
                 }
                 ImGui.text("Materials:")
@@ -285,7 +278,7 @@ object CombatDebuggerClientUI {
                 ImGui.text(
                     String.format(
                         "Cooldown ratio: %f",
-                        Math.pow(player.getAttackCooldownProgress(0.0f).toDouble(), 4.0)
+                        player.getAttackCooldownProgress(0.0f).toDouble().pow(4.0)
                     )
                 )
                 if (ImGui.button("Damage calc: ")) showDamageCalcDropdown = showDamageCalcDropdown xor true
@@ -309,24 +302,24 @@ object CombatDebuggerClientUI {
                     nbt.getCompound("sf_handle").getString("material")
                 )]
                 assert(mhead != null)
-                val head_edgeholding: Double = mhead?.edgeholding!!
-                val head_hardness: Double = mhead.hardness
+                val headEdgeholding: Double = mhead?.edgeholding!!
+                val headHardness: Double = mhead.hardness
                 val type = ToolTypes.TOOL_TYPES_REGISTRY[Identifier.tryParse(nbt.getString("sf_tool_type"))]!!
                 var ap: AttackProperties = type.defaultAttack
                 if (showDcAttackCalc) ap = type.dcAttack ?: type.defaultAttack else if (showHcAttackCalc) ap =
                     type.hcAttack ?: type.defaultAttack
-                val piercing_damage: Double = ap.piercingDamage
-                val total_piercing_damage = (head_edgeholding + head_hardness * 0.75) / 2 * piercing_damage
+                val piercingDamage: Double = ap.piercingDamage
+                val totalPiercingDamage = (headEdgeholding + headHardness * 0.75) / 2 * piercingDamage
                 assert(phead != null)
-                val head_weight: Double = phead?.weight!! * mhead.density
-                val binding_weight: Double =
+                val headWeight: Double = phead?.weight!! * mhead.density
+                val bindingWeight: Double =
                     pbinding?.weight!! * mbinding?.density!!
-                val handle_weight: Double =
+                val handleWeight: Double =
                     phandle?.weight!! * mhandle?.density!!
-                val effective_weight = head_weight + binding_weight + 0.25 * handle_weight
-                val total_blunt_damage: Double =
-                    (effective_weight / 100 + head_hardness * 0.25) * ap.bluntDamage * 0.8
-                val total_damage = total_piercing_damage + total_blunt_damage
+                val effectiveWeight = headWeight + bindingWeight + 0.25 * handleWeight
+                val totalBluntDamage: Double =
+                    (effectiveWeight / 100 + headHardness * 0.25) * ap.bluntDamage * 0.8
+                val totalDamage = totalPiercingDamage + totalBluntDamage
                 if (showDamageCalcDropdown) {
                     if (ImGui.button(if (showDcAttackCalc) "Hide DC Attack" else "Show DC Attack")) showDcAttackCalc =
                         showDcAttackCalc xor true
@@ -344,20 +337,20 @@ object CombatDebuggerClientUI {
                                     With cooldown: Total Damage * Cooldown ^ 4
                                     %f * %f^4 = %f
                                     """,
-                            head_edgeholding,
-                            head_hardness,
-                            piercing_damage,
-                            total_piercing_damage,
-                            head_weight,
-                            binding_weight,
-                            handle_weight,
-                            head_hardness,
+                            headEdgeholding,
+                            headHardness,
+                            piercingDamage,
+                            totalPiercingDamage,
+                            headWeight,
+                            bindingWeight,
+                            handleWeight,
+                            headHardness,
                             ap.bluntDamage,
-                            total_blunt_damage,
-                            total_damage,
-                            total_damage,
-                            Math.pow(player.getAttackCooldownProgress(0.0f).toDouble(), 4.0),
-                            total_damage * Math.pow(player.getAttackCooldownProgress(0.0f).toDouble(), 4.0)
+                            totalBluntDamage,
+                            totalDamage,
+                            totalDamage,
+                            player.getAttackCooldownProgress(0.0f).toDouble().pow(4.0),
+                            totalDamage * player.getAttackCooldownProgress(0.0f).toDouble().pow(4.0)
                         )
                     )
                 } else {
@@ -366,8 +359,8 @@ object CombatDebuggerClientUI {
                                     Total Damage: %f
                                     With Cooldown: %f
                                     """,
-                            total_damage,
-                            total_damage * player.getAttackCooldownProgress(0.0f).toDouble().pow(4.0)
+                            totalDamage,
+                            totalDamage * player.getAttackCooldownProgress(0.0f).toDouble().pow(4.0)
                         )
                     )
                 }
@@ -375,7 +368,7 @@ object CombatDebuggerClientUI {
                 ImGui.end()
                 ImGui.begin("SCD v1 | Mouse")
                 ImGui.text(
-                    kotlin.String.format("""
+                    String.format("""
                         Last Packet Action: %d
                         Packet Count: %d
                         """,
@@ -388,13 +381,13 @@ object CombatDebuggerClientUI {
                 val velocity = player.velocity.rotateY(Math.toRadians((player.yaw % 360.0f).toDouble()).toFloat())
                     .multiply(-1.0, 1.0, 1.0)
                 var direction: CritTypes? = null
-                if (Math.abs(velocity.z) > 0.1) {
+                if (abs(velocity.z) > 0.1) {
                     direction = CritTypes.FORWARD
                 }
-                if (Math.abs(velocity.y) > 0.1) {
+                if (abs(velocity.y) > 0.1) {
                     direction = CritTypes.DOWN
                 }
-                if (Math.abs(velocity.x) > 0.1) {
+                if (abs(velocity.x) > 0.1) {
                     direction = CritTypes.SIDE
                 }
                 ImGui.text(

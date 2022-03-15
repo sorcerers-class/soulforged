@@ -5,6 +5,7 @@ import net.minecraft.util.registry.Registry
 import net.minecraft.util.registry.RegistryKey
 import studio.soulforged.soulforged.mixin.common.RegistryAccessor
 
+@Suppress("unused")
 object ToolParts {
     val TOOL_PARTS_REGISTRY_KEY = RegistryKey.ofRegistry<ToolPart>(Identifier("soulforged", "tool_parts"))
     val TOOL_PARTS_REGISTRY: Registry<ToolPart> = RegistryAccessor.create(TOOL_PARTS_REGISTRY_KEY) { HANDLE }

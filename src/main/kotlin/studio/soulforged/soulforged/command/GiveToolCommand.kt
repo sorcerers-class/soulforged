@@ -3,22 +3,18 @@ package studio.soulforged.soulforged.command
 import com.mojang.brigadier.CommandDispatcher
 import net.minecraft.server.command.ServerCommandSource
 import net.minecraft.server.command.CommandManager
-import net.minecraft.command.EntitySelector
 import net.minecraft.command.argument.EntityArgumentType
 import net.minecraft.command.argument.IdentifierArgumentType
 import com.mojang.brigadier.context.CommandContext
-import studio.soulforged.soulforged.command.GiveToolCommand
 import net.minecraft.server.network.ServerPlayerEntity
 import studio.soulforged.soulforged.Soulforged
 import studio.soulforged.soulforged.recipe.RecipeTables
 import net.minecraft.item.ItemStack
 import studio.soulforged.soulforged.item.SoulforgedItems
-import net.minecraft.nbt.NbtCompound
 import net.minecraft.text.TranslatableText
 import net.minecraft.text.LiteralText
 import net.minecraft.util.Identifier
 import studio.soulforged.soulforged.item.tool.ToolItem
-import java.util.*
 
 object GiveToolCommand {
     fun register(dispatcher: CommandDispatcher<ServerCommandSource?>) {
@@ -54,7 +50,7 @@ object GiveToolCommand {
         )
     }
 
-    fun execute(
+    private fun execute(
         source: ServerCommandSource,
         targets: Collection<ServerPlayerEntity>,
         type: Identifier,
@@ -63,36 +59,36 @@ object GiveToolCommand {
         handle: Identifier
     ): Int {
         for (target in targets) {
-            val tool_type = type.toString()
-            val head_material = head.toString()
-            val binding_material = binding.toString()
-            val handle_material = handle.toString()
+            val toolType = type.toString()
+            val headMaterial = head.toString()
+            val bindingMaterial = binding.toString()
+            val handleMaterial = handle.toString()
             Soulforged.LOGGER.info(
                 "Tool type: {}, head material: {}, binding material: {}, handle material: {}",
-                tool_type,
-                head_material,
-                binding_material,
-                handle_material
+                toolType,
+                headMaterial,
+                bindingMaterial,
+                handleMaterial
             )
-            val toolRecipes = RecipeTables.TOOL_RECIPES[tool_type]!!
-            val head_part = toolRecipes.left
-            val binding_part = toolRecipes.middle
-            val handle_part = toolRecipes.right
+            val toolRecipes = RecipeTables.TOOL_RECIPES[toolType]!!
+            val headPart = toolRecipes.left
+            val bindingPart = toolRecipes.middle
+            val handlePart = toolRecipes.right
             Soulforged.LOGGER.info(
                 "Head part: {}, Binding part: {}, Handle part: {}",
-                head_part,
-                binding_part,
-                handle_part
+                headPart,
+                bindingPart,
+                handlePart
             )
             val stack = ItemStack(SoulforgedItems.TOOL)
             assert(stack.nbt != null)
-            stack.nbt!!.putString("sf_tool_type", tool_type)
-            stack.getOrCreateSubNbt("sf_head").putString("material", head_material)
-            stack.getSubNbt("sf_head")?.putString("type", head_part)
-            stack.getOrCreateSubNbt("sf_binding").putString("material", binding_material)
-            stack.getSubNbt("sf_binding")?.putString("type", binding_part)
-            stack.getOrCreateSubNbt("sf_handle").putString("material", handle_material)
-            stack.getSubNbt("sf_handle")?.putString("type", handle_part)
+            stack.nbt!!.putString("sf_tool_type", toolType)
+            stack.getOrCreateSubNbt("sf_head").putString("material", headMaterial)
+            stack.getSubNbt("sf_head")?.putString("type", headPart)
+            stack.getOrCreateSubNbt("sf_binding").putString("material", bindingMaterial)
+            stack.getSubNbt("sf_binding")?.putString("type", bindingPart)
+            stack.getOrCreateSubNbt("sf_handle").putString("material", handleMaterial)
+            stack.getSubNbt("sf_handle")?.putString("type", handlePart)
             ToolItem.calcAttackSpeed(stack)
             ToolItem.calcDamage(stack, 0, null, null, null)
             ToolItem.calcDurability(stack)

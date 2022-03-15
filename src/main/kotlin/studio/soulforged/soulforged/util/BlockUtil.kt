@@ -4,7 +4,6 @@ import net.minecraft.block.BlockState
 import net.minecraft.item.ItemStack
 import net.minecraft.tag.BlockTags
 import studio.soulforged.soulforged.material.Materials
-import studio.soulforged.soulforged.item.tool.ToolType
 import studio.soulforged.soulforged.item.tool.ToolTypes
 import studio.soulforged.soulforged.item.tool.MiningSpeedProcessors
 import net.fabricmc.fabric.api.mininglevel.v1.MiningLevelManager

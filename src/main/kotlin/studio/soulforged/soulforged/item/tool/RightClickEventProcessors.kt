@@ -1,15 +1,10 @@
 package studio.soulforged.soulforged.item.tool
 
-import studio.soulforged.soulforged.item.tool.RightClickEventProcessor
 import net.minecraft.item.ItemUsageContext
-import net.minecraft.world.World
-import net.minecraft.util.math.BlockPos
-import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.block.BlockState
 import net.fabricmc.fabric.mixin.content.registry.AxeItemAccessor
 import net.minecraft.block.Oxidizable
 import net.minecraft.item.HoneycombItem
-import net.minecraft.item.ItemStack
 import net.minecraft.sound.SoundEvents
 import net.minecraft.sound.SoundCategory
 import net.minecraft.world.WorldEvents
@@ -22,7 +17,7 @@ import net.minecraft.block.Blocks
 import java.util.*
 
 object RightClickEventProcessors {
-    val AXE_INTERACTIONS: RightClickEventProcessor = label@ object : RightClickEventProcessor {
+    val AXE_INTERACTIONS: RightClickEventProcessor = object : RightClickEventProcessor {
         override fun onRightClick(ctx: ItemUsageContext?): ActionResult? {
             val world = ctx?.world
             val blockPos = ctx?.blockPos

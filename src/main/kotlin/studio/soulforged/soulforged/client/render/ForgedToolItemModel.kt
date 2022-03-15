@@ -27,7 +27,6 @@ import net.minecraft.world.BlockRenderView
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import java.util.*
-import java.util.Map
 import java.util.function.Function
 import java.util.function.Supplier
 
@@ -42,24 +41,24 @@ class ForgedToolItemModel : UnbakedModel, BakedModel, FabricBakedModel {
     override fun emitItemQuads(stack: ItemStack, randomSupplier: Supplier<Random>, context: RenderContext) {
         val nbt = stack.nbt!!
         val type = Identifier(nbt.getString("sf_tool_type")).path
-        val head_mat = Identifier(nbt.getCompound("sf_head").getString("material")).path
-        val binding_mat = Identifier(nbt.getCompound("sf_binding").getString("material")).path
-        val handle_mat = Identifier(nbt.getCompound("sf_handle").getString("material")).path
-        val head_name = modelNameConcatenation(head_mat, type, ModelToolParts.HEAD)
-        val binding_name = modelNameConcatenation(binding_mat, type, ModelToolParts.BINDING)
-        val handle_name = modelNameConcatenation(handle_mat, type, ModelToolParts.HANDLE)
+        val headMat = Identifier(nbt.getCompound("sf_head").getString("material")).path
+        val bindingMat = Identifier(nbt.getCompound("sf_binding").getString("material")).path
+        val handleMat = Identifier(nbt.getCompound("sf_handle").getString("material")).path
+        val headName = modelNameConcatenation(headMat, type, ModelToolParts.HEAD)
+        val bindingName = modelNameConcatenation(bindingMat, type, ModelToolParts.BINDING)
+        val handleName = modelNameConcatenation(handleMat, type, ModelToolParts.HANDLE)
         val missingno = MinecraftClient.getInstance().bakedModelManager.missingModel
-        (PART_MODELS.getOrDefault(head_name, missingno) as FabricBakedModel?)!!.emitItemQuads(
+        (PART_MODELS.getOrDefault(headName, missingno) as FabricBakedModel?)!!.emitItemQuads(
             stack,
             randomSupplier,
             context
         )
-        (PART_MODELS.getOrDefault(binding_name, missingno) as FabricBakedModel?)!!.emitItemQuads(
+        (PART_MODELS.getOrDefault(bindingName, missingno) as FabricBakedModel?)!!.emitItemQuads(
             stack,
             randomSupplier,
             context
         )
-        (PART_MODELS.getOrDefault(handle_name, missingno) as FabricBakedModel?)!!.emitItemQuads(
+        (PART_MODELS.getOrDefault(handleName, missingno) as FabricBakedModel?)!!.emitItemQuads(
             stack,
             randomSupplier,
             context
@@ -71,7 +70,7 @@ class ForgedToolItemModel : UnbakedModel, BakedModel, FabricBakedModel {
         textureGetter: Function<SpriteIdentifier, Sprite>,
         rotationContainer: ModelBakeSettings,
         modelId: Identifier
-    ): BakedModel? {
+    ): BakedModel {
         val defaultItemModel = loader.getOrLoadModel(ITEM_HANDHELD_MODEL) as JsonUnbakedModel
         transformation = defaultItemModel.transformations
         for (mat in Materials.MATERIAL_REGISTRY.ids.stream().map { obj: Identifier -> obj.path }
@@ -80,22 +79,22 @@ class ForgedToolItemModel : UnbakedModel, BakedModel, FabricBakedModel {
                 .toList()) {
                 for (part in ModelToolParts.values()) {
                     val id = modelNameConcatenation(mat, type, part)
-                    val sprite_id = SpriteIdentifier(
+                    val spriteId = SpriteIdentifier(
                         Identifier("textures/atlas/blocks.png"),
                         Identifier(
-                            "soulforged:item/tools/" + type + "/" + mat + "/" + part.toString()
+                            "soulforged:item/tools/$type/$mat/" + part.toString()
                                 .lowercase(Locale.getDefault())
                         )
                     )
-                    val sprite = textureGetter.apply(sprite_id)
+                    val sprite = textureGetter.apply(spriteId)
                     PART_MODELS[id] = JsonUnbakedModel(
                         Identifier("item/handheld"),
                         (ItemModelGenerator() as ItemModelGeneratorInvoker).callAddLayerElements(0, "layer0", sprite),
-                        Map.of("layer0", Either.left(sprite_id)),
+                        mapOf("layer0" to Either.left(spriteId)),
                         false,
                         null,
                         transformation,
-                        java.util.List.of()
+                        listOf()
                     ).bake(loader, textureGetter, rotationContainer, modelId)
                 }
             }
@@ -110,26 +109,26 @@ class ForgedToolItemModel : UnbakedModel, BakedModel, FabricBakedModel {
         val ids = Vector<SpriteIdentifier>()
         for (mat in Materials.MATERIAL_REGISTRY.stream().toList()) {
             for (type in ToolTypes.TOOL_TYPES_REGISTRY.stream().toList()) {
-                val mat_name = Objects.requireNonNull(Materials.MATERIAL_REGISTRY.getId(mat))?.path
-                val type_name = Objects.requireNonNull(ToolTypes.TOOL_TYPES_REGISTRY.getId(type))?.path
-                val head_id = SpriteIdentifier(
+                val matName = Objects.requireNonNull(Materials.MATERIAL_REGISTRY.getId(mat))?.path
+                val typeName = Objects.requireNonNull(ToolTypes.TOOL_TYPES_REGISTRY.getId(type))?.path
+                val headId = SpriteIdentifier(
                     Identifier("textures/atlas/blocks.png"), Identifier(
-                        "soulforged:item/tools/$type_name/$mat_name/head"
+                        "soulforged:item/tools/$typeName/$matName/head"
                     )
                 )
-                val binding_id = SpriteIdentifier(
+                val bindingId = SpriteIdentifier(
                     Identifier("textures/atlas/blocks.png"), Identifier(
-                        "soulforged:item/tools/$type_name/$mat_name/binding"
+                        "soulforged:item/tools/$typeName/$matName/binding"
                     )
                 )
-                val handle_id = SpriteIdentifier(
+                val handleId = SpriteIdentifier(
                     Identifier("textures/atlas/blocks.png"), Identifier(
-                        "soulforged:item/tools/$type_name/$mat_name/handle"
+                        "soulforged:item/tools/$typeName/$matName/handle"
                     )
                 )
-                ids.add(head_id)
-                ids.add(binding_id)
-                ids.add(handle_id)
+                ids.add(headId)
+                ids.add(bindingId)
+                ids.add(handleId)
             }
         }
         return ids
@@ -142,7 +141,7 @@ class ForgedToolItemModel : UnbakedModel, BakedModel, FabricBakedModel {
 
     override fun getQuads(state: BlockState?, face: Direction?, random: Random): List<BakedQuad> {
         Soulforged.LOGGER.fatal("Call to ForgedToolItemModel.getQuads")
-        return java.util.List.of()
+        return listOf()
     }
 
     override fun useAmbientOcclusion(): Boolean {

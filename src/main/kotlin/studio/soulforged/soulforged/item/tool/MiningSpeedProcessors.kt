@@ -1,6 +1,5 @@
 package studio.soulforged.soulforged.item.tool
 
-import studio.soulforged.soulforged.item.tool.MiningSpeedProcessor
 import net.minecraft.block.BlockState
 import net.minecraft.tag.BlockTags
 import net.minecraft.block.Blocks

@@ -6,7 +6,6 @@ import net.minecraft.entity.damage.DamageSource
 import studio.soulforged.soulforgedcombatdebugger.gui.CombatDebuggerClientUI
 import net.minecraft.entity.LivingEntity
 import java.util.concurrent.ConcurrentHashMap
-import studio.soulforged.soulforged.item.tool.combat.AttackHandler
 import net.minecraft.network.PacketByteBuf
 import studio.soulforged.soulforged.item.tool.ToolItem
 import java.util.*
@@ -36,7 +35,7 @@ class AttackHandler(private val client: ServerPlayerEntity) {
         packets.add(action)
     }
 
-    fun onFinish() {
+    private fun onFinish() {
         if (target != null) {
             target!!.damage(
                 DamageSource.player(client), ToolItem.calcDamage(

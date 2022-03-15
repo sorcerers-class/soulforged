@@ -4,7 +4,6 @@ import net.fabricmc.fabric.api.client.model.ModelResourceProvider
 import net.fabricmc.fabric.api.client.model.ModelProviderContext
 import net.minecraft.client.render.model.UnbakedModel
 import net.minecraft.util.Identifier
-import studio.soulforged.soulforged.client.SoulforgedModelProvider
 import studio.soulforged.soulforged.Soulforged
 import studio.soulforged.soulforged.client.render.ForgedToolItemModel
 
