@@ -15,6 +15,7 @@ repositories {
     // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
     // See https://docs.gradle.org/current/userguide/declaring_repositories.html
     // for more information about repositories.
+    maven("https://maven.shedaniel.me/")
 }
 
 dependencies {
@@ -29,7 +30,10 @@ dependencies {
     implementation("io.github.spair:imgui-java-lwjgl3:$imguiVersion") {
         exclude(group = "org.lwjgl")
     }
-
+    // Cloth Config, for configuration files
+    modApi("me.shedaniel.cloth:cloth-config-fabric:${property("clothConfigVersion")}") {
+        exclude(group = "net.fabricmc.fabric-api")
+    }
     // Apache common collections because why not
     implementation("org.apache.commons:commons-collections4:4.4")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")

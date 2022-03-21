@@ -14,6 +14,7 @@ import net.minecraft.block.Block
 import net.minecraft.util.ActionResult
 import net.minecraft.tag.BlockTags
 import net.minecraft.block.Blocks
+import net.minecraft.util.registry.Registry
 import java.util.*
 
 object RightClickEventProcessors {
@@ -59,7 +60,7 @@ object RightClickEventProcessors {
             val pos = ctx?.blockPos
             val player = ctx?.player
             var state = world?.getBlockState(pos)
-            if (BlockTags.DIRT.contains(state?.block)) {
+            if (Registry.BLOCK.getEntry(Registry.BLOCK.getRawId(state?.block)).get().isIn(BlockTags.DIRT)) {
                 world?.setBlockState(pos, Blocks.FARMLAND.defaultState)
                 world?.playSound(player, pos, SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS, 1.0f, 1.0f)
                 state = world?.getBlockState(pos)

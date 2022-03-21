@@ -5,13 +5,17 @@ import com.mojang.brigadier.CommandDispatcher
 import net.minecraft.server.command.ServerCommandSource
 
 object Commands {
-    @JvmStatic
     fun register() {
         CommandRegistrationCallback.EVENT.register(CommandRegistrationCallback { dispatcher: CommandDispatcher<ServerCommandSource?>?, _: Boolean ->
             if (dispatcher != null) {
-                GiveToolCommand.register(
-                    dispatcher
-                )
+                GiveToolCommand.register(dispatcher)
+            }
+        })
+    }
+    fun registerClient() {
+        CommandRegistrationCallback.EVENT.register(CommandRegistrationCallback { dispatcher: CommandDispatcher<ServerCommandSource?>?, _: Boolean ->
+            if (dispatcher != null) {
+                ToggleSCDCommand.register(dispatcher)
             }
         })
     }

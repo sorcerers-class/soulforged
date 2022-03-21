@@ -8,17 +8,18 @@ import studio.soulforged.soulforged.item.tool.ToolTypes
 import studio.soulforged.soulforged.item.tool.MiningSpeedProcessors
 import net.fabricmc.fabric.api.mininglevel.v1.MiningLevelManager
 import net.minecraft.util.Identifier
+import net.minecraft.util.registry.Registry
 import java.util.*
 
 object BlockUtil {
     fun isMineable(state: BlockState, tool: ItemStack): Boolean {
-        if (BlockTags.PICKAXE_MINEABLE.contains(state.block)) {
+        if (Registry.BLOCK.getEntry(Registry.BLOCK.getRawId(state.block)).get().isIn(BlockTags.PICKAXE_MINEABLE)) {
             assert(tool.nbt != null)
             val level: Int =
                 Materials.MATERIAL_REGISTRY[Identifier(
                     tool.nbt!!.getCompound("sf_head").getString("material")
                 )]?.miningLevel!!
-            if (BlockTags.PICKAXE_MINEABLE.contains(state.block)) {
+            if (Registry.BLOCK.getEntry(Registry.BLOCK.getRawId(state.block)).get().isIn(BlockTags.PICKAXE_MINEABLE)) {
                 return if (Objects.requireNonNull(
                         ToolTypes.TOOL_TYPES_REGISTRY[Identifier(
                             tool.nbt!!.getString("sf_tool_type")

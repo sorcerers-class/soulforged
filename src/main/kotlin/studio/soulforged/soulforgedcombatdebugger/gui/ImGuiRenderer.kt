@@ -17,7 +17,6 @@ import org.lwjgl.glfw.GLFW
 class ImGuiRenderer {
     private val imGuiGlfw = ImGuiImplGlfw()
     private val imGuiGl3 = ImGuiImplGl3()
-
     /**
      * Create ImGUI context, configure, apply theme, and init GLFW/GL
      */
@@ -60,6 +59,7 @@ class ImGuiRenderer {
     }
 
     companion object {
+        var SCD_ENABLED: Boolean = false
         var INSTANCE: ImGuiRenderer? = null
     }
 }
