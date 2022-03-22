@@ -1,4 +1,6 @@
 {
+  "soulforged.name": "Soulforged",
+  "key.soulforgedcombatdebugger.toggle": "Toggle Soulforged Combat Debugger",
   "item.soulforged.tool.material.wood": "Wooden",
   "item.soulforged.tool.material.stone": "Stone",
   "item.soulforged.tool.material.leather": "Leather",

@@ -7,6 +7,7 @@ import studio.soulforged.soulforgedcombatdebugger.gui.CombatDebuggerClientUI
 import net.minecraft.entity.LivingEntity
 import java.util.concurrent.ConcurrentHashMap
 import net.minecraft.network.PacketByteBuf
+import studio.soulforged.soulforged.item.tool.ToolCalculations
 import studio.soulforged.soulforged.item.tool.ToolItem
 import java.util.*
 
@@ -25,7 +26,7 @@ class AttackHandler(private val client: ServerPlayerEntity) {
 
     fun tick() {
         tickCounter += 1
-        if (tickCounter == 30) {
+        if (tickCounter == 10) {
             onFinish()
             finished = true
         }
@@ -38,7 +39,7 @@ class AttackHandler(private val client: ServerPlayerEntity) {
     private fun onFinish() {
         if (target != null) {
             target!!.damage(
-                DamageSource.player(client), ToolItem.calcDamage(
+                DamageSource.player(client), ToolCalculations.calcAttackDamage(
                     client.mainHandStack, packets.size, client, target, attackCooldown
                 ).toFloat()
             )

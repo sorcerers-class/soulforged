@@ -12,8 +12,8 @@ import studio.soulforged.soulforgedcombatdebugger.gui.ImGuiRenderer
 
 @Environment(EnvType.CLIENT)
 class CombatDebuggerClient : ClientModInitializer {
-    var keyBinding = KeyBindingHelper.registerKeyBinding(
-        KeyBinding("key.soulforgedcombatdebugger.toggle", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_RIGHT_SHIFT, "")
+    private var keyBinding: KeyBinding = KeyBindingHelper.registerKeyBinding(
+        KeyBinding("key.soulforgedcombatdebugger.toggle", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_RIGHT_SHIFT, "soulforged.name")
     )
     override fun onInitializeClient() {
         ClientTickEvents.END_CLIENT_TICK.register {

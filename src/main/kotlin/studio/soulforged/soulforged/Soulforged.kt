@@ -7,6 +7,7 @@ import studio.soulforged.soulforged.item.SoulforgedItems
 import studio.soulforged.soulforged.network.NetworkReceivers
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import studio.soulforged.soulforged.sound.SoulforgedSoundEvents
 
 class Soulforged : ModInitializer {
     override fun onInitialize() {
@@ -14,6 +15,7 @@ class Soulforged : ModInitializer {
         initRecipeTables()
         NetworkReceivers.register()
         Commands.register()
+        SoulforgedSoundEvents.register()
     }
 
     companion object {

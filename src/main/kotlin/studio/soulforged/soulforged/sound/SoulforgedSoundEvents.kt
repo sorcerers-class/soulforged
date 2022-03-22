@@ -14,4 +14,7 @@ object SoulforgedSoundEvents {
         Registry.register(Registry.SOUND_EVENT, id, se)
         return se
     }
+    fun register() {
+
+    }
 }

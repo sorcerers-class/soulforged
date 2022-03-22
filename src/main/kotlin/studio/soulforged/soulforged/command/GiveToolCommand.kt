@@ -14,6 +14,7 @@ import studio.soulforged.soulforged.item.SoulforgedItems
 import net.minecraft.text.TranslatableText
 import net.minecraft.text.LiteralText
 import net.minecraft.util.Identifier
+import studio.soulforged.soulforged.item.tool.ToolCalculations
 import studio.soulforged.soulforged.item.tool.ToolItem
 
 object GiveToolCommand {
@@ -89,8 +90,8 @@ object GiveToolCommand {
             stack.getSubNbt("sf_binding")?.putString("type", bindingPart)
             stack.getOrCreateSubNbt("sf_handle").putString("material", handleMaterial)
             stack.getSubNbt("sf_handle")?.putString("type", handlePart)
-            ToolItem.calcAttackSpeed(stack)
-            ToolItem.calcDamage(stack, 0, null, null, null)
+            ToolCalculations.calcAttackSpeed(stack)
+            ToolCalculations.calcAttackDamage(stack, 0, null, null, 1.0f)
             ToolItem.calcDurability(stack)
             target.giveItemStack(stack)
             source.sendFeedback(

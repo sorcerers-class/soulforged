@@ -63,7 +63,7 @@ class ToolItem : Item(
             EntityAttributes.GENERIC_ATTACK_SPEED,
             EntityAttributeModifier(
                 "f106b032-3216-4ff6-9919-36cf09d350f5",
-                calcAttackSpeed(stack) - 4,
+                ToolCalculations.calcAttackSpeed(stack) - 4,
                 EntityAttributeModifier.Operation.ADDITION
             ),
             EquipmentSlot.MAINHAND
@@ -165,7 +165,7 @@ class ToolItem : Item(
                 .append(
                     TranslatableText(
                         "item.soulforged.tool.tooltip.speed",
-                        (1 / calcAttackSpeed(stack) * 100.0).roundToInt() / 100.0
+                        (1 / ToolCalculations.calcAttackSpeed(stack) * 100.0).roundToInt() / 100.0
                     ).formatted(
                         Formatting.GREEN, Formatting.BOLD
                     )
@@ -174,7 +174,7 @@ class ToolItem : Item(
                 .append(
                     TranslatableText(
                         "item.soulforged.tool.tooltip.attack",
-                        (calcDamage(stack, 0, null, null, null) * 100.0).roundToInt() / 100.0
+                        (ToolCalculations.calcAttackDamage(stack, 0, null, null, 1.0f) * 100.0).roundToInt() / 100.0
                     ).formatted(
                         Formatting.RED, Formatting.BOLD
                     )
@@ -262,99 +262,7 @@ class ToolItem : Item(
         private const val head = 0
         private const val binding = 1
         private const val handle = 2
-        fun calcAttackSpeed(stack: ItemStack): Double {
-            assert(stack.nbt != null)
-            return 1 / (getWeight(stack) / 800 /
-                ToolTypes.TOOL_TYPES_REGISTRY[Identifier(
-                    stack.nbt!!.getString("sf_tool_type")
-                )]?.defaultAttack?.speed!!)
-        }
 
-        fun calcDamage(
-            stack: ItemStack,
-            attackType: Int,
-            attacker: PlayerEntity?,
-            target: Entity?,
-            crit: Float?
-        ): Double {
-            val nbt = stack.nbt
-            return if (nbt != null) {
-                if (Arrays.stream(getDurabilities(stack)).anyMatch { i: Int -> i == 0 }) return 0.0
-                val head =
-                    ToolParts.TOOL_PARTS_REGISTRY[Identifier.tryParse(nbt.getCompound("sf_head").getString("type"))]
-                val binding =
-                    ToolParts.TOOL_PARTS_REGISTRY[Identifier.tryParse(nbt.getCompound("sf_binding").getString("type"))]
-                val handle =
-                    ToolParts.TOOL_PARTS_REGISTRY[Identifier.tryParse(nbt.getCompound("sf_handle").getString("type"))]
-                val mhead =
-                    Materials.MATERIAL_REGISTRY[Identifier.tryParse(nbt.getCompound("sf_head").getString("material"))]
-                val mbinding = Materials.MATERIAL_REGISTRY[Identifier.tryParse(
-                    nbt.getCompound("sf_binding").getString("material")
-                )]
-                val mhandle =
-                    Materials.MATERIAL_REGISTRY[Identifier.tryParse(nbt.getCompound("sf_handle").getString("material"))]
-                assert(mhead != null)
-                val headEdgeholding = mhead!!.edgeholding
-                val headHardness = mhead.hardness
-                val type = ToolTypes.TOOL_TYPES_REGISTRY[Identifier.tryParse(nbt.getString("sf_tool_type"))]!!
-                var ap = type.defaultAttack
-                if (attackType == 1) {
-                    ap = type.hcAttack ?: type.defaultAttack
-                }
-                if (attackType >= 3) {
-                    ap = type.dcAttack ?: type.defaultAttack
-                }
-                var velocity = Vec3d.ZERO
-                if (attacker != null) velocity =
-                    attacker.velocity.rotateY(Math.toRadians((attacker.yaw % 360.0f).toDouble()).toFloat())
-                        .multiply(-1.0, 1.0, 1.0)
-                CombatDebuggerClientUI.critType = ap.type
-                if (velocity != null && target != null) {
-                    when (ap.category) {
-                        WeaponCategories.SLASHING -> target.getWorld().playSound(
-                            null,
-                            target.blockPos,
-                            SoulforgedSoundEvents.CRIT_SLASHING,
-                            SoundCategory.PLAYERS,
-                            1.0f,
-                            1.0f
-                        )
-                        WeaponCategories.THRUSTING -> target.getWorld().playSound(
-                            null,
-                            target.blockPos,
-                            SoulforgedSoundEvents.CRIT_THRUSTING,
-                            SoundCategory.PLAYERS,
-                            1.0f,
-                            1.0f
-                        )
-                        WeaponCategories.CRUSHING -> target.getWorld().playSound(
-                            null,
-                            target.blockPos,
-                            SoulforgedSoundEvents.CRIT_CRUSHING,
-                            SoundCategory.PLAYERS,
-                            1.0f,
-                            1.0f
-                        )
-                    }
-                }
-                val piercingDamage: Double = ap.piercingDamage
-                val totalPiercingDamage = (headEdgeholding + headHardness * 0.75) / 2 * piercingDamage
-                assert(head != null)
-                val headWeight: Double = head?.weight!! * mhead.density
-                val bindingWeight: Double =
-                    binding?.weight!! * mbinding?.density!!
-                val handleWeight: Double =
-                    handle?.weight!! * mhandle?.density!!
-                val effectiveWeight = headWeight + bindingWeight + 0.25 * handleWeight
-                val totalBluntDamage: Double =
-                    (effectiveWeight / 100 + headHardness * 0.25) * ap.bluntDamage * 0.8
-                return if(crit != null) {
-                    (totalBluntDamage + totalPiercingDamage) * crit
-                } else {
-                    0.0
-                }
-            } else 1.0
-        }
 
         fun calcDurability(stack: ItemStack): Int {
             val nbt = stack.nbt!!
