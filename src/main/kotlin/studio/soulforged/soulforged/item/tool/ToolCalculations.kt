@@ -12,7 +12,6 @@ import studio.soulforged.soulforged.item.tool.part.ToolParts
 import studio.soulforged.soulforged.material.Materials
 import studio.soulforged.soulforged.sound.SoulforgedSoundEvents
 import studio.soulforged.soulforgedcombatdebugger.gui.CombatDebuggerClientUI
-import java.util.*
 
 object ToolCalculations {
     fun calcAttackSpeed(stack: ItemStack): Double {
@@ -31,7 +30,7 @@ object ToolCalculations {
     ): Double {
         val nbt = stack.nbt
         return if (nbt != null) {
-            if (Arrays.stream(ToolItem.getDurabilities(stack)).anyMatch { i: Int -> i == 0 }) return 0.0
+            if (ToolItem.getDurabilities(stack).any {  i: Int -> i <= 0 }) return 0.0
             val head =
                 ToolParts.TOOL_PARTS_REGISTRY[Identifier.tryParse(nbt.getCompound("sf_head").getString("type"))]
             val binding =

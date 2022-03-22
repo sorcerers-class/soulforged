@@ -54,7 +54,7 @@ class ToolItem : Item(
     }
 
     override fun postHit(stack: ItemStack, target: LivingEntity, attacker: LivingEntity): Boolean {
-        if (Arrays.stream(getDurabilities(stack)).anyMatch { i: Int -> i < 0 }) breakTool(
+        if (getDurabilities(stack).any { i: Int -> i <= 0 }) breakTool(
             attacker as PlayerEntity
         )
         if (!stack.getAttributeModifiers(EquipmentSlot.MAINHAND)
@@ -74,7 +74,7 @@ class ToolItem : Item(
 
     override fun getMiningSpeedMultiplier(stack: ItemStack, state: BlockState): Float {
         assert(stack.nbt != null)
-        if (Arrays.stream(getDurabilities(stack)).anyMatch { i: Int -> i == 0 }) return 0.0f
+        if (getDurabilities(stack).any {  i: Int -> i <= 0 }) return 0.0f
         val msp: MiningSpeedProcessor = (ToolTypes.TOOL_TYPES_REGISTRY[Identifier(
             stack.nbt!!.getString("sf_tool_type")
         )]?.miningSpeedProcessor as MiningSpeedProcessor?)!!
@@ -97,7 +97,7 @@ class ToolItem : Item(
     }
 
     override fun canMine(state: BlockState, world: World, pos: BlockPos, miner: PlayerEntity): Boolean {
-        return true
+        return getDurabilities(miner.mainHandStack).any {  i: Int -> i <= 0 }
     }
 
     override fun isSuitableFor(state: BlockState): Boolean {
