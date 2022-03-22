@@ -10,6 +10,5 @@ import studio.soulforged.soulforged.command.Commands
 class SoulforgedClient : ClientModInitializer {
     override fun onInitializeClient() {
         ModelLoadingRegistry.INSTANCE.registerResourceProvider { SoulforgedModelProvider() }
-        Commands.registerClient()
     }
 }

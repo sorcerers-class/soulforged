@@ -12,11 +12,4 @@ object Commands {
             }
         })
     }
-    fun registerClient() {
-        CommandRegistrationCallback.EVENT.register(CommandRegistrationCallback { dispatcher: CommandDispatcher<ServerCommandSource?>?, _: Boolean ->
-            if (dispatcher != null) {
-                ToggleSCDCommand.register(dispatcher)
-            }
-        })
-    }
 }
