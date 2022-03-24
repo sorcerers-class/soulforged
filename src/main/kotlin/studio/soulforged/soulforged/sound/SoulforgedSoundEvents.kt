@@ -8,6 +8,7 @@ object SoulforgedSoundEvents {
     val CRIT_THRUSTING = register("soulforged:crit_thrusting")
     val CRIT_SLASHING = register("soulforged:crit_slashing")
     val CRIT_CRUSHING = register("soulforged:crit_crushing")
+
     private fun register(identifier: String): SoundEvent {
         val id = Identifier.tryParse(identifier)
         val se = SoundEvent(id)

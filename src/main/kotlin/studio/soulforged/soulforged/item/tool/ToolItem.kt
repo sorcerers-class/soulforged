@@ -20,15 +20,9 @@ import net.minecraft.entity.Entity
 import net.minecraft.item.Item
 import net.minecraft.text.TranslatableText
 import net.minecraft.text.LiteralText
-import studio.soulforged.soulforged.item.tool.part.ToolParts
-import net.minecraft.util.math.Vec3d
-import studio.soulforged.soulforgedcombatdebugger.gui.CombatDebuggerClientUI
-import studio.soulforged.soulforged.sound.SoulforgedSoundEvents
-import net.minecraft.sound.SoundCategory
 import net.minecraft.text.Text
 import net.minecraft.util.*
-import org.jetbrains.annotations.Contract
-import studio.soulforged.soulforged.item.tool.combat.WeaponCategories
+import studio.soulforged.soulforged.util.math.ToolCalculations
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -54,7 +48,7 @@ class ToolItem : Item(
     }
 
     override fun postHit(stack: ItemStack, target: LivingEntity, attacker: LivingEntity): Boolean {
-        if (getDurabilities(stack).any { i: Int -> i <= 0 }) breakTool(
+        if (ToolCalculations.getDurabilities(stack).any { i: Int -> i <= 0 }) breakTool(
             attacker as PlayerEntity
         )
         if (!stack.getAttributeModifiers(EquipmentSlot.MAINHAND)
@@ -68,13 +62,13 @@ class ToolItem : Item(
             ),
             EquipmentSlot.MAINHAND
         )
-        stack.damage = calcDurability(stack)
+        stack.damage = ToolCalculations.calcDurability(stack)
         return true
     }
 
     override fun getMiningSpeedMultiplier(stack: ItemStack, state: BlockState): Float {
         assert(stack.nbt != null)
-        if (getDurabilities(stack).any {  i: Int -> i <= 0 }) return 0.0f
+        if (ToolCalculations.getDurabilities(stack).any {  i: Int -> i <= 0 }) return 0.0f
         val msp: MiningSpeedProcessor = (ToolTypes.TOOL_TYPES_REGISTRY[Identifier(
             stack.nbt!!.getString("sf_tool_type")
         )]?.miningSpeedProcessor as MiningSpeedProcessor?)!!
@@ -84,20 +78,14 @@ class ToolItem : Item(
         )
     }
 
-    override fun postMine(
-        stack: ItemStack,
-        world: World,
-        state: BlockState,
-        pos: BlockPos,
-        miner: LivingEntity
-    ): Boolean {
-        if (Arrays.stream(getDurabilities(stack)).anyMatch { i: Int -> i < 0 }) breakTool(miner as PlayerEntity)
-        stack.damage = calcDurability(stack)
+    override fun postMine(stack: ItemStack, world: World, state: BlockState, pos: BlockPos, miner: LivingEntity): Boolean {
+        if (Arrays.stream(ToolCalculations.getDurabilities(stack)).anyMatch { i: Int -> i < 0 }) breakTool(miner as PlayerEntity)
+        stack.damage = ToolCalculations.calcDurability(stack)
         return true
     }
 
     override fun canMine(state: BlockState, world: World, pos: BlockPos, miner: PlayerEntity): Boolean {
-        return getDurabilities(miner.mainHandStack).any {  i: Int -> i <= 0 }
+        return ToolCalculations.getDurabilities(miner.mainHandStack).any {  i: Int -> i <= 0 }
     }
 
     override fun isSuitableFor(state: BlockState): Boolean {
@@ -156,7 +144,7 @@ class ToolItem : Item(
                 .append(
                     TranslatableText(
                         "item.soulforged.tool.tooltip.weight",
-                        (getWeight(stack) * 100.0).roundToInt() / 100.0
+                        (ToolCalculations.getWeight(stack) * 100.0).roundToInt() / 100.0
                     ).formatted(
                         Formatting.BLUE, Formatting.BOLD
                     )
@@ -256,100 +244,5 @@ class ToolItem : Item(
 
     override fun canRepair(stack: ItemStack, ingredient: ItemStack): Boolean {
         return false
-    }
-
-    companion object {
-        private const val head = 0
-        private const val binding = 1
-        private const val handle = 2
-
-
-        fun calcDurability(stack: ItemStack): Int {
-            val nbt = stack.nbt!!
-            if (!nbt.contains("sf_damage")) {
-                val headDura = (Objects.requireNonNull(
-                    ToolParts.TOOL_PARTS_REGISTRY[Identifier(
-                        nbt.getCompound("sf_head").getString("type")
-                    )]
-                )?.durability!! *
-                        Materials.MATERIAL_REGISTRY[Identifier(
-                            nbt.getCompound("sf_head").getString("material")
-                        )]?.durability!!)
-                val bindingDura = (
-                    ToolParts.TOOL_PARTS_REGISTRY[Identifier(
-                        nbt.getCompound("sf_binding").getString("type")
-                    )]
-                ?.durability!! *
-                    Materials.MATERIAL_REGISTRY[Identifier(
-                        nbt.getCompound("sf_binding").getString("material")
-                    )]?.durability!!)
-                val handleDura = (
-                    ToolParts.TOOL_PARTS_REGISTRY[Identifier(
-                        nbt.getCompound("sf_handle").getString("type")
-                    )]?.durability!! *
-                    Materials.MATERIAL_REGISTRY[Identifier(
-                        nbt.getCompound("sf_handle").getString("material")
-                    )]?.durability!!)
-                nbt.getCompound("sf_head").putInt("max_damage", headDura.toInt())
-                nbt.getCompound("sf_binding").putInt("max_damage", bindingDura.toInt())
-                nbt.getCompound("sf_handle").putInt("max_damage", handleDura.toInt())
-                nbt.getCompound("sf_head").putInt("damage", headDura.toInt())
-                nbt.getCompound("sf_binding").putInt("damage", bindingDura.toInt())
-                nbt.getCompound("sf_handle").putInt("damage", handleDura.toInt())
-                nbt.putBoolean("sf_damage", true)
-            }
-            val durability = getDurabilities(stack)
-            val maxDurability = getMaxDurabilities(stack)
-            nbt.getCompound("sf_head").putInt("damage", durability[head] - 1)
-            val headDamage = (durability[head].toFloat() / maxDurability[head].toFloat() * 256).toInt()
-            nbt.getCompound("sf_binding").putInt("damage", durability[binding] - 1)
-            val bindingDamage = (durability[binding].toFloat() / maxDurability[binding].toFloat() * 256).toInt()
-            nbt.getCompound("sf_handle").putInt("damage", durability[handle] - 1)
-            val handleDamage = (durability[handle].toFloat() / maxDurability[handle].toFloat() * 256).toInt()
-            return 256 - handleDamage.coerceAtMost(bindingDamage).coerceAtMost(headDamage)
-        }
-
-        @JvmStatic
-        @Contract("_ -> new")
-        fun getDurabilities(stack: ItemStack): IntArray {
-            assert(stack.nbt != null)
-            return intArrayOf(
-                stack.nbt!!.getCompound("sf_head").getInt("damage"),
-                stack.nbt!!.getCompound("sf_binding").getInt("damage"),
-                stack.nbt!!
-                    .getCompound("sf_handle").getInt("damage")
-            )
-        }
-
-        @Contract("_ -> new")
-        fun getMaxDurabilities(stack: ItemStack): IntArray {
-            assert(stack.nbt != null)
-            return intArrayOf(
-                stack.nbt!!.getCompound("sf_head").getInt("max_damage"),
-                stack.nbt!!.getCompound("sf_binding").getInt("max_damage"),
-                stack.nbt!!
-                    .getCompound("sf_handle").getInt("max_damage")
-            )
-        }
-
-        fun getWeight(stack: ItemStack): Double {
-            val nbt = stack.nbt!!
-            val head = ToolParts.TOOL_PARTS_REGISTRY[Identifier.tryParse(nbt.getCompound("sf_head").getString("type"))]
-            val binding =
-                ToolParts.TOOL_PARTS_REGISTRY[Identifier.tryParse(nbt.getCompound("sf_binding").getString("type"))]
-            val handle =
-                ToolParts.TOOL_PARTS_REGISTRY[Identifier.tryParse(nbt.getCompound("sf_handle").getString("type"))]
-            val mhead = Materials.MATERIAL_REGISTRY[Identifier.tryParse(
-                nbt.getCompound("sf_head").getString("material")
-            )]
-            val mbinding = Materials.MATERIAL_REGISTRY[Identifier.tryParse(
-                nbt.getCompound("sf_binding").getString("material")
-            )]
-            val mhandle = Materials.MATERIAL_REGISTRY[Identifier.tryParse(
-                nbt.getCompound("sf_handle").getString("material")
-            )]
-            assert(head != null && mhead != null && binding != null && mbinding != null && handle != null && mhandle != null)
-            return head?.weight!! * mhead!!.density + binding!!.weight * mbinding!!.density + 0.25 * handle!!.weight * mhandle!!.density
-        }
     }
 }
