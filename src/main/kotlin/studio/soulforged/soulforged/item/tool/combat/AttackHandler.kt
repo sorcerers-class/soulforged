@@ -7,7 +7,6 @@ import studio.soulforged.soulforgedcombatdebugger.gui.CombatDebuggerClientUI
 import net.minecraft.entity.LivingEntity
 import java.util.concurrent.ConcurrentHashMap
 import net.minecraft.network.PacketByteBuf
-import studio.soulforged.soulforged.util.math.ToolCalculations
 import java.util.*
 
 class AttackHandler(private val client: ServerPlayerEntity) {

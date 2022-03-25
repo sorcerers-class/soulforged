@@ -14,7 +14,6 @@ import studio.soulforged.soulforged.item.SoulforgedItems
 import net.minecraft.text.TranslatableText
 import net.minecraft.text.LiteralText
 import net.minecraft.util.Identifier
-import studio.soulforged.soulforged.util.math.ToolCalculations
 import studio.soulforged.soulforged.item.tool.ToolItem
 
 object GiveToolCommand {

@@ -22,7 +22,6 @@ import net.minecraft.text.TranslatableText
 import net.minecraft.text.LiteralText
 import net.minecraft.text.Text
 import net.minecraft.util.*
-import studio.soulforged.soulforged.util.math.ToolCalculations
 import java.util.*
 import kotlin.math.roundToInt
 

@@ -11,7 +11,7 @@ enum class PartPosition {
     HEAD, BINDING, HANDLE
 }
 class ToolPart(val weight: Double, val durability: Double)
-class ToolPartInst(val pos: PartPosition, val part: ToolPart, val type: ToolType, val mat: Material) {
+class ToolPartInst(val pos: PartPosition, val part: ToolPart, val type: ToolType, val mat: Material, val durability: UInt, val maxDurability: Int) {
 
     companion object {
         fun fromNbt(pos: PartPosition, nbt: NbtCompound): ToolPartInst? {
@@ -19,8 +19,10 @@ class ToolPartInst(val pos: PartPosition, val part: ToolPart, val type: ToolType
             val partNbt = nbt.getCompound(String.format("sf_%s", pos.toString().lowercase()))
             val ptype = ToolParts.TOOL_PARTS_REGISTRY[Identifier.tryParse(partNbt.getString("type"))]
             val material = Materials.MATERIAL_REGISTRY[Identifier.tryParse(partNbt.getString("material"))]
+            val durability = partNbt.getInt("damage").toUInt()
+            val maxDurability = partNbt.getInt("max_damage")
             return if (ptype != null && type != null && material != null) {
-                ToolPartInst(pos, ptype, type, material)
+                ToolPartInst(pos, ptype, type, material, durability, maxDurability)
             } else {
                 return null
             }
