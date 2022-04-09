@@ -3,6 +3,7 @@ package studio.soulforged.soulforged.material
 import java.util.*
 
 class Material(
+    val name: String,
     val hardness: Double,
     val edgeholding: Double,
     val workability: Int,
