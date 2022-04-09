@@ -40,6 +40,7 @@ class ForgedToolItemModel : UnbakedModel, BakedModel, FabricBakedModel {
     @Environment(EnvType.CLIENT)
     override fun emitItemQuads(stack: ItemStack, randomSupplier: Supplier<Random>, context: RenderContext) {
         val nbt = stack.nbt!!
+
         val type = Identifier(nbt.getString("sf_tool_type")).path
         val headMat = Identifier(nbt.getCompound("sf_head").getString("material")).path
         val bindingMat = Identifier(nbt.getCompound("sf_binding").getString("material")).path
@@ -80,7 +81,7 @@ class ForgedToolItemModel : UnbakedModel, BakedModel, FabricBakedModel {
                 for (part in ModelToolParts.values()) {
                     val id = modelNameConcatenation(mat, type, part)
                     val spriteId = SpriteIdentifier(
-                        Identifier("textures/atlas/blocks.png"),
+                        PlayerScreenHandler.BLOCK_ATLAS_TEXTURE,
                         Identifier(
                             "soulforged:item/tools/$type/$mat/" + part.toString()
                                 .lowercase(Locale.getDefault())
@@ -88,7 +89,7 @@ class ForgedToolItemModel : UnbakedModel, BakedModel, FabricBakedModel {
                     )
                     val sprite = textureGetter.apply(spriteId)
                     PART_MODELS[id] = JsonUnbakedModel(
-                        Identifier("item/handheld"),
+                        ITEM_HANDHELD_MODEL,
                         (ItemModelGenerator() as ItemModelGeneratorInvoker).callAddLayerElements(0, "layer0", sprite),
                         mapOf("layer0" to Either.left(spriteId)),
                         false,
@@ -112,19 +113,16 @@ class ForgedToolItemModel : UnbakedModel, BakedModel, FabricBakedModel {
                 val matName = Objects.requireNonNull(Materials.MATERIAL_REGISTRY.getId(mat))?.path
                 val typeName = Objects.requireNonNull(ToolTypes.TOOL_TYPES_REGISTRY.getId(type))?.path
                 val headId = SpriteIdentifier(
-                    Identifier("textures/atlas/blocks.png"), Identifier(
-                        "soulforged:item/tools/$typeName/$matName/head"
-                    )
+                    PlayerScreenHandler.BLOCK_ATLAS_TEXTURE,
+                    Identifier("soulforged:item/tools/$typeName/$matName/head")
                 )
                 val bindingId = SpriteIdentifier(
-                    Identifier("textures/atlas/blocks.png"), Identifier(
-                        "soulforged:item/tools/$typeName/$matName/binding"
-                    )
+                    PlayerScreenHandler.BLOCK_ATLAS_TEXTURE,
+                    Identifier("soulforged:item/tools/$typeName/$matName/binding")
                 )
                 val handleId = SpriteIdentifier(
-                    Identifier("textures/atlas/blocks.png"), Identifier(
-                        "soulforged:item/tools/$typeName/$matName/handle"
-                    )
+                    PlayerScreenHandler.BLOCK_ATLAS_TEXTURE,
+                    Identifier("soulforged:item/tools/$typeName/$matName/handle")
                 )
                 ids.add(headId)
                 ids.add(bindingId)
@@ -177,14 +175,7 @@ class ForgedToolItemModel : UnbakedModel, BakedModel, FabricBakedModel {
         return false
     }
 
-    override fun emitBlockQuads(
-        blockView: BlockRenderView,
-        state: BlockState,
-        pos: BlockPos,
-        randomSupplier: Supplier<Random>,
-        context: RenderContext
-    ) {
-    }
+    override fun emitBlockQuads(blockView: BlockRenderView, state: BlockState, pos: BlockPos, randomSupplier: Supplier<Random>, context: RenderContext) {}
 
     companion object {
         private val ITEM_HANDHELD_MODEL = Identifier("minecraft:item/handheld")
