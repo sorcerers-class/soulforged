@@ -14,7 +14,13 @@ import studio.soulforged.soulforged.item.SoulforgedItems
 import net.minecraft.text.TranslatableText
 import net.minecraft.text.LiteralText
 import net.minecraft.util.Identifier
+import studio.soulforged.soulforged.item.tool.ToolInst
 import studio.soulforged.soulforged.item.tool.ToolItem
+import studio.soulforged.soulforged.item.tool.ToolTypes
+import studio.soulforged.soulforged.item.tool.part.PartPosition
+import studio.soulforged.soulforged.item.tool.part.ToolPartInst
+import studio.soulforged.soulforged.item.tool.part.ToolParts
+import studio.soulforged.soulforged.material.Materials
 
 object GiveToolCommand {
     fun register(dispatcher: CommandDispatcher<ServerCommandSource?>) {
@@ -59,45 +65,15 @@ object GiveToolCommand {
         handle: Identifier
     ): Int {
         for (target in targets) {
-            val toolType = type.toString()
-            val headMaterial = head.toString()
-            val bindingMaterial = binding.toString()
-            val handleMaterial = handle.toString()
-            Soulforged.LOGGER.info(
-                "Tool type: {}, head material: {}, binding material: {}, handle material: {}",
-                toolType,
-                headMaterial,
-                bindingMaterial,
-                handleMaterial
-            )
-            val toolRecipes = RecipeTables.TOOL_RECIPES[toolType]!!
-            val headPart = toolRecipes.left
-            val bindingPart = toolRecipes.middle
-            val handlePart = toolRecipes.right
-            Soulforged.LOGGER.info(
-                "Head part: {}, Binding part: {}, Handle part: {}",
-                headPart,
-                bindingPart,
-                handlePart
-            )
-            val stack = ItemStack(SoulforgedItems.TOOL)
-            assert(stack.nbt != null)
-            stack.nbt!!.putString("sf_tool_type", toolType)
-            stack.getOrCreateSubNbt("sf_head").putString("material", headMaterial)
-            stack.getSubNbt("sf_head")?.putString("type", headPart)
-            stack.getOrCreateSubNbt("sf_binding").putString("material", bindingMaterial)
-            stack.getSubNbt("sf_binding")?.putString("type", bindingPart)
-            stack.getOrCreateSubNbt("sf_handle").putString("material", handleMaterial)
-            stack.getSubNbt("sf_handle")?.putString("type", handlePart)
-            ToolCalculations.calcAttackSpeed(stack)
-            ToolCalculations.calcAttackDamage(stack, 0, null, null, 1.0f)
-            ToolItem.calcDurability(stack)
+            val stack: ItemStack = SoulforgedItems.TOOL.defaultStack
+            val tool: ToolInst = ToolInst.fromRaw(stack, type, head, binding, handle)
+
             target.giveItemStack(stack)
             source.sendFeedback(
                 TranslatableText(
                     "commands.give.success.single",
                     1,
-                    if (stack.hasCustomName()) stack.name else LiteralText("Forged Tool"),
+                    stack.name,
                     targets.iterator().next().displayName
                 ), true
             )
