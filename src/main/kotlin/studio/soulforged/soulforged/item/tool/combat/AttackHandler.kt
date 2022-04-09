@@ -7,6 +7,7 @@ import studio.soulforged.soulforgedcombatdebugger.gui.CombatDebuggerClientUI
 import net.minecraft.entity.LivingEntity
 import java.util.concurrent.ConcurrentHashMap
 import net.minecraft.network.PacketByteBuf
+import studio.soulforged.soulforged.item.tool.ToolInst
 import java.util.*
 
 class AttackHandler(private val client: ServerPlayerEntity) {
@@ -36,10 +37,9 @@ class AttackHandler(private val client: ServerPlayerEntity) {
 
     private fun onFinish() {
         if (target != null) {
+            val tool = ToolInst.fromNbt(client.mainHandStack)
             target!!.damage(
-                DamageSource.player(client), ToolCalculations.calcAttackDamage(
-                    client.mainHandStack, packets.size, client, target, attackCooldown
-                ).toFloat()
+                DamageSource.player(client), tool.baseAttackDamage(tool.attackProperties(packets.size)!!).toFloat()
             )
             CombatDebuggerClientUI.attackType = packets.size
             client.mainHandStack.postHit(target as LivingEntity?, client)
