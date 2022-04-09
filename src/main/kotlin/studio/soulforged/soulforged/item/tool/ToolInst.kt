@@ -1,10 +1,15 @@
 package studio.soulforged.soulforged.item.tool
 
+import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
-import net.minecraft.nbt.NbtCompound
+import net.minecraft.util.Identifier
+import studio.soulforged.soulforged.item.SoulforgedItems
 import studio.soulforged.soulforged.item.tool.combat.AttackProperties
 import studio.soulforged.soulforged.item.tool.part.PartPosition
 import studio.soulforged.soulforged.item.tool.part.ToolPartInst
+import studio.soulforged.soulforged.item.tool.part.ToolParts
+import studio.soulforged.soulforged.material.Materials
+import studio.soulforged.soulforged.recipe.RecipeTables
 import studio.soulforged.soulforgedcombatdebugger.gui.CombatDebuggerClientUI
 
 /**
@@ -14,8 +19,17 @@ import studio.soulforged.soulforgedcombatdebugger.gui.CombatDebuggerClientUI
  * @see studio.soulforged.soulforged.item.tool.part.ToolPart
  * @see studio.soulforged.soulforged.material.Material
  */
-class ToolInst(stack: ItemStack, head: ToolPartInst, binding: ToolPartInst, handle: ToolPartInst) {
+class ToolInst(val stack: ItemStack, val type: ToolType, val head: ToolPartInst, val binding: ToolPartInst, val handle: ToolPartInst) {
+    /**
+     * Modifies the provided item stack with the properties of the tool. Should be called after every attack,
+     * every change in durability, etc. Might not be the best idea to call any more frequently than that,
+     * especially on large servers.
+     * @param player Optionally define a player entity. If this is defined, then things like break events will be sent to the player.
+     * @author Lilly Rosaline
+     */
+    fun sync(player: PlayerEntity?) {
 
+    }
     /**
      * Gets the durability of the tool to display.
      * @return The durability, normalized from 0 to 255.
@@ -43,7 +57,7 @@ class ToolInst(stack: ItemStack, head: ToolPartInst, binding: ToolPartInst, hand
      * @author Lilly Rosaline
      */
     fun baseAttackDamage(ap: AttackProperties): Double {
-        val type = this.head.type
+        val type = head.type
 
         CombatDebuggerClientUI.critType = ap.type
         val totalPiercingDamage = rawPiercingDamage() * ap.piercingDamage
@@ -57,7 +71,7 @@ class ToolInst(stack: ItemStack, head: ToolPartInst, binding: ToolPartInst, hand
      * @author Lilly Rosaline
      */
     fun rawPiercingDamage(): Double {
-        return (this.head.mat.edgeholding + this.head.mat.hardness * 0.75) / 2
+        return (head.mat.edgeholding + head.mat.hardness * 0.75) / 2
     }
 
     /**
@@ -66,7 +80,7 @@ class ToolInst(stack: ItemStack, head: ToolPartInst, binding: ToolPartInst, hand
      * @author Lilly Rosaline
      */
     fun rawBluntDamage(): Double {
-        return (weight() / 100 + this.head.mat.hardness * 0.25)
+        return (weight() / 100 + head.mat.hardness * 0.25)
     }
 
     /**
@@ -75,9 +89,9 @@ class ToolInst(stack: ItemStack, head: ToolPartInst, binding: ToolPartInst, hand
      * @author Lilly Rosaline
      */
     fun weight(): Double {
-        val headWeight: Double = this.head.part.weight * this.head.mat.density
-        val bindingWeight: Double = this.binding.part.weight * this.binding.mat.density
-        val handleWeight: Double = this.handle.part.weight * this.handle.mat.density
+        val headWeight: Double = head.part.weight * head.mat.density
+        val bindingWeight: Double = binding.part.weight * binding.mat.density
+        val handleWeight: Double = handle.part.weight * handle.mat.density
         return headWeight + bindingWeight + 0.25 * handleWeight
     }
 
@@ -90,11 +104,40 @@ class ToolInst(stack: ItemStack, head: ToolPartInst, binding: ToolPartInst, hand
      */
     fun attackProperties(attack: Int): AttackProperties? {
         return if(attack == 1) {
-            this.head.type.hcAttack
+            head.type.hcAttack
         } else if(attack == 2 || attack == 0) {
-            this.head.type.defaultAttack
+            head.type.defaultAttack
         } else {
-            this.head.type.dcAttack
+            head.type.dcAttack
+        }
+    }
+    companion object {
+        fun fromRaw(stack: ItemStack, type: Identifier, headMaterial: Identifier, bindingMaterial: Identifier, handleMaterial: Identifier): ToolInst {
+            val toolType = ToolTypes.TOOL_TYPES_REGISTRY.get(type)
+            val hm = Materials.MATERIAL_REGISTRY.get(headMaterial)
+            val bm = Materials.MATERIAL_REGISTRY.get(bindingMaterial)
+            val ham = Materials.MATERIAL_REGISTRY.get(handleMaterial)
+
+            val toolRecipes = RecipeTables.TOOL_RECIPES[type.toString()]!!
+            val headPart = ToolParts.TOOL_PARTS_REGISTRY.get(toolRecipes.left)
+            val bindingPart = ToolParts.TOOL_PARTS_REGISTRY.get(toolRecipes.middle)
+            val handlePart = ToolParts.TOOL_PARTS_REGISTRY.get(toolRecipes.right)
+
+            toolType!!
+            val headInst = ToolPartInst(PartPosition.HEAD, headPart!!, toolType, hm!!, 255u, 255)
+            val bindingInst = ToolPartInst(PartPosition.BINDING, bindingPart!!, toolType, bm!!, 255u, 255)
+            val handleInst = ToolPartInst(PartPosition.HANDLE, handlePart!!, toolType, ham!!, 255u, 255)
+
+            return ToolInst(stack, toolType, headInst, bindingInst, handleInst)
+        }
+        fun fromNbt(stack: ItemStack): ToolInst {
+            return fromRaw(
+                stack,
+                Identifier(stack.nbt?.getString("sf_tool_type")),
+                Identifier(stack.nbt?.getCompound("sf_head")?.getString("material")),
+                Identifier(stack.nbt?.getCompound("sf_binding")?.getString("material")),
+                Identifier(stack.nbt?.getCompound("sf_handle")?.getString("material"))
+            )
         }
     }
 }
