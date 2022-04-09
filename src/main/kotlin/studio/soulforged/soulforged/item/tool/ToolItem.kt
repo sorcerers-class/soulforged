@@ -47,44 +47,41 @@ class ToolItem : Item(
     }
 
     override fun postHit(stack: ItemStack, target: LivingEntity, attacker: LivingEntity): Boolean {
-        if (ToolCalculations.getDurabilities(stack).any { i: Int -> i <= 0 }) breakTool(
-            attacker as PlayerEntity
-        )
+        val tool = ToolInst.fromNbt(stack)
+        tool.sync(attacker as PlayerEntity)
+        if (tool.durability() <= 0u) breakTool(attacker)
         if (!stack.getAttributeModifiers(EquipmentSlot.MAINHAND)
                 .containsKey(EntityAttributes.GENERIC_ATTACK_SPEED)
         ) stack.addAttributeModifier(
             EntityAttributes.GENERIC_ATTACK_SPEED,
             EntityAttributeModifier(
                 "f106b032-3216-4ff6-9919-36cf09d350f5",
-                ToolCalculations.calcAttackSpeed(stack) - 4,
+                tool.baseAttackSpeed(tool.attackProperties(2)!!) - 4,
                 EntityAttributeModifier.Operation.ADDITION
             ),
             EquipmentSlot.MAINHAND
         )
-        stack.damage = ToolCalculations.calcDurability(stack)
+        stack.damage = tool.durability().toInt()
         return true
     }
 
     override fun getMiningSpeedMultiplier(stack: ItemStack, state: BlockState): Float {
-        assert(stack.nbt != null)
-        if (ToolCalculations.getDurabilities(stack).any {  i: Int -> i <= 0 }) return 0.0f
-        val msp: MiningSpeedProcessor = (ToolTypes.TOOL_TYPES_REGISTRY[Identifier(
-            stack.nbt!!.getString("sf_tool_type")
-        )]?.miningSpeedProcessor as MiningSpeedProcessor?)!!
-        return msp.getMiningSpeed(
-            state,
-            Materials.MATERIAL_REGISTRY[Identifier(stack.nbt!!.getCompound("sf_head").getString("material"))]
-        )
+        val tool = ToolInst.fromNbt(stack)
+        if (tool.durability() <= 0u) return 0.0f
+        val msp: MiningSpeedProcessor = tool.type.miningSpeedProcessor as MiningSpeedProcessor
+        return msp.getMiningSpeed(state, tool.head.mat)
     }
 
     override fun postMine(stack: ItemStack, world: World, state: BlockState, pos: BlockPos, miner: LivingEntity): Boolean {
-        if (Arrays.stream(ToolCalculations.getDurabilities(stack)).anyMatch { i: Int -> i < 0 }) breakTool(miner as PlayerEntity)
-        stack.damage = ToolCalculations.calcDurability(stack)
+        val tool = ToolInst.fromNbt(stack)
+        if (tool.durability() <= 0u) breakTool(miner as PlayerEntity)
+        stack.damage = tool.durability().toInt()
         return true
     }
 
     override fun canMine(state: BlockState, world: World, pos: BlockPos, miner: PlayerEntity): Boolean {
-        return ToolCalculations.getDurabilities(miner.mainHandStack).any {  i: Int -> i <= 0 }
+        val tool = ToolInst.fromNbt(miner.mainHandStack)
+        return tool.durability() <= 0u
     }
 
     override fun isSuitableFor(state: BlockState): Boolean {
@@ -92,49 +89,35 @@ class ToolItem : Item(
     }
 
     override fun useOnBlock(context: ItemUsageContext): ActionResult {
-        return (
-                ToolTypes.TOOL_TYPES_REGISTRY[Identifier.tryParse(
-                    Objects.requireNonNull(
-                        Objects.requireNonNull(
-                            context.player
-                        )?.mainHandStack?.nbt
-                    )?.getString("sf_tool_type")
-                )]
-                    ?.rightClickEventProcessor as RightClickEventProcessor).onRightClick(context)!!
+        val tool = ToolInst.fromNbt(context.stack)
+        if (tool.durability() <= 0u) return ActionResult.FAIL
+        val rcep: RightClickEventProcessor = tool.type.rightClickEventProcessor as RightClickEventProcessor
+        return rcep.onRightClick(context)!!
     }
 
     @Environment(EnvType.CLIENT)
     override fun appendTooltip(stack: ItemStack, world: World?, tooltip: MutableList<Text>, context: TooltipContext) {
-        val nbt = stack.nbt!!
-        val headMaterial = Identifier(nbt.getCompound("sf_head").getString("material")).path
-        val headType = Identifier(nbt.getCompound("sf_head").getString("type")).path
-        val bindingMaterial = Identifier(nbt.getCompound("sf_binding").getString("material")).path
-        val bindingType = Identifier(nbt.getCompound("sf_binding").getString("type")).path
-        val handleMaterial = Identifier(nbt.getCompound("sf_handle").getString("material")).path
-        val handleType = Identifier(nbt.getCompound("sf_handle").getString("type")).path
-        val toolType = ToolTypes.TOOL_TYPES_REGISTRY[Identifier(nbt.getString("sf_tool_type"))]!!
+        val tool = ToolInst.fromNbt(stack)
+        val headMaterial = TranslatableText(tool.head.mat.name)
+        val headType = tool.head.part.name
+        val bindingMaterial = TranslatableText(tool.binding.mat.name)
+        val bindingType = tool.binding.part.name
+        val handleMaterial = TranslatableText(tool.handle.mat.name)
+        val handleType = tool.handle.part.name
+        val toolType = tool.type
         val hc = toolType.hcAttack != null
         val dc = toolType.dcAttack != null
 
         //tooltip.add(new TranslatableText("item.soulforged.tool.type." + type + ".desc").formatted(Formatting.GRAY, Formatting.ITALIC));
         tooltip.add(
-            TranslatableText(
-                "item.soulforged.part.$headType",
-                TranslatableText("item.soulforged.tool.material.$headMaterial")
-            )
+            TranslatableText(headType, headMaterial)
                 .append(" + ").formatted(Formatting.RESET)
                 .append(
-                    TranslatableText(
-                        "item.soulforged.part.$bindingType",
-                        TranslatableText("item.soulforged.tool.material.$bindingMaterial")
-                    )
+                    TranslatableText(bindingType, bindingMaterial)
                 )
                 .append(" + ").formatted(Formatting.RESET)
                 .append(
-                    TranslatableText(
-                        "item.soulforged.part.$handleType",
-                        TranslatableText("item.soulforged.tool.material.$handleMaterial")
-                    )
+                    TranslatableText(handleType, handleMaterial)
                 )
                 .formatted(Formatting.GOLD)
         )
@@ -143,7 +126,7 @@ class ToolItem : Item(
                 .append(
                     TranslatableText(
                         "item.soulforged.tool.tooltip.weight",
-                        (ToolCalculations.getWeight(stack) * 100.0).roundToInt() / 100.0
+                        (tool.weight() * 100.0).roundToInt() / 100.0
                     ).formatted(
                         Formatting.BLUE, Formatting.BOLD
                     )
@@ -152,7 +135,7 @@ class ToolItem : Item(
                 .append(
                     TranslatableText(
                         "item.soulforged.tool.tooltip.speed",
-                        (1 / ToolCalculations.calcAttackSpeed(stack) * 100.0).roundToInt() / 100.0
+                        (1 / tool.baseAttackSpeed(tool.attackProperties(2)!!) * 100.0).roundToInt() / 100.0
                     ).formatted(
                         Formatting.GREEN, Formatting.BOLD
                     )
@@ -161,7 +144,7 @@ class ToolItem : Item(
                 .append(
                     TranslatableText(
                         "item.soulforged.tool.tooltip.attack",
-                        (ToolCalculations.calcAttackDamage(stack, 0, null, null, 1.0f) * 100.0).roundToInt() / 100.0
+                        (tool.baseAttackDamage(tool.attackProperties(2)!!) * 100.0).roundToInt() / 100.0
                     ).formatted(
                         Formatting.RED, Formatting.BOLD
                     )
