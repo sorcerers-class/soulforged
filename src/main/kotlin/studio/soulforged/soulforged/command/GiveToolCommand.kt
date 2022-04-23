@@ -7,23 +7,14 @@ import net.minecraft.command.argument.EntityArgumentType
 import net.minecraft.command.argument.IdentifierArgumentType
 import com.mojang.brigadier.context.CommandContext
 import net.minecraft.server.network.ServerPlayerEntity
-import studio.soulforged.soulforged.Soulforged
-import studio.soulforged.soulforged.recipe.RecipeTables
 import net.minecraft.item.ItemStack
 import studio.soulforged.soulforged.item.SoulforgedItems
 import net.minecraft.text.TranslatableText
-import net.minecraft.text.LiteralText
 import net.minecraft.util.Identifier
 import studio.soulforged.soulforged.item.tool.ToolInst
-import studio.soulforged.soulforged.item.tool.ToolItem
-import studio.soulforged.soulforged.item.tool.ToolTypes
-import studio.soulforged.soulforged.item.tool.part.PartPosition
-import studio.soulforged.soulforged.item.tool.part.ToolPartInst
-import studio.soulforged.soulforged.item.tool.part.ToolParts
-import studio.soulforged.soulforged.material.Materials
 
 object GiveToolCommand {
-    fun register(dispatcher: CommandDispatcher<ServerCommandSource?>) {
+    fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
         dispatcher.register(
             CommandManager.literal("givetool")
                 .requires { source: ServerCommandSource -> source.hasPermissionLevel(2) }
@@ -67,7 +58,7 @@ object GiveToolCommand {
         for (target in targets) {
             val stack: ItemStack = SoulforgedItems.TOOL.defaultStack
             val tool: ToolInst = ToolInst.fromRaw(stack, type, head, binding, handle)
-
+            tool.sync(target)
             target.giveItemStack(stack)
             source.sendFeedback(
                 TranslatableText(

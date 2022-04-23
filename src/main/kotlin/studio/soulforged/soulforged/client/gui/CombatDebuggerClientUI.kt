@@ -1,7 +1,6 @@
-package studio.soulforged.soulforgedcombatdebugger.gui
+package studio.soulforged.soulforged.client.gui
 
 import imgui.ImGui
-import studio.soulforged.soulforged.item.tool.ToolItem.Companion.getDurabilities
 import net.fabricmc.api.EnvType
 import studio.soulforged.soulforged.item.tool.combat.CritTypes
 import studio.soulforged.soulforged.item.SoulforgedItems
@@ -76,16 +75,14 @@ object CombatDebuggerClientUI {
                         val apDc: AttackProperties = type.dcAttack!!
                         ImGui.text(
                             java.lang.String.format(
-                                """
-                                        DC Attack:
-                                        \tPiercing Damage: %f
-                                        \tBlunt Damage: %f
-                                        \tFinesse: %f
-                                        \tSpeed: %f
-                                        \tPiercing: %f
-                                        \tCategory: %s
-                                        \tCrit Type: %s
-                                        """,
+                                "DC Attack:" +
+                                        "\tPiercing Damage: %f\n" +
+                                        "\tBlunt Damage: %f\n" +
+                                        "\tFinesse: %f\n" +
+                                        "\tSpeed: %f\n" +
+                                        "\tPiercing: %f\n" +
+                                        "\tCategory: %s\n" +
+                                        "\tCrit Type: %s\n",
                                 apDc.piercingDamage,
                                 apDc.bluntDamage,
                                 apDc.finesse, apDc.speed,
@@ -283,9 +280,9 @@ object CombatDebuggerClientUI {
                         )
                     )
                     if (ImGui.button("Damage calc: ")) showDamageCalcDropdown = showDamageCalcDropdown xor true
-                    if (Arrays.stream(getDurabilities(stack))
-                            .anyMatch { i: Int -> i == 0 }
-                    ) ImGui.text("Broken tool will have 0 damage!")
+                    //if (Arrays.stream(getDurabilities(stack))
+                    //        .anyMatch { i: Int -> i == 0 }
+                    //) ImGui.text("Broken tool will have 0 damage!")
                     val phead =
                         ToolParts.TOOL_PARTS_REGISTRY[Identifier.tryParse(nbt.getCompound("sf_head").getString("type"))]
                     val pbinding = ToolParts.TOOL_PARTS_REGISTRY[Identifier.tryParse(

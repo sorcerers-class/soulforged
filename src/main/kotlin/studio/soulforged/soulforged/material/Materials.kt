@@ -3,7 +3,6 @@ package studio.soulforged.soulforged.material
 import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
 import net.minecraft.util.registry.RegistryKey
-import studio.soulforged.soulforged.mixin.common.RegistryAccessor
 import studio.soulforged.soulforged.Soulforged
 import java.util.*
 
@@ -11,7 +10,7 @@ import java.util.*
 object Materials {
     private val MATERIAL_REGISTRY_KEY: RegistryKey<Registry<Material>> = RegistryKey.ofRegistry<Material>(Identifier("soulforged", "materials"))
     val MATERIAL_REGISTRY: Registry<Material> =
-        RegistryAccessor.create(MATERIAL_REGISTRY_KEY) { IRON } // This is possibly the worst way of doing this but i don't care
+        Registry.registerSimple(MATERIAL_REGISTRY_KEY) {WOOD} // This is possibly the worst way of doing this but i don't care
 
     // Earlygame Materials
     val WOOD = register(

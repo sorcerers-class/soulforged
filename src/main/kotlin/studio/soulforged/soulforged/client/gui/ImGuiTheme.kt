@@ -1,11 +1,11 @@
-package studio.soulforged.soulforgedcombatdebugger.gui
+package studio.soulforged.soulforged.client.gui
 
 import kotlin.Throws
 import java.io.IOException
 import imgui.flag.ImGuiCol
-import studio.soulforged.soulforgedcombatdebugger.CombatDebuggerClient
 import imgui.ImFontConfig
 import imgui.ImGui
+import studio.soulforged.soulforged.client.SoulforgedClient
 
 object ImGuiTheme {
     /**
@@ -50,7 +50,7 @@ object ImGuiTheme {
         // Read ComicMono.ttf
         val font = ImGui.getIO().fonts
         val comicMono =
-            CombatDebuggerClient::class.java.getResourceAsStream("/assets/soulforgedcombatdebugger/ComicMono.ttf")
+            SoulforgedClient::class.java.getResourceAsStream("/assets/soulforged/ComicMono.ttf")
                 ?: throw IOException("ComicMono.ttf missing!")
         // Configure font to be size 20
         val cfg = ImFontConfig()

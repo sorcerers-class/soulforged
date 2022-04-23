@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "quilt_loader": {
+    "group": "studio.soulforged",
+    "id": "soulforged",
+    "version": "${version}",
+    "metadata": {
+      "name": "Soulforged",
+      "description": "",
+      "contributors": {
+      },
+      "icon": "assets/soulforged/icon.png"
+    },
+    "language_adapters": {
+      "kotlin": "studio.soulforged.soulforged.util.KotlinAdapter"
+    },
+    "intermediate_mappings": "net.fabricmc:intermediary",
+    "entrypoints": {
+      "main": {
+        "adapter": "kotlin",
+        "value": "studio.soulforged.soulforged.Soulforged"
+      },
+      "client": {
+        "adapter": "kotlin",
+        "value": "studio.soulforged.soulforged.client.SoulforgedClient"
+      }
+    }
+  },
+  "mixin": "soulforged.mixins.json",
+  "access_widener": "soulforged.accesswidener"
+}

@@ -1,12 +1,11 @@
 plugins {
     kotlin("jvm") version "1.5.10"
-    id("fabric-loom")
-    `maven-publish`
-    java
-}
+    alias(libs.plugins.quilt.loom)
 
+    `maven-publish`
+}
 group = property("maven_group")!!
-version = property("mod_version")!!
+version = property("version")!!
 
 repositories {
     mavenCentral()
@@ -15,24 +14,38 @@ repositories {
     // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
     // See https://docs.gradle.org/current/userguide/declaring_repositories.html
     // for more information about repositories.
-    maven("https://maven.shedaniel.me/")
 }
+fun DependencyHandlerScope.includeAndExpose(dep: Any) {
+    modApi(dep)
+    include(dep)
+}
+val kotlinVersion: String by project
+val coroutinesVersion: String by project
+val serializationVersion: String by project
 
 dependencies {
-    minecraft("com.mojang:minecraft:${property("minecraft_version")}")
-    mappings("net.fabricmc:yarn:${property("yarn_mappings")}:v2")
-    modImplementation("net.fabricmc:fabric-loader:${property("loader_version")}")
+    minecraft(libs.minecraft)
+    mappings(loom.layered {
+        addLayer(quiltMappings.mappings("org.quiltmc:quilt-mappings:${libs.versions.quilt.mappings.get()}:v2"))
+    })
+    modImplementation(libs.quilt.loader)
+    modImplementation(libs.quilted.fabric.api)
 
-    modImplementation("net.fabricmc:fabric-language-kotlin:${property("fabric_kotlin_version")}")
-    modImplementation("net.fabricmc.fabric-api:fabric-api:${property("fabric_version")}")
-    val imguiVersion = "1.86.3"
+    includeAndExpose(kotlin("stdlib", kotlinVersion))
+    includeAndExpose(kotlin("stdlib-jdk8", kotlinVersion))
+    includeAndExpose(kotlin("stdlib-jdk7", kotlinVersion))
+    includeAndExpose(kotlin("reflect", kotlinVersion))
+    includeAndExpose("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+    includeAndExpose("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$coroutinesVersion")
+    includeAndExpose("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutinesVersion")
+    includeAndExpose("org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:$serializationVersion")
+    includeAndExpose("org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:$serializationVersion")
+    includeAndExpose("org.jetbrains.kotlinx:kotlinx-serialization-cbor-jvm:$serializationVersion")
+
+    val imguiVersion = "1.86.4"
     implementation("io.github.spair:imgui-java-binding:$imguiVersion")
     implementation("io.github.spair:imgui-java-lwjgl3:$imguiVersion") {
         exclude(group = "org.lwjgl")
-    }
-    // Cloth Config, for configuration files
-    modApi("me.shedaniel.cloth:cloth-config-fabric:${property("clothConfigVersion")}") {
-        exclude(group = "net.fabricmc.fabric-api")
     }
     // Apache common collections because why not
     implementation("org.apache.commons:commons-collections4:4.4")
@@ -47,7 +60,7 @@ tasks {
 
     processResources {
         inputs.property("version", project.version)
-        filesMatching("fabric.mod.json") {
+        filesMatching("quilt.mod.json") {
             expand(mutableMapOf("version" to project.version))
         }
     }
