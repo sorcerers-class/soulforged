@@ -1,7 +1,7 @@
 /*
 * ADAPTED FROM: https://git.lavender.software/hibiscus-client/hibiscus/src/branch/main/src/main/kotlin/codes/som/hibiscus/gui/ImGuiRenderer.kt
  */
-package studio.soulforged.soulforged.client.gui
+package studio.soulforged.soulforgedcombatdebugger.gui
 
 import imgui.ImGui
 import net.fabricmc.api.EnvType

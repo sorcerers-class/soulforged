@@ -6,11 +6,11 @@
   "mixins": [
     "common.CheckToolHarvestabilityImpl",
     "common.InteractPacketMixin",
+    "common.RegistryAccessor"
   ],
   "client": [
     "client.ItemModelGeneratorInvoker",
-    "client.MouseMixin",
-    "client.MinecraftClientMixin"
+    "client.MouseMixin"
   ],
   "injectors": {
     "defaultRequire": 1

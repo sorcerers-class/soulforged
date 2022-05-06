@@ -1,10 +1,10 @@
-package studio.soulforged.soulforged.mixin.client;
+package studio.soulforged.soulforgedcombatdebugger.mixin;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
 import studio.soulforged.soulforged.Soulforged;
-import studio.soulforged.soulforged.client.gui.CombatDebuggerClientUI;
-import studio.soulforged.soulforged.client.gui.ImGuiRenderer;
+import studio.soulforged.soulforgedcombatdebugger.gui.CombatDebuggerClientUI;
+import studio.soulforged.soulforgedcombatdebugger.gui.ImGuiRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

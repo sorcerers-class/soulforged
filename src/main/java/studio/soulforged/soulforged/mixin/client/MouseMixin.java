@@ -9,7 +9,7 @@ import net.minecraft.client.Mouse;
 import net.minecraft.network.PacketByteBuf;
 import studio.soulforged.soulforged.item.SoulforgedItems;
 import studio.soulforged.soulforged.network.NetworkIdentifiers;
-import studio.soulforged.soulforged.client.gui.CombatDebuggerClientUI;
+import studio.soulforged.soulforgedcombatdebugger.gui.CombatDebuggerClientUI;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -23,7 +23,7 @@ public class MouseMixin {
     @Final
     @Shadow
     private MinecraftClient client;
-    @Inject(method = "onMouseButton", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/KeyBind;setKeyPressed(Lcom/mojang/blaze3d/platform/InputUtil$Key;Z)V", shift = At.Shift.BEFORE))
+    @Inject(method = "onMouseButton", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/KeyBinding;setKeyPressed(Lnet/minecraft/client/util/InputUtil$Key;Z)V", shift = At.Shift.BEFORE))
     private void injectOnMouseButton(long window, int button, int action, int mods, CallbackInfo ci) {
         if(client.player != null) {
             if(client.player.getMainHandStack() != null) {

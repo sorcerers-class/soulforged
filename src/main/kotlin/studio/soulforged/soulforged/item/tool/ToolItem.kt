@@ -22,12 +22,11 @@ import net.minecraft.text.TranslatableText
 import net.minecraft.text.LiteralText
 import net.minecraft.text.Text
 import net.minecraft.util.*
-import org.quiltmc.qsl.item.setting.api.QuiltItemSettings
 import java.util.*
 import kotlin.math.roundToInt
 
 class ToolItem : Item(
-    QuiltItemSettings()
+    FabricItemSettings()
         .rarity(Rarity.RARE)
         .fireproof()
         .maxCount(1)
@@ -57,7 +56,7 @@ class ToolItem : Item(
             EntityAttributes.GENERIC_ATTACK_SPEED,
             EntityAttributeModifier(
                 "f106b032-3216-4ff6-9919-36cf09d350f5",
-                tool.baseAttackSpeed(tool.attackProperties(2)!!),
+                tool.baseAttackSpeed(tool.attackProperties(2)!!) - 4,
                 EntityAttributeModifier.Operation.ADDITION
             ),
             EquipmentSlot.MAINHAND
@@ -136,7 +135,7 @@ class ToolItem : Item(
                 .append(
                     TranslatableText(
                         "item.soulforged.tool.tooltip.speed",
-                        (tool.baseAttackSpeed(tool.attackProperties(2)!!) * 100.0).roundToInt() / 100.0
+                        (1 / tool.baseAttackSpeed(tool.attackProperties(2)!!) * 100.0).roundToInt() / 100.0
                     ).formatted(
                         Formatting.GREEN, Formatting.BOLD
                     )
@@ -210,9 +209,18 @@ class ToolItem : Item(
 
     @Environment(EnvType.CLIENT)
     override fun getName(stack: ItemStack): Text {
-        val tool = ToolInst.fromNbt(stack)
+        val nbt = stack.nbt!!
+        val type = ToolTypes.TOOL_TYPES_REGISTRY[Identifier(nbt.getString("sf_tool_type"))]
+        val mat = Materials.MATERIAL_REGISTRY[Identifier(
+            nbt.getCompound("sf_head").getString("material")
+        )]
+        val matLocalized = TranslatableText(
+            "item.soulforged.tool.material." + Materials.MATERIAL_REGISTRY.getId(mat)?.path
+        )
         return TranslatableText(
-            tool.type.name, TranslatableText(tool.head.mat.name)
+            "item.soulforged.tool.type." +
+                ToolTypes.TOOL_TYPES_REGISTRY.getId(
+                    type)?.path, matLocalized
         )
     }
 

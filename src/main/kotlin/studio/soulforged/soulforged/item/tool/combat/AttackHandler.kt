@@ -3,7 +3,7 @@ package studio.soulforged.soulforged.item.tool.combat
 import net.minecraft.entity.Entity
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.entity.damage.DamageSource
-import studio.soulforged.soulforged.client.gui.CombatDebuggerClientUI
+import studio.soulforged.soulforgedcombatdebugger.gui.CombatDebuggerClientUI
 import net.minecraft.entity.LivingEntity
 import java.util.concurrent.ConcurrentHashMap
 import net.minecraft.network.PacketByteBuf

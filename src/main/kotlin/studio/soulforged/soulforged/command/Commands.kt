@@ -1,13 +1,15 @@
 package studio.soulforged.soulforged.command
 
+import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback
 import com.mojang.brigadier.CommandDispatcher
 import net.minecraft.server.command.ServerCommandSource
-import org.quiltmc.qsl.command.api.CommandRegistrationCallback
 
 object Commands {
     fun register() {
-        CommandRegistrationCallback.EVENT.register(CommandRegistrationCallback { dispatcher: CommandDispatcher<ServerCommandSource>, b: Boolean, b1: Boolean ->
-            GiveToolCommand.register(dispatcher)
+        CommandRegistrationCallback.EVENT.register(CommandRegistrationCallback { dispatcher: CommandDispatcher<ServerCommandSource?>?, _: Boolean ->
+            if (dispatcher != null) {
+                GiveToolCommand.register(dispatcher)
+            }
         })
     }
 }
