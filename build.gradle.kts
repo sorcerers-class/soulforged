@@ -1,6 +1,6 @@
 plugins {
     java
-    kotlin("jvm") version "1.5.10"
+    kotlin("jvm") version "1.6.21"
     `maven-publish`
     alias(libs.plugins.quilt.loom)
 }
@@ -20,7 +20,7 @@ dependencies {
         addLayer(quiltMappings.mappings("org.quiltmc:quilt-mappings:${libs.versions.quilt.mappings.get()}:v2"))
     })
     modImplementation(libs.quilt.loader)
-    modImplementation(libs.fabric.language.kotlin) {
+    modImplementation(group = "net.fabricmc", name = "fabric-language-kotlin", version = libs.versions.fabric.language.kotlin.get()) {
         exclude(group = "net.fabricmc")
     }
     modImplementation(libs.quilted.fabric.api)

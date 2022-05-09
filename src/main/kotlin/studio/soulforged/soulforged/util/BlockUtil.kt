@@ -13,13 +13,13 @@ import java.util.*
 
 object BlockUtil {
     fun isMineable(state: BlockState, tool: ItemStack): Boolean {
-        if (Registry.BLOCK.getEntry(Registry.BLOCK.getRawId(state.block)).get().isIn(BlockTags.PICKAXE_MINEABLE)) {
+        if (Registry.BLOCK.get(Registry.BLOCK.getRawId(state.block)).defaultState.isIn(BlockTags.PICKAXE_MINEABLE)) {
             assert(tool.nbt != null)
             val level: Int =
                 Materials.MATERIAL_REGISTRY[Identifier(
                     tool.nbt!!.getCompound("sf_head").getString("material")
                 )]?.miningLevel!!
-            if (Registry.BLOCK.getEntry(Registry.BLOCK.getRawId(state.block)).get().isIn(BlockTags.PICKAXE_MINEABLE)) {
+            if (Registry.BLOCK.get(Registry.BLOCK.getRawId(state.block)).defaultState.isIn(BlockTags.PICKAXE_MINEABLE)) {
                 return if (Objects.requireNonNull(
                         ToolTypes.TOOL_TYPES_REGISTRY[Identifier(
                             tool.nbt!!.getString("sf_tool_type")

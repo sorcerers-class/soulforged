@@ -3,14 +3,16 @@ package studio.soulforged.soulforged.item.tool
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.util.Identifier
-import studio.soulforged.soulforged.item.SoulforgedItems
+
 import studio.soulforged.soulforged.item.tool.combat.AttackProperties
 import studio.soulforged.soulforged.item.tool.part.PartPosition
 import studio.soulforged.soulforged.item.tool.part.ToolPartInst
 import studio.soulforged.soulforged.item.tool.part.ToolParts
+
 import studio.soulforged.soulforged.material.Materials
 import studio.soulforged.soulforged.recipe.RecipeTables
-import studio.soulforged.soulforgedcombatdebugger.gui.CombatDebuggerClientUI
+
+import studio.soulforged.soulforged.client.gui.CombatDebuggerClientUI
 
 /**
  * Represents an instance of a specific tool.
@@ -21,14 +23,24 @@ import studio.soulforged.soulforgedcombatdebugger.gui.CombatDebuggerClientUI
  */
 class ToolInst(val stack: ItemStack, val type: ToolType, val head: ToolPartInst, val binding: ToolPartInst, val handle: ToolPartInst) {
     /**
-     * Modifies the provided item stack with the properties of the tool. Should be called after every attack,
+     * Modifies the provided item stack with the properties of the tool. Should be called before every attack,
      * every change in durability, etc. Might not be the best idea to call any more frequently than that,
      * especially on large servers.
      * @param player Optionally define a player entity. If this is defined, then things like break events will be sent to the player.
      * @author Lilly Rosaline
      */
+    //TODO this is a bit unclean. Might be best to add getId stuff to the respective definition classes
     fun sync(player: PlayerEntity?) {
-
+        stack.nbt?.putString("sf_tool_type", ToolTypes.TOOL_TYPES_REGISTRY.getId(type).toString())
+        stack.getOrCreateSubNbt("sf_head")
+        stack.nbt?.getCompound("sf_head")?.putString("type", ToolParts.TOOL_PARTS_REGISTRY.getId(head.part).toString())
+        stack.nbt?.getCompound("sf_head")?.putString("material", Materials.MATERIAL_REGISTRY.getId(head.mat).toString())
+        stack.getOrCreateSubNbt("sf_binding")
+        stack.nbt?.getCompound("sf_binding")?.putString("type", ToolParts.TOOL_PARTS_REGISTRY.getId(binding.part).toString())
+        stack.nbt?.getCompound("sf_binding")?.putString("material", Materials.MATERIAL_REGISTRY.getId(binding.mat).toString())
+        stack.getOrCreateSubNbt("sf_handle")
+        stack.nbt?.getCompound("sf_handle")?.putString("type", ToolParts.TOOL_PARTS_REGISTRY.getId(handle.part).toString())
+        stack.nbt?.getCompound("sf_handle")?.putString("material", Materials.MATERIAL_REGISTRY.getId(handle.mat).toString())
     }
     /**
      * Gets the durability of the tool to display.
@@ -102,13 +114,13 @@ class ToolInst(val stack: ItemStack, val type: ToolType, val head: ToolPartInst,
      * @return The attack properties, if it can be found.
      * @author Lilly Rosaline
      */
-    fun attackProperties(attack: Int): AttackProperties? {
+    fun attackProperties(attack: Int): AttackProperties {
         return if(attack == 1) {
-            head.type.hcAttack
+            head.type.hcAttack ?: head.type.defaultAttack
         } else if(attack == 2 || attack == 0) {
             head.type.defaultAttack
         } else {
-            head.type.dcAttack
+            head.type.dcAttack ?: head.type.defaultAttack
         }
     }
     companion object {

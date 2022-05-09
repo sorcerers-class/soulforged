@@ -3,7 +3,6 @@ package studio.soulforged.soulforged.item.tool
 import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
 import net.minecraft.util.registry.RegistryKey
-import studio.soulforged.soulforged.mixin.common.RegistryAccessor
 import studio.soulforged.soulforged.item.tool.combat.AttackProperties
 import studio.soulforged.soulforged.item.tool.combat.WeaponCategories
 import studio.soulforged.soulforged.item.tool.combat.CritTypes
@@ -11,7 +10,7 @@ import studio.soulforged.soulforged.item.tool.combat.CritTypes
 @Suppress("unused")
 object ToolTypes {
     private val TOOL_TYPES_REGISTRY_KEY: RegistryKey<Registry<ToolType>> = RegistryKey.ofRegistry<ToolType>(Identifier("soulforged", "tool_types"))
-    val TOOL_TYPES_REGISTRY: Registry<ToolType> = RegistryAccessor.create(TOOL_TYPES_REGISTRY_KEY) { SHORTSWORD }
+    val TOOL_TYPES_REGISTRY: Registry<ToolType> = Registry.registerSimple(TOOL_TYPES_REGISTRY_KEY) { SHORTSWORD }
     val SHORTSWORD = register(
         Identifier("soulforged", "shortsword"),
         ToolType(
@@ -105,7 +104,7 @@ object ToolTypes {
         ToolType(
             "item.soulforged.tool.type.mace",
             AttackProperties(0.0, 0.8, 10.0, 1.2, 0.0, WeaponCategories.CRUSHING, CritTypes.DOWN),
-            null, 
+            null,
             null,
             MiningSpeedProcessors.HAND,
             RightClickEventProcessors.NONE

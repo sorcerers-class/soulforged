@@ -36,9 +36,6 @@
         "versions": ">=0.16.0-"
       },
       {
-        "id": "fabric_language_kotlin"
-      },
-      {
         "id": "quilted_fabric_api",
         "versions": ">=1.0.0-"
       },
@@ -48,5 +45,6 @@
       }
     ]
   },
-  "mixin": "example_mod.mixins.json"
+  "mixin": "soulforged.mixins.json",
+  "access_widener": "soulforged.accesswidener"
 }

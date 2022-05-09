@@ -60,7 +60,7 @@ object RightClickEventProcessors {
             val pos = ctx?.blockPos
             val player = ctx?.player
             var state = world?.getBlockState(pos)
-            if (Registry.BLOCK.getEntry(Registry.BLOCK.getRawId(state?.block)).get().isIn(BlockTags.DIRT)) {
+            if (Registry.BLOCK.get(Registry.BLOCK.getRawId(state?.block)).defaultState.isIn(BlockTags.DIRT)) {
                 world?.setBlockState(pos, Blocks.FARMLAND.defaultState)
                 world?.playSound(player, pos, SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS, 1.0f, 1.0f)
                 state = world?.getBlockState(pos)
