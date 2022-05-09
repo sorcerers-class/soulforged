@@ -21,14 +21,14 @@
     },
     "intermediate_mappings": "net.fabricmc:intermediary",
     "entrypoints": {
-      "init": {
+      "main": [{
         "adapter": "kotlin",
         "value": "studio.soulforged.soulforged.Soulforged"
-      },
-      "client": {
+      }],
+      "client": [{
         "adapter": "kotlin",
         "value": "studio.soulforged.soulforged.client.SoulforgedClient"
-      }
+      }]
     },
     "depends": [
       {

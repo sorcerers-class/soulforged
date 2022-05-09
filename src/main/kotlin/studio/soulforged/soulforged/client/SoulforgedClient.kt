@@ -7,8 +7,7 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry
 import net.minecraft.client.option.KeyBind
 import org.lwjgl.glfw.GLFW
-import org.quiltmc.loader.api.ModContainer
-import org.quiltmc.qsl.base.api.entrypoint.client.ClientModInitializer
+import net.fabricmc.api.ClientModInitializer
 import org.quiltmc.qsl.lifecycle.api.client.event.ClientTickEvents
 import studio.soulforged.soulforged.Soulforged
 import studio.soulforged.soulforged.client.gui.ImGuiRenderer
@@ -18,7 +17,7 @@ class SoulforgedClient : ClientModInitializer {
     private var keyBinding: KeyBind = KeyBindingHelper.registerKeyBinding(
         KeyBind("key.soulforged.toggle", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_RIGHT_SHIFT, "soulforged.name")
     )
-    override fun onInitializeClient(mod: ModContainer?) {
+    override fun onInitializeClient() {
         Soulforged.LOGGER.info("Initializing Soulforged Client!")
         ModelLoadingRegistry.INSTANCE.registerResourceProvider { SoulforgedModelProvider() }
 
