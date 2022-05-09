@@ -1,15 +1,14 @@
-rootProject.name = "soulforged"
 pluginManagement {
     repositories {
-        jcenter()
-        maven("https://maven.fabricmc.net/") {
+        maven {
+            name = "Quilt"
+            url = uri("https://maven.quiltmc.org/repository/release")
+        }
+        // Currently needed for Intermediary and other temporary dependencies
+        maven {
             name = "Fabric"
+            url = uri("https://maven.fabricmc.net/")
         }
         gradlePluginPortal()
-    }
-
-    plugins {
-        id("fabric-loom") version "0.10-SNAPSHOT"
-        id("org.jetbrains.kotlin.jvm") version "1.5.0"
     }
 }

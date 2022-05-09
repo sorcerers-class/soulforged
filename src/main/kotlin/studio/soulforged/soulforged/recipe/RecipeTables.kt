@@ -85,7 +85,7 @@ object RecipeTables {
         TOOL_RECIPES["soulforged:shovel"] = Triple.of(
             Identifier( "soulforged:shovel_head"),
             Identifier(  "soulforged:binding"),
-            Identifier(  "soulforged:long_handle)")
+            Identifier(  "soulforged:long_handle")
         )
         TOOL_RECIPES["soulforged:hoe"] = Triple.of(
             Identifier( "soulforged:hoe_head"),

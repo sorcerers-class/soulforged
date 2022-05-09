@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "quilt_loader": {
+    "group": "studio.soulforged",
+    "id": "soulforged",
+    "version": "${version}",
+    "metadata": {
+      "name": "Soulforged",
+      "description": "what that sword do",
+      "contributors": {
+        "Meteor Paradox": "Owner",
+        "Lilly Rosaline": "Lead Programmer",
+        "Creamy": "Textures"
+      },
+      "contact": {
+        "homepage": "https://soulforged.studio/",
+        "issues": "https://git.soulforged.studio/soulforged/soulforged/issues",
+        "sources": "https://git.soulforged.studio/soulforged/soulforged"
+      },
+      "icon": "assets/soulforged/icon.png"
+    },
+    "intermediate_mappings": "net.fabricmc:intermediary",
+    "entrypoints": {
+      "init": {
+        "adapter": "kotlin",
+        "value": "studio.soulforged.soulforged.Soulforged"
+      },
+      "client": {
+        "adapter": "kotlin",
+        "value": "studio.soulforged.soulforged.client.SoulforgedClient"
+      }
+    },
+    "depends": [
+      {
+        "id": "quilt_loader",
+        "versions": ">=0.16.0-"
+      },
+      {
+        "id": "fabric_language_kotlin"
+      },
+      {
+        "id": "quilted_fabric_api",
+        "versions": ">=1.0.0-"
+      },
+      {
+        "id": "minecraft",
+        "versions": ">=1.18.2"
+      }
+    ]
+  },
+  "mixin": "example_mod.mixins.json"
+}

@@ -1,7 +1,6 @@
 package studio.soulforged.soulforgedcombatdebugger.gui
 
 import imgui.ImGui
-import studio.soulforged.soulforged.item.tool.ToolItem.Companion.getDurabilities
 import net.fabricmc.api.EnvType
 import studio.soulforged.soulforged.item.tool.combat.CritTypes
 import studio.soulforged.soulforged.item.SoulforgedItems
@@ -283,9 +282,9 @@ object CombatDebuggerClientUI {
                         )
                     )
                     if (ImGui.button("Damage calc: ")) showDamageCalcDropdown = showDamageCalcDropdown xor true
-                    if (Arrays.stream(getDurabilities(stack))
-                            .anyMatch { i: Int -> i == 0 }
-                    ) ImGui.text("Broken tool will have 0 damage!")
+                //    if (Arrays.stream(getDurabilities(stack))
+                //            .anyMatch { i: Int -> i == 0 }
+                //    ) ImGui.text("Broken tool will have 0 damage!")
                     val phead =
                         ToolParts.TOOL_PARTS_REGISTRY[Identifier.tryParse(nbt.getCompound("sf_head").getString("type"))]
                     val pbinding = ToolParts.TOOL_PARTS_REGISTRY[Identifier.tryParse(
