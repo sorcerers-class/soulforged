@@ -6,7 +6,7 @@ import org.quiltmc.qsl.command.api.CommandRegistrationCallback
 
 object Commands {
     fun register() {
-        CommandRegistrationCallback.EVENT.register(CommandRegistrationCallback { dispatcher: CommandDispatcher<ServerCommandSource>, b: Boolean, b1: Boolean ->
+        CommandRegistrationCallback.EVENT.register(CommandRegistrationCallback { dispatcher: CommandDispatcher<ServerCommandSource>, _: Boolean, _: Boolean ->
             GiveToolCommand.register(dispatcher)
         })
     }

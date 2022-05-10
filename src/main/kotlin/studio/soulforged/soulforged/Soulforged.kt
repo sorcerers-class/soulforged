@@ -11,7 +11,7 @@ import studio.soulforged.soulforged.sound.SoulforgedSoundEvents
 
 class Soulforged : ModInitializer {
     override fun onInitialize(mod: ModContainer) {
-        LOGGER.info("Soulforged version 0.3.0 start!")
+        LOGGER.info("Soulforged version {} start!", mod.metadata().version().raw())
         SoulforgedItems.TOOL.asItem()
         NetworkReceivers.register()
         Commands.register()

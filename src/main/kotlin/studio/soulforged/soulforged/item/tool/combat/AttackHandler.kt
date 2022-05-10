@@ -39,7 +39,7 @@ class AttackHandler(private val client: ServerPlayerEntity) {
         if (target != null) {
             val tool = ToolInst.fromNbt(client.mainHandStack)
             target!!.damage(
-                DamageSource.player(client), tool.baseAttackDamage(tool.attackProperties(packets.size)!!).toFloat()
+                DamageSource.player(client), tool.baseAttackDamage(tool.attackProperties(packets.size)).toFloat()
             )
             CombatDebuggerClientUI.attackType = packets.size
             client.mainHandStack.postHit(target as LivingEntity?, client)

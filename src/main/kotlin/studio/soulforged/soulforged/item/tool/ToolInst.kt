@@ -127,10 +127,10 @@ class ToolInst(val stack: ItemStack, val type: ToolType, val head: ToolPartInst,
             val bm = Materials.MATERIAL_REGISTRY.get(bindingMaterial)
             val ham = Materials.MATERIAL_REGISTRY.get(handleMaterial)
 
-            val toolRecipes = ToolRecipes.TOOL_RECIPES[type.toString()]!!
-            val headPart = ToolParts.TOOL_PARTS_REGISTRY.get(toolRecipes.left)
-            val bindingPart = ToolParts.TOOL_PARTS_REGISTRY.get(toolRecipes.middle)
-            val handlePart = ToolParts.TOOL_PARTS_REGISTRY.get(toolRecipes.right)
+            val recipe = ToolRecipes.TOOL_RECIPES_REGISTRY.get(type)
+            val headPart = ToolParts.TOOL_PARTS_REGISTRY.get(recipe?.head)
+            val bindingPart = ToolParts.TOOL_PARTS_REGISTRY.get(recipe?.binding)
+            val handlePart = ToolParts.TOOL_PARTS_REGISTRY.get(recipe?.handle)
 
             toolType!!
             val headInst = ToolPartInst(PartPosition.HEAD, headPart!!, toolType, hm!!, 255u, 255)

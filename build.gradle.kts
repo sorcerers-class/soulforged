@@ -21,13 +21,12 @@ dependencies {
     })
     modImplementation(libs.quilt.loader)
     modImplementation(libs.quilted.fabric.api)
-    val imguiVersion = "1.86.3"
+    val imguiVersion = "1.86.4"
     implementation("io.github.spair:imgui-java-binding:$imguiVersion")
     implementation("io.github.spair:imgui-java-lwjgl3:$imguiVersion") {
         exclude(group = "org.lwjgl")
     }
     // Apache common collections because why not
-    implementation("org.apache.commons:commons-collections4:4.4")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 }
 loom {
@@ -68,7 +67,7 @@ tasks {
     }
 
     compileKotlin {
-        kotlinOptions.jvmTarget = "16"
+        kotlinOptions.jvmTarget = "17"
     }
 
 }

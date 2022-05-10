@@ -58,7 +58,7 @@ class ToolItem : Item(
             EntityAttributes.GENERIC_ATTACK_SPEED,
             EntityAttributeModifier(
                 "f106b032-3216-4ff6-9919-36cf09d350f5",
-                tool.baseAttackSpeed(tool.attackProperties(2)!!),
+                tool.baseAttackSpeed(tool.attackProperties(2)),
                 EntityAttributeModifier.Operation.ADDITION
             ),
             EquipmentSlot.MAINHAND
@@ -137,7 +137,7 @@ class ToolItem : Item(
                 .append(
                     TranslatableText(
                         "item.soulforged.tool.tooltip.speed",
-                        (tool.baseAttackSpeed(tool.attackProperties(2)!!) * 100.0).roundToInt() / 100.0
+                        (tool.baseAttackSpeed(tool.attackProperties(2)) * 100.0).roundToInt() / 100.0
                     ).formatted(
                         Formatting.GREEN, Formatting.BOLD
                     )
@@ -146,7 +146,7 @@ class ToolItem : Item(
                 .append(
                     TranslatableText(
                         "item.soulforged.tool.tooltip.attack",
-                        (tool.baseAttackDamage(tool.attackProperties(2)!!) * 100.0).roundToInt() / 100.0
+                        (tool.baseAttackDamage(tool.attackProperties(2)) * 100.0).roundToInt() / 100.0
                     ).formatted(
                         Formatting.RED, Formatting.BOLD
                     )
