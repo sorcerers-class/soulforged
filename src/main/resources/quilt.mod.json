@@ -10,6 +10,7 @@
       "contributors": {
         "Meteor Paradox": "Owner",
         "Lilly Rosaline": "Lead Programmer",
+        "Madeline Sparkle": "Programmer",
         "Creamy": "Textures"
       },
       "contact": {
@@ -21,14 +22,8 @@
     },
     "intermediate_mappings": "net.fabricmc:intermediary",
     "entrypoints": {
-      "main": [{
-        "adapter": "kotlin",
-        "value": "studio.soulforged.soulforged.Soulforged"
-      }],
-      "client": [{
-        "adapter": "kotlin",
-        "value": "studio.soulforged.soulforged.client.SoulforgedClient"
-      }]
+      "init": ["studio.soulforged.soulforged.Soulforged"],
+      "client_init": ["studio.soulforged.soulforged.client.SoulforgedClient"]
     },
     "depends": [
       {

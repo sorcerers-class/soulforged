@@ -20,9 +20,6 @@ dependencies {
         addLayer(quiltMappings.mappings("org.quiltmc:quilt-mappings:${libs.versions.quilt.mappings.get()}:v2"))
     })
     modImplementation(libs.quilt.loader)
-    modImplementation(group = "net.fabricmc", name = "fabric-language-kotlin", version = libs.versions.fabric.language.kotlin.get()) {
-        exclude(group = "net.fabricmc")
-    }
     modImplementation(libs.quilted.fabric.api)
     val imguiVersion = "1.86.3"
     implementation("io.github.spair:imgui-java-binding:$imguiVersion")

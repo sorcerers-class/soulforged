@@ -10,7 +10,7 @@
   "client": [
     "client.ItemModelGeneratorInvoker",
     "client.MouseMixin",
-    "client.MinecraftClientMixin"
+    "client.ClientDebuggerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

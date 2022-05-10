@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Objects;
 
 @Mixin(MinecraftClient.class)
-public class MinecraftClientMixin {
+public class ClientDebuggerMixin {
 
     /**
      * Injects ImGuiRenderer setup code into client setup.
