@@ -8,7 +8,7 @@ import java.util.*
 
 @Suppress("unused")
 object Materials {
-    private val MATERIAL_REGISTRY_KEY: RegistryKey<Registry<Material>> = RegistryKey.ofRegistry<Material>(Identifier("soulforged", "materials"))
+    private val MATERIAL_REGISTRY_KEY: RegistryKey<Registry<Material>> = RegistryKey.ofRegistry(Identifier("soulforged", "materials"))
     val MATERIAL_REGISTRY: Registry<Material> =
         Registry.registerSimple(MATERIAL_REGISTRY_KEY) {WOOD} // This is possibly the worst way of doing this but i don't care
     // Earlygame Materials

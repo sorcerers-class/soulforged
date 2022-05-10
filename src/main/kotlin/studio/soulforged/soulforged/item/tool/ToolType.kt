@@ -6,7 +6,7 @@ import studio.soulforged.soulforged.item.tool.combat.AttackProperties
  * Represents a generic tool type.
  * @author Lilly Rosaline
  */
-class ToolType(
+data class ToolType(
     val name: String,
     val defaultAttack: AttackProperties,
     val hcAttack: AttackProperties?,

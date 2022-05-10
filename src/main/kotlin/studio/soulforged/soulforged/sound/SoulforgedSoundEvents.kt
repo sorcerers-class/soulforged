@@ -4,6 +4,7 @@ import net.minecraft.sound.SoundEvent
 import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
 
+@Suppress("unused")
 object SoulforgedSoundEvents {
     val CRIT_THRUSTING = register("soulforged:crit_thrusting")
     val CRIT_SLASHING = register("soulforged:crit_slashing")

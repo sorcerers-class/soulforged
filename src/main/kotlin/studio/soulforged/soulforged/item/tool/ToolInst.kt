@@ -9,7 +9,7 @@ import studio.soulforged.soulforged.item.tool.part.PartPosition
 import studio.soulforged.soulforged.item.tool.part.ToolPartInst
 import studio.soulforged.soulforged.item.tool.part.ToolParts
 import studio.soulforged.soulforged.material.Materials
-import studio.soulforged.soulforged.recipe.RecipeTables
+import studio.soulforged.soulforged.recipe.ToolRecipes
 
 /**
  * Represents an instance of a specific tool.
@@ -127,7 +127,7 @@ class ToolInst(val stack: ItemStack, val type: ToolType, val head: ToolPartInst,
             val bm = Materials.MATERIAL_REGISTRY.get(bindingMaterial)
             val ham = Materials.MATERIAL_REGISTRY.get(handleMaterial)
 
-            val toolRecipes = RecipeTables.TOOL_RECIPES[type.toString()]!!
+            val toolRecipes = ToolRecipes.TOOL_RECIPES[type.toString()]!!
             val headPart = ToolParts.TOOL_PARTS_REGISTRY.get(toolRecipes.left)
             val bindingPart = ToolParts.TOOL_PARTS_REGISTRY.get(toolRecipes.middle)
             val handlePart = ToolParts.TOOL_PARTS_REGISTRY.get(toolRecipes.right)
