@@ -1,11 +1,10 @@
 package studio.soulforged.soulforged.client.gui
 
-import kotlin.Throws
-import java.io.IOException
-import imgui.flag.ImGuiCol
 import imgui.ImFontConfig
 import imgui.ImGui
+import imgui.flag.ImGuiCol
 import studio.soulforged.soulforged.client.SoulforgedClient
+import java.io.IOException
 
 object ImGuiTheme {
     /**

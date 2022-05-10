@@ -4,8 +4,8 @@ import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
 import net.minecraft.util.registry.RegistryKey
 import studio.soulforged.soulforged.item.tool.combat.AttackProperties
-import studio.soulforged.soulforged.item.tool.combat.WeaponCategories
 import studio.soulforged.soulforged.item.tool.combat.CritTypes
+import studio.soulforged.soulforged.item.tool.combat.WeaponCategories
 
 @Suppress("unused")
 object ToolTypes {

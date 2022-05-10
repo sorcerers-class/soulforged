@@ -1,14 +1,14 @@
 package studio.soulforged.soulforged.item.tool.combat
 
 import net.minecraft.entity.Entity
-import net.minecraft.server.network.ServerPlayerEntity
-import net.minecraft.entity.damage.DamageSource
-import studio.soulforged.soulforged.client.gui.CombatDebuggerClientUI
 import net.minecraft.entity.LivingEntity
-import java.util.concurrent.ConcurrentHashMap
+import net.minecraft.entity.damage.DamageSource
 import net.minecraft.network.PacketByteBuf
+import net.minecraft.server.network.ServerPlayerEntity
+import studio.soulforged.soulforged.client.gui.CombatDebuggerClientUI
 import studio.soulforged.soulforged.item.tool.ToolInst
 import java.util.*
+import java.util.concurrent.ConcurrentHashMap
 
 class AttackHandler(private val client: ServerPlayerEntity) {
     private var tickCounter = 0

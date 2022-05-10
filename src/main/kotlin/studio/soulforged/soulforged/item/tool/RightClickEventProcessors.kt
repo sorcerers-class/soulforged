@@ -1,20 +1,20 @@
 package studio.soulforged.soulforged.item.tool
 
-import net.minecraft.item.ItemUsageContext
-import net.minecraft.block.BlockState
 import net.fabricmc.fabric.mixin.content.registry.AxeItemAccessor
-import net.minecraft.block.Oxidizable
-import net.minecraft.item.HoneycombItem
-import net.minecraft.sound.SoundEvents
-import net.minecraft.sound.SoundCategory
-import net.minecraft.world.WorldEvents
-import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.advancement.criterion.Criteria
 import net.minecraft.block.Block
-import net.minecraft.util.ActionResult
-import net.minecraft.tag.BlockTags
+import net.minecraft.block.BlockState
 import net.minecraft.block.Blocks
+import net.minecraft.block.Oxidizable
+import net.minecraft.item.HoneycombItem
+import net.minecraft.item.ItemUsageContext
+import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.sound.SoundCategory
+import net.minecraft.sound.SoundEvents
+import net.minecraft.tag.BlockTags
+import net.minecraft.util.ActionResult
 import net.minecraft.util.registry.Registry
+import net.minecraft.world.WorldEvents
 import java.util.*
 
 object RightClickEventProcessors {

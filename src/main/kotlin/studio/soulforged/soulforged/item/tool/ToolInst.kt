@@ -3,16 +3,13 @@ package studio.soulforged.soulforged.item.tool
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.util.Identifier
-
+import studio.soulforged.soulforged.client.gui.CombatDebuggerClientUI
 import studio.soulforged.soulforged.item.tool.combat.AttackProperties
 import studio.soulforged.soulforged.item.tool.part.PartPosition
 import studio.soulforged.soulforged.item.tool.part.ToolPartInst
 import studio.soulforged.soulforged.item.tool.part.ToolParts
-
 import studio.soulforged.soulforged.material.Materials
 import studio.soulforged.soulforged.recipe.RecipeTables
-
-import studio.soulforged.soulforged.client.gui.CombatDebuggerClientUI
 
 /**
  * Represents an instance of a specific tool.

@@ -4,14 +4,14 @@
 package studio.soulforged.soulforged.client.gui
 
 import imgui.ImGui
-import net.fabricmc.api.EnvType
-import imgui.glfw.ImGuiImplGlfw
-import imgui.gl3.ImGuiImplGl3
 import imgui.flag.ImGuiConfigFlags
+import imgui.gl3.ImGuiImplGl3
+import imgui.glfw.ImGuiImplGlfw
+import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.minecraft.client.MinecraftClient
-import java.io.IOException
 import org.lwjgl.glfw.GLFW
+import java.io.IOException
 
 @Environment(EnvType.CLIENT)
 class ImGuiRenderer {

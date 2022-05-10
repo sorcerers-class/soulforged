@@ -22,8 +22,8 @@
     },
     "intermediate_mappings": "net.fabricmc:intermediary",
     "entrypoints": {
-      "init": ["studio.soulforged.soulforged.Soulforged"],
-      "client_init": ["studio.soulforged.soulforged.client.SoulforgedClient"]
+      "init": "studio.soulforged.soulforged.Soulforged",
+      "client_init": "studio.soulforged.soulforged.client.SoulforgedClient"
     },
     "depends": [
       {

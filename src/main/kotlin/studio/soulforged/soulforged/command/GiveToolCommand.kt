@@ -1,16 +1,16 @@
 package studio.soulforged.soulforged.command
 
 import com.mojang.brigadier.CommandDispatcher
-import net.minecraft.server.command.ServerCommandSource
-import net.minecraft.server.command.CommandManager
+import com.mojang.brigadier.context.CommandContext
 import net.minecraft.command.argument.EntityArgumentType
 import net.minecraft.command.argument.IdentifierArgumentType
-import com.mojang.brigadier.context.CommandContext
-import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.item.ItemStack
-import studio.soulforged.soulforged.item.SoulforgedItems
+import net.minecraft.server.command.CommandManager
+import net.minecraft.server.command.ServerCommandSource
+import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.TranslatableText
 import net.minecraft.util.Identifier
+import studio.soulforged.soulforged.item.SoulforgedItems
 import studio.soulforged.soulforged.item.tool.ToolInst
 
 object GiveToolCommand {

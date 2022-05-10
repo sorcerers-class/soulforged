@@ -2,13 +2,13 @@ package studio.soulforged.soulforged.mixin.client;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
-import studio.soulforged.soulforged.Soulforged;
-import studio.soulforged.soulforged.client.gui.CombatDebuggerClientUI;
-import studio.soulforged.soulforged.client.gui.ImGuiRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import studio.soulforged.soulforged.Soulforged;
+import studio.soulforged.soulforged.client.gui.CombatDebuggerClientUI;
+import studio.soulforged.soulforged.client.gui.ImGuiRenderer;
 
 import java.util.Objects;
 

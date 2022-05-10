@@ -1,17 +1,17 @@
 package studio.soulforged.soulforged.client.gui
 
 import imgui.ImGui
-import net.fabricmc.api.EnvType
-import studio.soulforged.soulforged.item.tool.combat.CritTypes
-import studio.soulforged.soulforged.item.SoulforgedItems
 import imgui.flag.ImGuiWindowFlags
+import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.minecraft.client.MinecraftClient
 import net.minecraft.util.Identifier
+import studio.soulforged.soulforged.item.SoulforgedItems
 import studio.soulforged.soulforged.item.tool.ToolTypes
 import studio.soulforged.soulforged.item.tool.combat.AttackProperties
-import studio.soulforged.soulforged.material.Materials
+import studio.soulforged.soulforged.item.tool.combat.CritTypes
 import studio.soulforged.soulforged.item.tool.part.ToolParts
+import studio.soulforged.soulforged.material.Materials
 import java.util.*
 import kotlin.math.abs
 import kotlin.math.pow

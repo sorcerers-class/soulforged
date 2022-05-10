@@ -1,7 +1,6 @@
 package studio.soulforged.soulforged.recipe
 
 import net.minecraft.util.Identifier
-import java.util.HashMap
 import org.apache.commons.lang3.tuple.Triple
 
 object RecipeTables {

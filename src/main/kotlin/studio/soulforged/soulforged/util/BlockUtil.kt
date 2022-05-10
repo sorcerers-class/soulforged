@@ -1,14 +1,14 @@
 package studio.soulforged.soulforged.util
 
+import net.fabricmc.fabric.api.mininglevel.v1.MiningLevelManager
 import net.minecraft.block.BlockState
 import net.minecraft.item.ItemStack
 import net.minecraft.tag.BlockTags
-import studio.soulforged.soulforged.material.Materials
-import studio.soulforged.soulforged.item.tool.ToolTypes
-import studio.soulforged.soulforged.item.tool.MiningSpeedProcessors
-import net.fabricmc.fabric.api.mininglevel.v1.MiningLevelManager
 import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
+import studio.soulforged.soulforged.item.tool.MiningSpeedProcessors
+import studio.soulforged.soulforged.item.tool.ToolTypes
+import studio.soulforged.soulforged.material.Materials
 import java.util.*
 
 object BlockUtil {

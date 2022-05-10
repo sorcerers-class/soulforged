@@ -1,8 +1,8 @@
 package studio.soulforged.soulforged.item.tool
 
 import net.minecraft.block.BlockState
-import net.minecraft.tag.BlockTags
 import net.minecraft.block.Blocks
+import net.minecraft.tag.BlockTags
 import net.minecraft.util.registry.Registry
 import studio.soulforged.soulforged.material.Material
 
