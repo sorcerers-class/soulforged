@@ -54,7 +54,7 @@ object ImGuiTheme {
         // Configure font to be size 20
         val cfg = ImFontConfig()
         cfg.setName("Comic Mono")
-        font.addFontFromMemoryTTF(comicMono.readAllBytes(), 20f, cfg)
+        font.addFontFromMemoryTTF(comicMono.readAllBytes(), 14f, cfg)
         // Fallback font
         val defaultCfg = ImFontConfig()
         defaultCfg.setName("Monospace")

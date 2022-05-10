@@ -51,67 +51,34 @@ object CombatDebuggerClientUI {
                     if (showToolTypeDropdown) {
                         val type = ToolTypes.TOOL_TYPES_REGISTRY[Identifier(nbt.getString("sf_tool_type"))]!!
                         val apDefault: AttackProperties = type.defaultAttack
-                        ImGui.text(
-                            String.format(
-                                """
-                                        Default Attack:
-                                        \tPiercing Damage: %f
-                                        \tBlunt Damage: %f
-                                        \tFinesse: %f
-                                        \tSpeed: %f
-                                        \tPiercing: %f
-                                        \tCategory: %s
-                                        \tCrit Type: %s
-                                        """,
-                                apDefault.piercingDamage,
-                                apDefault.bluntDamage,
-                                apDefault.finesse,
-                                apDefault.speed,
-                                apDefault.piercing,
-                                apDefault.category.toString().lowercase(Locale.getDefault()),
-                                apDefault.type.toString().lowercase(Locale.getDefault())
-                            )
+                        ImGui.text("Default Attack:" +
+                                    "\n\tPiercing Damage:" + apDefault.piercingDamage +
+                                    "\n\tBlunt Damage:" + apDefault.bluntDamage +
+                                    "\n\tFinesse:" + apDefault.finesse +
+                                    "\n\tSpeed:" + apDefault.speed +
+                                    "\n\tPiercing:" + apDefault.piercing +
+                                    "\n\tCategory:" + apDefault.category.toString().lowercase(Locale.getDefault()) +
+                                    "\n\tCrit Type:" + apDefault.type.toString().lowercase(Locale.getDefault()),
                         )
                         val apDc: AttackProperties = type.dcAttack!!
-                        ImGui.text(
-                            java.lang.String.format(
-                                "DC Attack:" +
-                                        "\tPiercing Damage: %f\n" +
-                                        "\tBlunt Damage: %f\n" +
-                                        "\tFinesse: %f\n" +
-                                        "\tSpeed: %f\n" +
-                                        "\tPiercing: %f\n" +
-                                        "\tCategory: %s\n" +
-                                        "\tCrit Type: %s\n",
-                                apDc.piercingDamage,
-                                apDc.bluntDamage,
-                                apDc.finesse, apDc.speed,
-                                apDc.piercing,
-                                apDc.category.toString().lowercase(Locale.getDefault()),
-                                apDc.type.toString().lowercase(Locale.getDefault())
-                            )
+                        ImGui.text("DC Attack:" +
+                                        "\n\tPiercing Damage:" + apDc.piercingDamage +
+                                        "\n\tBlunt Damage:" + apDc.bluntDamage +
+                                        "\n\tFinesse:" + apDc.finesse +
+                                        "\n\tSpeed:" + apDc.speed +
+                                        "\n\tPiercing:" + apDc.piercing +
+                                        "\n\tCategory:" + apDc.category.toString().lowercase(Locale.getDefault()) +
+                                        "\n\tCrit Type:" + apDc.type.toString().lowercase(Locale.getDefault()),
                         )
                         val apHc: AttackProperties = type.hcAttack!!
-                        ImGui.text(
-                            java.lang.String.format(
-                                """
-                                        DC Attack:
-                                        \tPiercing Damage: %f
-                                        \tBlunt Damage: %f
-                                        \tFinesse: %f
-                                        \tSpeed: %f
-                                        \tPiercing: %f
-                                        \tCategory: %s
-                                        \tCrit Type: %s
-                                        """,
-                                apHc.piercingDamage,
-                                apHc.bluntDamage,
-                                apHc.finesse,
-                                apHc.speed,
-                                apHc.piercing,
-                                apHc.category.toString().lowercase(Locale.getDefault()),
-                                apHc.type.toString().lowercase(Locale.getDefault())
-                            )
+                        ImGui.text("HC Attack:" +
+                                        "\n\tPiercing Damage:" + apHc.piercingDamage +
+                                        "\n\tBlunt Damage:" + apHc.bluntDamage +
+                                        "\n\tFinesse:" + apHc.finesse +
+                                        "\n\tSpeed:" + apHc.speed +
+                                        "\n\tPiercing:" + apHc.piercing +
+                                        "\n\tCategory:" + apHc.category.toString().lowercase(Locale.getDefault()) +
+                                        "\n\tCrit Type:" + apHc.type.toString().lowercase(Locale.getDefault()),
                         )
                     }
                     ImGui.text("Materials:")
@@ -120,69 +87,37 @@ object CombatDebuggerClientUI {
                     if (showHeadMaterialDropdown) {
                         val headMat = Materials.MATERIAL_REGISTRY[Identifier(head.getString("material"))]!!
                         ImGui.text(
-                            java.lang.String.format(
-                                """
-                                        \tHardness: %f
-                                        \tEdgeholding: %f
-                                        \tWorkability: %d
-                                        \tDensity: %d
-                                        \tHeat: %d
-                                        \tPadding: %d
-                                        \tMining Level: %d
-                                        \tMining Speed: %f
-                                        \tTool Material: %b
-                                        \tArmor Material: %b
-                                        \tCorundum Classifier: %s
-                                        """,
-                                headMat.hardness,
-                                headMat.edgeholding,
-                                headMat.workability,
-                                headMat.density, headMat.heat,
-                                headMat.padding,
-                                headMat.miningLevel,
-                                headMat.miningSpeed,
-                                headMat.canIntoTool,
-                                headMat.canIntoArmor,
-                                headMat.classifier
-                            )
+                                "\tHardness:" + headMat.hardness +
+                                "\n\tEdgeholding:" + headMat.edgeholding +
+                                "\n\tWorkability:" + headMat.workability +
+                                "\n\tDensity:" + headMat.density +
+                                "\n\tHeat:" + headMat.heat +
+                                "\n\tPadding:" + headMat.padding +
+                                "\n\tMining Level:" + headMat.miningLevel +
+                                "\n\tMining Speed:" + headMat.miningSpeed +
+                                "\n\tTool Material:" + headMat.canIntoTool +
+                                "\n\tArmor Material:" + headMat.canIntoArmor +
+                                "\n\tCorundum Classifier:" + headMat.classifier
                         )
                     }
                     if (ImGui.button(
-                            String.format(
-                                "Binding: %s",
-                                binding.getString("material")
-                            )
+                                "Binding:" + binding.getString("material")
                         )
                     ) showBindingMaterialDropdown = showBindingMaterialDropdown xor true
                     if (showBindingMaterialDropdown) {
                         val bindingMat = Materials.MATERIAL_REGISTRY[Identifier(binding.getString("material"))]!!
                         ImGui.text(
-                            java.lang.String.format(
-                                """
-                                        \tHardness: %f
-                                        \tEdgeholding: %f
-                                        \tWorkability: %d
-                                        \tDensity: %d
-                                        \tHeat: %d
-                                        \tPadding: %d
-                                        \tMining Level: %d
-                                        \tMining Speed: %f
-                                        \tTool Material: %b
-                                        \tArmor Material: %b
-                                        \tCorundum Classifier: %s
-                                        """,
-                                bindingMat.hardness,
-                                bindingMat.edgeholding,
-                                bindingMat.workability,
-                                bindingMat.density,
-                                bindingMat.heat,
-                                bindingMat.padding,
-                                bindingMat.miningLevel,
-                                bindingMat.miningSpeed,
-                                bindingMat.canIntoTool,
-                                bindingMat.canIntoArmor,
-                                bindingMat.classifier
-                            )
+                            "\tHardness:" + bindingMat.hardness +
+                                    "\n\tEdgeholding:" + bindingMat.edgeholding +
+                                    "\n\tWorkability:" + bindingMat.workability +
+                                    "\n\tDensity:" + bindingMat.density +
+                                    "\n\tHeat:" + bindingMat.heat +
+                                    "\n\tPadding:" + bindingMat.padding +
+                                    "\n\tMining Level:" + bindingMat.miningLevel +
+                                    "\n\tMining Speed:" + bindingMat.miningSpeed +
+                                    "\n\tTool Material:" + bindingMat.canIntoTool +
+                                    "\n\tArmor Material:" + bindingMat.canIntoArmor +
+                                    "\n\tCorundum Classifier:" + bindingMat.classifier
                         )
                     }
                     if (ImGui.button(
@@ -195,32 +130,17 @@ object CombatDebuggerClientUI {
                     if (showHandleMaterialDropdown) {
                         val handleMat = Materials.MATERIAL_REGISTRY[Identifier(handle.getString("material"))]!!
                         ImGui.text(
-                            java.lang.String.format(
-                                """
-                                        \tHardness: %f
-                                        \tEdgeholding: %f
-                                        \tWorkability: %d
-                                        \tDensity: %d
-                                        \tHeat: %d
-                                        \tPadding: %d
-                                        \tMining Level: %d
-                                        \tMining Speed: %f
-                                        \tTool Material: %b
-                                        \tArmor Material: %b
-                                        \tCorundum Classifier: %s
-                                        """,
-                                handleMat.hardness,
-                                handleMat.edgeholding,
-                                handleMat.workability,
-                                handleMat.density,
-                                handleMat.heat,
-                                handleMat.padding,
-                                handleMat.miningLevel,
-                                handleMat.miningSpeed,
-                                handleMat.canIntoTool,
-                                handleMat.canIntoArmor,
-                                handleMat.classifier
-                            )
+                            "\tHardness:" + handleMat.hardness +
+                                    "\n\tEdgeholding:" + handleMat.edgeholding +
+                                    "\n\tWorkability:" + handleMat.workability +
+                                    "\n\tDensity:" + handleMat.density +
+                                    "\n\tHeat:" + handleMat.heat +
+                                    "\n\tPadding:" + handleMat.padding +
+                                    "\n\tMining Level:" + handleMat.miningLevel +
+                                    "\n\tMining Speed:" + handleMat.miningSpeed +
+                                    "\n\tTool Material:" + handleMat.canIntoTool +
+                                    "\n\tArmor Material:" + handleMat.canIntoArmor +
+                                    "\n\tCorundum Classifier:" + handleMat.classifier
                         )
                     }
                     ImGui.text("Part Types:")
@@ -229,14 +149,8 @@ object CombatDebuggerClientUI {
                     if (showHeadTypeDropdown) {
                         val headPart = ToolParts.TOOL_PARTS_REGISTRY[Identifier(head.getString("type"))]!!
                         ImGui.text(
-                            java.lang.String.format(
-                                """
-                                        \tWeight: %f
-                                        \tDurability: %f
-                                        """,
-                                headPart.weight,
-                                headPart.durability
-                            )
+                            "\n\tWeight:" + headPart.weight +
+                            "\n\tDurability:" + headPart.durability
                         )
                     }
                     if (ImGui.button(String.format("Binding: %s", binding.getString("type")))) showBindingTypeDropdown =
@@ -244,29 +158,17 @@ object CombatDebuggerClientUI {
                     if (showBindingTypeDropdown) {
                         val bindingPart = ToolParts.TOOL_PARTS_REGISTRY[Identifier(binding.getString("type"))]!!
                         ImGui.text(
-                            java.lang.String.format(
-                                """
-                                        \tWeight: %f
-                                        \tDurability: %f
-                                        """,
-                                bindingPart.weight,
-                                bindingPart.durability
-                            )
+                            "\n\tWeight:" + bindingPart.weight +
+                                    "\n\tDurability:" + bindingPart.durability
                         )
                     }
                     if (ImGui.button(String.format("Handle: %s", handle.getString("type")))) showHandleTypeDropdown =
                         showHandleTypeDropdown xor true
                     if (showHandleTypeDropdown) {
-                        val part = ToolParts.TOOL_PARTS_REGISTRY[Identifier(handle.getString("type"))]!!
+                        val handlePart = ToolParts.TOOL_PARTS_REGISTRY[Identifier(handle.getString("type"))]!!
                         ImGui.text(
-                            java.lang.String.format(
-                                """
-                                        \tWeight: %f
-                                        \tDurability: %f
-                                        """,
-                                part.weight,
-                                part.durability
-                            )
+                            "\n\tWeight:" + handlePart.weight +
+                                    "\n\tDurability:" + handlePart.durability
                         )
                     }
                     ImGui.end()
@@ -324,17 +226,17 @@ object CombatDebuggerClientUI {
                         if (ImGui.button(if (showHcAttackCalc) "Hide HC Attack" else "Show HC Attack")) showHcAttackCalc =
                             showHcAttackCalc xor true
                         ImGui.text(
-                            java.lang.String.format("""
-                                        Total Piercing Damage:
-                                        \t((Edgeholding + (Head Hardness * 0.75)) / 2) * Piercing Damage
-                                        \t((%f + (%f * 0.75)) / 2) * %f = %f
-                                        Total Blunt Damage:
-                                        \t((((Head Weight + Binding Weight + (0.25 * Handle Weight))/100) + (Head Hardness * 0.25))*Blunt Damage Multiplier) * 0.8
-                                        \t((((%f + %f + (0.25 * %f))/100) + (%f * 0.25)) * %f) * 0.8 = %f
-                                        Total Damage: %f
-                                        With cooldown: Total Damage * Cooldown ^ 4
-                                        %f * %f^4 = %f
-                                        """,
+                            java.lang.String.format(
+                                        "Total Piercing Damage:" +
+                                        "\n\t((Edgeholding + (Head Hardness * 0.75)) / 2) * Piercing Damage" +
+                                        "\n\t((%f + (%f * 0.75)) / 2) * %f = %f" +
+                                        "\nTotal Blunt Damage:" +
+                                        "\n\t((((Head Weight + Binding Weight + (0.25 * Handle Weight))/100) + (Head Hardness * 0.25))*Blunt Damage Multiplier) * 0.8" +
+                                        "\n\t((((%f + %f + (0.25 * %f))/100) + (%f * 0.25)) * %f) * 0.8 = %f" +
+                                        "\nTotal Damage: %f" +
+                                        "\nWith cooldown: Total Damage * Cooldown ^ 4" +
+                                        "\n%f * %f^4 = %f"
+                                        ,
                                 headEdgeholding,
                                 headHardness,
                                 piercingDamage,
@@ -353,10 +255,9 @@ object CombatDebuggerClientUI {
                         )
                     } else {
                         ImGui.text(
-                            String.format("""
-                                        Total Damage: %f
-                                        With Cooldown: %f
-                                        """,
+                            String.format(
+                                "\nTotal Damage: %f" +
+                                "\nWith Cooldown: %f",
                                 totalDamage,
                                 totalDamage * player.getAttackCooldownProgress(0.0f).toDouble().pow(4.0)
                             )
@@ -366,10 +267,9 @@ object CombatDebuggerClientUI {
                     ImGui.end()
                     ImGui.begin("SCD v1 | Mouse")
                     ImGui.text(
-                        String.format("""
-                            Last Packet Action: %d
-                            Packet Count: %d
-                            """,
+                        String.format(
+                            "\nLast Packet Action: %d" +
+                            "\nPacket Count: %d",
                             lastPacket,
                             packetCounter
                         )
@@ -389,15 +289,14 @@ object CombatDebuggerClientUI {
                         direction = CritTypes.SIDE
                     }
                     ImGui.text(
-                        String.format("""
-                            Cooldown = 1.0: %b
-                            Facing: %s
-                            Moving: %s
-                            Adjusted Velocity: %s
-                            Moving: %b %b %b
-                            Resultant Crit: %s
-                            Crit Direction: %s
-                            """,
+                        String.format(
+                            "\nCooldown = 1.0: %b" +
+                            "\nFacing: %s" +
+                            "\nMoving: %s" +
+                            "\nAdjusted Velocity: %s" +
+                            "\nMoving: %b %b %b" +
+                            "\nResultant Crit: %s" +
+                            "\nCrit Direction: %s",
                             player.getAttackCooldownProgress(0.0f) == 1.0f,
                             player.yaw % 360.0f,
                             player.velocity,
