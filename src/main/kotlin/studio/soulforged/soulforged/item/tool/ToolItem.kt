@@ -50,8 +50,7 @@ class ToolItem : Item(
 
     override fun postHit(stack: ItemStack, target: LivingEntity, attacker: LivingEntity): Boolean {
         val tool = ToolInst.fromNbt(stack)
-        tool.sync(attacker as PlayerEntity)
-        if (tool.durability() <= 0u) breakTool(attacker)
+        if (tool.getDurability() <= 0u) breakTool(attacker as PlayerEntity)
         if (!stack.getAttributeModifiers(EquipmentSlot.MAINHAND)
                 .containsKey(EntityAttributes.GENERIC_ATTACK_SPEED)
         ) stack.addAttributeModifier(
@@ -63,27 +62,27 @@ class ToolItem : Item(
             ),
             EquipmentSlot.MAINHAND
         )
-        stack.damage = tool.durability().toInt()
+        stack.damage = tool.getDurability().toInt()
         return true
     }
 
     override fun getMiningSpeedMultiplier(stack: ItemStack, state: BlockState): Float {
         val tool = ToolInst.fromNbt(stack)
-        if (tool.durability() <= 0u) return 0.0f
+        if (tool.getDurability() <= 0u) return 0.0f
         val msp: MiningSpeedProcessor = tool.type.miningSpeedProcessor as MiningSpeedProcessor
         return msp.getMiningSpeed(state, tool.head.mat)
     }
 
     override fun postMine(stack: ItemStack, world: World, state: BlockState, pos: BlockPos, miner: LivingEntity): Boolean {
         val tool = ToolInst.fromNbt(stack)
-        if (tool.durability() <= 0u) breakTool(miner as PlayerEntity)
-        stack.damage = tool.durability().toInt()
+        if (tool.getDurability() <= 0u) breakTool(miner as PlayerEntity)
+        stack.damage = tool.getDurability().toInt()
         return true
     }
 
     override fun canMine(state: BlockState, world: World, pos: BlockPos, miner: PlayerEntity): Boolean {
         val tool = ToolInst.fromNbt(miner.mainHandStack)
-        return tool.durability() <= 0u
+        return tool.getDurability() <= 0u
     }
 
     override fun isSuitableFor(state: BlockState): Boolean {
@@ -92,7 +91,7 @@ class ToolItem : Item(
 
     override fun useOnBlock(context: ItemUsageContext): ActionResult {
         val tool = ToolInst.fromNbt(context.stack)
-        if (tool.durability() <= 0u) return ActionResult.FAIL
+        if (tool.getDurability() <= 0u) return ActionResult.FAIL
         val rcep: RightClickEventProcessor = tool.type.rightClickEventProcessor as RightClickEventProcessor
         return rcep.onRightClick(context)!!
     }

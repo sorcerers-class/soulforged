@@ -1,6 +1,5 @@
 package studio.soulforged.soulforged.item.tool
 
-import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.util.Identifier
 import studio.soulforged.soulforged.client.gui.CombatDebuggerClientUI
@@ -20,35 +19,20 @@ import studio.soulforged.soulforged.recipe.ToolRecipes
  */
 class ToolInst(val stack: ItemStack, val type: ToolType, val head: ToolPartInst, val binding: ToolPartInst, val handle: ToolPartInst) {
     /**
-     * Modifies the provided item stack with the properties of the tool. Should be called before every attack,
-     * every change in durability, etc. Might not be the best idea to call any more frequently than that,
-     * especially on large servers.
-     * @param player Optionally define a player entity. If this is defined, then things like break events will be sent to the player.
-     * @author Lilly Rosaline
-     */
-    //TODO this is a bit unclean. Might be best to add getId stuff to the respective definition classes
-    fun sync(player: PlayerEntity?) {
-        stack.nbt?.putString("sf_tool_type", ToolTypes.TOOL_TYPES_REGISTRY.getId(type).toString())
-        stack.getOrCreateSubNbt("sf_head")
-        stack.nbt?.getCompound("sf_head")?.putString("type", ToolParts.TOOL_PARTS_REGISTRY.getId(head.part).toString())
-        stack.nbt?.getCompound("sf_head")?.putString("material", Materials.MATERIAL_REGISTRY.getId(head.mat).toString())
-        stack.getOrCreateSubNbt("sf_binding")
-        stack.nbt?.getCompound("sf_binding")?.putString("type", ToolParts.TOOL_PARTS_REGISTRY.getId(binding.part).toString())
-        stack.nbt?.getCompound("sf_binding")?.putString("material", Materials.MATERIAL_REGISTRY.getId(binding.mat).toString())
-        stack.getOrCreateSubNbt("sf_handle")
-        stack.nbt?.getCompound("sf_handle")?.putString("type", ToolParts.TOOL_PARTS_REGISTRY.getId(handle.part).toString())
-        stack.nbt?.getCompound("sf_handle")?.putString("material", Materials.MATERIAL_REGISTRY.getId(handle.mat).toString())
-    }
-    /**
      * Gets the durability of the tool to display.
      * @return The durability, normalized from 0 to 255.
      * @author Lilly Rosaline
      */
-    fun durability(): UInt {
+    fun getDurability(): UInt {
         val headDamage = (256 * head.durability.toFloat() / head.maxDurability.toFloat()).toUInt()
         val bindingDamage = (256 * binding.durability.toFloat() / head.maxDurability.toFloat()).toUInt()
         val handleDamage = (256 * binding.durability.toFloat() / head.maxDurability.toFloat()).toUInt()
         return 256u - handleDamage.coerceAtMost(bindingDamage).coerceAtMost(headDamage)
+    }
+    fun setDurability(head_durability: UInt, binding_durability: UInt, handle_durability: UInt) {
+        head.durability = head_durability
+        binding.durability = binding_durability
+        handle.durability = handle_durability
     }
     /**
      * Get the base attack speed without any modifiers.
@@ -71,7 +55,9 @@ class ToolInst(val stack: ItemStack, val type: ToolType, val head: ToolPartInst,
         CombatDebuggerClientUI.critType = ap.type
         val totalPiercingDamage = rawPiercingDamage() * ap.piercingDamage
         val totalBluntDamage = rawBluntDamage() * ap.bluntDamage * 0.8
-        return (totalBluntDamage + totalPiercingDamage)
+        return if(getDurability() <= 0u)
+            (totalBluntDamage + totalPiercingDamage)
+        else 0.0
     }
 
     /**
@@ -119,6 +105,17 @@ class ToolInst(val stack: ItemStack, val type: ToolType, val head: ToolPartInst,
         } else {
             head.type.dcAttack ?: head.type.defaultAttack
         }
+    }
+
+    /**
+     * Writes the contents of the tool to a stack's NBT.
+     */
+    fun write(stack: ItemStack) {
+        val nbt = stack.nbt!!
+        nbt.putString("sf_tool_type", type.id.toString())
+        head.write(nbt)
+        binding.write(nbt)
+        handle.write(nbt)
     }
     companion object {
         fun fromRaw(stack: ItemStack, type: Identifier, headMaterial: Identifier, bindingMaterial: Identifier, handleMaterial: Identifier): ToolInst {

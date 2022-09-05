@@ -1,6 +1,6 @@
 plugins {
     java
-    kotlin("jvm") version "1.6.21"
+    kotlin("jvm") version "1.7.20-Beta"
     `maven-publish`
     alias(libs.plugins.quilt.loom)
 }
@@ -67,7 +67,7 @@ tasks {
     }
 
     compileKotlin {
-        kotlinOptions.jvmTarget = "17"
+        kotlinOptions.jvmTarget = "18"
     }
 
 }

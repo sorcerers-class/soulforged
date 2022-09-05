@@ -60,8 +60,10 @@ object CombatDebuggerClientUI {
                                     "\n\tCategory:" + apDefault.category.toString().lowercase(Locale.getDefault()) +
                                     "\n\tCrit Type:" + apDefault.type.toString().lowercase(Locale.getDefault()),
                         )
-                        val apDc: AttackProperties = type.dcAttack!!
-                        ImGui.text("DC Attack:" +
+                        val apDc: AttackProperties? = type.dcAttack
+                        if(apDc != null) {
+                            ImGui.text(
+                                "DC Attack:" +
                                         "\n\tPiercing Damage:" + apDc.piercingDamage +
                                         "\n\tBlunt Damage:" + apDc.bluntDamage +
                                         "\n\tFinesse:" + apDc.finesse +
@@ -69,9 +71,12 @@ object CombatDebuggerClientUI {
                                         "\n\tPiercing:" + apDc.piercing +
                                         "\n\tCategory:" + apDc.category.toString().lowercase(Locale.getDefault()) +
                                         "\n\tCrit Type:" + apDc.type.toString().lowercase(Locale.getDefault()),
-                        )
-                        val apHc: AttackProperties = type.hcAttack!!
-                        ImGui.text("HC Attack:" +
+                            )
+                        }
+                        val apHc: AttackProperties? = type.hcAttack
+                        if(apHc != null) {
+                            ImGui.text(
+                                "HC Attack:" +
                                         "\n\tPiercing Damage:" + apHc.piercingDamage +
                                         "\n\tBlunt Damage:" + apHc.bluntDamage +
                                         "\n\tFinesse:" + apHc.finesse +
@@ -79,7 +84,8 @@ object CombatDebuggerClientUI {
                                         "\n\tPiercing:" + apHc.piercing +
                                         "\n\tCategory:" + apHc.category.toString().lowercase(Locale.getDefault()) +
                                         "\n\tCrit Type:" + apHc.type.toString().lowercase(Locale.getDefault()),
-                        )
+                            )
+                        }
                     }
                     ImGui.text("Materials:")
                     if (ImGui.button(String.format("Head: %s", head.getString("material")))) showHeadMaterialDropdown =
@@ -97,7 +103,7 @@ object CombatDebuggerClientUI {
                                 "\n\tMining Speed:" + headMat.miningSpeed +
                                 "\n\tTool Material:" + headMat.canIntoTool +
                                 "\n\tArmor Material:" + headMat.canIntoArmor +
-                                "\n\tCorundum Classifier:" + headMat.classifier
+                                "\n\tCorundum Classifier:" + (headMat.classifier ?: "None")
                         )
                     }
                     if (ImGui.button(
@@ -117,7 +123,7 @@ object CombatDebuggerClientUI {
                                     "\n\tMining Speed:" + bindingMat.miningSpeed +
                                     "\n\tTool Material:" + bindingMat.canIntoTool +
                                     "\n\tArmor Material:" + bindingMat.canIntoArmor +
-                                    "\n\tCorundum Classifier:" + bindingMat.classifier
+                                    "\n\tCorundum Classifier:" + (bindingMat.classifier ?: "None")
                         )
                     }
                     if (ImGui.button(
@@ -140,7 +146,7 @@ object CombatDebuggerClientUI {
                                     "\n\tMining Speed:" + handleMat.miningSpeed +
                                     "\n\tTool Material:" + handleMat.canIntoTool +
                                     "\n\tArmor Material:" + handleMat.canIntoArmor +
-                                    "\n\tCorundum Classifier:" + handleMat.classifier
+                                    "\n\tCorundum Classifier:" + (handleMat.classifier ?: "None")
                         )
                     }
                     ImGui.text("Part Types:")

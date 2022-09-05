@@ -1,8 +1,9 @@
 package studio.soulforged.soulforged.material
 
-import java.util.*
+import net.minecraft.util.Identifier
 
 data class Material(
+    val id: Identifier,
     val name: String,
     val hardness: Double,
     val edgeholding: Double,
@@ -15,5 +16,5 @@ data class Material(
     val miningSpeed: Int,
     val canIntoTool: Boolean,
     val canIntoArmor: Boolean,
-    val classifier: Optional<Any>
+    val classifier: Classifiers?
 )

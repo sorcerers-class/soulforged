@@ -1,5 +1,6 @@
 package studio.soulforged.soulforged.item.tool
 
+import net.minecraft.util.Identifier
 import studio.soulforged.soulforged.item.tool.combat.AttackProperties
 
 /**
@@ -7,6 +8,7 @@ import studio.soulforged.soulforged.item.tool.combat.AttackProperties
  * @author Lilly Rosaline
  */
 data class ToolType(
+    val id: Identifier,
     val name: String,
     val defaultAttack: AttackProperties,
     val hcAttack: AttackProperties?,

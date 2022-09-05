@@ -4,7 +4,6 @@ import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.context.CommandContext
 import net.minecraft.command.argument.EntityArgumentType
 import net.minecraft.command.argument.IdentifierArgumentType
-import net.minecraft.item.ItemStack
 import net.minecraft.server.command.CommandManager
 import net.minecraft.server.command.ServerCommandSource
 import net.minecraft.server.network.ServerPlayerEntity
@@ -56,9 +55,12 @@ object GiveToolCommand {
         handle: Identifier
     ): Int {
         for (target in targets) {
-            val stack: ItemStack = SoulforgedItems.TOOL.defaultStack
+            val stack = SoulforgedItems.TOOL.defaultStack
             val tool: ToolInst = ToolInst.fromRaw(stack, type, head, binding, handle)
-            tool.sync(target)
+            tool.head.durability = tool.head.maxDurability.toUInt()
+            tool.binding.durability = tool.binding.maxDurability.toUInt()
+            tool.handle.durability = tool.handle.maxDurability.toUInt()
+            tool.write(stack)
             target.giveItemStack(stack)
             source.sendFeedback(
                 TranslatableText(

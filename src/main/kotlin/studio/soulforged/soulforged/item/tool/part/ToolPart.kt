@@ -1,3 +1,5 @@
 package studio.soulforged.soulforged.item.tool.part
 
-data class ToolPart(val name: String, val weight: Double, val durability: Double)
+import net.minecraft.util.Identifier
+
+data class ToolPart(val id: Identifier, val name: String, val weight: Double, val durability: Double)

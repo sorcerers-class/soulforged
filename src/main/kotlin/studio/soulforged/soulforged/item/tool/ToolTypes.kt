@@ -12,8 +12,8 @@ object ToolTypes {
     private val TOOL_TYPES_REGISTRY_KEY: RegistryKey<Registry<ToolType>> = RegistryKey.ofRegistry<ToolType>(Identifier("soulforged", "tool_types"))
     val TOOL_TYPES_REGISTRY: Registry<ToolType> = Registry.registerSimple(TOOL_TYPES_REGISTRY_KEY) { SHORTSWORD }
     val SHORTSWORD = register(
-        Identifier("soulforged", "shortsword"),
         ToolType(
+            Identifier("soulforged", "shortsword"),
             "item.soulforged.tool.type.shortsword",
             AttackProperties(0.7, 0.2, 10.0, 1.2, 0.1, WeaponCategories.THRUSTING, CritTypes.SIDE),
             null,
@@ -23,8 +23,8 @@ object ToolTypes {
         )
     )
     val BROADSWORD = register(
-        Identifier("soulforged", "broadsword"),
         ToolType(
+            Identifier("soulforged", "broadsword"),
             "item.soulforged.tool.type.broadsword",
             AttackProperties(1.0, 0.2, 8.0, 1.0, 0.2, WeaponCategories.SLASHING, CritTypes.SIDE),
             AttackProperties(0.9, 0.2, 1.0, 1.0, 0.2, WeaponCategories.SLASHING, CritTypes.SIDE),
@@ -34,8 +34,8 @@ object ToolTypes {
         )
     )
     val LONGSWORD = register(
-        Identifier("soulforged", "longsword"),
         ToolType(
+            Identifier("soulforged", "longsword"),
             "item.soulforged.tool.type.longsword",
             AttackProperties(1.3, 0.25, 3.0, 0.8, 0.35, WeaponCategories.SLASHING, CritTypes.SIDE),
             AttackProperties(1.1, 0.25, 1.0, 0.8, 0.3, WeaponCategories.SLASHING, CritTypes.SIDE),
@@ -45,8 +45,8 @@ object ToolTypes {
         )
     )
     val GREATSWORD = register(
-        Identifier("soulforged", "greatsword"),
         ToolType(
+            Identifier("soulforged", "greatsword"),
             "item.soulforged.tool.type.greatsword",
             AttackProperties(1.5, 0.3, 1.0, 0.6, 0.4, WeaponCategories.SLASHING, CritTypes.SIDE),
             AttackProperties(1.3, 0.3, 1.0, 0.6, 0.3, WeaponCategories.SLASHING, CritTypes.SIDE),
@@ -56,8 +56,8 @@ object ToolTypes {
         )
     )
     val RAPIER = register(
-        Identifier("soulforged", "rapier"),
         ToolType(
+            Identifier("soulforged", "rapier"),
             "item.soulforged.tool.type.rapier",
             AttackProperties(0.6, 0.1, 20.0, 1.3, 0.4, WeaponCategories.THRUSTING, CritTypes.FORWARD),
             null,
@@ -67,8 +67,8 @@ object ToolTypes {
         )
     )
     val SHORTSPEAR = register(
-        Identifier("soulforged", "shortspear"),
         ToolType(
+            Identifier("soulforged", "shortspear"),
             "item.soulforged.tool.type.shortspear",
             AttackProperties(0.75, 0.25, 5.0, 0.8, 1.0, WeaponCategories.THRUSTING, CritTypes.FORWARD),
             AttackProperties(0.75, 0.25, 0.0, 0.8, 0.9, WeaponCategories.THRUSTING, CritTypes.FORWARD),
@@ -78,8 +78,8 @@ object ToolTypes {
         )
     )
     val LONGSPEAR = register(
-        Identifier("soulforged", "longspear"),
         ToolType(
+            Identifier("soulforged", "longspear"),
             "item.soulforged.tool.type.longspear",
             AttackProperties(0.8, 0.3, 3.0, 0.5, 1.3, WeaponCategories.THRUSTING, CritTypes.FORWARD),
             AttackProperties(0.8, 0.3, 0.0, 0.5, 1.2, WeaponCategories.THRUSTING, CritTypes.FORWARD),
@@ -89,8 +89,8 @@ object ToolTypes {
         )
     )
     val JAVELIN = register(
-        Identifier("soulforged", "javelin"),
         ToolType(
+            Identifier("soulforged", "javelin"),
             "item.soulforged.tool.type.javelin",
             AttackProperties(0.8, 0.3, 3.0, 0.5, 1.3, WeaponCategories.THRUSTING, CritTypes.FORWARD),
             AttackProperties(0.8, 0.25, 0.0, 0.9, 0.85, WeaponCategories.THRUSTING, CritTypes.FORWARD),
@@ -100,8 +100,8 @@ object ToolTypes {
         )
     )
     val MACE = register(
-        Identifier("soulforged", "mace"),
         ToolType(
+            Identifier("soulforged", "mace"),
             "item.soulforged.tool.type.mace",
             AttackProperties(0.0, 0.8, 10.0, 1.2, 0.0, WeaponCategories.CRUSHING, CritTypes.DOWN),
             null,
@@ -111,8 +111,8 @@ object ToolTypes {
         )
     )
     val MORNINGSTAR = register(
-        Identifier("soulforged", "morningstar"),
         ToolType(
+            Identifier("soulforged", "morningstar"),
             "item.soulforged.tool.type.morningstar",
             AttackProperties(1.0, 1.0, 5.0, 0.75, 0.75, WeaponCategories.CRUSHING, CritTypes.DOWN),
             null,
@@ -122,8 +122,8 @@ object ToolTypes {
         )
     )
     val GREATAXE = register(
-        Identifier("soulforged", "greataxe"),
         ToolType(
+            Identifier("soulforged", "greataxe"),
             "item.soulforged.tool.type.greataxe",
             AttackProperties(1.2, 0.6, 3.0, 0.5, 0.4, WeaponCategories.SLASHING, CritTypes.DOWN),
             AttackProperties(1.0, 0.4, 1.0, 0.5, 0.3, WeaponCategories.SLASHING, CritTypes.SIDE),
@@ -133,8 +133,8 @@ object ToolTypes {
         )
     )
     val GREATHAMMER = register(
-        Identifier("soulforged", "greathammer"),
         ToolType(
+            Identifier("soulforged", "greathammer"),
             "item.soulforged.tool.type.greathammer",
             AttackProperties(0.0, 1.3, 1.0, 0.35, 0.0, WeaponCategories.CRUSHING, CritTypes.DOWN),
             AttackProperties(0.0, 1.4, 1.0, 0.35, 0.0, WeaponCategories.CRUSHING, CritTypes.DOWN),
@@ -144,8 +144,8 @@ object ToolTypes {
         )
     )
     val WARHAMMER = register(
-        Identifier("soulforged", "warhammer"),
         ToolType(
+            Identifier("soulforged", "warhammer"),
             "item.soulforged.tool.type.warhammer",
             AttackProperties(0.0, 1.0, 1.5, 0.8, 0.0, WeaponCategories.CRUSHING, CritTypes.DOWN),
             null,
@@ -155,8 +155,8 @@ object ToolTypes {
         )
     )
     val AXE = register(
-        Identifier("soulforged", "axe"),
         ToolType(
+            Identifier("soulforged", "axe"),
             "item.soulforged.tool.type.axe",
             AttackProperties(0.9, 0.5, 4.0, 0.9, 0.3, WeaponCategories.SLASHING, CritTypes.DOWN),
             null,
@@ -166,8 +166,8 @@ object ToolTypes {
         )
     )
     val PICKAXE = register(
-        Identifier("soulforged", "pickaxe"),
         ToolType(
+            Identifier("soulforged", "pickaxe"),
             "item.soulforged.tool.type.pickaxe",
             AttackProperties(1.0, 0.3, 4.0, 0.6, 1.3, WeaponCategories.THRUSTING, CritTypes.DOWN),
             null,
@@ -177,8 +177,8 @@ object ToolTypes {
         )
     )
     val SHOVEL = register(
-        Identifier("soulforged", "shovel"),
         ToolType(
+            Identifier("soulforged", "shovel"),
             "item.soulforged.tool.type.shovel",
             AttackProperties(0.1, 0.75, 3.0, 1.3, 0.0, WeaponCategories.CRUSHING, CritTypes.DOWN),
             null,
@@ -188,8 +188,8 @@ object ToolTypes {
         )
     )
     val HOE = register(
-        Identifier("soulforged", "hoe"),
         ToolType(
+            Identifier("soulforged", "hoe"),
             "item.soulforged.tool.type.hoe",
             AttackProperties(0.2, 0.2, 5.0, 1.4, 0.2, WeaponCategories.CRUSHING, CritTypes.DOWN),
             null,
@@ -199,7 +199,7 @@ object ToolTypes {
         )
     )
 
-    private fun register(id: Identifier, type: ToolType): ToolType {
-        return Registry.register(TOOL_TYPES_REGISTRY, id, type)
+    private fun register(type: ToolType): ToolType {
+        return Registry.register(TOOL_TYPES_REGISTRY, type.id, type)
     }
 }
