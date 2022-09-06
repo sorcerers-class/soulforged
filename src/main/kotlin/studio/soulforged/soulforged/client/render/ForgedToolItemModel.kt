@@ -21,7 +21,7 @@ import net.minecraft.util.Identifier
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.world.BlockRenderView
-import studio.soulforged.soulforged.Soulforged
+import studio.soulforged.soulforged.client.SoulforgedClient
 import studio.soulforged.soulforged.item.tool.ToolTypes
 import studio.soulforged.soulforged.material.Materials
 import studio.soulforged.soulforged.mixin.client.ItemModelGeneratorInvoker
@@ -137,7 +137,7 @@ class ForgedToolItemModel : UnbakedModel, BakedModel, FabricBakedModel {
     }
 
     override fun getQuads(state: BlockState?, face: Direction?, random: Random): List<BakedQuad> {
-        Soulforged.LOGGER.fatal("Call to ForgedToolItemModel.getQuads")
+        SoulforgedClient.LOGGER.fatal("Call to ForgedToolItemModel.getQuads")
         return listOf()
     }
 

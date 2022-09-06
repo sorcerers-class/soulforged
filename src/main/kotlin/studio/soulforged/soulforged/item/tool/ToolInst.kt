@@ -27,12 +27,12 @@ class ToolInst(val stack: ItemStack, val type: ToolType, val head: ToolPartInst,
         val headDamage = (256 * head.durability.toFloat() / head.maxDurability.toFloat()).toUInt()
         val bindingDamage = (256 * binding.durability.toFloat() / head.maxDurability.toFloat()).toUInt()
         val handleDamage = (256 * binding.durability.toFloat() / head.maxDurability.toFloat()).toUInt()
-        return 256u - handleDamage.coerceAtMost(bindingDamage).coerceAtMost(headDamage)
+        return (headDamage + bindingDamage + handleDamage) / 3u
     }
-    fun setDurability(head_durability: UInt, binding_durability: UInt, handle_durability: UInt) {
-        head.durability = head_durability
-        binding.durability = binding_durability
-        handle.durability = handle_durability
+    fun setDurability(head_durability: Int, binding_durability: Int, handle_durability: Int) {
+        head.durability = head_durability.toUInt()
+        binding.durability = binding_durability.toUInt()
+        handle.durability = handle_durability.toUInt()
     }
     /**
      * Get the base attack speed without any modifiers.
@@ -113,9 +113,9 @@ class ToolInst(val stack: ItemStack, val type: ToolType, val head: ToolPartInst,
     fun write(stack: ItemStack) {
         val nbt = stack.nbt!!
         nbt.putString("sf_tool_type", type.id.toString())
-        head.write(nbt)
-        binding.write(nbt)
-        handle.write(nbt)
+        nbt.put("sf_head", head.write())
+        nbt.put("sf_binding", binding.write())
+        nbt.put("sf_handle", handle.write())
     }
     companion object {
         fun fromRaw(stack: ItemStack, type: Identifier, headMaterial: Identifier, bindingMaterial: Identifier, handleMaterial: Identifier): ToolInst {

@@ -8,13 +8,16 @@ import studio.soulforged.soulforged.material.Material
 import studio.soulforged.soulforged.material.Materials
 
 class ToolPartInst(val pos: PartPosition, val part: ToolPart, val type: ToolType, val mat: Material, var durability: UInt, val maxDurability: Int) {
-    fun write(nbt: NbtCompound) {
-        val innerNbt = NbtCompound()
-        innerNbt.putInt("max_durability", maxDurability)
-        innerNbt.putString("material", mat.id.toString())
-        innerNbt.putString("type", part.id.toString())
-        innerNbt.putInt("durability", durability.toInt())
-        nbt.put("sf_${pos.toString().lowercase()}", innerNbt)
+    fun write(): NbtCompound {
+        val nbt = NbtCompound()
+        nbt.putInt("max_durability", maxDurability)
+        nbt.putString("material", mat.id.toString())
+        nbt.putString("type", part.id.toString())
+        nbt.putInt("durability", durability.toInt())
+        return nbt
+    }
+    fun decDurability() {
+        durability -= 1u
     }
     companion object {
         fun fromNbt(pos: PartPosition, nbt: NbtCompound): ToolPartInst? {

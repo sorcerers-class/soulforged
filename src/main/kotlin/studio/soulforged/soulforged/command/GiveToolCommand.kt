@@ -21,20 +21,14 @@ object GiveToolCommand {
                     .then(CommandManager.argument("type", IdentifierArgumentType.identifier())
                         .then(CommandManager.argument("head", IdentifierArgumentType.identifier())
                             .then(CommandManager.argument("binding", IdentifierArgumentType.identifier())
-                                .then(CommandManager.argument(
-                                    "handle",
-                                    IdentifierArgumentType.identifier()
-                                )
+                                .then(CommandManager.argument("handle", IdentifierArgumentType.identifier())
                                     .executes { context: CommandContext<ServerCommandSource> ->
                                         execute(
                                             context.source,
                                             EntityArgumentType.getPlayers(context, "targets"),
                                             IdentifierArgumentType.getIdentifier(context, "type"),
                                             IdentifierArgumentType.getIdentifier(context, "head"),
-                                            IdentifierArgumentType.getIdentifier(
-                                                context,
-                                                "binding"
-                                            ),
+                                            IdentifierArgumentType.getIdentifier(context, "binding"),
                                             IdentifierArgumentType.getIdentifier(context, "handle")
                                         )
                                     }
@@ -57,16 +51,14 @@ object GiveToolCommand {
         for (target in targets) {
             val stack = SoulforgedItems.TOOL.defaultStack
             val tool: ToolInst = ToolInst.fromRaw(stack, type, head, binding, handle)
-            tool.head.durability = tool.head.maxDurability.toUInt()
-            tool.binding.durability = tool.binding.maxDurability.toUInt()
-            tool.handle.durability = tool.handle.maxDurability.toUInt()
+            tool.setDurability(tool.head.maxDurability, tool.binding.maxDurability, tool.handle.maxDurability)
             tool.write(stack)
             target.giveItemStack(stack)
             source.sendFeedback(
                 TranslatableText(
                     "commands.give.success.single",
                     1,
-                    stack.name,
+                    SoulforgedItems.TOOL.getName(stack),
                     targets.iterator().next().displayName
                 ), true
             )

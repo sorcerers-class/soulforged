@@ -7,7 +7,7 @@ plugins {
 
 val archivesBaseName = property("archives_base_name")!!
 group = property("maven_group")!!
-version = property("mod_version")!!
+version = property("version")!!
 
 repositories {
     mavenCentral()
