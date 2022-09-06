@@ -2,6 +2,7 @@ package studio.soulforged.soulforged.mixin.common;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -25,7 +26,7 @@ public abstract class SetAttackSpeedMixin extends LivingEntity {
         if(stack.getItem() == SoulforgedItems.INSTANCE.getTOOL()) {
             assert stack.getNbt() != null;
             ToolInst tool = ToolInstSerializer.INSTANCE.deserialize(stack.getNbt());
-            cir.setReturnValue((float) (1.0f / tool.baseAttackSpeed(tool.attackProperties(2)) * 20.0f));
+            cir.setReturnValue((float) ((this.getAttributeValue(EntityAttributes.GENERIC_ATTACK_SPEED) / 4.0f) / tool.baseAttackSpeed(tool.attackProperties(2)) * 20.0f));
         }
 
     }
