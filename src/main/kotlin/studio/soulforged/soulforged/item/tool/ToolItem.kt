@@ -5,10 +5,7 @@ import net.fabricmc.api.Environment
 import net.minecraft.block.BlockState
 import net.minecraft.client.item.TooltipContext
 import net.minecraft.entity.Entity
-import net.minecraft.entity.EquipmentSlot
 import net.minecraft.entity.LivingEntity
-import net.minecraft.entity.attribute.EntityAttributeModifier
-import net.minecraft.entity.attribute.EntityAttributes
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
@@ -49,43 +46,32 @@ class ToolItem : Item(
     }
 
     override fun postHit(stack: ItemStack, target: LivingEntity, attacker: LivingEntity): Boolean {
-        val tool = ToolInst.fromNbt(stack)
-        if (tool.getDurability() <= 0u) breakTool(attacker as PlayerEntity)
-        if (!stack.getAttributeModifiers(EquipmentSlot.MAINHAND)
-                .containsKey(EntityAttributes.GENERIC_ATTACK_SPEED)
-        ) stack.addAttributeModifier(
-            EntityAttributes.GENERIC_ATTACK_SPEED,
-            EntityAttributeModifier(
-                "f106b032-3216-4ff6-9919-36cf09d350f5",
-                tool.baseAttackSpeed(tool.attackProperties(2)),
-                EntityAttributeModifier.Operation.ADDITION
-            ),
-            EquipmentSlot.MAINHAND
-        )
-        stack.damage = tool.getDurability().toInt()
+        val tool = ToolInstSerializer.deserialize(stack.nbt!!)
+        tool.damage(target.world.random)
+        if (tool.shouldBreak()) breakTool(attacker as PlayerEntity)
+        stack.nbt = ToolInstSerializer.serialize(tool)
+        stack.damage = tool.getDisplayDurability().toInt()
         return true
     }
 
     override fun getMiningSpeedMultiplier(stack: ItemStack, state: BlockState): Float {
-        val tool = ToolInst.fromNbt(stack)
-        val msp: MiningSpeedProcessor = tool.type.miningSpeedProcessor as MiningSpeedProcessor
+        val tool = ToolInstSerializer.deserialize(stack.nbt!!)
+        val msp = tool.type.miningSpeedProcessor
         return msp.getMiningSpeed(state, tool.head.mat)
     }
 
     override fun postMine(stack: ItemStack, world: World, state: BlockState, pos: BlockPos, miner: LivingEntity): Boolean {
-        val tool = ToolInst.fromNbt(stack)
-        tool.head.decDurability()
-        if(world.random.nextBoolean()) tool.binding.decDurability()
-        if(world.random.nextBoolean() && world.random.nextBoolean()) tool.handle.decDurability()
-        if (tool.getDurability() <= 0u) breakTool(miner as PlayerEntity)
-        stack.damage = 256 - tool.getDurability().toInt()
-        tool.write(stack)
+        val tool = ToolInstSerializer.deserialize(stack.nbt!!)
+        tool.damage(world.random)
+        if(tool.shouldBreak()) breakTool(miner as PlayerEntity)
+        stack.nbt = ToolInstSerializer.serialize(tool)
+        stack.damage = tool.getDisplayDurability().toInt()
         return true
     }
 
     override fun canMine(state: BlockState, world: World, pos: BlockPos, miner: PlayerEntity): Boolean {
-        val tool = ToolInst.fromNbt(miner.mainHandStack)
-        return tool.getDurability() >= 0u
+        val tool = ToolInstSerializer.deserialize(miner.mainHandStack.nbt!!)
+        return !tool.shouldBreak()
     }
 
     override fun isSuitableFor(state: BlockState): Boolean {
@@ -93,15 +79,21 @@ class ToolItem : Item(
     }
 
     override fun useOnBlock(context: ItemUsageContext): ActionResult {
-        val tool = ToolInst.fromNbt(context.stack)
-        if (tool.getDurability() <= 0u) return ActionResult.FAIL
-        val rcep: RightClickEventProcessor = tool.type.rightClickEventProcessor as RightClickEventProcessor
-        return rcep.onRightClick(context)!!
+        val tool = ToolInstSerializer.deserialize(context.stack.nbt!!)
+        if (tool.shouldBreak()) return ActionResult.FAIL
+        val rcep = tool.type.rightClickEventProcessor
+        val result = rcep.onRightClick(context)!!
+        if(result == ActionResult.SUCCESS) {
+            tool.damage(context.world.random)
+            context.stack.nbt = ToolInstSerializer.serialize(tool)
+            context.stack.damage = tool.getDisplayDurability().toInt()
+        }
+        return result
     }
 
     @Environment(EnvType.CLIENT)
     override fun appendTooltip(stack: ItemStack, world: World?, tooltip: MutableList<Text>, context: TooltipContext) {
-        val tool = ToolInst.fromNbt(stack)
+        val tool = ToolInstSerializer.deserialize(stack.nbt!!)
         val headMaterial = TranslatableText(tool.head.mat.name)
         val headType = tool.head.part.name
         val bindingMaterial = TranslatableText(tool.binding.mat.name)
@@ -213,7 +205,7 @@ class ToolItem : Item(
 
     @Environment(EnvType.CLIENT)
     override fun getName(stack: ItemStack): Text {
-        val tool = ToolInst.fromNbt(stack)
+        val tool = ToolInstSerializer.deserialize(stack.nbt!!)
         return TranslatableText(
             tool.type.name, TranslatableText(tool.head.mat.name)
         )

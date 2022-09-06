@@ -6,7 +6,7 @@ import net.minecraft.entity.damage.DamageSource
 import net.minecraft.network.PacketByteBuf
 import net.minecraft.server.network.ServerPlayerEntity
 import studio.soulforged.soulforged.client.gui.CombatDebuggerClientUI
-import studio.soulforged.soulforged.item.tool.ToolInst
+import studio.soulforged.soulforged.item.tool.ToolInstSerializer
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
@@ -37,7 +37,7 @@ class AttackHandler(private val client: ServerPlayerEntity) {
 
     private fun onFinish() {
         if (target != null) {
-            val tool = ToolInst.fromNbt(client.mainHandStack)
+            val tool = ToolInstSerializer.deserialize(client.mainHandStack.nbt!!)
             target!!.damage(
                 DamageSource.player(client), tool.baseAttackDamage(tool.attackProperties(packets.size)).toFloat()
             )

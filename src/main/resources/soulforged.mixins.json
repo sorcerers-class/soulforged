@@ -6,11 +6,13 @@
   "mixins": [
     "common.CheckToolHarvestabilityImpl",
     "common.InteractPacketMixin",
+    ,
+    "common.SetAttackSpeedMixin"
   ],
   "client": [
+    "client.ClientDebuggerMixin",
     "client.ItemModelGeneratorInvoker",
-    "client.MouseMixin",
-    "client.ClientDebuggerMixin"
+    "client.MouseMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -6,6 +6,7 @@ import net.minecraft.util.registry.RegistryKey
 import studio.soulforged.soulforged.item.tool.combat.AttackProperties
 import studio.soulforged.soulforged.item.tool.combat.CritTypes
 import studio.soulforged.soulforged.item.tool.combat.WeaponCategories
+import studio.soulforged.soulforged.item.tool.part.ToolParts
 
 @Suppress("unused")
 object ToolTypes {
@@ -19,7 +20,8 @@ object ToolTypes {
             null,
             AttackProperties(0.5, 0.2, 18.0, 1.2, 0.8, WeaponCategories.THRUSTING, CritTypes.FORWARD),
             MiningSpeedProcessors.SWORD,
-            RightClickEventProcessors.NONE
+            RightClickEventProcessors.NONE,
+            arrayOf(ToolParts.SHORTSWORD_BLADE, ToolParts.HILT, ToolParts.HANDLE)
         )
     )
     val BROADSWORD = register(
@@ -30,7 +32,8 @@ object ToolTypes {
             AttackProperties(0.9, 0.2, 1.0, 1.0, 0.2, WeaponCategories.SLASHING, CritTypes.SIDE),
             AttackProperties(0.75, 0.2, 15.0, 1.0, 0.8, WeaponCategories.THRUSTING, CritTypes.FORWARD),
             MiningSpeedProcessors.SWORD,
-            RightClickEventProcessors.NONE
+            RightClickEventProcessors.NONE,
+            arrayOf(ToolParts.BROADSWORD_BLADE, ToolParts.WIDE_HILT, ToolParts.HANDLE)
         )
     )
     val LONGSWORD = register(
@@ -41,7 +44,8 @@ object ToolTypes {
             AttackProperties(1.1, 0.25, 1.0, 0.8, 0.3, WeaponCategories.SLASHING, CritTypes.SIDE),
             AttackProperties(1.0, 0.25, 10.0, 0.8, 0.8, WeaponCategories.THRUSTING, CritTypes.FORWARD),
             MiningSpeedProcessors.SWORD,
-            RightClickEventProcessors.NONE
+            RightClickEventProcessors.NONE,
+            arrayOf(ToolParts.LONGSWORD_BLADE, ToolParts.WIDE_HILT, ToolParts.LONG_HANDLE)
         )
     )
     val GREATSWORD = register(
@@ -52,7 +56,8 @@ object ToolTypes {
             AttackProperties(1.3, 0.3, 1.0, 0.6, 0.3, WeaponCategories.SLASHING, CritTypes.SIDE),
             null,
             MiningSpeedProcessors.SWORD,
-            RightClickEventProcessors.NONE
+            RightClickEventProcessors.NONE,
+            arrayOf(ToolParts.GREATSWORD_BLADE, ToolParts.WIDE_HILT, ToolParts.LONG_HANDLE)
         )
     )
     val RAPIER = register(
@@ -63,7 +68,8 @@ object ToolTypes {
             null,
             null,
             MiningSpeedProcessors.SWORD,
-            RightClickEventProcessors.NONE
+            RightClickEventProcessors.NONE,
+            arrayOf(ToolParts.RAPIER_BLADE, ToolParts.SLIM_HILT, ToolParts.HANDLE)
         )
     )
     val SHORTSPEAR = register(
@@ -74,7 +80,8 @@ object ToolTypes {
             AttackProperties(0.75, 0.25, 0.0, 0.8, 0.9, WeaponCategories.THRUSTING, CritTypes.FORWARD),
             null,
             MiningSpeedProcessors.HAND,
-            RightClickEventProcessors.NONE
+            RightClickEventProcessors.NONE,
+            arrayOf(ToolParts.SPEARHEAD, ToolParts.BINDING, ToolParts.LONG_SHAFT)
         )
     )
     val LONGSPEAR = register(
@@ -85,7 +92,8 @@ object ToolTypes {
             AttackProperties(0.8, 0.3, 0.0, 0.5, 1.2, WeaponCategories.THRUSTING, CritTypes.FORWARD),
             null,
             MiningSpeedProcessors.HAND,
-            RightClickEventProcessors.NONE
+            RightClickEventProcessors.NONE,
+            arrayOf(ToolParts.SPEARHEAD, ToolParts.BINDING, ToolParts.VERY_LONG_SHAFT)
         )
     )
     val JAVELIN = register(
@@ -96,7 +104,8 @@ object ToolTypes {
             AttackProperties(0.8, 0.25, 0.0, 0.9, 0.85, WeaponCategories.THRUSTING, CritTypes.FORWARD),
             null,
             MiningSpeedProcessors.HAND,
-            RightClickEventProcessors.NONE
+            RightClickEventProcessors.NONE,
+            arrayOf(ToolParts.SPEARHEAD, ToolParts.BINDING, ToolParts.JAVELIN_SHAFT)
         )
     )
     val MACE = register(
@@ -107,7 +116,8 @@ object ToolTypes {
             null,
             null,
             MiningSpeedProcessors.HAND,
-            RightClickEventProcessors.NONE
+            RightClickEventProcessors.NONE,
+            arrayOf(ToolParts.MACEHEAD, ToolParts.BINDING, ToolParts.SHORT_SHAFT)
         )
     )
     val MORNINGSTAR = register(
@@ -118,7 +128,8 @@ object ToolTypes {
             null,
             null,
             MiningSpeedProcessors.HAND,
-            RightClickEventProcessors.NONE
+            RightClickEventProcessors.NONE,
+            arrayOf(ToolParts.MORNINGSTAR_HEAD, ToolParts.BINDING, ToolParts.SHORT_SHAFT)
         )
     )
     val GREATAXE = register(
@@ -129,7 +140,8 @@ object ToolTypes {
             AttackProperties(1.0, 0.4, 1.0, 0.5, 0.3, WeaponCategories.SLASHING, CritTypes.SIDE),
             AttackProperties(1.4, 0.7, 1.0, 0.5, 0.6, WeaponCategories.CRUSHING, CritTypes.DOWN),
             MiningSpeedProcessors.AXE,
-            RightClickEventProcessors.AXE_INTERACTIONS
+            RightClickEventProcessors.AXE_INTERACTIONS,
+            arrayOf(ToolParts.GREATAXE_HEAD, ToolParts.TOUGH_BINDING, ToolParts.LONG_HANDLE)
         )
     )
     val GREATHAMMER = register(
@@ -140,7 +152,8 @@ object ToolTypes {
             AttackProperties(0.0, 1.4, 1.0, 0.35, 0.0, WeaponCategories.CRUSHING, CritTypes.DOWN),
             null,
             MiningSpeedProcessors.PICKAXE,
-            RightClickEventProcessors.NONE
+            RightClickEventProcessors.NONE,
+            arrayOf(ToolParts.GREATHAMMER_HEAD, ToolParts.TOUGH_BINDING, ToolParts.LONG_HANDLE)
         )
     )
     val WARHAMMER = register(
@@ -151,7 +164,8 @@ object ToolTypes {
             null,
             AttackProperties(0.75, 0.75, 2.0, 0.8, 1.0, WeaponCategories.THRUSTING, CritTypes.DOWN),
             MiningSpeedProcessors.PICKAXE,
-            RightClickEventProcessors.NONE
+            RightClickEventProcessors.NONE,
+            arrayOf(ToolParts.WARHAMMER_HEAD, ToolParts.BINDING, ToolParts.LONG_HANDLE)
         )
     )
     val AXE = register(
@@ -162,7 +176,8 @@ object ToolTypes {
             null,
             AttackProperties(0.8, 0.6, 1.0, 0.9, 0.4, WeaponCategories.CRUSHING, CritTypes.DOWN),
             MiningSpeedProcessors.AXE,
-            RightClickEventProcessors.AXE_INTERACTIONS
+            RightClickEventProcessors.AXE_INTERACTIONS,
+            arrayOf(ToolParts.AXE_HEAD, ToolParts.BINDING, ToolParts.SHORT_SHAFT)
         )
     )
     val PICKAXE = register(
@@ -173,7 +188,8 @@ object ToolTypes {
             null,
             null,
             MiningSpeedProcessors.PICKAXE,
-            RightClickEventProcessors.NONE
+            RightClickEventProcessors.NONE,
+            arrayOf(ToolParts.PICKAXE_HEAD, ToolParts.BINDING, ToolParts.LONG_HANDLE)
         )
     )
     val SHOVEL = register(
@@ -184,7 +200,8 @@ object ToolTypes {
             null,
             null,
             MiningSpeedProcessors.SHOVEL,
-            RightClickEventProcessors.SHOVEL_INTERACTIONS
+            RightClickEventProcessors.SHOVEL_INTERACTIONS,
+            arrayOf(ToolParts.SHOVEL_HEAD, ToolParts.BINDING, ToolParts.LONG_HANDLE)
         )
     )
     val HOE = register(
@@ -195,7 +212,8 @@ object ToolTypes {
             null,
             null,
             MiningSpeedProcessors.HOE,
-            RightClickEventProcessors.HOE_INTERACTIONS
+            RightClickEventProcessors.HOE_INTERACTIONS,
+            arrayOf(ToolParts.HOE_HEAD, ToolParts.BINDING, ToolParts.LONG_HANDLE)
         )
     )
 

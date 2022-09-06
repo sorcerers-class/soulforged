@@ -1,14 +1,17 @@
 package studio.soulforged.soulforged.item.tool
 
 import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NbtCompound
 import net.minecraft.util.Identifier
-import studio.soulforged.soulforged.client.gui.CombatDebuggerClientUI
+import studio.soulforged.soulforged.item.SoulforgedItems
 import studio.soulforged.soulforged.item.tool.combat.AttackProperties
 import studio.soulforged.soulforged.item.tool.part.PartPosition
 import studio.soulforged.soulforged.item.tool.part.ToolPartInst
+import studio.soulforged.soulforged.item.tool.part.ToolPartInstSerializer
 import studio.soulforged.soulforged.item.tool.part.ToolParts
 import studio.soulforged.soulforged.material.Materials
-import studio.soulforged.soulforged.recipe.ToolRecipes
+import studio.soulforged.soulforged.util.NbtSerializer
+import java.util.*
 
 /**
  * Represents an instance of a specific tool.
@@ -18,21 +21,52 @@ import studio.soulforged.soulforged.recipe.ToolRecipes
  * @see studio.soulforged.soulforged.material.Material
  */
 class ToolInst(val stack: ItemStack, val type: ToolType, val head: ToolPartInst, val binding: ToolPartInst, val handle: ToolPartInst) {
+    constructor(type: Identifier, head: Identifier, binding: Identifier, handle: Identifier) : this(
+        SoulforgedItems.TOOL.defaultStack,
+        ToolTypes.TOOL_TYPES_REGISTRY.get(type) ?: ToolTypes.SHORTSWORD,
+        ToolPartInst(ToolTypes.TOOL_TYPES_REGISTRY.get(type)?.parts?.get(0) ?: ToolParts.SHORTSWORD_BLADE, Materials.MATERIAL_REGISTRY.get(head) ?: Materials.WOOD),
+        ToolPartInst(ToolTypes.TOOL_TYPES_REGISTRY.get(type)?.parts?.get(1) ?: ToolParts.HILT, Materials.MATERIAL_REGISTRY.get(binding) ?: Materials.WOOD),
+        ToolPartInst(ToolTypes.TOOL_TYPES_REGISTRY.get(type)?.parts?.get(2) ?: ToolParts.HANDLE, Materials.MATERIAL_REGISTRY.get(handle) ?: Materials.WOOD)
+    )
     /**
      * Gets the durability of the tool to display.
      * @return The durability, normalized from 0 to 255.
      * @author Lilly Rosaline
      */
-    fun getDurability(): UInt {
-        val headDamage = (256 * head.durability.toFloat() / head.maxDurability.toFloat()).toUInt()
-        val bindingDamage = (256 * binding.durability.toFloat() / head.maxDurability.toFloat()).toUInt()
-        val handleDamage = (256 * binding.durability.toFloat() / head.maxDurability.toFloat()).toUInt()
-        return (headDamage + bindingDamage + handleDamage) / 3u
+    fun getDisplayDurability(): UInt {
+        val headDurability = (256 * head.durability.toFloat() / head.maxDurability.toFloat()).toUInt()
+        val bindingDurability = (256 * binding.durability.toFloat() / binding.maxDurability.toFloat()).toUInt()
+        val handleDurability = (256 * handle.durability.toFloat() / handle.maxDurability.toFloat()).toUInt()
+        return 256u - headDurability.coerceAtMost(bindingDurability.coerceAtMost(handleDurability))
     }
-    fun setDurability(head_durability: Int, binding_durability: Int, handle_durability: Int) {
-        head.durability = head_durability.toUInt()
-        binding.durability = binding_durability.toUInt()
-        handle.durability = handle_durability.toUInt()
+    fun setDurability(hd: Int, bd: Int, had: Int) {
+        head.durability = hd
+        binding.durability = bd
+        handle.durability = had
+    }
+    fun modifyDurability(hd: Int, bd: Int, had: Int, delta: Boolean) {
+        if(delta) {
+            head.durability += hd
+            binding.durability += bd
+            handle.durability += had
+        } else {
+            head.durability = hd
+            binding.durability = bd
+            handle.durability = had
+        }
+    }
+    fun damage(random: Random) {
+        modifyDurability(-1, if(random.nextBoolean()) -1 else 0, if(random.nextBoolean() && random.nextBoolean()) -1 else 0, true)
+    }
+    fun getDurability(part: PartPosition): Int {
+        return when (part) {
+            PartPosition.HEAD -> head.durability
+            PartPosition.BINDING -> binding.durability
+            PartPosition.HANDLE -> handle.durability
+        }
+    }
+    fun shouldBreak(): Boolean {
+        return head.durability <= 0 || binding.durability <= 0 || handle.durability <= 0
     }
     /**
      * Get the base attack speed without any modifiers.
@@ -41,7 +75,7 @@ class ToolInst(val stack: ItemStack, val type: ToolType, val head: ToolPartInst,
      * @author Lilly Rosaline
      */
     fun baseAttackSpeed(ap: AttackProperties): Double {
-        return 1 / weight() / 800 / ap.speed
+        return 1.0 / (weight() / 800.0 / ap.speed)
     }
     /**
      * Get the base attack damage, without any crits.
@@ -50,12 +84,10 @@ class ToolInst(val stack: ItemStack, val type: ToolType, val head: ToolPartInst,
      * @author Lilly Rosaline
      */
     fun baseAttackDamage(ap: AttackProperties): Double {
-        val type = head.type
-
-        CombatDebuggerClientUI.critType = ap.type
+        //CombatDebuggerClientUI.critType = ap.type
         val totalPiercingDamage = rawPiercingDamage() * ap.piercingDamage
         val totalBluntDamage = rawBluntDamage() * ap.bluntDamage * 0.8
-        return if(getDurability() <= 0u)
+        return if(!shouldBreak())
             (totalBluntDamage + totalPiercingDamage)
         else 0.0
     }
@@ -99,51 +131,30 @@ class ToolInst(val stack: ItemStack, val type: ToolType, val head: ToolPartInst,
      */
     fun attackProperties(attack: Int): AttackProperties {
         return if(attack == 1) {
-            head.type.hcAttack ?: head.type.defaultAttack
+            type.hcAttack ?: type.defaultAttack
         } else if(attack == 2 || attack == 0) {
-            head.type.defaultAttack
+            type.defaultAttack
         } else {
-            head.type.dcAttack ?: head.type.defaultAttack
+            type.dcAttack ?: type.defaultAttack
         }
     }
-
-    /**
-     * Writes the contents of the tool to a stack's NBT.
-     */
-    fun write(stack: ItemStack) {
-        val nbt = stack.nbt!!
-        nbt.putString("sf_tool_type", type.id.toString())
-        nbt.put("sf_head", head.write())
-        nbt.put("sf_binding", binding.write())
-        nbt.put("sf_handle", handle.write())
+}
+object ToolInstSerializer : NbtSerializer<ToolInst> {
+    override fun serialize(target: ToolInst): NbtCompound {
+        val nbt = NbtCompound()
+        nbt.putString("sf_tool_type", target.type.id.toString())
+        nbt.put("sf_head", ToolPartInstSerializer.serialize(target.head))
+        nbt.put("sf_binding", ToolPartInstSerializer.serialize(target.binding))
+        nbt.put("sf_handle", ToolPartInstSerializer.serialize(target.handle))
+        return nbt
     }
-    companion object {
-        fun fromRaw(stack: ItemStack, type: Identifier, headMaterial: Identifier, bindingMaterial: Identifier, handleMaterial: Identifier): ToolInst {
-            val toolType = ToolTypes.TOOL_TYPES_REGISTRY.get(type)
-            val hm = Materials.MATERIAL_REGISTRY.get(headMaterial)
-            val bm = Materials.MATERIAL_REGISTRY.get(bindingMaterial)
-            val ham = Materials.MATERIAL_REGISTRY.get(handleMaterial)
 
-            val recipe = ToolRecipes.TOOL_RECIPES_REGISTRY.get(type)
-            val headPart = ToolParts.TOOL_PARTS_REGISTRY.get(recipe?.head)
-            val bindingPart = ToolParts.TOOL_PARTS_REGISTRY.get(recipe?.binding)
-            val handlePart = ToolParts.TOOL_PARTS_REGISTRY.get(recipe?.handle)
-
-            toolType!!
-            val headInst = ToolPartInst(PartPosition.HEAD, headPart!!, toolType, hm!!, 255u, 255)
-            val bindingInst = ToolPartInst(PartPosition.BINDING, bindingPart!!, toolType, bm!!, 255u, 255)
-            val handleInst = ToolPartInst(PartPosition.HANDLE, handlePart!!, toolType, ham!!, 255u, 255)
-
-            return ToolInst(stack, toolType, headInst, bindingInst, handleInst)
-        }
-        fun fromNbt(stack: ItemStack): ToolInst {
-            return fromRaw(
-                stack,
-                Identifier(stack.nbt?.getString("sf_tool_type")),
-                Identifier(stack.nbt?.getCompound("sf_head")?.getString("material")),
-                Identifier(stack.nbt?.getCompound("sf_binding")?.getString("material")),
-                Identifier(stack.nbt?.getCompound("sf_handle")?.getString("material"))
-            )
-        }
+    override fun deserialize(nbt: NbtCompound): ToolInst {
+        val type = ToolTypes.TOOL_TYPES_REGISTRY.get(Identifier(nbt.getString("sf_tool_type"))) ?: ToolTypes.SHORTSWORD
+        val head = ToolPartInstSerializer.deserialize(nbt.getCompound("sf_head"))
+        val binding = ToolPartInstSerializer.deserialize(nbt.getCompound("sf_binding"))
+        val handle = ToolPartInstSerializer.deserialize(nbt.getCompound("sf_handle"))
+        return ToolInst(SoulforgedItems.TOOL.defaultStack, type, head, binding, handle)
     }
+
 }

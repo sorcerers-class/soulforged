@@ -2,36 +2,29 @@ package studio.soulforged.soulforged.item.tool.part
 
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.util.Identifier
-import studio.soulforged.soulforged.item.tool.ToolType
-import studio.soulforged.soulforged.item.tool.ToolTypes
 import studio.soulforged.soulforged.material.Material
 import studio.soulforged.soulforged.material.Materials
+import studio.soulforged.soulforged.util.NbtSerializer
 
-class ToolPartInst(val pos: PartPosition, val part: ToolPart, val type: ToolType, val mat: Material, var durability: UInt, val maxDurability: Int) {
-    fun write(): NbtCompound {
+class ToolPartInst(val part: ToolPart, val mat: Material, var durability: Int, val maxDurability: Int) {
+    constructor(toolPart: ToolPart, mat: Material) : this(toolPart, mat, mat.durability, mat.durability)
+}
+object ToolPartInstSerializer : NbtSerializer<ToolPartInst> {
+    override fun serialize(target: ToolPartInst): NbtCompound {
         val nbt = NbtCompound()
-        nbt.putInt("max_durability", maxDurability)
-        nbt.putString("material", mat.id.toString())
-        nbt.putString("type", part.id.toString())
-        nbt.putInt("durability", durability.toInt())
+        nbt.putString("part", target.part.id.toString())
+        nbt.putString("material", target.mat.id.toString())
+        nbt.putInt("durability", target.durability)
+        nbt.putInt("max_durability", target.maxDurability)
         return nbt
     }
-    fun decDurability() {
-        durability -= 1u
+
+    override fun deserialize(nbt: NbtCompound): ToolPartInst {
+        val part = ToolParts.TOOL_PARTS_REGISTRY.get(Identifier(nbt.getString("part"))) ?: ToolParts.BINDING
+        val mat = Materials.MATERIAL_REGISTRY.get(Identifier(nbt.getString("material"))) ?: Materials.WOOD
+        val durability = nbt.getInt("durability")
+        val maxDurability = nbt.getInt("max_durability")
+        return ToolPartInst(part, mat, durability, maxDurability)
     }
-    companion object {
-        fun fromNbt(pos: PartPosition, nbt: NbtCompound): ToolPartInst? {
-            val type = ToolTypes.TOOL_TYPES_REGISTRY[Identifier.tryParse(nbt.getString("sf_tool_type"))]
-            val partNbt = nbt.getCompound(String.format("sf_%s", pos.toString().lowercase()))
-            val ptype = ToolParts.TOOL_PARTS_REGISTRY[Identifier.tryParse(partNbt.getString("type"))]
-            val material = Materials.MATERIAL_REGISTRY[Identifier.tryParse(partNbt.getString("material"))]
-            val durability = partNbt.getInt("damage").toUInt()
-            val maxDurability = partNbt.getInt("max_damage")
-            return if (ptype != null && type != null && material != null) {
-                ToolPartInst(pos, ptype, type, material, durability, maxDurability)
-            } else {
-                return null
-            }
-        }
-    }
+
 }
