@@ -6,7 +6,6 @@
   "mixins": [
     "common.CheckToolHarvestabilityImpl",
     "common.InteractPacketMixin",
-    ,
     "common.SetAttackSpeedMixin"
   ],
   "client": [
