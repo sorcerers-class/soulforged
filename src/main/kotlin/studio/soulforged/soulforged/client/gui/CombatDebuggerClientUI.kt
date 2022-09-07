@@ -7,11 +7,10 @@ import net.fabricmc.api.Environment
 import net.minecraft.client.MinecraftClient
 import net.minecraft.util.Identifier
 import studio.soulforged.soulforged.item.SoulforgedItems
+import studio.soulforged.soulforged.item.tool.ToolInstSerializer
 import studio.soulforged.soulforged.item.tool.ToolTypes
 import studio.soulforged.soulforged.item.tool.combat.AttackProperties
 import studio.soulforged.soulforged.item.tool.combat.CritTypes
-import studio.soulforged.soulforged.item.tool.part.ToolParts
-import studio.soulforged.soulforged.material.Materials
 import java.util.*
 import kotlin.math.abs
 import kotlin.math.pow
@@ -36,21 +35,17 @@ object CombatDebuggerClientUI {
         if(ImGuiRenderer.SCD_ENABLED) {
             val player = MinecraftClient.getInstance().player
             if (player != null) {
-                ImGui.setNextWindowSizeConstraints(-1f, -1f, 500f, 500f)
                 val stack = player.mainHandStack
                 if (stack.item == SoulforgedItems.TOOL) {
                     ImGui.begin("SCD v1 | Current Tool", ImGuiWindowFlags.AlwaysVerticalScrollbar)
                     ImGui.text(stack.name.string)
                     assert(stack.nbt != null)
-                    val nbt = stack.nbt
-                    val head = nbt!!.getCompound("sf_head")
-                    val binding = nbt.getCompound("sf_binding")
-                    val handle = nbt.getCompound("sf_handle")
-                    if (ImGui.button(String.format("Type: %s", nbt.getString("sf_tool_type")))) showToolTypeDropdown =
+                    val nbt = stack.nbt!!
+                    val tool = ToolInstSerializer.deserialize(nbt)
+                    if (ImGui.button(String.format("Type: %s", tool.type))) showToolTypeDropdown =
                         showToolTypeDropdown xor true
                     if (showToolTypeDropdown) {
-                        val type = ToolTypes.TOOL_TYPES_REGISTRY[Identifier(nbt.getString("sf_tool_type"))]!!
-                        val apDefault: AttackProperties = type.defaultAttack
+                        val apDefault: AttackProperties = tool.type.defaultAttack
                         ImGui.text("Default Attack:" +
                                     "\n\tPiercing Damage:" + apDefault.piercingDamage +
                                     "\n\tBlunt Damage:" + apDefault.bluntDamage +
@@ -60,7 +55,7 @@ object CombatDebuggerClientUI {
                                     "\n\tCategory:" + apDefault.category.toString().lowercase(Locale.getDefault()) +
                                     "\n\tCrit Type:" + apDefault.type.toString().lowercase(Locale.getDefault()),
                         )
-                        val apDc: AttackProperties? = type.dcAttack
+                        val apDc: AttackProperties? = tool.type.dcAttack
                         if(apDc != null) {
                             ImGui.text(
                                 "DC Attack:" +
@@ -73,7 +68,7 @@ object CombatDebuggerClientUI {
                                         "\n\tCrit Type:" + apDc.type.toString().lowercase(Locale.getDefault()),
                             )
                         }
-                        val apHc: AttackProperties? = type.hcAttack
+                        val apHc: AttackProperties? = tool.type.hcAttack
                         if(apHc != null) {
                             ImGui.text(
                                 "HC Attack:" +
@@ -88,10 +83,10 @@ object CombatDebuggerClientUI {
                         }
                     }
                     ImGui.text("Materials:")
-                    if (ImGui.button(String.format("Head: %s", head.getString("material")))) showHeadMaterialDropdown =
+                    if (ImGui.button(String.format("Head: %s", tool.head.mat.name))) showHeadMaterialDropdown =
                         showHeadMaterialDropdown xor true
                     if (showHeadMaterialDropdown) {
-                        val headMat = Materials.MATERIAL_REGISTRY[Identifier(head.getString("material"))]!!
+                        val headMat = tool.head.mat
                         ImGui.text(
                                 "\tHardness:" + headMat.hardness +
                                 "\n\tEdgeholding:" + headMat.edgeholding +
@@ -107,11 +102,11 @@ object CombatDebuggerClientUI {
                         )
                     }
                     if (ImGui.button(
-                                "Binding:" + binding.getString("material")
+                                "Binding:" + tool.binding.mat.name
                         )
                     ) showBindingMaterialDropdown = showBindingMaterialDropdown xor true
                     if (showBindingMaterialDropdown) {
-                        val bindingMat = Materials.MATERIAL_REGISTRY[Identifier(binding.getString("material"))]!!
+                        val bindingMat = tool.binding.mat
                         ImGui.text(
                             "\tHardness:" + bindingMat.hardness +
                                     "\n\tEdgeholding:" + bindingMat.edgeholding +
@@ -129,12 +124,12 @@ object CombatDebuggerClientUI {
                     if (ImGui.button(
                             String.format(
                                 "Handle: %s",
-                                handle.getString("material")
+                                tool.handle.mat
                             )
                         )
                     ) showHandleMaterialDropdown = showHandleMaterialDropdown xor true
                     if (showHandleMaterialDropdown) {
-                        val handleMat = Materials.MATERIAL_REGISTRY[Identifier(handle.getString("material"))]!!
+                        val handleMat = tool.handle.mat
                         ImGui.text(
                             "\tHardness:" + handleMat.hardness +
                                     "\n\tEdgeholding:" + handleMat.edgeholding +
@@ -150,28 +145,28 @@ object CombatDebuggerClientUI {
                         )
                     }
                     ImGui.text("Part Types:")
-                    if (ImGui.button(String.format("Head: %s", head.getString("type")))) showHeadTypeDropdown =
+                    if (ImGui.button(String.format("Head: %s", tool.head.part.name))) showHeadTypeDropdown =
                         showHeadTypeDropdown xor true
                     if (showHeadTypeDropdown) {
-                        val headPart = ToolParts.TOOL_PARTS_REGISTRY[Identifier(head.getString("type"))]!!
+                        val headPart = tool.head.part
                         ImGui.text(
                             "\n\tWeight:" + headPart.weight +
                             "\n\tDurability:" + headPart.durability
                         )
                     }
-                    if (ImGui.button(String.format("Binding: %s", binding.getString("type")))) showBindingTypeDropdown =
+                    if (ImGui.button(String.format("Binding: %s", tool.binding.part.name))) showBindingTypeDropdown =
                         showBindingTypeDropdown xor true
                     if (showBindingTypeDropdown) {
-                        val bindingPart = ToolParts.TOOL_PARTS_REGISTRY[Identifier(binding.getString("type"))]!!
+                        val bindingPart = tool.binding.part
                         ImGui.text(
                             "\n\tWeight:" + bindingPart.weight +
                                     "\n\tDurability:" + bindingPart.durability
                         )
                     }
-                    if (ImGui.button(String.format("Handle: %s", handle.getString("type")))) showHandleTypeDropdown =
+                    if (ImGui.button(String.format("Handle: %s", tool.handle.part.name))) showHandleTypeDropdown =
                         showHandleTypeDropdown xor true
                     if (showHandleTypeDropdown) {
-                        val handlePart = ToolParts.TOOL_PARTS_REGISTRY[Identifier(handle.getString("type"))]!!
+                        val handlePart = tool.handle.part
                         ImGui.text(
                             "\n\tWeight:" + handlePart.weight +
                                     "\n\tDurability:" + handlePart.durability
@@ -188,40 +183,20 @@ object CombatDebuggerClientUI {
                         )
                     )
                     if (ImGui.button("Damage calc: ")) showDamageCalcDropdown = showDamageCalcDropdown xor true
-                    //if (Arrays.stream(getDurabilities(stack))
-                    //        .anyMatch { i: Int -> i == 0 }
-                    //) ImGui.text("Broken tool will have 0 damage!")
-                    val phead =
-                        ToolParts.TOOL_PARTS_REGISTRY[Identifier.tryParse(nbt.getCompound("sf_head").getString("type"))]
-                    val pbinding = ToolParts.TOOL_PARTS_REGISTRY[Identifier.tryParse(
-                        nbt.getCompound("sf_binding").getString("type")
-                    )]
-                    val phandle =
-                        ToolParts.TOOL_PARTS_REGISTRY[Identifier.tryParse(nbt.getCompound("sf_handle").getString("type"))]
-                    val mhead = Materials.MATERIAL_REGISTRY[Identifier.tryParse(
-                        nbt.getCompound("sf_head").getString("material")
-                    )]
-                    val mbinding = Materials.MATERIAL_REGISTRY[Identifier.tryParse(
-                        nbt.getCompound("sf_binding").getString("material")
-                    )]
-                    val mhandle = Materials.MATERIAL_REGISTRY[Identifier.tryParse(
-                        nbt.getCompound("sf_handle").getString("material")
-                    )]
-                    assert(mhead != null)
-                    val headEdgeholding: Double = mhead?.edgeholding!!
-                    val headHardness: Double = mhead.hardness
+                    if (tool.shouldBreak()) ImGui.text("Broken tool will have 0 damage!")
+                    val headEdgeholding: Double = tool.head.mat.edgeholding
+                    val headHardness: Double = tool.head.mat.hardness
                     val type = ToolTypes.TOOL_TYPES_REGISTRY[Identifier.tryParse(nbt.getString("sf_tool_type"))]!!
                     var ap: AttackProperties = type.defaultAttack
                     if (showDcAttackCalc) ap = type.dcAttack ?: type.defaultAttack else if (showHcAttackCalc) ap =
                         type.hcAttack ?: type.defaultAttack
                     val piercingDamage: Double = ap.piercingDamage
                     val totalPiercingDamage = (headEdgeholding + headHardness * 0.75) / 2 * piercingDamage
-                    assert(phead != null)
-                    val headWeight: Double = phead?.weight!! * mhead.density
+                    val headWeight: Double = tool.head.part.weight * tool.head.mat.density
                     val bindingWeight: Double =
-                        pbinding?.weight!! * mbinding?.density!!
+                        tool.binding.part.weight * tool.binding.mat.density
                     val handleWeight: Double =
-                        phandle?.weight!! * mhandle?.density!!
+                        tool.handle.part.weight * tool.handle.mat.density
                     val effectiveWeight = headWeight + bindingWeight + 0.25 * handleWeight
                     val totalBluntDamage: Double =
                         (effectiveWeight / 100 + headHardness * 0.25) * ap.bluntDamage * 0.8

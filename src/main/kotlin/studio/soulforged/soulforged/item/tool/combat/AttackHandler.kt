@@ -2,7 +2,6 @@ package studio.soulforged.soulforged.item.tool.combat
 
 import net.minecraft.entity.Entity
 import net.minecraft.entity.LivingEntity
-import net.minecraft.entity.damage.DamageSource
 import net.minecraft.network.PacketByteBuf
 import net.minecraft.server.network.ServerPlayerEntity
 import studio.soulforged.soulforged.client.gui.CombatDebuggerClientUI
@@ -17,7 +16,6 @@ class AttackHandler(private val client: ServerPlayerEntity) {
     private val attackCooldown: Float
     private var target: Entity? = null
     private val packets = Vector<Int>()
-
     init {
         addPacket(1)
         attackCooldown = client.getAttackCooldownProgress(0.0f)
@@ -33,14 +31,13 @@ class AttackHandler(private val client: ServerPlayerEntity) {
 
     fun addPacket(action: Int) {
         packets.add(action)
+        val tool = ToolInstSerializer.deserialize(client.mainHandStack.nbt!!)
+        lastAttackDamage = tool.baseAttackDamage(tool.attackProperties(packets.size)).toFloat()
     }
 
     private fun onFinish() {
         if (target != null) {
-            val tool = ToolInstSerializer.deserialize(client.mainHandStack.nbt!!)
-            target!!.damage(
-                DamageSource.player(client), tool.baseAttackDamage(tool.attackProperties(packets.size)).toFloat()
-            )
+
             CombatDebuggerClientUI.attackType = packets.size
             client.mainHandStack.postHit(target as LivingEntity?, client)
         }
@@ -51,6 +48,8 @@ class AttackHandler(private val client: ServerPlayerEntity) {
     }
 
     companion object {
+        var lastAttackDamage: Float = 0.0f
+
         @JvmField
         var attackHandlers = ConcurrentHashMap<UUID, AttackHandler>()
         @JvmStatic

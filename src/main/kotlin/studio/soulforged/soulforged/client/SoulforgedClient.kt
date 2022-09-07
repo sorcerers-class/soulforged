@@ -28,7 +28,6 @@ class SoulforgedClient : ClientModInitializer {
                 ImGuiRenderer.SCD_ENABLED = !ImGuiRenderer.SCD_ENABLED
             }
         }
-        ImGuiRenderer() // Create the ImGUI renderer instance.
     }
     companion object {
         val LOGGER: Logger = LogManager.getLogger("SoulforgedClient")

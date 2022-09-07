@@ -24,17 +24,15 @@ object RightClickEventProcessors {
             val blockPos = ctx?.blockPos
             val playerEntity = ctx?.player
             val blockState = world?.getBlockState(blockPos)
-            val tryStripLog = Optional.of(
-                AxeItemAccessor.getStrippedBlocks()[blockState?.block]!!.defaultState
-            )
+            val tryStripLog = AxeItemAccessor.getStrippedBlocks()[blockState?.block]?.defaultState
             val tryDecreaseOxidation = Oxidizable.getDecreasedOxidationState(blockState)
             val tryUnwax = Optional.ofNullable(HoneycombItem.WAXED_TO_UNWAXED_BLOCKS.get()[blockState?.block])
                 .map { block: Block -> block.getStateWithProperties(blockState) }
             val itemStack = ctx?.stack
             var actionExecuted = Optional.empty<BlockState>()
-            if (tryStripLog.isPresent) {
+            if (tryStripLog != null) {
                 world?.playSound(playerEntity, blockPos, SoundEvents.ITEM_AXE_STRIP, SoundCategory.BLOCKS, 1.0f, 1.0f)
-                actionExecuted = tryStripLog
+                actionExecuted = Optional.of(tryStripLog)
             } else if (tryDecreaseOxidation.isPresent) {
                 world?.playSound(playerEntity, blockPos, SoundEvents.ITEM_AXE_SCRAPE, SoundCategory.BLOCKS, 1.0f, 1.0f)
                 world?.syncWorldEvent(playerEntity, WorldEvents.BLOCK_SCRAPED, blockPos, 0)
