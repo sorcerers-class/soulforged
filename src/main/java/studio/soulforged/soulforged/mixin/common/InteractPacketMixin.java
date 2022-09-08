@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import studio.soulforged.soulforged.item.SoulforgedItems;
-import studio.soulforged.soulforged.item.tool.combat.AttackHandler;
 
 @Mixin(ServerPlayNetworkHandler.class)
 public class InteractPacketMixin {
@@ -21,7 +20,6 @@ public class InteractPacketMixin {
         if(this.player != null) {
             if(this.player.getMainHandStack() != null) {
                 if(this.player.getMainHandStack().getItem() == SoulforgedItems.INSTANCE.getTOOL()) {
-                    AttackHandler.attackHandlers.get(this.player.getUuid()).setTarget(packet.getEntity(this.player.getWorld()));
                     ci.cancel();
                 }
             }

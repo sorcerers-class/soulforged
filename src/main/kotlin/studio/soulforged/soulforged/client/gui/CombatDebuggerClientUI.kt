@@ -42,7 +42,7 @@ object CombatDebuggerClientUI {
                     assert(stack.nbt != null)
                     val nbt = stack.nbt!!
                     val tool = ToolInstSerializer.deserialize(nbt)
-                    if (ImGui.button(String.format("Type: %s", tool.type))) showToolTypeDropdown =
+                    if (ImGui.button(String.format("Type: %s", tool.type.name))) showToolTypeDropdown =
                         showToolTypeDropdown xor true
                     if (showToolTypeDropdown) {
                         val apDefault: AttackProperties = tool.type.defaultAttack
@@ -124,7 +124,7 @@ object CombatDebuggerClientUI {
                     if (ImGui.button(
                             String.format(
                                 "Handle: %s",
-                                tool.handle.mat
+                                tool.handle.mat.name
                             )
                         )
                     ) showHandleMaterialDropdown = showHandleMaterialDropdown xor true
@@ -173,7 +173,6 @@ object CombatDebuggerClientUI {
                         )
                     }
                     ImGui.end()
-                    ImGui.setNextWindowSizeConstraints(-1.0f, -1.0f, 500.0f, 500f)
                     ImGui.begin("SCD v1 | Melee", ImGuiWindowFlags.AlwaysHorizontalScrollbar)
                     ImGui.text(String.format("Attack cooldown: %f", player.getAttackCooldownProgress(0.0f)))
                     ImGui.text(

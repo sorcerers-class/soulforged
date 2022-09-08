@@ -4,7 +4,6 @@ import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.minecraft.block.BlockState
 import net.minecraft.client.item.TooltipContext
-import net.minecraft.entity.Entity
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.Item
@@ -20,7 +19,6 @@ import net.minecraft.util.Rarity
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import org.quiltmc.qsl.item.setting.api.QuiltItemSettings
-import studio.soulforged.soulforged.item.tool.combat.AttackHandler
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -33,12 +31,6 @@ class ToolItem : Item(
 ) {
     override fun getEnchantability(): Int {
         return -1
-    }
-
-    override fun inventoryTick(stack: ItemStack, world: World, entity: Entity, slot: Int, selected: Boolean) {
-        for (ah in AttackHandler.attackHandlers.values) {
-            ah.tick()
-        }
     }
 
     private fun breakTool(user: PlayerEntity) {
