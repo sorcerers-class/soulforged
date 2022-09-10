@@ -7,7 +7,6 @@ import studio.soulforged.soulforged.item.SoulforgedItems
 import studio.soulforged.soulforged.item.tool.combat.AttackProperties
 import studio.soulforged.soulforged.item.tool.part.PartPosition
 import studio.soulforged.soulforged.item.tool.part.ToolPartInst
-import studio.soulforged.soulforged.item.tool.part.ToolPartInstSerializer
 import studio.soulforged.soulforged.item.tool.part.ToolParts
 import studio.soulforged.soulforged.material.Materials
 import studio.soulforged.soulforged.util.NbtSerializer
@@ -138,23 +137,23 @@ class ToolInst(val stack: ItemStack, val type: ToolType, val head: ToolPartInst,
             type.dcAttack ?: type.defaultAttack
         }
     }
-}
-object ToolInstSerializer : NbtSerializer<ToolInst> {
-    override fun serialize(target: ToolInst): NbtCompound {
-        val nbt = NbtCompound()
-        nbt.putString("sf_tool_type", target.type.id.toString())
-        nbt.put("sf_head", ToolPartInstSerializer.serialize(target.head))
-        nbt.put("sf_binding", ToolPartInstSerializer.serialize(target.binding))
-        nbt.put("sf_handle", ToolPartInstSerializer.serialize(target.handle))
-        return nbt
-    }
+    object ToolInstSerializer : NbtSerializer<ToolInst> {
+        override fun serialize(target: ToolInst): NbtCompound {
+            val nbt = NbtCompound()
+            nbt.putString("sf_tool_type", target.type.id.toString())
+            nbt.put("sf_head", ToolPartInst.ToolPartInstSerializer.serialize(target.head))
+            nbt.put("sf_binding", ToolPartInst.ToolPartInstSerializer.serialize(target.binding))
+            nbt.put("sf_handle", ToolPartInst.ToolPartInstSerializer.serialize(target.handle))
+            return nbt
+        }
 
-    override fun deserialize(nbt: NbtCompound): ToolInst {
-        val type = ToolTypes.TOOL_TYPES_REGISTRY.get(Identifier(nbt.getString("sf_tool_type"))) ?: ToolTypes.SHORTSWORD
-        val head = ToolPartInstSerializer.deserialize(nbt.getCompound("sf_head"))
-        val binding = ToolPartInstSerializer.deserialize(nbt.getCompound("sf_binding"))
-        val handle = ToolPartInstSerializer.deserialize(nbt.getCompound("sf_handle"))
-        return ToolInst(SoulforgedItems.TOOL.defaultStack, type, head, binding, handle)
-    }
+        override fun deserialize(nbt: NbtCompound): ToolInst {
+            val type = ToolTypes.TOOL_TYPES_REGISTRY.get(Identifier(nbt.getString("sf_tool_type"))) ?: ToolTypes.SHORTSWORD
+            val head = ToolPartInst.ToolPartInstSerializer.deserialize(nbt.getCompound("sf_head"))
+            val binding = ToolPartInst.ToolPartInstSerializer.deserialize(nbt.getCompound("sf_binding"))
+            val handle = ToolPartInst.ToolPartInstSerializer.deserialize(nbt.getCompound("sf_handle"))
+            return ToolInst(SoulforgedItems.TOOL.defaultStack, type, head, binding, handle)
+        }
 
+    }
 }

@@ -12,7 +12,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import studio.soulforged.soulforged.item.SoulforgedItems;
 import studio.soulforged.soulforged.item.tool.ToolInst;
-import studio.soulforged.soulforged.item.tool.ToolInstSerializer;
 
 @Mixin(PlayerEntity.class)
 public abstract class SetAttackSpeedMixin extends LivingEntity {
@@ -25,7 +24,7 @@ public abstract class SetAttackSpeedMixin extends LivingEntity {
         ItemStack stack = this.getMainHandStack();
         if(stack.getItem() == SoulforgedItems.INSTANCE.getTOOL()) {
             assert stack.getNbt() != null;
-            ToolInst tool = ToolInstSerializer.INSTANCE.deserialize(stack.getNbt());
+            ToolInst tool = ToolInst.ToolInstSerializer.INSTANCE.deserialize(stack.getNbt());
             cir.setReturnValue((float) ((this.getAttributeValue(EntityAttributes.GENERIC_ATTACK_SPEED) / 4.0f) / tool.baseAttackSpeed(tool.attackProperties(2)) * 20.0f));
         }
     }

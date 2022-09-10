@@ -11,7 +11,8 @@
   "client": [
     "client.ClientDebuggerMixin",
     "client.ItemModelGeneratorInvoker",
-    "client.MouseMixin"
+    "client.MouseMixin",
+    "client.PreventUnchargedAttackMixin"
   ],
   "injectors": {
     "defaultRequire": 1

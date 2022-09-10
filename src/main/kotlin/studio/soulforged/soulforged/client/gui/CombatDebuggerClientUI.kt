@@ -7,7 +7,7 @@ import net.fabricmc.api.Environment
 import net.minecraft.client.MinecraftClient
 import net.minecraft.util.Identifier
 import studio.soulforged.soulforged.item.SoulforgedItems
-import studio.soulforged.soulforged.item.tool.ToolInstSerializer
+import studio.soulforged.soulforged.item.tool.ToolInst
 import studio.soulforged.soulforged.item.tool.ToolTypes
 import studio.soulforged.soulforged.item.tool.combat.AttackProperties
 import studio.soulforged.soulforged.item.tool.combat.CritTypes
@@ -41,7 +41,7 @@ object CombatDebuggerClientUI {
                     ImGui.text(stack.name.string)
                     assert(stack.nbt != null)
                     val nbt = stack.nbt!!
-                    val tool = ToolInstSerializer.deserialize(nbt)
+                    val tool = ToolInst.ToolInstSerializer.deserialize(nbt)
                     if (ImGui.button(String.format("Type: %s", tool.type.name))) showToolTypeDropdown =
                         showToolTypeDropdown xor true
                     if (showToolTypeDropdown) {

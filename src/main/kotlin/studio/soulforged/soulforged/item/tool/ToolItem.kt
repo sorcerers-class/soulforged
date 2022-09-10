@@ -38,31 +38,31 @@ class ToolItem : Item(
     }
 
     override fun postHit(stack: ItemStack, target: LivingEntity, attacker: LivingEntity): Boolean {
-        val tool = ToolInstSerializer.deserialize(stack.nbt!!)
+        val tool = ToolInst.ToolInstSerializer.deserialize(stack.nbt!!)
         tool.damage(target.world.random)
         if (tool.shouldBreak()) breakTool(attacker as PlayerEntity)
-        stack.nbt = ToolInstSerializer.serialize(tool)
+        stack.nbt = ToolInst.ToolInstSerializer.serialize(tool)
         stack.damage = tool.getDisplayDurability().toInt()
         return true
     }
 
     override fun getMiningSpeedMultiplier(stack: ItemStack, state: BlockState): Float {
-        val tool = ToolInstSerializer.deserialize(stack.nbt!!)
+        val tool = ToolInst.ToolInstSerializer.deserialize(stack.nbt!!)
         val msp = tool.type.miningSpeedProcessor
         return msp.getMiningSpeed(state, tool.head.mat)
     }
 
     override fun postMine(stack: ItemStack, world: World, state: BlockState, pos: BlockPos, miner: LivingEntity): Boolean {
-        val tool = ToolInstSerializer.deserialize(stack.nbt!!)
+        val tool = ToolInst.ToolInstSerializer.deserialize(stack.nbt!!)
         tool.damage(world.random)
         if(tool.shouldBreak()) breakTool(miner as PlayerEntity)
-        stack.nbt = ToolInstSerializer.serialize(tool)
+        stack.nbt = ToolInst.ToolInstSerializer.serialize(tool)
         stack.damage = tool.getDisplayDurability().toInt()
         return true
     }
 
     override fun canMine(state: BlockState, world: World, pos: BlockPos, miner: PlayerEntity): Boolean {
-        val tool = ToolInstSerializer.deserialize(miner.mainHandStack.nbt!!)
+        val tool = ToolInst.ToolInstSerializer.deserialize(miner.mainHandStack.nbt!!)
         return !tool.shouldBreak()
     }
 
@@ -71,13 +71,13 @@ class ToolItem : Item(
     }
 
     override fun useOnBlock(context: ItemUsageContext): ActionResult {
-        val tool = ToolInstSerializer.deserialize(context.stack.nbt!!)
+        val tool = ToolInst.ToolInstSerializer.deserialize(context.stack.nbt!!)
         if (tool.shouldBreak()) return ActionResult.FAIL
         val rcep = tool.type.rightClickEventProcessor
         val result = rcep.onRightClick(context)!!
         if(result == ActionResult.SUCCESS) {
             tool.damage(context.world.random)
-            context.stack.nbt = ToolInstSerializer.serialize(tool)
+            context.stack.nbt = ToolInst.ToolInstSerializer.serialize(tool)
             context.stack.damage = tool.getDisplayDurability().toInt()
         }
         return result
@@ -85,7 +85,7 @@ class ToolItem : Item(
 
     @Environment(EnvType.CLIENT)
     override fun appendTooltip(stack: ItemStack, world: World?, tooltip: MutableList<Text>, context: TooltipContext) {
-        val tool = ToolInstSerializer.deserialize(stack.nbt!!)
+        val tool = ToolInst.ToolInstSerializer.deserialize(stack.nbt!!)
         val headMaterial = TranslatableText(tool.head.mat.name)
         val headType = tool.head.part.name
         val bindingMaterial = TranslatableText(tool.binding.mat.name)
@@ -197,7 +197,7 @@ class ToolItem : Item(
 
     @Environment(EnvType.CLIENT)
     override fun getName(stack: ItemStack): Text {
-        val tool = ToolInstSerializer.deserialize(stack.nbt!!)
+        val tool = ToolInst.ToolInstSerializer.deserialize(stack.nbt!!)
         return TranslatableText(
             tool.type.name, TranslatableText(tool.head.mat.name)
         )

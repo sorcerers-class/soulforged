@@ -11,7 +11,6 @@ import net.minecraft.text.TranslatableText
 import net.minecraft.util.Identifier
 import studio.soulforged.soulforged.item.SoulforgedItems
 import studio.soulforged.soulforged.item.tool.ToolInst
-import studio.soulforged.soulforged.item.tool.ToolInstSerializer
 
 object GiveToolCommand {
     fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
@@ -53,7 +52,7 @@ object GiveToolCommand {
             val stack = SoulforgedItems.TOOL.defaultStack
             val tool = ToolInst(type, head, binding, handle)
             tool.setDurability(tool.head.maxDurability, tool.binding.maxDurability, tool.handle.maxDurability)
-            stack.nbt = ToolInstSerializer.serialize(tool)
+            stack.nbt = ToolInst.ToolInstSerializer.serialize(tool)
             target.giveItemStack(stack)
             source.sendFeedback(
                 TranslatableText(
