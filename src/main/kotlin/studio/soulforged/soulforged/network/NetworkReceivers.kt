@@ -6,11 +6,14 @@ import net.minecraft.server.network.ServerPlayNetworkHandler
 import net.minecraft.server.network.ServerPlayerEntity
 import org.quiltmc.qsl.networking.api.PacketSender
 import org.quiltmc.qsl.networking.api.ServerPlayNetworking
+import studio.soulforged.soulforged.item.tool.combat.AttackQueueHolder
 
 object NetworkReceivers {
     fun register() {
         ServerPlayNetworking.registerGlobalReceiver(NetworkIdentifiers.MOUSE_PACKET) { _: MinecraftServer?, client: ServerPlayerEntity?, _: ServerPlayNetworkHandler?, buf: PacketByteBuf?, _: PacketSender? ->
-
+            buf?.readInt()
+            buf?.readInt()
+            (client as AttackQueueHolder).queue.addClickPacket()
         }
     }
 }

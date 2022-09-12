@@ -123,7 +123,7 @@ class ToolItem : Item(
                 .append(
                     TranslatableText(
                         "item.soulforged.tool.tooltip.speed",
-                        (tool.baseAttackSpeed(tool.attackProperties(2)) * 100.0).roundToInt() / 100.0
+                        (tool.baseAttackSpeed(tool.attackProperties(1)) * 100.0).roundToInt() / 100.0
                     ).formatted(
                         Formatting.GREEN, Formatting.BOLD
                     )
@@ -132,7 +132,7 @@ class ToolItem : Item(
                 .append(
                     TranslatableText(
                         "item.soulforged.tool.tooltip.attack",
-                        (tool.baseAttackDamage(tool.attackProperties(2)) * 100.0).roundToInt() / 100.0
+                        (tool.baseAttackDamage(tool.attackProperties(1)) * 100.0).roundToInt() / 100.0
                     ).formatted(
                         Formatting.RED, Formatting.BOLD
                     )

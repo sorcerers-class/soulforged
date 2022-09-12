@@ -1,6 +1,7 @@
 package studio.soulforged.soulforged.item.tool
 
 import net.minecraft.util.Identifier
+import studio.soulforged.soulforged.item.tool.combat.AttackHandler
 import studio.soulforged.soulforged.item.tool.combat.AttackProperties
 import studio.soulforged.soulforged.item.tool.part.ToolPart
 
@@ -14,8 +15,9 @@ data class ToolType(
     val defaultAttack: AttackProperties,
     val hcAttack: AttackProperties?,
     val dcAttack: AttackProperties?,
-    val miningSpeedProcessor: MiningSpeedProcessor,
-    val rightClickEventProcessor: RightClickEventProcessor,
+    val miningSpeedProcessor: MiningSpeedProcessor.MiningSpeedProcessor,
+    val rightClickEventProcessor: RightClickEventProcessor.RightClickEventProcessor,
+    val attackHandler: AttackHandler,
     val parts: Array<ToolPart>
 ) {
     override fun equals(other: Any?): Boolean {
@@ -42,10 +44,9 @@ data class ToolType(
         result = 31 * result + defaultAttack.hashCode()
         result = 31 * result + (hcAttack?.hashCode() ?: 0)
         result = 31 * result + (dcAttack?.hashCode() ?: 0)
-        result = 31 * result + (miningSpeedProcessor?.hashCode() ?: 0)
-        result = 31 * result + (rightClickEventProcessor?.hashCode() ?: 0)
+        result = 31 * result + miningSpeedProcessor.hashCode()
+        result = 31 * result + rightClickEventProcessor.hashCode()
         result = 31 * result + parts.contentHashCode()
         return result
     }
 }
-

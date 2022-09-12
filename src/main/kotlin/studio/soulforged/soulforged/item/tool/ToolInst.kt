@@ -129,12 +129,10 @@ class ToolInst(val stack: ItemStack, val type: ToolType, val head: ToolPartInst,
      * @author Lilly Rosaline
      */
     fun attackProperties(attack: Int): AttackProperties {
-        return if(attack == 1) {
-            type.hcAttack ?: type.defaultAttack
-        } else if(attack == 2 || attack == 0) {
-            type.defaultAttack
-        } else {
-            type.dcAttack ?: type.defaultAttack
+        return when(attack) {
+            0 -> type.hcAttack ?: type.defaultAttack
+            1 -> type.defaultAttack
+            else -> type.dcAttack ?: type.defaultAttack
         }
     }
     object ToolInstSerializer : NbtSerializer<ToolInst> {
