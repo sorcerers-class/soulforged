@@ -28,7 +28,9 @@ object Materials {
             2,
             true,
             true,
-            null
+            null,
+            20,
+            20
         )
     )
     val STONE = register(
@@ -46,7 +48,9 @@ object Materials {
             4,
             true,
             false,
-            null
+            null,
+            10,
+            5
         )
     )
     val LEATHER = register(
@@ -64,7 +68,9 @@ object Materials {
             0,
             false,
             true,
-            null
+            null,
+            25,
+            10
         )
     )
     val FLINT = register(
@@ -82,7 +88,9 @@ object Materials {
             3,
             true,
             false,
-            null
+            null,
+            10,
+            10
         )
     )
     val BONE = register(
@@ -100,7 +108,9 @@ object Materials {
             1,
             true,
             true,
-            null
+            null,
+            25,
+            25
         )
     )
     val WOOL = register(
@@ -118,7 +128,9 @@ object Materials {
             0,
             false,
             true,
-            null
+            null,
+            25,
+            10
         )
     )
     val SCUTE = register(
@@ -136,7 +148,9 @@ object Materials {
             0,
             false,
             true,
-            null
+            null,
+            30,
+            30
         )
     )
     val SPIDER_WEAVE = register(
@@ -154,7 +168,9 @@ object Materials {
             0,
             false,
             true,
-            null
+            null,
+            20,
+            40
         )
     )
     val SLIME_WEAVE = register(
@@ -172,7 +188,9 @@ object Materials {
             0,
             false,
             true,
-            null
+            null,
+            10,
+            15
         )
     )
 
@@ -192,7 +210,9 @@ object Materials {
             6,
             true,
             true,
-            null
+            null,
+            30,
+            25
         )
     )
     val COPPER = register(
@@ -210,7 +230,9 @@ object Materials {
             5,
             true,
             true,
-            null
+            null,
+            30,
+            40
         )
     )
     val GOLD = register(
@@ -228,7 +250,9 @@ object Materials {
             12,
             true,
             true,
-            null
+            null,
+            100,
+            100
         )
     )
     val SILVER = register(
@@ -246,7 +270,9 @@ object Materials {
             10,
             true,
             true,
-            null
+            null,
+            45,
+            30
         )
     )
     val LEAD = register(
@@ -264,7 +290,9 @@ object Materials {
             6,
             true,
             true,
-            null
+            null,
+            4,
+            4
         )
     )
     val STEEL = register(
@@ -282,7 +310,9 @@ object Materials {
             7,
             true,
             true,
-            null
+            null,
+            10,
+            15
         )
     )
 
@@ -302,7 +332,9 @@ object Materials {
             5,
             true,
             false,
-            null
+            null,
+            30,
+            40
         )
     )
     val EMERALD = register(
@@ -320,7 +352,9 @@ object Materials {
             4,
             true,
             false,
-            null
+            null,
+            35,
+            20
         )
     )
     val DIAMOND = register(
@@ -338,7 +372,9 @@ object Materials {
             8,
             true,
             false,
-            null
+            null,
+            35,
+            45
         )
     )
     val OBSIDIAN = register(
@@ -356,7 +392,9 @@ object Materials {
             10,
             true,
             false,
-            null
+            null,
+            15,
+            10
         )
     )
 
@@ -376,7 +414,9 @@ object Materials {
             1,
             true,
             true,
-            null
+            null,
+            0,
+            0
         )
     )
     val ENDICITE = register(
@@ -394,7 +434,9 @@ object Materials {
             7,
             true,
             false,
-            null
+            null,
+            35,
+            30
         )
     )
     val MONSTER_LEATHER = register(
@@ -412,7 +454,9 @@ object Materials {
             0,
             false,
             true,
-            null
+            null,
+            26,
+            10
         )
     )
     val SCALES = register(
@@ -430,7 +474,9 @@ object Materials {
             0,
             false,
             true,
-            null
+            null,
+            10,
+            25
         )
     )
 
@@ -450,7 +496,9 @@ object Materials {
             7,
             true,
             false,
-            Classifiers.SAPPHIRE
+            Classifiers.SAPPHIRE,
+            15,
+            15
         )
     )
     val RUBY = register(
@@ -468,7 +516,9 @@ object Materials {
             7,
             true,
             false,
-            Classifiers.RUBY
+            Classifiers.RUBY,
+            15,
+            15
         )
     )
     val LOTUS_GEM = register(
@@ -486,7 +536,9 @@ object Materials {
             7,
             true,
             false,
-            Classifiers.LOTUS
+            Classifiers.LOTUS,
+            15,
+            15
         )
     )
     val STAR_GEM = register(
@@ -504,7 +556,9 @@ object Materials {
             7,
             true,
             false,
-            Classifiers.STAR
+            Classifiers.STAR,
+            15,
+            15
         )
     )
 
@@ -524,7 +578,9 @@ object Materials {
             7,
             true,
             true,
-            null
+            null,
+            30,
+            20
         )
     )
     val NETHERITE = register(
@@ -542,7 +598,9 @@ object Materials {
             9,
             true,
             true,
-            null
+            null,
+            40,
+            40
         )
     )
     val ALUMINIUM = register(
@@ -560,7 +618,9 @@ object Materials {
             5,
             true,
             true,
-            null
+            null,
+            32,
+            12
         )
     )
     val TITANIUM = register(
@@ -578,7 +638,9 @@ object Materials {
             11,
             true,
             true,
-            null
+            null,
+            35,
+            15
         )
     )
 
@@ -598,7 +660,9 @@ object Materials {
             9,
             true,
             true,
-            null
+            null,
+            5,
+            10
         )
     )
     val NETHERIUM = register(
@@ -616,7 +680,9 @@ object Materials {
             12,
             true,
             true,
-            null
+            null,
+            20,
+            10
         )
     )
     val NEUTRONIUM = register(
@@ -634,7 +700,9 @@ object Materials {
             14,
             true,
             true,
-            null
+            null,
+            45,
+            24
         )
     )
     val DIVINIUM = register(
@@ -652,7 +720,9 @@ object Materials {
             12,
             true,
             true,
-            null
+            null,
+            55,
+            45
         )
     )
     val STAR_METAL = register(
@@ -670,7 +740,9 @@ object Materials {
             10,
             true,
             true,
-            null
+            null,
+            30,
+            60
         )
     )
     val MERCURIUM = register(
@@ -688,7 +760,9 @@ object Materials {
             16,
             true,
             true,
-            null
+            null,
+            20,
+            30
         )
     )
     val ETERNICITE = register(
@@ -706,7 +780,9 @@ object Materials {
             8,
             true,
             false,
-            null
+            null,
+            40,
+            35
         )
     )
 

@@ -16,5 +16,7 @@ data class Material(
     val miningSpeed: Int,
     val canIntoTool: Boolean,
     val canIntoArmor: Boolean,
-    val classifier: Classifiers?
+    val classifier: Classifiers?,
+    val xpCapacity: Int,
+    val xpAbsorption: Int
 )
