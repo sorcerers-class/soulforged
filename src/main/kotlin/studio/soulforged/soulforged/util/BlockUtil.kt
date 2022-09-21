@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.tag.BlockTags
 import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
-import studio.soulforged.soulforged.item.tool.MiningSpeedProcessor
+import studio.soulforged.soulforged.item.tool.MiningSpeedProcessors
 import studio.soulforged.soulforged.item.tool.ToolTypes
 import studio.soulforged.soulforged.material.Materials
 import java.util.*
@@ -24,7 +24,7 @@ object BlockUtil {
                         ToolTypes.TOOL_TYPES_REGISTRY[Identifier(
                             tool.nbt!!.getString("sf_tool_type")
                         )]
-                    )?.miningSpeedProcessor === MiningSpeedProcessor.PICKAXE
+                    )?.miningSpeedProcessor === MiningSpeedProcessors.PICKAXE
                 ) {
                     level >= MiningLevelManager.getRequiredMiningLevel(state)
                 } else false

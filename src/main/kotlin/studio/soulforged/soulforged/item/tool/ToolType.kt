@@ -15,8 +15,8 @@ data class ToolType(
     val defaultAttack: AttackProperties,
     val hcAttack: AttackProperties?,
     val dcAttack: AttackProperties?,
-    val miningSpeedProcessor: MiningSpeedProcessor.MiningSpeedProcessor,
-    val rightClickEventProcessor: RightClickEventProcessor.RightClickEventProcessor,
+    val miningSpeedProcessor: MiningSpeedProcessor,
+    val rightClickEventProcessor: RightClickEventProcessor,
     val attackHandler: AttackHandler,
     val parts: Array<ToolPart>
 ) {
