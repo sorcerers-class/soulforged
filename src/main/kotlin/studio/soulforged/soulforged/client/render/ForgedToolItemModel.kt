@@ -1,9 +1,6 @@
 package studio.soulforged.soulforged.client.render
 
 import com.mojang.datafixers.util.Either
-import com.mojang.datafixers.util.Pair
-import net.fabricmc.api.EnvType
-import net.fabricmc.api.Environment
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext
 import net.minecraft.block.BlockState
@@ -20,7 +17,9 @@ import net.minecraft.screen.PlayerScreenHandler
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
+import net.minecraft.util.random.RandomGenerator
 import net.minecraft.world.BlockRenderView
+import org.quiltmc.loader.api.minecraft.ClientOnly
 import studio.soulforged.soulforged.client.SoulforgedClient
 import studio.soulforged.soulforged.item.tool.ToolTypes
 import studio.soulforged.soulforged.material.Materials
@@ -36,8 +35,8 @@ class ForgedToolItemModel : UnbakedModel, BakedModel, FabricBakedModel {
         HEAD, BINDING, HANDLE
     }
 
-    @Environment(EnvType.CLIENT)
-    override fun emitItemQuads(stack: ItemStack, randomSupplier: Supplier<Random>, context: RenderContext) {
+    @ClientOnly
+    override fun emitItemQuads(stack: ItemStack, randomSupplier: Supplier<RandomGenerator>, context: RenderContext) {
         val nbt = stack.nbt!!
 
         val type = Identifier(nbt.getString("sf_tool_type")).path
@@ -66,12 +65,12 @@ class ForgedToolItemModel : UnbakedModel, BakedModel, FabricBakedModel {
     }
 
     override fun bake(
-        loader: ModelLoader,
-        textureGetter: Function<SpriteIdentifier, Sprite>,
-        rotationContainer: ModelBakeSettings,
-        modelId: Identifier
-    ): BakedModel {
-        val defaultItemModel = loader.getOrLoadModel(ITEM_HANDHELD_MODEL) as JsonUnbakedModel
+        modelBaker: ModelBaker?,
+        textureGetter: Function<SpriteIdentifier, Sprite>?,
+        rotationContainer: ModelBakeSettings?,
+        modelId: Identifier?
+    ): BakedModel? {
+        val defaultItemModel = modelBaker?.getModel(ITEM_HANDHELD_MODEL) as JsonUnbakedModel
         transformation = defaultItemModel.transformations
         for (mat in Materials.MATERIAL_REGISTRY.ids.stream().map { obj: Identifier -> obj.path }
             .toList()) {
@@ -86,49 +85,24 @@ class ForgedToolItemModel : UnbakedModel, BakedModel, FabricBakedModel {
                                 .lowercase(Locale.getDefault())
                         )
                     )
-                    val sprite = textureGetter.apply(spriteId)
+                    val sprite = textureGetter?.apply(spriteId)
                     PART_MODELS[id] = JsonUnbakedModel(
                         ITEM_HANDHELD_MODEL,
-                        (ItemModelGenerator() as ItemModelGeneratorInvoker).callAddLayerElements(0, "layer0", sprite),
+                        (ItemModelGenerator() as ItemModelGeneratorInvoker).callAddLayerElements(0, "layer0", sprite?.contents),
                         mapOf("layer0" to Either.left(spriteId)),
                         false,
                         null,
                         transformation,
                         listOf()
-                    ).bake(loader, textureGetter, rotationContainer, modelId)
+                    ).bake(modelBaker, textureGetter, rotationContainer, modelId)
                 }
             }
         }
         return this
     }
 
-    override fun getTextureDependencies(
-        unbakedModelGetter: Function<Identifier, UnbakedModel>,
-        unresolvedTextureReferences: Set<Pair<String, String>>
-    ): Collection<SpriteIdentifier> {
-        val ids = Vector<SpriteIdentifier>()
-        for (mat in Materials.MATERIAL_REGISTRY.stream().toList()) {
-            for (type in ToolTypes.TOOL_TYPES_REGISTRY.stream().toList()) {
-                val matName = Objects.requireNonNull(Materials.MATERIAL_REGISTRY.getId(mat))?.path
-                val typeName = Objects.requireNonNull(ToolTypes.TOOL_TYPES_REGISTRY.getId(type))?.path
-                val headId = SpriteIdentifier(
-                    PlayerScreenHandler.BLOCK_ATLAS_TEXTURE,
-                    Identifier("soulforged:item/tools/$typeName/$matName/head")
-                )
-                val bindingId = SpriteIdentifier(
-                    PlayerScreenHandler.BLOCK_ATLAS_TEXTURE,
-                    Identifier("soulforged:item/tools/$typeName/$matName/binding")
-                )
-                val handleId = SpriteIdentifier(
-                    PlayerScreenHandler.BLOCK_ATLAS_TEXTURE,
-                    Identifier("soulforged:item/tools/$typeName/$matName/handle")
-                )
-                ids.add(headId)
-                ids.add(bindingId)
-                ids.add(handleId)
-            }
-        }
-        return ids
+    override fun resolveParents(models: Function<Identifier, UnbakedModel>?) {
+        models?.apply(ITEM_HANDHELD_MODEL)
     }
 
     // Below is all the stuff I don't care about. It's down here because I don't care about it.
@@ -136,9 +110,9 @@ class ForgedToolItemModel : UnbakedModel, BakedModel, FabricBakedModel {
         return emptyList()
     }
 
-    override fun getQuads(state: BlockState?, face: Direction?, random: Random): List<BakedQuad> {
+    override fun getQuads(state: BlockState?, face: Direction?, random: RandomGenerator?): MutableList<BakedQuad> {
         SoulforgedClient.LOGGER.fatal("Call to ForgedToolItemModel.getQuads")
-        return listOf()
+        return mutableListOf()
     }
 
     override fun useAmbientOcclusion(): Boolean {
@@ -174,7 +148,15 @@ class ForgedToolItemModel : UnbakedModel, BakedModel, FabricBakedModel {
         return false
     }
 
-    override fun emitBlockQuads(blockView: BlockRenderView, state: BlockState, pos: BlockPos, randomSupplier: Supplier<Random>, context: RenderContext) {}
+    override fun emitBlockQuads(
+        blockView: BlockRenderView?,
+        state: BlockState?,
+        pos: BlockPos?,
+        randomSupplier: Supplier<RandomGenerator>?,
+        context: RenderContext?
+    ) {
+        TODO("Not yet implemented")
+    }
 
     companion object {
         private val ITEM_HANDHELD_MODEL = Identifier("minecraft:item/handheld")

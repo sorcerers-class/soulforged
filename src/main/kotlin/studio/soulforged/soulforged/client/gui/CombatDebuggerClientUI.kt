@@ -41,7 +41,15 @@ object CombatDebuggerClientUI {
                     ImGui.text(stack.name.string)
                     assert(stack.nbt != null)
                     val nbt = stack.nbt!!
-                    val tool = ToolInst.ToolInstSerializer.deserialize(nbt)
+                    val tool: ToolInst
+                    try {
+                        tool = ToolInst.ToolInstSerializer.deserialize(player.mainHandStack.nbt!!)
+                    } catch(_: Exception)  {
+                        ImGui.text("Malformed NBT")
+                        ImGui.end()
+                        return
+                    }
+
                     if (ImGui.button(String.format("Type: %s", tool.type.name))) showToolTypeDropdown =
                         showToolTypeDropdown xor true
                     if (showToolTypeDropdown) {
@@ -185,7 +193,12 @@ object CombatDebuggerClientUI {
                     if (tool.shouldBreak()) ImGui.text("Broken tool will have 0 damage!")
                     val headEdgeholding: Double = tool.head.mat.edgeholding
                     val headHardness: Double = tool.head.mat.hardness
-                    val type = ToolTypes.TOOL_TYPES_REGISTRY[Identifier.tryParse(nbt.getString("sf_tool_type"))]!!
+                    val type = ToolTypes.TOOL_TYPES_REGISTRY[Identifier.tryParse(nbt.getString("sf_tool_type"))]
+                    if(type == null) {
+                        ImGui.text("Malformed NBT")
+                        ImGui.end()
+                        return
+                    }
                     var ap: AttackProperties = type.defaultAttack
                     if (showDcAttackCalc) ap = type.dcAttack ?: type.defaultAttack else if (showHcAttackCalc) ap =
                         type.hcAttack ?: type.defaultAttack

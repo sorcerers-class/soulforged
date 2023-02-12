@@ -1,8 +1,9 @@
 package studio.soulforged.soulforged.material
 
+import net.minecraft.registry.Registries
+import net.minecraft.registry.Registry
+import net.minecraft.registry.RegistryKey
 import net.minecraft.util.Identifier
-import net.minecraft.util.registry.Registry
-import net.minecraft.util.registry.RegistryKey
 import studio.soulforged.soulforged.Soulforged
 
 @Suppress("unused")
@@ -11,7 +12,7 @@ object Materials {
     private val MATERIAL_REGISTRY_KEY: RegistryKey<Registry<Material>> =
         RegistryKey.ofRegistry(Identifier("soulforged", "materials"))
     val MATERIAL_REGISTRY: Registry<Material> =
-        Registry.registerSimple(MATERIAL_REGISTRY_KEY) { WOOD } // This is possibly the worst way of doing this but i don't care
+        Registries.registerSimple(MATERIAL_REGISTRY_KEY) {WOOD}
     // Earlygame Materials
     val WOOD = register(
         Material(

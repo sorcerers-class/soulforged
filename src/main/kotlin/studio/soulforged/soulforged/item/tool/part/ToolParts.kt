@@ -1,13 +1,14 @@
 package studio.soulforged.soulforged.item.tool.part
 
+import net.minecraft.registry.Registries
+import net.minecraft.registry.Registry
+import net.minecraft.registry.RegistryKey
 import net.minecraft.util.Identifier
-import net.minecraft.util.registry.Registry
-import net.minecraft.util.registry.RegistryKey
 
 @Suppress("unused")
 object ToolParts {
     val TOOL_PARTS_REGISTRY_KEY: RegistryKey<Registry<ToolPart>> = RegistryKey.ofRegistry(Identifier("soulforged", "tool_parts"))
-    val TOOL_PARTS_REGISTRY: Registry<ToolPart> = Registry.registerSimple(TOOL_PARTS_REGISTRY_KEY, ) {HANDLE}
+    val TOOL_PARTS_REGISTRY: Registry<ToolPart> = Registries.registerSimple(TOOL_PARTS_REGISTRY_KEY, ) {HANDLE}
     val HANDLE = register(ToolPart(Identifier("soulforged", "handle"), "item.soulforged.part.handle", 0.1, 40.0))
     val LONG_HANDLE = register(ToolPart(Identifier("soulforged", "long_handle"), "item.soulforged.part.long_handle", 0.2, 33.0))
     val SHORT_SHAFT = register(ToolPart(Identifier("soulforged", "short_shaft"), "item.soulforged.part.short_shaft", 0.25, 35.0))

@@ -17,7 +17,6 @@ import studio.soulforged.soulforged.item.tool.combat.AttackQueueHolder;
 @Mixin(ServerPlayerEntity.class)
 public abstract class AttackQueueMixin extends PlayerEntity implements AttackQueueHolder {
     @Unique public final AttackQueue queue = new AttackQueue(this);
-
     @Override
     public AttackQueue getQueue() {
         return queue;
@@ -28,12 +27,12 @@ public abstract class AttackQueueMixin extends PlayerEntity implements AttackQue
     }
 
     @Inject(method = "attack", at = @At("HEAD"), cancellable = true)
-    public void attack(Entity target, CallbackInfo ci) {
+    public void soulforged$attack(Entity target, CallbackInfo ci) {
         queue.add(target);
         ci.cancel();
     }
     @Inject(method = "tick", at = @At("TAIL"))
-    public void tick(CallbackInfo ci) {
+    public void soulforged$tick(CallbackInfo ci) {
         queue.tick();
     }
 }

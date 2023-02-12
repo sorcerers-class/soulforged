@@ -13,7 +13,7 @@ public abstract class PreventUnchargedAttackMixin {
     @Shadow
     public ClientPlayerEntity player;
     @Inject(method = "doAttack", at = @At(value = "HEAD"), cancellable = true)
-    public void injectToCancelAttack(CallbackInfoReturnable<Boolean> cir) {
+    public void soulforged$injectToCancelAttack(CallbackInfoReturnable<Boolean> cir) {
         if(this.player.getAttackCooldownProgress(0.5f) != 1.0f) {
             cir.setReturnValue(false);
         }

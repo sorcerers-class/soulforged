@@ -1,21 +1,23 @@
 [versions]
 # The latest versions are available at https://lambdaurora.dev/tools/import_quilt.html
-minecraft = "1.18.2"
-quilt_mappings = "1.18.2+build.24"
-quilt_loader = "0.17.5-beta.1"
-quilted_fabric_api = "1.0.0-beta.24+0.58.0-1.18.2"
-fabric_language_kotlin = "1.8.3+kotlin.1.7.10"
+kotlin = "1.8.0"
+minecraft = "1.19.3"
+quilt_mappings = "1.19.3+build.23"
+quilt_loader = "0.18.1-beta.73"
+qfapi = "5.0.0-beta.4+0.73.0-1.19.3"
+qkl = "1.1.0+kt.1.8.0+flk.1.9.0"
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
 quilt_mappings = { module = "org.quiltmc:quilt-mappings", version.ref = "quilt_mappings" }
 quilt_loader = { module = "org.quiltmc:quilt-loader", version.ref = "quilt_loader" }
-fabric_language_kotlin = { module = "net.fabricmc:fabric-language-kotlin", version.ref = "fabric_language_kotlin"}
-quilted_fabric_api = { module = "org.quiltmc.quilted-fabric-api:quilted-fabric-api", version.ref = "quilted_fabric_api" }
+qkl = { module = "org.quiltmc.quilt-kotlin-libraries:quilt-kotlin-libraries", version.ref = "qkl" }
+qfapi = { module = "org.quiltmc.quilted-fabric-api:quilted-fabric-api", version.ref = "qfapi" }
 
 # If you have multiple similar dependencies, you can declare a dependency bundle and reference it on the build script with "libs.bundles.example".
 # [bundles]
 # example = ["example-a", "example-b", "example-c"]
 
 [plugins]
-quilt_loom = { id = "org.quiltmc.loom", version = "0.12.+" }
+kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+quilt_loom = { id = "org.quiltmc.loom", version = "1.0.+" }
 

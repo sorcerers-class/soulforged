@@ -24,10 +24,10 @@ public class MouseMixin {
     @Shadow
     private MinecraftClient client;
     @Inject(method = "onMouseButton", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/KeyBind;setKeyPressed(Lcom/mojang/blaze3d/platform/InputUtil$Key;Z)V", shift = At.Shift.BEFORE))
-    private void injectOnMouseButton(long window, int button, int action, int mods, CallbackInfo ci) {
+    private void soulforged$injectOnMouseButton(long window, int button, int action, int mods, CallbackInfo ci) {
         if(client.player != null) {
             if(client.player.getMainHandStack() != null) {
-                if(client.player.getMainHandStack().getItem() == SoulforgedItems.INSTANCE.getTOOL()) {
+                if(client.player.getMainHandStack().isOf(SoulforgedItems.INSTANCE.getTOOL())) {
                     PacketByteBuf mousePacket = PacketByteBufs.create();
                     mousePacket.writeInt(button);
                     mousePacket.writeInt(action);

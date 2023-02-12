@@ -1,8 +1,9 @@
 package studio.soulforged.soulforged.item.tool
 
+import net.minecraft.registry.Registries
+import net.minecraft.registry.Registry
+import net.minecraft.registry.RegistryKey
 import net.minecraft.util.Identifier
-import net.minecraft.util.registry.Registry
-import net.minecraft.util.registry.RegistryKey
 import studio.soulforged.soulforged.item.tool.combat.*
 import studio.soulforged.soulforged.item.tool.part.ToolParts
 
@@ -11,7 +12,7 @@ object ToolTypes {
     
 
     private val TOOL_TYPES_REGISTRY_KEY: RegistryKey<Registry<ToolType>> = RegistryKey.ofRegistry(Identifier("soulforged", "tool_types"))
-    val TOOL_TYPES_REGISTRY: Registry<ToolType> = Registry.registerSimple(TOOL_TYPES_REGISTRY_KEY) { SHORTSWORD }
+    val TOOL_TYPES_REGISTRY: Registry<ToolType> = Registries.registerSimple(TOOL_TYPES_REGISTRY_KEY) { SHORTSWORD }
     val SHORTSWORD = register(
         ToolType(
             Identifier("soulforged", "shortsword"),

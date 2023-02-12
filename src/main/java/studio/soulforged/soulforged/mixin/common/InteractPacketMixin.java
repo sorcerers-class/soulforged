@@ -16,10 +16,10 @@ public class InteractPacketMixin {
     @Shadow
     public ServerPlayerEntity player;
     @Inject(method = "onPlayerInteractEntity(Lnet/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket;getEntity(Lnet/minecraft/server/world/ServerWorld;)Lnet/minecraft/entity/Entity;"), locals = LocalCapture.CAPTURE_FAILSOFT, cancellable = true)
-    private void injectOnPlayerInteractEntity(PlayerInteractEntityC2SPacket packet, CallbackInfo ci) {
+    private void soulforged$injectOnPlayerInteractEntity(PlayerInteractEntityC2SPacket packet, CallbackInfo ci) {
         if(this.player != null) {
             if(this.player.getMainHandStack() != null) {
-                if(this.player.getMainHandStack().getItem() == SoulforgedItems.INSTANCE.getTOOL()) {
+                if(this.player.getMainHandStack().isOf(SoulforgedItems.INSTANCE.getTOOL())) {
                     ci.cancel();
                 }
             }

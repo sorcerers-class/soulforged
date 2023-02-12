@@ -9,10 +9,10 @@
     "common.SetAttackSpeedMixin",
   ],
   "client": [
-    "client.ClientDebuggerMixin",
     "client.ItemModelGeneratorInvoker",
     "client.MouseMixin",
-    "client.PreventUnchargedAttackMixin"
+    "client.PreventUnchargedAttackMixin",
+    "client.ClientDebuggerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

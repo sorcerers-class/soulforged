@@ -3,14 +3,17 @@ package studio.soulforged.soulforged.item.tool
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.util.Identifier
+import net.minecraft.util.random.RandomGenerator
 import studio.soulforged.soulforged.item.SoulforgedItems
+import studio.soulforged.soulforged.item.tool.attributes.AttributeContainer
+import studio.soulforged.soulforged.item.tool.attributes.AttributeIdentifiers
 import studio.soulforged.soulforged.item.tool.combat.AttackProperties
 import studio.soulforged.soulforged.item.tool.part.PartPosition
 import studio.soulforged.soulforged.item.tool.part.ToolPartInst
 import studio.soulforged.soulforged.item.tool.part.ToolParts
+import studio.soulforged.soulforged.material.Material
 import studio.soulforged.soulforged.material.Materials
 import studio.soulforged.soulforged.util.NbtSerializer
-import java.util.*
 
 /**
  * Represents an instance of a specific tool.
@@ -19,14 +22,17 @@ import java.util.*
  * @see studio.soulforged.soulforged.item.tool.part.ToolPart
  * @see studio.soulforged.soulforged.material.Material
  */
-class ToolInst(val stack: ItemStack, val type: ToolType, val head: ToolPartInst, val binding: ToolPartInst, val handle: ToolPartInst) {
-    constructor(type: Identifier, head: Identifier, binding: Identifier, handle: Identifier) : this(
+class ToolInst(val stack: ItemStack, val type: ToolType, val head: ToolPartInst, val binding: ToolPartInst, val handle: ToolPartInst, val pattern: Material, val attributes: AttributeContainer) {
+    constructor(type: Identifier, head: Identifier, binding: Identifier, handle: Identifier, pattern: Identifier) : this(
         SoulforgedItems.TOOL.defaultStack,
         ToolTypes.TOOL_TYPES_REGISTRY.get(type) ?: ToolTypes.SHORTSWORD,
         ToolPartInst(ToolTypes.TOOL_TYPES_REGISTRY.get(type)?.parts?.get(0) ?: ToolParts.SHORTSWORD_BLADE, Materials.MATERIAL_REGISTRY.get(head) ?: Materials.WOOD),
         ToolPartInst(ToolTypes.TOOL_TYPES_REGISTRY.get(type)?.parts?.get(1) ?: ToolParts.HILT, Materials.MATERIAL_REGISTRY.get(binding) ?: Materials.WOOD),
-        ToolPartInst(ToolTypes.TOOL_TYPES_REGISTRY.get(type)?.parts?.get(2) ?: ToolParts.HANDLE, Materials.MATERIAL_REGISTRY.get(handle) ?: Materials.WOOD)
+        ToolPartInst(ToolTypes.TOOL_TYPES_REGISTRY.get(type)?.parts?.get(2) ?: ToolParts.HANDLE, Materials.MATERIAL_REGISTRY.get(handle) ?: Materials.WOOD),
+        Materials.MATERIAL_REGISTRY.get(pattern) ?: Materials.WOOD,
+        AttributeContainer()
     )
+    constructor() : this(Identifier("soulforged:shortsword"), Identifier("soulforged:wood"), Identifier("soulforged:wood"), Identifier("soulforged:wood"), Identifier("soulforged:wood"))
     /**
      * Gets the durability of the tool to display.
      * @return The durability, normalized from 0 to 255.
@@ -54,7 +60,7 @@ class ToolInst(val stack: ItemStack, val type: ToolType, val head: ToolPartInst,
             handle.durability = had
         }
     }
-    fun damage(random: Random) {
+    fun damage(random: RandomGenerator) {
         modifyDurability(-1, if(random.nextBoolean()) -1 else 0, if(random.nextBoolean() && random.nextBoolean()) -1 else 0, true)
     }
     fun getDurability(part: PartPosition): Int {
@@ -86,9 +92,7 @@ class ToolInst(val stack: ItemStack, val type: ToolType, val head: ToolPartInst,
         //CombatDebuggerClientUI.critType = ap.type
         val totalPiercingDamage = rawPiercingDamage() * ap.piercingDamage
         val totalBluntDamage = rawBluntDamage() * ap.bluntDamage * 0.8
-        return if(!shouldBreak())
-            (totalBluntDamage + totalPiercingDamage)
-        else 0.0
+        return if(!shouldBreak()) totalPiercingDamage + totalBluntDamage else 0.0
     }
 
     /**
@@ -118,7 +122,7 @@ class ToolInst(val stack: ItemStack, val type: ToolType, val head: ToolPartInst,
         val headWeight: Double = head.part.weight * head.mat.density
         val bindingWeight: Double = binding.part.weight * binding.mat.density
         val handleWeight: Double = handle.part.weight * handle.mat.density
-        return headWeight + bindingWeight + 0.25 * handleWeight
+        return attributes.get(AttributeIdentifiers.WEIGHT, (headWeight + bindingWeight + 0.25 * handleWeight).toFloat()).toDouble()
     }
 
     /**
@@ -142,6 +146,8 @@ class ToolInst(val stack: ItemStack, val type: ToolType, val head: ToolPartInst,
             nbt.put("sf_head", ToolPartInst.ToolPartInstSerializer.serialize(target.head))
             nbt.put("sf_binding", ToolPartInst.ToolPartInstSerializer.serialize(target.binding))
             nbt.put("sf_handle", ToolPartInst.ToolPartInstSerializer.serialize(target.handle))
+            nbt.putString("sf_pattern", target.pattern.id.toString())
+            nbt.put("sf_attribs", AttributeContainer.AttributeContainerSerializer.serialize(target.attributes))
             return nbt
         }
 
@@ -150,7 +156,10 @@ class ToolInst(val stack: ItemStack, val type: ToolType, val head: ToolPartInst,
             val head = ToolPartInst.ToolPartInstSerializer.deserialize(nbt.getCompound("sf_head"))
             val binding = ToolPartInst.ToolPartInstSerializer.deserialize(nbt.getCompound("sf_binding"))
             val handle = ToolPartInst.ToolPartInstSerializer.deserialize(nbt.getCompound("sf_handle"))
-            return ToolInst(SoulforgedItems.TOOL.defaultStack, type, head, binding, handle)
+            val pattern = Materials.MATERIAL_REGISTRY.get(Identifier(nbt.getString("sf_pattern"))) ?: Materials.WOOD
+            val attributeContainer = AttributeContainer.AttributeContainerSerializer.deserialize(nbt.getCompound("sf_attribs"))
+            return ToolInst(SoulforgedItems.TOOL.defaultStack, type, head, binding, handle, pattern, attributeContainer)
+            //return ToolInst(SoulforgedItems.TOOL.defaultStack, type, head, binding, handle, pattern)
         }
 
     }

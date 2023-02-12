@@ -20,9 +20,9 @@ public abstract class SetAttackSpeedMixin extends LivingEntity {
     }
 
     @Inject(method = "getAttackCooldownProgressPerTick", at = @At("HEAD"), cancellable = true)
-    private void injectCalculatedAttackSpeed(CallbackInfoReturnable<Float> cir) {
+    private void soulforged$injectCalculatedAttackSpeed(CallbackInfoReturnable<Float> cir) {
         ItemStack stack = this.getMainHandStack();
-        if(stack.getItem() == SoulforgedItems.INSTANCE.getTOOL()) {
+        if(stack.isOf(SoulforgedItems.INSTANCE.getTOOL())) {
             assert stack.getNbt() != null;
             ToolInst tool = ToolInst.ToolInstSerializer.INSTANCE.deserialize(stack.getNbt());
             cir.setReturnValue((float) ((this.getAttributeValue(EntityAttributes.GENERIC_ATTACK_SPEED) / 4.0f) / tool.baseAttackSpeed(tool.attackProperties(1)) * 20.0f));

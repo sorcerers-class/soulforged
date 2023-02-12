@@ -24,7 +24,7 @@ class AttackQueue(private val attacker: PlayerEntity){
     }
     data class Entry(val attacker: PlayerEntity, val target: Entity, var timer: UInt, var clicks: Int) {
         fun finish() {
-            if(attacker.mainHandStack.nbt?.let { ToolInst.ToolInstSerializer.deserialize(it).type.attackHandler.attack(attacker, target, clicks) } != ActionResult.SUCCESS) {
+            if(ToolInst.ToolInstSerializer.deserialize(attacker.mainHandStack.nbt!!).type.attackHandler.attack(attacker, target, clicks) != ActionResult.SUCCESS) {
                 AttackHandlers.DEFAULT.attack(attacker, target, clicks);
             }
         }
