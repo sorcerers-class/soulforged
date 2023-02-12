@@ -21,8 +21,8 @@ import net.minecraft.util.random.RandomGenerator
 import net.minecraft.world.BlockRenderView
 import org.quiltmc.loader.api.minecraft.ClientOnly
 import studio.soulforged.soulforged.client.SoulforgedClient
+import studio.soulforged.soulforged.item.tool.ToolInst
 import studio.soulforged.soulforged.item.tool.ToolTypes
-import studio.soulforged.soulforged.material.Materials
 import studio.soulforged.soulforged.mixin.client.ItemModelGeneratorInvoker
 import java.util.*
 import java.util.function.Function
@@ -37,31 +37,34 @@ class ForgedToolItemModel : UnbakedModel, BakedModel, FabricBakedModel {
 
     @ClientOnly
     override fun emitItemQuads(stack: ItemStack, randomSupplier: Supplier<RandomGenerator>, context: RenderContext) {
-        val nbt = stack.nbt!!
-
-        val type = Identifier(nbt.getString("sf_tool_type")).path
-        val headMat = Identifier(nbt.getCompound("sf_head").getString("material")).path
-        val bindingMat = Identifier(nbt.getCompound("sf_binding").getString("material")).path
-        val handleMat = Identifier(nbt.getCompound("sf_handle").getString("material")).path
-        val headName = modelNameConcatenation(headMat, type, ModelToolParts.HEAD)
-        val bindingName = modelNameConcatenation(bindingMat, type, ModelToolParts.BINDING)
-        val handleName = modelNameConcatenation(handleMat, type, ModelToolParts.HANDLE)
+        val tool = ToolInst.ToolInstSerializer.deserialize(stack.nbt!!)
+        val type = tool.type.id
+        val headName = modelNameConcat(type.path, ModelToolParts.HEAD)
+        val bindingName = modelNameConcat(type.path, ModelToolParts.BINDING)
+        val handleName = modelNameConcat(type.path, ModelToolParts.HANDLE)
         val missingno = MinecraftClient.getInstance().bakedModelManager.missingModel
+        //TODO recolor instead of loading model from file for all 3 of these
+        context.pushTransform(tool.head.mat.transform)
         (PART_MODELS.getOrDefault(headName, missingno) as FabricBakedModel?)!!.emitItemQuads(
             stack,
             randomSupplier,
             context
         )
+        context.popTransform()
+        context.pushTransform(tool.binding.mat.transform)
         (PART_MODELS.getOrDefault(bindingName, missingno) as FabricBakedModel?)!!.emitItemQuads(
             stack,
             randomSupplier,
             context
         )
+        context.popTransform()
+        context.pushTransform(tool.handle.mat.transform)
         (PART_MODELS.getOrDefault(handleName, missingno) as FabricBakedModel?)!!.emitItemQuads(
             stack,
             randomSupplier,
             context
         )
+        context.popTransform()
     }
 
     override fun bake(
@@ -72,30 +75,27 @@ class ForgedToolItemModel : UnbakedModel, BakedModel, FabricBakedModel {
     ): BakedModel? {
         val defaultItemModel = modelBaker?.getModel(ITEM_HANDHELD_MODEL) as JsonUnbakedModel
         transformation = defaultItemModel.transformations
-        for (mat in Materials.MATERIAL_REGISTRY.ids.stream().map { obj: Identifier -> obj.path }
+        for (type in ToolTypes.TOOL_TYPES_REGISTRY.ids.stream().map { obj: Identifier -> obj.path }
             .toList()) {
-            for (type in ToolTypes.TOOL_TYPES_REGISTRY.ids.stream().map { obj: Identifier -> obj.path }
-                .toList()) {
-                for (part in ModelToolParts.values()) {
-                    val id = modelNameConcatenation(mat, type, part)
-                    val spriteId = SpriteIdentifier(
-                        PlayerScreenHandler.BLOCK_ATLAS_TEXTURE,
-                        Identifier(
-                            "soulforged:item/tools/$type/$mat/" + part.toString()
-                                .lowercase(Locale.getDefault())
-                        )
+            for (part in ModelToolParts.values()) {
+                val id = modelNameConcat(type, part)
+                val spriteId = SpriteIdentifier(
+                    PlayerScreenHandler.BLOCK_ATLAS_TEXTURE,
+                    Identifier(
+                        "soulforged:item/tools/$id"
+                            .lowercase(Locale.getDefault())
                     )
-                    val sprite = textureGetter?.apply(spriteId)
-                    PART_MODELS[id] = JsonUnbakedModel(
-                        ITEM_HANDHELD_MODEL,
-                        (ItemModelGenerator() as ItemModelGeneratorInvoker).callAddLayerElements(0, "layer0", sprite?.contents),
-                        mapOf("layer0" to Either.left(spriteId)),
-                        false,
-                        null,
-                        transformation,
-                        listOf()
-                    ).bake(modelBaker, textureGetter, rotationContainer, modelId)
-                }
+                )
+                val sprite = textureGetter?.apply(spriteId)
+                PART_MODELS[id] = JsonUnbakedModel(
+                    ITEM_HANDHELD_MODEL,
+                    (ItemModelGenerator() as ItemModelGeneratorInvoker).callAddLayerElements(0, "layer0", sprite?.contents),
+                    mapOf("layer0" to Either.left(spriteId)),
+                    false,
+                    null,
+                    transformation,
+                    listOf()
+                ).bake(modelBaker, textureGetter, rotationContainer, modelId)
             }
         }
         return this
@@ -111,7 +111,7 @@ class ForgedToolItemModel : UnbakedModel, BakedModel, FabricBakedModel {
     }
 
     override fun getQuads(state: BlockState?, face: Direction?, random: RandomGenerator?): MutableList<BakedQuad> {
-        SoulforgedClient.LOGGER.fatal("Call to ForgedToolItemModel.getQuads")
+        SoulforgedClient.LOGGER.fatal("Call to ForgedToolItemModel#getQuads")
         return mutableListOf()
     }
 
@@ -160,9 +160,9 @@ class ForgedToolItemModel : UnbakedModel, BakedModel, FabricBakedModel {
 
     companion object {
         private val ITEM_HANDHELD_MODEL = Identifier("minecraft:item/handheld")
-        private val PART_MODELS = HashMap<String, BakedModel?>()
-        fun modelNameConcatenation(material: String, type: String, part: ModelToolParts): String {
-            return material + "_" + type + "_" + part.toString().lowercase(Locale.getDefault())
+        val PART_MODELS = HashMap<String, BakedModel?>()
+        fun modelNameConcat(type: String, part: ModelToolParts): String {
+            return type + "_" + part.toString().lowercase(Locale.getDefault())
         }
     }
 }

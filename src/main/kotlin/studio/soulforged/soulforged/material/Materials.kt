@@ -31,7 +31,8 @@ object Materials {
             true,
             null,
             20,
-            20
+            20,
+            transform = {Material.color(it, 0xff56481a)}
         )
     )
     val STONE = register(
@@ -51,7 +52,8 @@ object Materials {
             false,
             null,
             10,
-            5
+            5,
+            transform = {return@Material true}
         )
     )
     val LEATHER = register(
@@ -71,7 +73,8 @@ object Materials {
             true,
             null,
             25,
-            10
+            10,
+            transform = {Material.color(it, 0xffaa6c1b0)}
         )
     )
     val FLINT = register(
@@ -91,7 +94,8 @@ object Materials {
             false,
             null,
             10,
-            10
+            10,
+            transform = {Material.color(it, 0xff474747)}
         )
     )
     val BONE = register(
@@ -111,7 +115,8 @@ object Materials {
             true,
             null,
             25,
-            25
+            25,
+            transform = {Material.color(it, 0xffeae9de)}
         )
     )
     val WOOL = register(
@@ -131,7 +136,8 @@ object Materials {
             true,
             null,
             25,
-            10
+            10,
+            transform = {Material.color(it, 0xffe5e5e5)}
         )
     )
     val SCUTE = register(
@@ -151,7 +157,8 @@ object Materials {
             true,
             null,
             30,
-            30
+            30,
+            transform = {Material.color(it, 0xff2d8c1e)}
         )
     )
     val SPIDER_WEAVE = register(
@@ -171,7 +178,8 @@ object Materials {
             true,
             null,
             20,
-            40
+            40,
+            transform = {Material.color(it, 0xffeaeaea)}
         )
     )
     val SLIME_WEAVE = register(
@@ -191,7 +199,8 @@ object Materials {
             true,
             null,
             10,
-            15
+            15,
+            transform = {Material.color(it, 0xffd1fccc)}
         )
     )
 
@@ -213,7 +222,8 @@ object Materials {
             true,
             null,
             30,
-            25
+            25,
+            transform = {Material.color(it, 0xffeae9e3)}
         )
     )
     val COPPER = register(
@@ -233,7 +243,8 @@ object Materials {
             true,
             null,
             30,
-            40
+            40,
+            transform = {Material.color(it, 0xfffc800c)}
         )
     )
     val GOLD = register(
@@ -253,7 +264,8 @@ object Materials {
             true,
             null,
             100,
-            100
+            100,
+            transform = {Material.color(it, 0xfff9e71d)}
         )
     )
     val SILVER = register(
@@ -273,7 +285,8 @@ object Materials {
             true,
             null,
             45,
-            30
+            30,
+            transform = {Material.color(it, 0xffc9e0e5)}
         )
     )
     val LEAD = register(
@@ -293,7 +306,8 @@ object Materials {
             true,
             null,
             4,
-            4
+            4,
+            transform = {Material.color(it, 0xffc9e0e5)}
         )
     )
     val STEEL = register(
@@ -313,7 +327,8 @@ object Materials {
             true,
             null,
             10,
-            15
+            15,
+            transform = {Material.color(it, 0xff626263)}
         )
     )
 
@@ -335,7 +350,8 @@ object Materials {
             false,
             null,
             30,
-            40
+            40,
+            transform = {Material.color(it, 0xff8014fc)}
         )
     )
     val EMERALD = register(
@@ -355,7 +371,8 @@ object Materials {
             false,
             null,
             35,
-            20
+            20,
+            transform = {Material.color(it, 0xff32fc05)}
         )
     )
     val DIAMOND = register(
@@ -375,7 +392,8 @@ object Materials {
             false,
             null,
             35,
-            45
+            45,
+            transform = {Material.color(it, 0xff05fcfc)}
         )
     )
     val OBSIDIAN = register(
@@ -395,7 +413,8 @@ object Materials {
             false,
             null,
             15,
-            10
+            10,
+            transform = {Material.color(it, 0xff1c0038)}
         )
     )
 
@@ -417,7 +436,8 @@ object Materials {
             true,
             null,
             0,
-            0
+            0,
+            transform = {Material.color(it, 0xff190000)}
         )
     )
     val ENDICITE = register(
@@ -437,7 +457,8 @@ object Materials {
             false,
             null,
             35,
-            30
+            30,
+            transform = {Material.color(it, 0xffd874fc)}
         )
     )
     val MONSTER_LEATHER = register(
@@ -457,7 +478,8 @@ object Materials {
             true,
             null,
             26,
-            10
+            10,
+            transform = {Material.color(it, 0xffa8410a)}
         )
     )
     val SCALES = register(
@@ -477,7 +499,8 @@ object Materials {
             true,
             null,
             10,
-            25
+            25,
+            transform = {Material.color(it, 0xff255136)}
         )
     )
 
@@ -499,7 +522,8 @@ object Materials {
             false,
             Classifiers.SAPPHIRE,
             15,
-            15
+            15,
+            transform = {Material.color(it, 0xff0117bc)}
         )
     )
     val RUBY = register(
@@ -519,7 +543,8 @@ object Materials {
             false,
             Classifiers.RUBY,
             15,
-            15
+            15,
+            transform = {Material.color(it, 0xffbc0101)}
         )
     )
     val LOTUS_GEM = register(
@@ -539,7 +564,8 @@ object Materials {
             false,
             Classifiers.LOTUS,
             15,
-            15
+            15,
+            transform = {Material.color(it, 0xfff4a790)}
         )
     )
     val STAR_GEM = register(
@@ -559,7 +585,8 @@ object Materials {
             false,
             Classifiers.STAR,
             15,
-            15
+            15,
+            transform = {Material.color(it, 0xfff4a790)}
         )
     )
 
@@ -581,7 +608,8 @@ object Materials {
             true,
             null,
             30,
-            20
+            20,
+            transform = {Material.color(it, 0xff90bbf4)}
         )
     )
     val NETHERITE = register(
@@ -601,7 +629,8 @@ object Materials {
             true,
             null,
             40,
-            40
+            40,
+            transform = {Material.color(it, 0xff2d2727)}
         )
     )
     val ALUMINIUM = register(
@@ -621,7 +650,8 @@ object Materials {
             true,
             null,
             32,
-            12
+            12,
+            transform = {Material.color(it, 0xffe6f1f4)}
         )
     )
     val TITANIUM = register(
@@ -641,7 +671,8 @@ object Materials {
             true,
             null,
             35,
-            15
+            15,
+            transform = {Material.color(it, 0xffaeafaf)}
         )
     )
 
@@ -663,7 +694,8 @@ object Materials {
             true,
             null,
             5,
-            10
+            10,
+            transform = {Material.color(it, 0xff000000)}
         )
     )
     val NETHERIUM = register(
@@ -683,7 +715,8 @@ object Materials {
             true,
             null,
             20,
-            10
+            10,
+            transform = {Material.color(it, 0xff605344)}
         )
     )
     val NEUTRONIUM = register(
@@ -703,7 +736,8 @@ object Materials {
             true,
             null,
             45,
-            24
+            24,
+            transform = {Material.color(it, 0xffffff00)}
         )
     )
     val DIVINIUM = register(
@@ -723,7 +757,8 @@ object Materials {
             true,
             null,
             55,
-            45
+            45,
+            transform = {Material.color(it, 0xffffffff)}
         )
     )
     val STAR_METAL = register(
@@ -743,7 +778,8 @@ object Materials {
             true,
             null,
             30,
-            60
+            60,
+            transform = {Material.color(it, 0xffff7f00)}
         )
     )
     val MERCURIUM = register(
@@ -763,7 +799,8 @@ object Materials {
             true,
             null,
             20,
-            30
+            30,
+            transform = {Material.color(it, 0xff757575)}
         )
     )
     val ETERNICITE = register(
@@ -783,7 +820,8 @@ object Materials {
             false,
             null,
             40,
-            35
+            35,
+            transform = {Material.color(it, 0xff7d50d8)}
         )
     )
 
