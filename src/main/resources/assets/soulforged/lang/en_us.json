@@ -140,5 +140,7 @@
 
   "subtitles.soulforged.crit_thrusting": "Something gets impaled",
   "subtitles.soulforged.crit_slashing": "Something gets stabbed",
-  "subtitles.soulforged.crit_crushing": "Something's bones break"
+  "subtitles.soulforged.crit_crushing": "Something's bones break",
+
+  "key.soulforged.toggle": "Toggle Debug Mode"
 }

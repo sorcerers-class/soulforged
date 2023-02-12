@@ -6,7 +6,6 @@ import net.minecraft.util.Identifier
 import net.minecraft.util.random.RandomGenerator
 import studio.soulforged.soulforged.item.SoulforgedItems
 import studio.soulforged.soulforged.item.tool.attributes.AttributeContainer
-import studio.soulforged.soulforged.item.tool.attributes.AttributeIdentifiers
 import studio.soulforged.soulforged.item.tool.combat.AttackProperties
 import studio.soulforged.soulforged.item.tool.part.PartPosition
 import studio.soulforged.soulforged.item.tool.part.ToolPartInst
@@ -122,7 +121,7 @@ class ToolInst(val stack: ItemStack, val type: ToolType, val head: ToolPartInst,
         val headWeight: Double = head.part.weight * head.mat.density
         val bindingWeight: Double = binding.part.weight * binding.mat.density
         val handleWeight: Double = handle.part.weight * handle.mat.density
-        return attributes.get(AttributeIdentifiers.WEIGHT, (headWeight + bindingWeight + 0.25 * handleWeight).toFloat()).toDouble()
+        return (headWeight + bindingWeight + 0.25 * handleWeight) //attributes.get(AttributeIdentifiers.WEIGHT, (headWeight + bindingWeight + 0.25 * handleWeight).toFloat()).toDouble()
     }
 
     /**
