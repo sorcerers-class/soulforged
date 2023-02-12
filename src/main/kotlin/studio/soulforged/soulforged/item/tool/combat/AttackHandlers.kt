@@ -12,7 +12,7 @@ import studio.soulforged.soulforged.item.SoulforgedItems
 import studio.soulforged.soulforged.item.tool.ToolInst
 
 object AttackHandlers {
-    val NO_CRIT = AttackHandler { attacker: PlayerEntity, target: Entity, _: Int ->
+    val NO_CRIT = AttackHandler { _: PlayerEntity, _: Entity, _: Int ->
         return@AttackHandler ActionResult.FAIL
     }
     val WITH_CRITS = AttackHandler { attacker: PlayerEntity, target: Entity, clicks: Int ->

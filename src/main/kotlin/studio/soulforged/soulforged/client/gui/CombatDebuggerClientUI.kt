@@ -2,10 +2,9 @@ package studio.soulforged.soulforged.client.gui
 
 import imgui.ImGui
 import imgui.flag.ImGuiWindowFlags
-import net.fabricmc.api.EnvType
-import net.fabricmc.api.Environment
 import net.minecraft.client.MinecraftClient
 import net.minecraft.util.Identifier
+import org.quiltmc.loader.api.minecraft.ClientOnly
 import studio.soulforged.soulforged.item.SoulforgedItems
 import studio.soulforged.soulforged.item.tool.ToolInst
 import studio.soulforged.soulforged.item.tool.ToolTypes
@@ -15,7 +14,7 @@ import java.util.*
 import kotlin.math.abs
 import kotlin.math.pow
 
-@Environment(EnvType.CLIENT)
+@ClientOnly
 object CombatDebuggerClientUI {
     private var showToolTypeDropdown = false
     private var showHeadMaterialDropdown = false

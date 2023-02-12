@@ -1,7 +1,5 @@
 package studio.soulforged.soulforged.item.tool
 
-import net.fabricmc.api.EnvType
-import net.fabricmc.api.Environment
 import net.minecraft.block.BlockState
 import net.minecraft.client.item.TooltipContext
 import net.minecraft.entity.LivingEntity
@@ -16,6 +14,7 @@ import net.minecraft.util.Hand
 import net.minecraft.util.Rarity
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
+import org.quiltmc.loader.api.minecraft.ClientOnly
 import org.quiltmc.qsl.item.setting.api.QuiltItemSettings
 import java.util.*
 import kotlin.math.roundToInt
@@ -81,7 +80,7 @@ class ToolItem : Item(
         return result
     }
 
-    @Environment(EnvType.CLIENT)
+    @ClientOnly
     override fun appendTooltip(stack: ItemStack, world: World?, tooltip: MutableList<Text>, context: TooltipContext) {
         val tool = ToolInst.ToolInstSerializer.deserialize(stack.nbt!!)
         val headMaterial = Text.translatable(tool.head.mat.name)
@@ -194,7 +193,7 @@ class ToolItem : Item(
         )
     }
 
-    @Environment(EnvType.CLIENT)
+    @ClientOnly
     override fun getName(stack: ItemStack): Text {
         val tool = ToolInst.ToolInstSerializer.deserialize(stack.nbt!!)
         return Text.translatable(

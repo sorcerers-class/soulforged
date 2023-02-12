@@ -7,13 +7,12 @@ import imgui.ImGui
 import imgui.flag.ImGuiConfigFlags
 import imgui.gl3.ImGuiImplGl3
 import imgui.glfw.ImGuiImplGlfw
-import net.fabricmc.api.EnvType
-import net.fabricmc.api.Environment
 import net.minecraft.client.MinecraftClient
 import org.lwjgl.glfw.GLFW
+import org.quiltmc.loader.api.minecraft.ClientOnly
 import java.io.IOException
 
-@Environment(EnvType.CLIENT)
+@ClientOnly
 class ImGuiRenderer {
     private val imGuiGlfw = ImGuiImplGlfw()
     private val imGuiGl3 = ImGuiImplGl3()
