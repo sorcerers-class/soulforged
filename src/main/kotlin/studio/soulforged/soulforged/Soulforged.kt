@@ -4,6 +4,8 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.quiltmc.loader.api.ModContainer
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer
+import studio.soulforged.soulforged.block.SoulforgedBlocks
+import studio.soulforged.soulforged.block.entity.SoulforgedBlockEntityTypes
 import studio.soulforged.soulforged.command.Commands
 import studio.soulforged.soulforged.item.SoulforgedItems
 import studio.soulforged.soulforged.item.tool.ToolTypes
@@ -18,7 +20,9 @@ class Soulforged : ModInitializer {
         Materials.MATERIAL_REGISTRY
         ToolTypes.TOOL_TYPES_REGISTRY
         ToolParts.TOOL_PARTS_REGISTRY
-        SoulforgedItems.TOOL.asItem()
+        SoulforgedBlocks.init()
+        SoulforgedBlockEntityTypes.init()
+        SoulforgedItems.init()
         NetworkReceivers.register()
         Commands.register()
         SoulforgedSoundEvents.register()

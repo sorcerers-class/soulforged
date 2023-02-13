@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "soulforged:block/workstation",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "soulforged:block/workstation"
+    },
+    "facing=south": {
+      "model": "soulforged:block/workstation",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "soulforged:block/workstation",
+      "y": 270
+    }
+  }
+}

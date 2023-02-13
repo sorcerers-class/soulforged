@@ -2,6 +2,7 @@ package studio.soulforged.soulforged.item.tool.combat
 
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.nbt.NbtCompound
 import net.minecraft.util.ActionResult
 import studio.soulforged.soulforged.item.tool.ToolInst
 import java.util.concurrent.ConcurrentLinkedQueue
@@ -23,8 +24,16 @@ class AttackQueue(private val attacker: PlayerEntity){
         }
     }
     data class Entry(val attacker: PlayerEntity, val target: Entity, var timer: UInt, var clicks: Int) {
+
         fun finish() {
-            if(ToolInst.ToolInstSerializer.deserialize(attacker.mainHandStack.nbt!!).type.attackHandler.attack(attacker, target, clicks) != ActionResult.SUCCESS) {
+            val nbt: NbtCompound
+            if(attacker.mainHandStack.nbt != null) {
+               nbt = attacker.mainHandStack.nbt!!
+            } else {
+                AttackHandlers.DEFAULT.attack(attacker, target, clicks)
+                return
+            }
+            if(ToolInst.ToolInstSerializer.deserialize(nbt).type.attackHandler.attack(attacker, target, clicks) != ActionResult.SUCCESS) {
                 AttackHandlers.DEFAULT.attack(attacker, target, clicks);
             }
         }

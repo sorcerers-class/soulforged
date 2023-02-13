@@ -90,6 +90,24 @@ object RightClickEventProcessors {
             return ActionResult.PASS
         }
     }
+    val HAMMER_TO_CREATE_WORKSTATION: RightClickEventProcessor = object : RightClickEventProcessor {
+        override fun onRightClick(ctx: ItemUsageContext?): ActionResult? {
+            val world = ctx?.world
+            val pos = ctx?.blockPos
+            val playerEntity = ctx?.player
+            if (world?.getBlockState(pos)?.block === Blocks.GRASS_BLOCK) {
+                world?.setBlockState(pos, Blocks.DIRT_PATH.defaultState)
+                world?.playSound(playerEntity, pos, SoundEvents.ITEM_SHOVEL_FLATTEN, SoundCategory.BLOCKS, 1.0f, 1.0f)
+                val state = world?.getBlockState(pos)
+                if (playerEntity is ServerPlayerEntity) {
+                    Criteria.ITEM_USED_ON_BLOCK.trigger(playerEntity as ServerPlayerEntity?, pos, ctx.stack)
+                }
+                world?.setBlockState(pos, state, Block.NOTIFY_ALL or Block.REDRAW_ON_MAIN_THREAD)
+                return ActionResult.success(world!!.isClient)
+            }
+            return ActionResult.PASS
+        }
+    }
     val NONE: RightClickEventProcessor = object : RightClickEventProcessor {
         override fun onRightClick(ctx: ItemUsageContext?): ActionResult {
             return ActionResult.PASS

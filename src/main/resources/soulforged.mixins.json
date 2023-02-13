@@ -6,13 +6,14 @@
   "mixins": [
     "common.AttackQueueMixin",
     "common.CheckToolHarvestabilityImpl",
-    "common.SetAttackSpeedMixin",
+    "common.MakeVanillaToolsUseless",
+    "common.SetAttackSpeedMixin"
   ],
   "client": [
+    "client.ClientDebuggerMixin",
     "client.ItemModelGeneratorInvoker",
     "client.MouseMixin",
-    "client.PreventUnchargedAttackMixin",
-    "client.ClientDebuggerMixin"
+    "client.PreventUnchargedAttackMixin"
   ],
   "injectors": {
     "defaultRequire": 1

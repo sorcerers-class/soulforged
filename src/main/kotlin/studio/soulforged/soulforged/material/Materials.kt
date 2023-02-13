@@ -74,7 +74,7 @@ object Materials {
             null,
             25,
             10,
-            transform = {Material.color(it, 0xffaa6c1b0)}
+            transform = {Material.color(it, 0xffaa6c1b)}
         )
     )
     val FLINT = register(
@@ -351,7 +351,7 @@ object Materials {
             null,
             30,
             40,
-            transform = {Material.color(it, 0xff8014fc)}
+            transform = {Material.color(it, 0xee8014fc)}
         )
     )
     val EMERALD = register(
@@ -372,7 +372,7 @@ object Materials {
             null,
             35,
             20,
-            transform = {Material.color(it, 0xff32fc05)}
+            transform = {Material.color(it, 0xee32fc05)}
         )
     )
     val DIAMOND = register(
@@ -393,7 +393,7 @@ object Materials {
             null,
             35,
             45,
-            transform = {Material.color(it, 0xff05fcfc)}
+            transform = {Material.color(it, 0xee05fcfc)}
         )
     )
     val OBSIDIAN = register(
@@ -458,7 +458,7 @@ object Materials {
             null,
             35,
             30,
-            transform = {Material.color(it, 0xffd874fc)}
+            transform = {Material.color(it, 0xccd874fc)}
         )
     )
     val MONSTER_LEATHER = register(
@@ -523,7 +523,7 @@ object Materials {
             Classifiers.SAPPHIRE,
             15,
             15,
-            transform = {Material.color(it, 0xff0117bc)}
+            transform = {Material.color(it, 0xdd0117bc)}
         )
     )
     val RUBY = register(
@@ -544,7 +544,7 @@ object Materials {
             Classifiers.RUBY,
             15,
             15,
-            transform = {Material.color(it, 0xffbc0101)}
+            transform = {Material.color(it, 0xddbc0101)}
         )
     )
     val LOTUS_GEM = register(
@@ -565,7 +565,7 @@ object Materials {
             Classifiers.LOTUS,
             15,
             15,
-            transform = {Material.color(it, 0xfff4a790)}
+            transform = {Material.color(it, 0xddf4a790)}
         )
     )
     val STAR_GEM = register(
@@ -586,7 +586,7 @@ object Materials {
             Classifiers.STAR,
             15,
             15,
-            transform = {Material.color(it, 0xfff4a790)}
+            transform = {Material.color(it, 0xddf4a790)}
         )
     )
 

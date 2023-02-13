@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "soulforged:workstation",
+    "minecraft:blast_furnace",
+    "minecraft:anvil",
+    "minecraft:smithing_table",
+    "minecraft:fletching_table"
+  ]
+}
