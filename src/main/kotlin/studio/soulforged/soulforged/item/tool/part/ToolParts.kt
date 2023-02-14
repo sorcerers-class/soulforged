@@ -35,6 +35,7 @@ object ToolParts {
     val PICKAXE_HEAD = register(ToolPart(Identifier("soulforged", "pickaxe_head"), "item.soulforged.part.pickaxe_head", 1.01, 1.0))
     val SHOVEL_HEAD = register(ToolPart(Identifier("soulforged", "shovel_head"), "item.soulforged.part.shovel_head", 0.5, 1.0))
     val HOE_HEAD = register(ToolPart(Identifier("soulforged", "hoe_head"), "item.soulforged.part.hoe_head", 0.2, 1.0))
+    val HAMMER_HEAD = register(ToolPart(Identifier("soulforged", "hammer_head"), "item.soulforged.part.hammer_head", 0.1, 5.0))
     private fun register(type: ToolPart): ToolPart {
         return Registry.register(TOOL_PARTS_REGISTRY, type.id, type)
     }

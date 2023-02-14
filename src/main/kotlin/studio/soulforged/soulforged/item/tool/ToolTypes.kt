@@ -234,6 +234,19 @@ object ToolTypes {
             arrayOf(ToolParts.HOE_HEAD, ToolParts.BINDING, ToolParts.LONG_HANDLE)
         )
     )
+    val HAMMER = register(
+        ToolType(
+            Identifier("soulforged", "hammer"),
+            "item.soulforged.tool.type.hammer",
+            AttackProperties(0.0, 0.75, 0.0, 1.4, 0.0, WeaponCategories.CRUSHING, CritTypes.DOWN),
+            null,
+            null,
+            MiningSpeedProcessors.PICKAXE,
+            RightClickEventProcessors.HAMMER_TO_CREATE_WORKSTATION,
+            AttackHandlers.NO_CRIT,
+            arrayOf(ToolParts.HAMMER_HEAD, ToolParts.BINDING, ToolParts.HANDLE)
+        )
+    )
 
     private fun register(type: ToolType): ToolType {
         return Registry.register(TOOL_TYPES_REGISTRY, type.id, type)

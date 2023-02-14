@@ -2,9 +2,13 @@
   "replace": false,
   "values": [
     "soulforged:workstation",
-    "minecraft:blast_furnace",
+    "soulforged:iron_anvil",
+    "soulforged:blast_furnace",
+    "soulforged:fletching_table",
+    "soulforged:smithing_table",
     "minecraft:anvil",
-    "minecraft:smithing_table",
-    "minecraft:fletching_table"
+    "minecraft:blast_furnace",
+    "minecraft:fletching_table",
+    "minecraft:smithing_table"
   ]
 }
