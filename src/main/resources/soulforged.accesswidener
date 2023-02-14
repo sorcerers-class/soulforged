@@ -4,5 +4,4 @@ extendable  class   net/minecraft/item/ItemStack
 accessible  field   net/minecraft/entity/Entity    onGround    Z
 accessible field net/minecraft/item/AxeItem STRIPPED_BLOCKS Ljava/util/Map;
 accessible method net/minecraft/registry/Registries registerSimple (Lnet/minecraft/registry/RegistryKey;Lnet/minecraft/registry/Registries$RegistryBootstrap;)Lnet/minecraft/registry/Registry;
-accessible method net/minecraft/item/ToolMaterials ToolMaterials (IIFFILjava/util/function/Supplier;)V
 accessible method net/minecraft/registry/tag/BlockTags create (Ljava/lang/String;)Lnet/minecraft/registry/tag/TagKey;
