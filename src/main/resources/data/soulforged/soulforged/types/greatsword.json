@@ -1,0 +1,30 @@
+{
+  "default_attack": {
+    "piercing_damage": 1.5,
+    "blunt_damage": 0.3,
+    "finesse": 1.0,
+    "speed": 0.6,
+    "piercing": 0.4,
+    "category": "slashing",
+    "crit_type": "side"
+  },
+  "hc_attack": {
+    "piercing_damage": 1.3,
+    "blunt_damage": 0.3,
+    "finesse": 1.0,
+    "speed": 0.6,
+    "piercing": 0.3,
+    "category": "slashing",
+    "crit_type": "side"
+  },
+  "callbacks": {
+    "getMiningSpeed": "soulforged:msp/sword",
+    "onUse": "soulforged:rcep/none",
+    "handleAttack": "soulforged:ah/with_crits"
+  },
+  "recipe": {
+    "head": "soulforged:greatsword_blade",
+    "binding": "soulforged:wide_hilt",
+    "handle": "soulforged:long_handle"
+  }
+}

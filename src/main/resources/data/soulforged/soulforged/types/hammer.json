@@ -1,0 +1,21 @@
+{
+  "default_attack": {
+    "piercing_damage": 0.0,
+    "blunt_damage": 0.75,
+    "finesse": 0.0,
+    "speed": 1.4,
+    "piercing": 0.0,
+    "category": "crushing",
+    "crit_type": "down"
+  },
+  "callbacks": {
+    "getMiningSpeed": "soulforged:msp/pickaxe",
+    "onUse": "soulforged:rcep/hammer",
+    "handleAttack": "soulforged:ah/with_crits"
+  },
+  "recipe": {
+    "head": "soulforged:hammer_head",
+    "binding": "soulforged:binding",
+    "handle": "soulforged:handle"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "default_attack": {
+    "piercing_damage": 0.2,
+    "blunt_damage": 0.2,
+    "finesse": 5.0,
+    "speed": 1.4,
+    "piercing": 0.2,
+    "category": "crushing",
+    "crit_type": "down"
+  },
+  "callbacks": {
+    "getMiningSpeed": "soulforged:msp/hoe",
+    "onUse": "soulforged:rcep/hoe",
+    "handleAttack": "soulforged:ah/with_crits"
+  },
+  "recipe": {
+    "head": "soulforged:hoe_head",
+    "binding": "soulforged:binding",
+    "handle": "soulforged:long_handle"
+  }
+}

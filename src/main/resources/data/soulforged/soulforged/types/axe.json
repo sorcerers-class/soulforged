@@ -1,0 +1,30 @@
+{
+  "default_attack": {
+    "piercing_damage": 0.9,
+    "blunt_damage": 0.5,
+    "finesse": 4.0,
+    "speed": 0.9,
+    "piercing": 0.3,
+    "category": "slashing",
+    "crit_type": "down"
+  },
+  "dc_attack": {
+    "piercing_damage": 0.8,
+    "blunt_damage": 0.6,
+    "finesse": 1.0,
+    "speed": 0.9,
+    "piercing": 0.4,
+    "category": "crushing",
+    "crit_type": "down"
+  },
+  "callbacks": {
+    "getMiningSpeed": "soulforged:msp/axe",
+    "onUse": "soulforged:rcep/axe",
+    "handleAttack": "soulforged:ah/with_crits"
+  },
+  "recipe": {
+    "head": "soulforged:axe_head",
+    "binding": "soulforged:binding",
+    "handle": "soulforged:short_shaft"
+  }
+}

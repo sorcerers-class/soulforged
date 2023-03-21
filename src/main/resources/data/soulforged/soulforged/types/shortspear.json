@@ -1,0 +1,30 @@
+{
+  "default_attack": {
+    "piercing_damage": 0.75,
+    "blunt_damage": 0.25,
+    "finesse": 5.0,
+    "speed": 0.8,
+    "piercing": 1.0,
+    "category": "thrusting",
+    "crit_type": "forward"
+  },
+  "hc_attack": {
+    "piercing_damage": 0.75,
+    "blunt_damage": 0.25,
+    "finesse": 0.0,
+    "speed": 0.8,
+    "piercing": 0.9,
+    "category": "thrusting",
+    "crit_type": "forward"
+  },
+  "callbacks": {
+    "getMiningSpeed": "soulforged:msp/hand",
+    "onUse": "soulforged:rcep/none",
+    "handleAttack": "soulforged:ah/with_crits"
+  },
+  "recipe": {
+    "head": "soulforged:spearhead",
+    "binding": "soulforged:binding",
+    "handle": "soulforged:long_shaft"
+  }
+}
