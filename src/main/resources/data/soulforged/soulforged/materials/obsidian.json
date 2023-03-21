@@ -1,0 +1,17 @@
+{
+  "parent": "soulforged:tool_material",
+  "hardness": 11.0,
+  "edgeholding": 5.7,
+  "workability": 4,
+  "density": 1000,
+  "durability": 1000,
+  "heat": 0,
+  "mining_level": 3,
+  "mining_speed": 10,
+  "xp_capacity": 15,
+  "xp_absorption": 10,
+  color: 0x1C0038,
+  "resources": {
+    "minecraft:obsidian": 1.0
+  }
+}

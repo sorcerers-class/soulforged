@@ -1,0 +1,18 @@
+{
+  "parent": "soulforged:material",
+  "hardness": 7.7,
+  "edgeholding": 7.5,
+  "workability": 4,
+  "density": 450,
+  "durability": 900,
+  "heat": 4,
+  "padding": 0,
+  "mining_level": 4,
+  "mining_speed": 11,
+  "xp_capacity": 35,
+  "xp_absorption": 15,
+  "color": 0xAEAFAF,
+  "resources": {
+    "#c:titanium_ingots": 1.0
+  }
+}

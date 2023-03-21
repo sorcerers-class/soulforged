@@ -1,0 +1,17 @@
+{
+  "parent": "soulforged:tool_material",
+  "hardness": 9.0,
+  "edgeholding": 12.0,
+  "workability": 3,
+  "density": 400,
+  "durability": 200,
+  "heat": 0,
+  "mining_level": 2,
+  "mining_speed": 5,
+  "xp_capacity": 30,
+  "xp_absorption": 40,
+  color: 0x8014FCEE,
+  "resources": {
+    "minecraft:amethyst_shard": 1.0
+  }
+}

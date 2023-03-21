@@ -1,0 +1,7 @@
+{
+  "parent": "soulforged:builtin/material",
+  "mining_level": -1,
+  "mining_speed": 0,
+  "can_tool": false,
+  "can_armor": true
+}

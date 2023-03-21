@@ -1,0 +1,6 @@
+{
+  "parent": "soulforged:builtin/material",
+  "padding": 0,
+  "can_tool": true,
+  "can_armor": false
+}

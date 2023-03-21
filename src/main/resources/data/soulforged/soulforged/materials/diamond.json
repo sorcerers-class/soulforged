@@ -1,0 +1,17 @@
+{
+  "parent": "soulforged:tool_material",
+  "hardness": 7.0,
+  "edgeholding": 8.0,
+  "workability": 4,
+  "density": 460,
+  "durability": 1300,
+  "heat": 0,
+  "mining_level": 3,
+  "mining_speed": 8,
+  "xp_capacity": 35,
+  "xp_absorption": 45,
+  color: 0x05FCFCEE,
+  "resources": {
+    "minecraft:diamond": 1.0
+  }
+}

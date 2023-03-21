@@ -1,0 +1,18 @@
+{
+  "parent": "soulforged:material",
+  "hardness": 8.9,
+  "edgeholding": 9.0,
+  "workability": 4,
+  "density": 90,
+  "durability": 1000,
+  "heat": 4,
+  "padding": 0,
+  "mining_level": 4,
+  "mining_speed": 9,
+  "xp_capacity": 5,
+  "xp_absorption": 10,
+  "color": 0,
+  "resources": {
+    "soulforged:void_metal_ingot": 1.0
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "parent": "soulforged:material",
+  "hardness": 7.0,
+  "edgeholding": 4.5,
+  "workability": 3,
+  "density": 150,
+  "durability": 980,
+  "heat": 0,
+  "padding": 0,
+  "mining_level": 1,
+  "mining_speed": 1,
+  "xp_capacity": 0,
+  "xp_absorption": 0,
+  "color": 0x190000,
+  "resources": {
+    "soulforged:witherbone": 1.0
+  }
+}

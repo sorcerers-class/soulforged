@@ -1,0 +1,17 @@
+{
+  "parent": "soulforged:tool_material",
+  "hardness": 8.5,
+  "edgeholding": 6.0,
+  "workability": 5,
+  "density": 650,
+  "durability": 3000,
+  "heat": 0,
+  "mining_level": 4,
+  "mining_speed": 8,
+  "xp_capacity": 40,
+  "xp_absorption": 35,
+  "color": 0x7D50D8,
+  "resources": {
+    "soulforged:eternicite": 1.0
+  }
+}

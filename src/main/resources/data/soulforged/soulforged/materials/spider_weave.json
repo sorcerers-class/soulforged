@@ -1,0 +1,15 @@
+{
+  "parent": "soulforged:armor_material",
+  "hardness": 0.6,
+  "workability": 1,
+  "density": 180,
+  "durability": 1300,
+  "heat": 0,
+  "padding": 12,
+  "xp_capacity": 20,
+  "xp_absorption": 40,
+  "color": 0xEAEAEA,
+  "resources": {
+    "soulforged:spider_weave": 1.0
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "parent": "soulforged:material",
+  "hardness": 5.0,
+  "edgeholding": 3.8,
+  "workability": 0,
+  "density": 200,
+  "durability": 100,
+  "heat": 0,
+  "padding": 0,
+  "mining_level": 0,
+  "mining_speed": 1,
+  "xp_capacity": 25,
+  "xp_absorption": 25,
+  "color": 0xFFEAE9DE,
+  "resources": {
+    "minecraft:bone_block": 3.0,
+    "minecraft:bone": 1.0,
+    "#c:bone_blocks": 3.0,
+    "#c:bones": 1.0
+  }
+}

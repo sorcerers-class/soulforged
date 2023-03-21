@@ -1,0 +1,15 @@
+{
+  "parent": "soulforged:armor_material",
+  "hardness": 6.5,
+  "workability": 2,
+  "density": 400,
+  "durability": 690,
+  "heat": 0,
+  "padding": 15,
+  "xp_capacity": 10,
+  "xp_absorption": 25,
+  color: 0xAA6C1B,
+  "resources": {
+    "soulforged:scales": 1.0
+  }
+}

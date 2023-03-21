@@ -1,0 +1,17 @@
+{
+  "parent": "soulforged:tool_material",
+  "hardness": 4.0,
+  "edgeholding": 3.1,
+  "workability": 3,
+  "density": 5,
+  "durability": 150,
+  "heat": 0,
+  "mining_level": 3,
+  "mining_speed": 7,
+  "xp_capacity": 35,
+  "xp_absorption": 30,
+  color: 0xD874FCCC,
+  "resources": {
+    "soulforged:endicite": 1.0
+  }
+}

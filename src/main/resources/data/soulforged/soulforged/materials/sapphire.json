@@ -1,0 +1,7 @@
+{
+  "parent": "soulforged:corundum",
+  color: 0x0117BCDD,
+  "resources": {
+    "#c:sapphires": 1.0
+  }
+}

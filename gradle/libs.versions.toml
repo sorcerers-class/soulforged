@@ -6,13 +6,17 @@ quilt_mappings = "1.19.3+build.23"
 quilt_loader = "0.18.1-beta.73"
 qfapi = "5.0.0-beta.4+0.73.0-1.19.3"
 qkl = "1.1.0+kt.1.8.0+flk.1.9.0"
+imgui = "1.86.7"
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
 quilt_mappings = { module = "org.quiltmc:quilt-mappings", version.ref = "quilt_mappings" }
 quilt_loader = { module = "org.quiltmc:quilt-loader", version.ref = "quilt_loader" }
 qkl = { module = "org.quiltmc.quilt-kotlin-libraries:quilt-kotlin-libraries", version.ref = "qkl" }
 qfapi = { module = "org.quiltmc.quilted-fabric-api:quilted-fabric-api", version.ref = "qfapi" }
-
+imgui-java-binding = {module = "io.github.spair:imgui-java-binding", version.ref="imgui"}
+imgui-java-lwjgl3 = {module = "io.github.spair:imgui-java-lwjgl3", version.ref= "imgui"}
+[bundles]
+imgui = ["imgui-java-binding", "imgui-java-lwjgl3"]
 # If you have multiple similar dependencies, you can declare a dependency bundle and reference it on the build script with "libs.bundles.example".
 # [bundles]
 # example = ["example-a", "example-b", "example-c"]

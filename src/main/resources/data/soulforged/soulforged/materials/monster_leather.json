@@ -1,0 +1,15 @@
+{
+  "parent": "soulforged:armor_material",
+  "hardness": 0.8,
+  "workability": 2,
+  "density": 200,
+  "durability": 800,
+  "heat": 0,
+  "padding": 30,
+  "xp_capacity": 26,
+  "xp_absorption": 10,
+  color: 0xA8410A,
+  "resources": {
+    "soulforged:monster_leather": 1.0
+  }
+}

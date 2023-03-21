@@ -13,6 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.function.Supplier;
 
+@SuppressWarnings("deprecation")
 @Mixin(ToolMaterials.class)
 public class MakeVanillaToolsUseless {
     @Final
@@ -50,6 +51,6 @@ public class MakeVanillaToolsUseless {
         this.miningSpeed = 0.0f;
         this.attackDamage = 0.0f;
         this.enchantability = 0;
-        this.repairIngredient = new Lazy(Ingredient::empty);
+        this.repairIngredient = new Lazy<>(Ingredient::empty);
     }
 }

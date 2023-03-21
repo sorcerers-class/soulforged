@@ -1,0 +1,18 @@
+{
+  "parent": "soulforged:material",
+  "hardness": 5.0,
+  "edgeholding": 9.0,
+  "workability": 4,
+  "density": 1400,
+  "durability": 1100,
+  "heat": 4,
+  "padding": 0,
+  "mining_level": 3,
+  "mining_speed": 7,
+  "xp_capacity": 30,
+  "xp_absorption": 20,
+  "color": 0x90BBF4,
+  "resources": {
+    "#c:osmium_ingots": 1.0
+  }
+}

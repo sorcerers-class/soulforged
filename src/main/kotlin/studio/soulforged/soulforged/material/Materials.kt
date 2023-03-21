@@ -84,9 +84,9 @@ object Materials {
             4.9,
             4.5,
             0,
-            0,
             660,
             300,
+            0,
             0,
             1,
             3,
@@ -633,10 +633,10 @@ object Materials {
             transform = {Material.color(it, 0xff2d2727)}
         )
     )
-    val ALUMINIUM = register(
+    val ALUMINUM = register(
         Material(
-            Identifier("soulforged", "aluminium"),
-            "item.soulforged.tool.material.aluminium",
+            Identifier("soulforged", "aluminum"),
+            "item.soulforged.tool.material.aluminum",
             5.5,
             6.8,
             2,

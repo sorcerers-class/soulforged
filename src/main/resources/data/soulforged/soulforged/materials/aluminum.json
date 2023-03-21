@@ -1,0 +1,18 @@
+{
+  "parent": "soulforged:material",
+  "hardness": 5.5,
+  "edgeholding": 6.8,
+  "workability": 2,
+  "density": 320,
+  "durability": 400,
+  "heat": 3,
+  "padding": 0,
+  "mining_level": 1,
+  "mining_speed": 5,
+  "xp_capacity": 32,
+  "xp_absorption": 12,
+  "color": 0xE6F1F4,
+  "resources": {
+    "#c:aluminum_ingots": 1.0
+  }
+}

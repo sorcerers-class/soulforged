@@ -1,0 +1,18 @@
+{
+  "parent": "soulforged:material",
+  "hardness": 6.9,
+  "edgeholding": 6.0,
+  "workability": 3,
+  "density": 690,
+  "durability": 800,
+  "heat": 4,
+  "padding": 0,
+  "mining_level": 4,
+  "mining_speed": 16,
+  "xp_capacity": 20,
+  "xp_absorption": 30,
+  "color": 0x757575,
+  "resources": {
+    "soulforged:mercurium": 1.0
+  }
+}

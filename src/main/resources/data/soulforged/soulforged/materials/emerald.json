@@ -1,0 +1,17 @@
+{
+  "parent": "soulforged:tool_material",
+  "hardness": 6.5,
+  "edgeholding": 7.0,
+  "workability": 3,
+  "density": 440,
+  "durability": 770,
+  "heat": 0,
+  "mining_level": 1,
+  "mining_speed": 4,
+  "xp_capacity": 35,
+  "xp_absorption": 20,
+  color: 0x32FC05EE,
+  "resources": {
+    "minecraft:emerald": 1.0
+  }
+}

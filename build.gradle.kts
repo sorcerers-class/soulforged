@@ -29,9 +29,7 @@ dependencies {
     modImplementation(libs.quilt.loader)
     modImplementation(libs.qfapi)
     modImplementation(libs.qkl)
-    val imguiVersion = "1.86.4"
-    implementation("io.github.spair:imgui-java-binding:$imguiVersion")
-    implementation("io.github.spair:imgui-java-lwjgl3:$imguiVersion") {
+    implementation(libs.bundles.imgui) {
         exclude(group = "org.lwjgl")
     }
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")

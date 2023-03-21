@@ -1,10 +1,9 @@
 package studio.soulforged.soulforged.mixin.client;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.Mouse;
 import net.minecraft.network.PacketByteBuf;
+import org.quiltmc.loader.api.minecraft.ClientOnly;
 import org.quiltmc.qsl.networking.api.PacketByteBufs;
 import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking;
 import org.spongepowered.asm.mixin.Final;
@@ -17,7 +16,7 @@ import studio.soulforged.soulforged.client.gui.CombatDebuggerClientUI;
 import studio.soulforged.soulforged.item.SoulforgedItems;
 import studio.soulforged.soulforged.network.NetworkIdentifiers;
 
-@Environment(EnvType.CLIENT)
+@ClientOnly
 @Mixin(Mouse.class)
 public class MouseMixin {
     @Final

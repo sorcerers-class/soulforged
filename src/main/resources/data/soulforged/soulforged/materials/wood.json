@@ -1,0 +1,20 @@
+{
+  "parent": "soulforged:material",
+  "hardness": 4.0,
+  "edgeholding": 2.5,
+  "workability": 0,
+  "density": 300,
+  "durability": 200,
+  "heat": 0,
+  "padding": 0,
+  "mining_level": 0,
+  "mining_speed": 2,
+  "xp_capacity": 20,
+  "xp_absorption": 20,
+  "color": 0x56481A,
+  "resources": {
+    "#minecraft:logs": 4.0,
+    "#minecraft:planks": 1.0,
+    "minecraft:stick": 0.5
+  }
+}

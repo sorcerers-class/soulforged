@@ -1,0 +1,18 @@
+{
+  "parent": "soulforged:material",
+  "hardness": 6.5,
+  "edgeholding": 5.0,
+  "workability": 1,
+  "density": 570,
+  "durability": 700,
+  "heat": 3,
+  "padding": 0,
+  "mining_level": 2,
+  "mining_speed": 5,
+  "xp_capacity": 30,
+  "xp_absorption": 40,
+  "color": 0xFC800C,
+  "resources": {
+    "minecraft:copper_ingot": 1.0
+  }
+}

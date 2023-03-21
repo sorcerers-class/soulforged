@@ -1,0 +1,20 @@
+{
+  "parent": "soulforged:tool_material",
+  "hardness": 5.0,
+  "edgeholding": 3.9,
+  "workability": 0,
+  "density": 700,
+  "durability": 250,
+  "heat": 0,
+  "mining_level": 1,
+  "mining_speed": 4,
+  "xp_capacity": 10,
+  "xp_absorption": 5,
+  "color": 0x777777,
+  "resources": {
+    "minecraft:stone": 1.0,
+    "minecraft:cobblestone": 1.0,
+    "#c:stone": 1.0,
+    "#c:cobblestone": 1.0,
+  }
+}

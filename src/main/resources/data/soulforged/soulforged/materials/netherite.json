@@ -1,0 +1,18 @@
+{
+  "parent": "soulforged:material",
+  "hardness": 9.5,
+  "edgeholding": 9.0,
+  "workability": 3,
+  "density": 630,
+  "durability": 1500,
+  "heat": 5,
+  "padding": 0,
+  "mining_level": 4,
+  "mining_speed": 9,
+  "xp_capacity": 40,
+  "xp_absorption": 40,
+  "color": 0x2D2727,
+  "resources": {
+    "minecraft:netherite_ingot": 1.0
+  }
+}

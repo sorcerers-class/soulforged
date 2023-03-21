@@ -1,0 +1,7 @@
+{
+  "parent": "soulforged:corundum",
+  color: 0xF4A790DD,
+  "resources": {
+    "soulforged:lotus_gem": 1.0
+  }
+}

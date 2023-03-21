@@ -1,0 +1,19 @@
+{
+  "parent": "soulforged:tool_material",
+  "hardness": 4.9,
+  "edgeholding": 4.5,
+  "workability": 0,
+  "density": 660,
+  "durability": 300,
+  "heat": 0,
+  "mining_level": 1,
+  "mining_speed": 3,
+  "xp_capacity": 10,
+  "xp_absorption": 10,
+  color: 0xFF474747,
+  "resources": {
+    "minecraft:flint": 1.0,
+    "minecraft:gravel": 0.1,
+    "#c:gravel": 0.1
+  }
+}
