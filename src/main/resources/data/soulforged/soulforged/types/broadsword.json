@@ -28,8 +28,6 @@
   },
   "callbacks": {
     "getMiningSpeed": "soulforged:msp/sword",
-    "onUse": "soulforged:rcep/none",
-    "handleAttack": "soulforged:ah/with_crits"
   },
   "recipe": {
     "head": "soulforged:broadsword_blade",

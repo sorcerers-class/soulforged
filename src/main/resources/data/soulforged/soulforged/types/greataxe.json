@@ -29,7 +29,6 @@
   "callbacks": {
     "getMiningSpeed": "soulforged:msp/axe",
     "onUse": "soulforged:rcep/axe",
-    "handleAttack": "soulforged:ah/with_crits"
   },
   "recipe": {
     "head": "soulforged:greataxe_head",

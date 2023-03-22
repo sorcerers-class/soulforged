@@ -19,8 +19,6 @@
   },
   "callbacks": {
     "getMiningSpeed": "soulforged:msp/hand",
-    "onUse": "soulforged:rcep/none",
-    "handleAttack": "soulforged:ah/with_crits"
   },
   "recipe": {
     "head": "soulforged:spearhead",

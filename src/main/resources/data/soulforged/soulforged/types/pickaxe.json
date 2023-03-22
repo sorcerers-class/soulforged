@@ -10,8 +10,6 @@
   },
   "callbacks": {
     "getMiningSpeed": "soulforged:msp/pickaxe",
-    "onUse": "soulforged:rcep/none",
-    "handleAttack": "soulforged:ah/with_crits"
   },
   "recipe": {
     "head": "soulforged:pickaxe_head",

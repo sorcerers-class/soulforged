@@ -19,8 +19,7 @@
   },
   "callbacks": {
     "getMiningSpeed": "soulforged:msp/pickaxe",
-    "onUse": "soulforged:rcep/axe",
-    "handleAttack": "soulforged:ah/with_crits"
+    "onUse": "soulforged:rcep/hammer",
   },
   "recipe": {
     "head": "soulforged:warhammer_head",

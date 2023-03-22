@@ -11,7 +11,6 @@
   "callbacks": {
     "getMiningSpeed": "soulforged:msp/pickaxe",
     "onUse": "soulforged:rcep/hammer",
-    "handleAttack": "soulforged:ah/with_crits"
   },
   "recipe": {
     "head": "soulforged:hammer_head",
