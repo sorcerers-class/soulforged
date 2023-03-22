@@ -11,7 +11,7 @@
   "mining_speed": 1,
   "xp_capacity": 25,
   "xp_absorption": 25,
-  "color": 0xFFEAE9DE,
+  "color": "FFEAE9DE",
   "resources": {
     "minecraft:bone_block": 3.0,
     "minecraft:bone": 1.0,

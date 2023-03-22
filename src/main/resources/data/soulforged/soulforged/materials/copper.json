@@ -11,7 +11,7 @@
   "mining_speed": 5,
   "xp_capacity": 30,
   "xp_absorption": 40,
-  "color": 0xFC800C,
+  "color": "FC800C",
   "resources": {
     "minecraft:copper_ingot": 1.0
   }

@@ -10,7 +10,7 @@
   "mining_speed": 3,
   "xp_capacity": 10,
   "xp_absorption": 10,
-  color: 0xFF474747,
+  "color": "FF474747",
   "resources": {
     "minecraft:flint": 1.0,
     "minecraft:gravel": 0.1,

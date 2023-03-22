@@ -11,7 +11,7 @@
   "mining_speed": 1,
   "xp_capacity": 0,
   "xp_absorption": 0,
-  "color": 0x190000,
+  "color": "190000",
   "resources": {
     "soulforged:witherbone": 1.0
   }

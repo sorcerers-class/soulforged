@@ -11,7 +11,7 @@
   "mining_speed": 9,
   "xp_capacity": 40,
   "xp_absorption": 40,
-  "color": 0x2D2727,
+  "color": "2D2727",
   "resources": {
     "minecraft:netherite_ingot": 1.0
   }

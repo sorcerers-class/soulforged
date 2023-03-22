@@ -11,7 +11,7 @@
   "mining_speed": 6,
   "xp_capacity": 4,
   "xp_absorption": 4,
-  "color": 0xC9E0E5,
+  "color": "C9E0E5",
   "resources": {
     "#c:lead_ingots": 1.0
   }

@@ -8,7 +8,7 @@
   "padding": 20,
   "xp_capacity": 25,
   "xp_absorption": 25,
-  "color": 0xFFEAE9DE,
+  "color": "FFEAE9DE",
   "resources": {
     "#minecraft:wool": 1.0
   }

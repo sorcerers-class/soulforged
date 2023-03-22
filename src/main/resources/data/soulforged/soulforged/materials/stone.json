@@ -10,7 +10,7 @@
   "mining_speed": 4,
   "xp_capacity": 10,
   "xp_absorption": 5,
-  "color": 0x777777,
+  "color": "777777",
   "resources": {
     "minecraft:stone": 1.0,
     "minecraft:cobblestone": 1.0,

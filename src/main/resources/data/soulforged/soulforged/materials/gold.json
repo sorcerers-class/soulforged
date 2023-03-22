@@ -11,7 +11,7 @@
   "mining_speed": 12,
   "xp_capacity": 100,
   "xp_absorption": 100,
-  "color": 0xF9E71D,
+  "color": "F9E71D",
   "resources": {
     "minecraft:gold_ingot": 1.0
   }

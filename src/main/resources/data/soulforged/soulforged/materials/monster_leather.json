@@ -8,7 +8,7 @@
   "padding": 30,
   "xp_capacity": 26,
   "xp_absorption": 10,
-  color: 0xA8410A,
+  "color": "A8410A",
   "resources": {
     "soulforged:monster_leather": 1.0
   }

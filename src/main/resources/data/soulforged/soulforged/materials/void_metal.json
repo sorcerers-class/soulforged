@@ -11,7 +11,7 @@
   "mining_speed": 9,
   "xp_capacity": 5,
   "xp_absorption": 10,
-  "color": 0,
+  "color": "000000",
   "resources": {
     "soulforged:void_metal_ingot": 1.0
   }

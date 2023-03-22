@@ -11,7 +11,7 @@
   "mining_speed": 16,
   "xp_capacity": 20,
   "xp_absorption": 30,
-  "color": 0x757575,
+  "color": "757575",
   "resources": {
     "soulforged:mercurium": 1.0
   }

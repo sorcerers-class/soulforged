@@ -11,7 +11,7 @@
   "mining_speed": 2,
   "xp_capacity": 20,
   "xp_absorption": 20,
-  "color": 0x56481A,
+  "color": "56481A",
   "resources": {
     "#minecraft:logs": 4.0,
     "#minecraft:planks": 1.0,

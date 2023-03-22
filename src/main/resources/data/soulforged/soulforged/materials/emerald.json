@@ -10,7 +10,7 @@
   "mining_speed": 4,
   "xp_capacity": 35,
   "xp_absorption": 20,
-  color: 0x32FC05EE,
+  "color": "32FC05EE",
   "resources": {
     "minecraft:emerald": 1.0
   }

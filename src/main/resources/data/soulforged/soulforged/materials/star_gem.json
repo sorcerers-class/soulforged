@@ -1,6 +1,6 @@
 {
   "parent": "soulforged:corundum",
-  color: 0xFF4A790DD,
+  "color": "FF4A790DD",
   "resources": {
     "soulforged:star_gem": 1.0
   }

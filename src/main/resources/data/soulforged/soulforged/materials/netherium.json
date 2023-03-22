@@ -11,7 +11,7 @@
   "mining_speed": 12,
   "xp_capacity": 20,
   "xp_absorption": 10,
-  "color": 0x605344,
+  "color": "605344",
   "resources": {
     "soulforged:netherium_ingot": 1.0
   }

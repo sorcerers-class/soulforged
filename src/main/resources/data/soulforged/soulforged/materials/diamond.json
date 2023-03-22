@@ -10,7 +10,7 @@
   "mining_speed": 8,
   "xp_capacity": 35,
   "xp_absorption": 45,
-  color: 0x05FCFCEE,
+  "color": "05FCFCEE",
   "resources": {
     "minecraft:diamond": 1.0
   }

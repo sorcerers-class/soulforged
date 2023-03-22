@@ -11,7 +11,7 @@
   "mining_speed": 6,
   "xp_capacity": 30,
   "xp_absorption": 25,
-  "color": 0xEAE9E3,
+  "color": "EAE9E3",
   "resources": {
     "minecraft:iron_ingot": 1.0
   }

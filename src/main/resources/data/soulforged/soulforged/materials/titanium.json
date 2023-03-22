@@ -11,7 +11,7 @@
   "mining_speed": 11,
   "xp_capacity": 35,
   "xp_absorption": 15,
-  "color": 0xAEAFAF,
+  "color": "AEAFAF",
   "resources": {
     "#c:titanium_ingots": 1.0
   }

@@ -11,7 +11,7 @@
   "mining_speed": 12,
   "xp_capacity": 55,
   "xp_absorption": 45,
-  "color": 0xFFFFFF,
+  "color": "FFFFFF",
   "resources": {
     "soulforged:divinium": 1.0
   }

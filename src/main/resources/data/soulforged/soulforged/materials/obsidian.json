@@ -10,7 +10,7 @@
   "mining_speed": 10,
   "xp_capacity": 15,
   "xp_absorption": 10,
-  color: 0x1C0038,
+  "color": "1C0038",
   "resources": {
     "minecraft:obsidian": 1.0
   }

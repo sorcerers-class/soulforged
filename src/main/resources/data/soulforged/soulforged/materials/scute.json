@@ -8,7 +8,7 @@
   "padding": 10,
   "xp_capacity": 30,
   "xp_absorption": 30,
-  "color": 0x2D8C1E,
+  "color": "2D8C1E",
   "resources": {
     "minecraft:scute": 1.0
   }

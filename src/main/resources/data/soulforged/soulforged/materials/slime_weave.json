@@ -8,7 +8,7 @@
   "padding": 40,
   "xp_capacity": 10,
   "xp_absorption": 15,
-  "color": 0xD1FCCC,
+  "color": "D1FCCC",
   "resources": {
     "soulforged:slime_weave": 1.0
   }

@@ -1,6 +1,6 @@
 {
   "parent": "soulforged:corundum",
-  color: 0xBC0101DD,
+  "color": "BC0101DD",
   "resources": {
     "#c:rubies": 1.0
   }

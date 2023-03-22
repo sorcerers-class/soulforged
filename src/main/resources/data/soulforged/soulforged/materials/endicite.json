@@ -10,7 +10,7 @@
   "mining_speed": 7,
   "xp_capacity": 35,
   "xp_absorption": 30,
-  color: 0xD874FCCC,
+  "color": "D874FCCC",
   "resources": {
     "soulforged:endicite": 1.0
   }

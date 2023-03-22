@@ -11,7 +11,7 @@
   "mining_speed": 5,
   "xp_capacity": 32,
   "xp_absorption": 12,
-  "color": 0xE6F1F4,
+  "color": "E6F1F4",
   "resources": {
     "#c:aluminum_ingots": 1.0
   }

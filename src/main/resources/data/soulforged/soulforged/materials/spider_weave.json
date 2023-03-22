@@ -8,7 +8,7 @@
   "padding": 12,
   "xp_capacity": 20,
   "xp_absorption": 40,
-  "color": 0xEAEAEA,
+  "color": "EAEAEA",
   "resources": {
     "soulforged:spider_weave": 1.0
   }

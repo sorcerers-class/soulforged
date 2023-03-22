@@ -8,7 +8,7 @@
   "padding": 15,
   "xp_capacity": 10,
   "xp_absorption": 25,
-  color: 0xAA6C1B,
+  "color": "AA6C1B",
   "resources": {
     "soulforged:scales": 1.0
   }

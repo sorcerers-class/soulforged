@@ -10,7 +10,7 @@
   "mining_speed": 5,
   "xp_capacity": 30,
   "xp_absorption": 40,
-  color: 0x8014FCEE,
+  "color": "8014FCEE",
   "resources": {
     "minecraft:amethyst_shard": 1.0
   }

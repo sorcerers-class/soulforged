@@ -11,7 +11,7 @@
   "mining_speed": 14,
   "xp_capacity": 45,
   "xp_absorption": 24,
-  "color": 0xFFFF00,
+  "color": "FFFF00",
   "resources": {
     "soulforged:neutronium": 1.0
   }

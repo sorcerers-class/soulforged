@@ -11,7 +11,7 @@
   "mining_speed": 10,
   "xp_capacity": 45,
   "xp_absorption": 30,
-  "color": 0xC9E0E5,
+  "color": "C9E0E5",
   "resources": {
     "#c:silver_ingots": 1.0
   }
