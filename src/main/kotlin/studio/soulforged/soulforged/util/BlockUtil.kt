@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.registry.Registries
 import net.minecraft.registry.tag.BlockTags
 import net.minecraft.util.Identifier
-import studio.soulforged.soulforged.item.tool.MiningSpeedProcessors
+import studio.soulforged.soulforged.resource.callback.MiningSpeedProcessors
 import studio.soulforged.soulforged.item.tool.ToolTypes
 import studio.soulforged.soulforged.material.Materials
 import java.util.*

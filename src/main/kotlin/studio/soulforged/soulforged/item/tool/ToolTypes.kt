@@ -1,18 +1,24 @@
 package studio.soulforged.soulforged.item.tool
 
-import net.minecraft.registry.Registries
 import net.minecraft.registry.Registry
-import net.minecraft.registry.RegistryKey
 import net.minecraft.util.Identifier
 import studio.soulforged.soulforged.item.tool.combat.*
 import studio.soulforged.soulforged.item.tool.part.ToolParts
+import studio.soulforged.soulforged.resource.callback.MiningSpeedProcessors
+import studio.soulforged.soulforged.resource.callback.OnRightClickCallbacks
+import studio.soulforged.soulforged.util.RegistryUtil
 
 @Suppress("unused")
 object ToolTypes {
-    
-
-    private val TOOL_TYPES_REGISTRY_KEY: RegistryKey<Registry<ToolType>> = RegistryKey.ofRegistry(Identifier("soulforged", "tool_types"))
-    val TOOL_TYPES_REGISTRY: Registry<ToolType> = Registries.registerSimple(TOOL_TYPES_REGISTRY_KEY) { SHORTSWORD }
+    val DEFAULT = ToolType(Identifier("soulforged:none"), "missingno",
+        AttackProperties(0.0, 0.0, 0.0, 0.0, 0.0, WeaponCategories.THRUSTING, CritTypes.SIDE),
+        null,
+        null,
+        MiningSpeedProcessors.HAND,
+        OnRightClickCallbacks.NONE,
+        AttackHandlers.WITH_CRITS,
+        arrayOf(ToolParts.DEFAULT, ToolParts.DEFAULT, ToolParts.DEFAULT))
+    val TOOL_TYPES_REGISTRY: Registry<ToolType> = RegistryUtil.createRegistry("soulforged:tool_types", DEFAULT)
     val SHORTSWORD = register(
         ToolType(
             Identifier("soulforged", "shortsword"),
@@ -21,7 +27,7 @@ object ToolTypes {
             null,
             AttackProperties(0.5, 0.2, 18.0, 1.2, 0.8, WeaponCategories.THRUSTING, CritTypes.FORWARD),
             MiningSpeedProcessors.SWORD,
-            RightClickEventProcessors.NONE,
+            OnRightClickCallbacks.NONE,
             AttackHandlers.WITH_CRITS,
             arrayOf(ToolParts.SHORTSWORD_BLADE, ToolParts.HILT, ToolParts.HANDLE)
         )
@@ -34,7 +40,7 @@ object ToolTypes {
             AttackProperties(0.9, 0.2, 1.0, 1.0, 0.2, WeaponCategories.SLASHING, CritTypes.SIDE),
             AttackProperties(0.75, 0.2, 15.0, 1.0, 0.8, WeaponCategories.THRUSTING, CritTypes.FORWARD),
             MiningSpeedProcessors.SWORD,
-            RightClickEventProcessors.NONE,
+            OnRightClickCallbacks.NONE,
             AttackHandlers.WITH_CRITS,
             arrayOf(ToolParts.BROADSWORD_BLADE, ToolParts.WIDE_HILT, ToolParts.HANDLE)
         )
@@ -47,7 +53,7 @@ object ToolTypes {
             AttackProperties(1.1, 0.25, 1.0, 0.8, 0.3, WeaponCategories.SLASHING, CritTypes.SIDE),
             AttackProperties(1.0, 0.25, 10.0, 0.8, 0.8, WeaponCategories.THRUSTING, CritTypes.FORWARD),
             MiningSpeedProcessors.SWORD,
-            RightClickEventProcessors.NONE,
+            OnRightClickCallbacks.NONE,
             AttackHandlers.WITH_CRITS,
             arrayOf(ToolParts.LONGSWORD_BLADE, ToolParts.WIDE_HILT, ToolParts.LONG_HANDLE)
         )
@@ -60,7 +66,7 @@ object ToolTypes {
             AttackProperties(1.3, 0.3, 1.0, 0.6, 0.3, WeaponCategories.SLASHING, CritTypes.SIDE),
             null,
             MiningSpeedProcessors.SWORD,
-            RightClickEventProcessors.NONE,
+            OnRightClickCallbacks.NONE,
             AttackHandlers.WITH_CRITS,
             arrayOf(ToolParts.GREATSWORD_BLADE, ToolParts.WIDE_HILT, ToolParts.LONG_HANDLE)
         )
@@ -73,7 +79,7 @@ object ToolTypes {
             null,
             null,
             MiningSpeedProcessors.SWORD,
-            RightClickEventProcessors.NONE,
+            OnRightClickCallbacks.NONE,
             AttackHandlers.WITH_CRITS,
             arrayOf(ToolParts.RAPIER_BLADE, ToolParts.SLIM_HILT, ToolParts.HANDLE)
         )
@@ -86,7 +92,7 @@ object ToolTypes {
             AttackProperties(0.75, 0.25, 0.0, 0.8, 0.9, WeaponCategories.THRUSTING, CritTypes.FORWARD),
             null,
             MiningSpeedProcessors.HAND,
-            RightClickEventProcessors.NONE,
+            OnRightClickCallbacks.NONE,
             AttackHandlers.WITH_CRITS,
             arrayOf(ToolParts.SPEARHEAD, ToolParts.BINDING, ToolParts.LONG_SHAFT)
         )
@@ -99,7 +105,7 @@ object ToolTypes {
             AttackProperties(0.8, 0.3, 0.0, 0.5, 1.2, WeaponCategories.THRUSTING, CritTypes.FORWARD),
             null,
             MiningSpeedProcessors.HAND,
-            RightClickEventProcessors.NONE,
+            OnRightClickCallbacks.NONE,
             AttackHandlers.WITH_CRITS,
             arrayOf(ToolParts.SPEARHEAD, ToolParts.BINDING, ToolParts.VERY_LONG_SHAFT)
         )
@@ -112,7 +118,7 @@ object ToolTypes {
             AttackProperties(0.8, 0.25, 0.0, 0.9, 0.85, WeaponCategories.THRUSTING, CritTypes.FORWARD),
             null,
             MiningSpeedProcessors.HAND,
-            RightClickEventProcessors.NONE,
+            OnRightClickCallbacks.NONE,
             AttackHandlers.WITH_CRITS,
             arrayOf(ToolParts.SPEARHEAD, ToolParts.BINDING, ToolParts.JAVELIN_SHAFT)
         )
@@ -125,7 +131,7 @@ object ToolTypes {
             null,
             null,
             MiningSpeedProcessors.HAND,
-            RightClickEventProcessors.NONE,
+            OnRightClickCallbacks.NONE,
             AttackHandlers.WITH_CRITS,
             arrayOf(ToolParts.MACEHEAD, ToolParts.BINDING, ToolParts.SHORT_SHAFT)
         )
@@ -138,7 +144,7 @@ object ToolTypes {
             null,
             null,
             MiningSpeedProcessors.HAND,
-            RightClickEventProcessors.NONE,
+            OnRightClickCallbacks.NONE,
             AttackHandlers.WITH_CRITS,
             arrayOf(ToolParts.MORNINGSTAR_HEAD, ToolParts.BINDING, ToolParts.SHORT_SHAFT)
         )
@@ -151,7 +157,7 @@ object ToolTypes {
             AttackProperties(1.0, 0.4, 1.0, 0.5, 0.3, WeaponCategories.SLASHING, CritTypes.SIDE),
             AttackProperties(1.4, 0.7, 1.0, 0.5, 0.6, WeaponCategories.CRUSHING, CritTypes.DOWN),
             MiningSpeedProcessors.AXE,
-            RightClickEventProcessors.AXE_INTERACTIONS,
+            OnRightClickCallbacks.AXE_INTERACTIONS,
             AttackHandlers.WITH_CRITS,
             arrayOf(ToolParts.GREATAXE_HEAD, ToolParts.TOUGH_BINDING, ToolParts.LONG_HANDLE)
         )
@@ -164,7 +170,7 @@ object ToolTypes {
             AttackProperties(0.0, 1.4, 1.0, 0.35, 0.0, WeaponCategories.CRUSHING, CritTypes.DOWN),
             null,
             MiningSpeedProcessors.PICKAXE,
-            RightClickEventProcessors.NONE,
+            OnRightClickCallbacks.NONE,
             AttackHandlers.WITH_CRITS,
             arrayOf(ToolParts.GREATHAMMER_HEAD, ToolParts.TOUGH_BINDING, ToolParts.LONG_HANDLE)
         )
@@ -177,7 +183,7 @@ object ToolTypes {
             null,
             AttackProperties(0.75, 0.75, 2.0, 0.8, 1.0, WeaponCategories.THRUSTING, CritTypes.DOWN),
             MiningSpeedProcessors.PICKAXE,
-            RightClickEventProcessors.NONE,
+            OnRightClickCallbacks.NONE,
             AttackHandlers.WITH_CRITS,
             arrayOf(ToolParts.WARHAMMER_HEAD, ToolParts.BINDING, ToolParts.LONG_HANDLE)
         )
@@ -190,7 +196,7 @@ object ToolTypes {
             null,
             AttackProperties(0.8, 0.6, 1.0, 0.9, 0.4, WeaponCategories.CRUSHING, CritTypes.DOWN),
             MiningSpeedProcessors.AXE,
-            RightClickEventProcessors.AXE_INTERACTIONS,
+            OnRightClickCallbacks.AXE_INTERACTIONS,
             AttackHandlers.WITH_CRITS,
             arrayOf(ToolParts.AXE_HEAD, ToolParts.BINDING, ToolParts.SHORT_SHAFT)
         )
@@ -203,7 +209,7 @@ object ToolTypes {
             null,
             null,
             MiningSpeedProcessors.PICKAXE,
-            RightClickEventProcessors.NONE,
+            OnRightClickCallbacks.NONE,
             AttackHandlers.WITH_CRITS,
             arrayOf(ToolParts.PICKAXE_HEAD, ToolParts.BINDING, ToolParts.LONG_HANDLE)
         )
@@ -216,7 +222,7 @@ object ToolTypes {
             null,
             null,
             MiningSpeedProcessors.SHOVEL,
-            RightClickEventProcessors.SHOVEL_INTERACTIONS,
+            OnRightClickCallbacks.SHOVEL_INTERACTIONS,
             AttackHandlers.WITH_CRITS,
             arrayOf(ToolParts.SHOVEL_HEAD, ToolParts.BINDING, ToolParts.LONG_HANDLE)
         )
@@ -229,7 +235,7 @@ object ToolTypes {
             null,
             null,
             MiningSpeedProcessors.HOE,
-            RightClickEventProcessors.HOE_INTERACTIONS,
+            OnRightClickCallbacks.HOE_INTERACTIONS,
             AttackHandlers.WITH_CRITS,
             arrayOf(ToolParts.HOE_HEAD, ToolParts.BINDING, ToolParts.LONG_HANDLE)
         )
@@ -242,7 +248,7 @@ object ToolTypes {
             null,
             null,
             MiningSpeedProcessors.PICKAXE,
-            RightClickEventProcessors.HAMMER_TO_CREATE_WORKSTATION,
+            OnRightClickCallbacks.HAMMER_TO_CREATE_WORKSTATION,
             AttackHandlers.NO_CRIT,
             arrayOf(ToolParts.HAMMER_HEAD, ToolParts.BINDING, ToolParts.HANDLE)
         )
@@ -251,4 +257,9 @@ object ToolTypes {
     private fun register(type: ToolType): ToolType {
         return Registry.register(TOOL_TYPES_REGISTRY, type.id, type)
     }
+    fun init() {
+        register(DEFAULT)
+    }
 }
+
+

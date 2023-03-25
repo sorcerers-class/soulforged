@@ -19,8 +19,8 @@ class ToolPartInst(val part: ToolPart, val mat: Material, var durability: Int, v
         }
 
         override fun deserialize(nbt: NbtCompound): ToolPartInst {
-            val part = ToolParts.TOOL_PARTS_REGISTRY.get(Identifier(nbt.getString("part"))) ?: ToolParts.BINDING
-            val mat = Materials.MATERIAL_REGISTRY.get(Identifier(nbt.getString("material"))) ?: Materials.WOOD
+            val part = ToolParts.TOOL_PARTS_REGISTRY.get(Identifier(nbt.getString("part"))) ?: ToolParts.DEFAULT
+            val mat = Materials.MATERIAL_REGISTRY.get(Identifier(nbt.getString("material"))) ?: Materials.DEFAULT
             val durability = nbt.getInt("durability")
             val maxDurability = nbt.getInt("max_durability")
             return ToolPartInst(part, mat, durability, maxDurability)

@@ -98,7 +98,15 @@ class ToolItem : Item(
         val toolType = tool.type
         val hc = toolType.hcAttack != null
         val dc = toolType.dcAttack != null
-
+        if(
+            headMaterial == Text.literal("missingno")
+            || headType == "missingno"
+            || bindingMaterial == Text.literal("missingno")
+            || bindingType == "missingno"
+            || handleMaterial == Text.literal("missingno")
+            || handleType == "missingno"
+            || toolType.name == "missingno"
+            ) return
         //tooltip.add(new TranslatableText("item.soulforged.tool.type." + type + ".desc").formatted(Formatting.GRAY, Formatting.ITALIC));
         tooltip.add(
             Text.translatable(headType, headMaterial)

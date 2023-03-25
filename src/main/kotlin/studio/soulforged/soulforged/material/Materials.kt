@@ -1,21 +1,17 @@
 package studio.soulforged.soulforged.material
 
-import net.minecraft.registry.Registries
 import net.minecraft.registry.Registry
-import net.minecraft.registry.RegistryKey
 import net.minecraft.util.Identifier
 import studio.soulforged.soulforged.Soulforged
+import studio.soulforged.soulforged.util.RegistryUtil
 
 @Suppress("unused")
 object Materials {
-
-    private val MATERIAL_REGISTRY_KEY: RegistryKey<Registry<Material>> =
-        RegistryKey.ofRegistry(Identifier("soulforged", "materials"))
-    val MATERIAL_REGISTRY: Registry<Material> =
-        Registries.registerSimple(MATERIAL_REGISTRY_KEY) {WOOD}
+    val DEFAULT = Material(Identifier("soulforged:none"), "missingno", 0.0, 0.0, 0, 0, 0, 0, 0, 0, 0, false, false, null, 0, 0, transform = {return@Material true})
+    val MATERIAL_REGISTRY: Registry<Material> = RegistryUtil.createRegistry("soulforged:materials", DEFAULT)
     // Earlygame Materials
-    val WOOD = register(
-        Material(
+    val WOOD =
+        register(Material(
             Identifier("soulforged", "wood"),
             "item.soulforged.tool.material.wood",
             4.0,
@@ -33,8 +29,7 @@ object Materials {
             20,
             20,
             transform = {Material.color(it, 0xff56481a)}
-        )
-    )
+        ))
     val STONE = register(
         Material(
             Identifier("soulforged", "stone"),
@@ -829,4 +824,9 @@ object Materials {
         Soulforged.LOGGER.debug("Try register: $mat.id")
         return Registry.register(MATERIAL_REGISTRY, mat.id, mat)
     }
+    fun init() {
+        register(DEFAULT)
+    }
 }
+
+

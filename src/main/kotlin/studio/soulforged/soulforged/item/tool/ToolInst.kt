@@ -24,14 +24,14 @@ import studio.soulforged.soulforged.util.NbtSerializer
 class ToolInst(val stack: ItemStack, val type: ToolType, val head: ToolPartInst, val binding: ToolPartInst, val handle: ToolPartInst, val pattern: Material, val attributes: AttributeContainer) {
     constructor(type: Identifier, head: Identifier, binding: Identifier, handle: Identifier, pattern: Identifier) : this(
         SoulforgedItems.TOOL.defaultStack,
-        ToolTypes.TOOL_TYPES_REGISTRY.get(type) ?: ToolTypes.SHORTSWORD,
-        ToolPartInst(ToolTypes.TOOL_TYPES_REGISTRY.get(type)?.parts?.get(0) ?: ToolParts.SHORTSWORD_BLADE, Materials.MATERIAL_REGISTRY.get(head) ?: Materials.WOOD),
-        ToolPartInst(ToolTypes.TOOL_TYPES_REGISTRY.get(type)?.parts?.get(1) ?: ToolParts.HILT, Materials.MATERIAL_REGISTRY.get(binding) ?: Materials.WOOD),
-        ToolPartInst(ToolTypes.TOOL_TYPES_REGISTRY.get(type)?.parts?.get(2) ?: ToolParts.HANDLE, Materials.MATERIAL_REGISTRY.get(handle) ?: Materials.WOOD),
-        Materials.MATERIAL_REGISTRY.get(pattern) ?: Materials.WOOD,
+        ToolTypes.TOOL_TYPES_REGISTRY.get(type) ?: ToolTypes.DEFAULT,
+        ToolPartInst(ToolTypes.TOOL_TYPES_REGISTRY.get(type)?.parts?.get(0) ?: ToolParts.DEFAULT, Materials.MATERIAL_REGISTRY.get(head) ?: Materials.DEFAULT),
+        ToolPartInst(ToolTypes.TOOL_TYPES_REGISTRY.get(type)?.parts?.get(1) ?: ToolParts.DEFAULT, Materials.MATERIAL_REGISTRY.get(binding) ?: Materials.DEFAULT),
+        ToolPartInst(ToolTypes.TOOL_TYPES_REGISTRY.get(type)?.parts?.get(2) ?: ToolParts.DEFAULT, Materials.MATERIAL_REGISTRY.get(handle) ?: Materials.DEFAULT),
+        Materials.MATERIAL_REGISTRY.get(pattern) ?: Materials.DEFAULT,
         AttributeContainer()
     )
-    constructor() : this(Identifier("soulforged:shortsword"), Identifier("soulforged:wood"), Identifier("soulforged:wood"), Identifier("soulforged:wood"), Identifier("soulforged:wood"))
+    constructor() : this(Identifier("soulforged:none"), Identifier("soulforged:none"), Identifier("soulforged:none"), Identifier("soulforged:none"), Identifier("soulforged:none"))
     /**
      * Gets the durability of the tool to display.
      * @return The durability, normalized from 0 to 255.

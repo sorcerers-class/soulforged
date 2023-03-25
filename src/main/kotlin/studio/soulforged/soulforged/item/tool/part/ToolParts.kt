@@ -1,14 +1,13 @@
 package studio.soulforged.soulforged.item.tool.part
 
-import net.minecraft.registry.Registries
 import net.minecraft.registry.Registry
-import net.minecraft.registry.RegistryKey
 import net.minecraft.util.Identifier
+import studio.soulforged.soulforged.util.RegistryUtil
 
 @Suppress("unused")
 object ToolParts {
-    val TOOL_PARTS_REGISTRY_KEY: RegistryKey<Registry<ToolPart>> = RegistryKey.ofRegistry(Identifier("soulforged", "tool_parts"))
-    val TOOL_PARTS_REGISTRY: Registry<ToolPart> = Registries.registerSimple(TOOL_PARTS_REGISTRY_KEY, ) {HANDLE}
+    val DEFAULT = ToolPart(Identifier("soulforged:none"), "missingno", 0.0, 0.0)
+    val TOOL_PARTS_REGISTRY: Registry<ToolPart> = RegistryUtil.createRegistry("soulforged:tool_parts", DEFAULT)
     val HANDLE = register(ToolPart(Identifier("soulforged", "handle"), "item.soulforged.part.handle", 0.1, 40.0))
     val LONG_HANDLE = register(ToolPart(Identifier("soulforged", "long_handle"), "item.soulforged.part.long_handle", 0.2, 33.0))
     val SHORT_SHAFT = register(ToolPart(Identifier("soulforged", "short_shaft"), "item.soulforged.part.short_shaft", 0.25, 35.0))
@@ -36,7 +35,12 @@ object ToolParts {
     val SHOVEL_HEAD = register(ToolPart(Identifier("soulforged", "shovel_head"), "item.soulforged.part.shovel_head", 0.5, 1.0))
     val HOE_HEAD = register(ToolPart(Identifier("soulforged", "hoe_head"), "item.soulforged.part.hoe_head", 0.2, 1.0))
     val HAMMER_HEAD = register(ToolPart(Identifier("soulforged", "hammer_head"), "item.soulforged.part.hammer_head", 0.1, 5.0))
+
     private fun register(type: ToolPart): ToolPart {
         return Registry.register(TOOL_PARTS_REGISTRY, type.id, type)
     }
+    fun init() {
+        register(DEFAULT)
+    }
 }
+

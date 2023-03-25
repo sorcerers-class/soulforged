@@ -1,10 +1,11 @@
-package studio.soulforged.soulforged.item.tool
+package studio.soulforged.soulforged.resource.callback
 
 import net.minecraft.block.BlockState
 import net.minecraft.block.Blocks
 import net.minecraft.registry.Registries
 import net.minecraft.registry.tag.BlockTags
 import studio.soulforged.soulforged.material.Material
+import studio.soulforged.soulforged.resource.callback.MiningSpeedProcessors.MiningSpeedProcessor
 
 
 object MiningSpeedProcessors {
@@ -48,4 +49,8 @@ object MiningSpeedProcessors {
         }
         if (Registries.BLOCK.get(Registries.BLOCK.getRawId(state.block)).defaultState.isIn(BlockTags.PICKAXE_MINEABLE)) 0.0f else 1.0f
     }
+    fun interface MiningSpeedProcessor {
+        fun getMiningSpeed(state: BlockState?, mat: Material?): Float
+    }
 }
+

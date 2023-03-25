@@ -4,6 +4,8 @@ import net.minecraft.util.Identifier
 import studio.soulforged.soulforged.item.tool.combat.AttackHandler
 import studio.soulforged.soulforged.item.tool.combat.AttackProperties
 import studio.soulforged.soulforged.item.tool.part.ToolPart
+import studio.soulforged.soulforged.resource.callback.MiningSpeedProcessors
+import studio.soulforged.soulforged.resource.callback.OnRightClickCallbacks
 
 /**
  * Represents a generic tool type.
@@ -15,8 +17,8 @@ data class ToolType(
     val defaultAttack: AttackProperties,
     val hcAttack: AttackProperties?,
     val dcAttack: AttackProperties?,
-    val miningSpeedProcessor: MiningSpeedProcessor,
-    val rightClickEventProcessor: RightClickEventProcessor,
+    val miningSpeedProcessor: MiningSpeedProcessors.MiningSpeedProcessor,
+    val rightClickEventProcessor: OnRightClickCallbacks.OnRightClickCallback,
     val attackHandler: AttackHandler,
     val parts: Array<ToolPart>
 ) {

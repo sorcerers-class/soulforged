@@ -18,9 +18,9 @@ import studio.soulforged.soulforged.sound.SoulforgedSoundEvents
 class Soulforged : ModInitializer {
     override fun onInitialize(mod: ModContainer) {
         LOGGER.info("Soulforged version {} start!", mod.metadata().version().raw())
-        Materials.MATERIAL_REGISTRY
-        ToolTypes.TOOL_TYPES_REGISTRY
-        ToolParts.TOOL_PARTS_REGISTRY
+        Materials.init()
+        ToolTypes.init()
+        ToolParts.init()
         SoulforgedBlocks.init()
         SoulforgedBlockEntityTypes.init()
         SoulforgedItems.init()
