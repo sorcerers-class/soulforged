@@ -5,7 +5,6 @@ import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityGroup
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.attribute.EntityAttributes
-import net.minecraft.entity.damage.DamageSource
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.registry.Registry
 import net.minecraft.util.ActionResult
@@ -27,7 +26,7 @@ object AttackHandlers {
 
         if (target.isAttackable) {
             if (!target.handleAttack(attacker)) {
-                target.damage(DamageSource.player(attacker),
+                target.damage(target.damageSources.playerAttack(attacker),
                 tool.baseAttackDamage(tool.attackProperties(attackType)).toFloat())
             }
         }
@@ -37,7 +36,8 @@ object AttackHandlers {
         if(attacker == null || target == null) return@AttackHandler ActionResult.FAIL
         if (target.isAttackable) {
             if (!target.handleAttack(attacker)) {
-                target.damage(DamageSource.player(attacker),
+                target.damage(
+                    target.damageSources.playerAttack(attacker),
                     attacker.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE).toFloat()
                             + EnchantmentHelper.getAttackDamage(attacker.mainHandStack,
                         if(target is LivingEntity) target.group else EntityGroup.DEFAULT

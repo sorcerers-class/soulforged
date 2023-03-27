@@ -1,11 +1,11 @@
 [versions]
 # The latest versions are available at https://lambdaurora.dev/tools/import_quilt.html
-kotlin = "1.8.0"
-minecraft = "1.19.3"
-quilt_mappings = "1.19.3+build.23"
-quilt_loader = "0.18.1-beta.73"
-qfapi = "5.0.0-beta.4+0.73.0-1.19.3"
-qkl = "1.1.0+kt.1.8.0+flk.1.9.0"
+kotlin = "1.8.10"
+minecraft = "1.19.4"
+quilt_mappings = "1.19.4+build.7"
+quilt_loader = "0.18.6"
+qfapi = "6.0.0-beta.2+0.76.0-1.19.4"
+qkl = "1.1.1+kt.1.8.10+flk.1.9.2"
 imgui = "1.86.7"
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
