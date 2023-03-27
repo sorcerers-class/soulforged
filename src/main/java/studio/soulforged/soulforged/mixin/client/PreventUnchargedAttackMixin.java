@@ -20,12 +20,10 @@ public abstract class PreventUnchargedAttackMixin {
 
     @Inject(method = "doAttack", at = @At(value = "HEAD"), cancellable = true)
     public void soulforged$injectToCancelAttack(CallbackInfoReturnable<Boolean> cir) {
-        if(this.player.getAttackCooldownProgress(0.5f) != 1.0f) {
-            try {
-                ((AttackQueueHolder)player).getQueue().add(((EntityHitResult)this.crosshairTarget).getEntity());
-            } catch(ClassCastException ignored) {} finally {
-                cir.setReturnValue(false);
-            }
+        if(this.player.getAttackCooldownProgress(0.5f) == 1.0f && this.crosshairTarget instanceof EntityHitResult ehr) {
+            ((AttackQueueHolder)player).getQueue().add((ehr).getEntity());
+        } else {
+            cir.setReturnValue(false);
         }
     }
 }
