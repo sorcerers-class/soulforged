@@ -1,14 +1,15 @@
 package studio.soulforged.soulforged.util
 
-import net.minecraft.registry.Registries
-import net.minecraft.registry.Registry
-import net.minecraft.registry.RegistryKey
+import com.mojang.serialization.Lifecycle
 import net.minecraft.util.Identifier
+import net.minecraft.util.registry.Registry
+import net.minecraft.util.registry.RegistryKey
+import net.minecraft.util.registry.SimpleRegistry
 
 object RegistryUtil {
     fun<T> createRegistry(id: Identifier, default: T): Registry<T> {
         val key: RegistryKey<Registry<T>> = RegistryKey.ofRegistry(id)
-        return Registries.registerSimple(key) { default }
+        return SimpleRegistry(key, Lifecycle.stable(), null)
     }
     fun<T> createRegistry(id: String, default: T): Registry<T> {
         return createRegistry(Identifier(id), default)

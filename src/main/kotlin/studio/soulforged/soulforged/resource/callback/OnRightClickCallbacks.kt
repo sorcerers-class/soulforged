@@ -8,12 +8,12 @@ import net.minecraft.block.Oxidizable
 import net.minecraft.item.AxeItem
 import net.minecraft.item.HoneycombItem
 import net.minecraft.item.ItemUsageContext
-import net.minecraft.registry.Registries
-import net.minecraft.registry.tag.BlockTags
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvents
+import net.minecraft.tag.BlockTags
 import net.minecraft.util.ActionResult
+import net.minecraft.util.registry.Registry
 import net.minecraft.world.WorldEvents
 import studio.soulforged.soulforged.resource.callback.OnRightClickCallbacks.OnRightClickCallback
 import java.util.*
@@ -57,7 +57,7 @@ object OnRightClickCallbacks {
         val pos = ctx?.blockPos
         val player = ctx?.player
         var state = world?.getBlockState(pos)
-        if (Registries.BLOCK.get(Registries.BLOCK.getRawId(state?.block)).defaultState.isIn(BlockTags.DIRT)) {
+        if (Registry.BLOCK.get(Registry.BLOCK.getRawId(state?.block)).defaultState.isIn(BlockTags.DIRT)) {
             world?.setBlockState(pos, Blocks.FARMLAND.defaultState)
             world?.playSound(player, pos, SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS, 1.0f, 1.0f)
             state = world?.getBlockState(pos)

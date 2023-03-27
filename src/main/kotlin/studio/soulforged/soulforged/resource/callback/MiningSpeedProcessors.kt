@@ -2,37 +2,37 @@ package studio.soulforged.soulforged.resource.callback
 
 import net.minecraft.block.BlockState
 import net.minecraft.block.Blocks
-import net.minecraft.registry.Registries
-import net.minecraft.registry.tag.BlockTags
+import net.minecraft.tag.BlockTags
+import net.minecraft.util.registry.Registry
 import studio.soulforged.soulforged.material.Material
 import studio.soulforged.soulforged.resource.callback.MiningSpeedProcessors.MiningSpeedProcessor
 
 
 object MiningSpeedProcessors {
     val HAND = MiningSpeedProcessor { state: BlockState?, mat: Material? ->
-        if (!state!!.isToolRequired) mat!!.miningLevel / 2.0f else if (Registries.BLOCK.get(Registries.BLOCK.getRawId(state.block)).defaultState.isIn(
+        if (!state!!.isToolRequired) mat!!.miningLevel / 2.0f else if (Registry.BLOCK.get(Registry.BLOCK.getRawId(state.block)).defaultState.isIn(
                 BlockTags.PICKAXE_MINEABLE)) 0.0f else 1.0f
     }
     val AXE = MiningSpeedProcessor { state: BlockState?, mat: Material? ->
-        if (Registries.BLOCK.get(Registries.BLOCK.getRawId(state?.block)).defaultState.isIn(BlockTags.AXE_MINEABLE)) mat!!.miningSpeed.toFloat()
-        else if (Registries.BLOCK.get(Registries.BLOCK.getRawId(state?.block)).defaultState.isIn(BlockTags.PICKAXE_MINEABLE)) 0.0f
+        if (Registry.BLOCK.get(Registry.BLOCK.getRawId(state?.block)).defaultState.isIn(BlockTags.AXE_MINEABLE)) mat!!.miningSpeed.toFloat()
+        else if (Registry.BLOCK.get(Registry.BLOCK.getRawId(state?.block)).defaultState.isIn(BlockTags.PICKAXE_MINEABLE)) 0.0f
         else 1.0f
     }
     val SHOVEL = MiningSpeedProcessor { state: BlockState?, mat: Material? ->
-        if (Registries.BLOCK.get(Registries.BLOCK.getRawId(state?.block)).defaultState.isIn(BlockTags.SHOVEL_MINEABLE)) mat!!.miningSpeed.toFloat() else if (Registries.BLOCK.get(
-                Registries.BLOCK.getRawId(
+        if (Registry.BLOCK.get(Registry.BLOCK.getRawId(state?.block)).defaultState.isIn(BlockTags.SHOVEL_MINEABLE)) mat!!.miningSpeed.toFloat() else if (Registry.BLOCK.get(
+                Registry.BLOCK.getRawId(
                 state?.block
             )).defaultState.isIn(BlockTags.PICKAXE_MINEABLE)) 0.0f else 1.0f
     }
     val PICKAXE = MiningSpeedProcessor { state: BlockState?, mat: Material? ->
-        if (Registries.BLOCK.get(Registries.BLOCK.getRawId(state?.block)).defaultState.isIn(BlockTags.PICKAXE_MINEABLE)) mat!!.miningSpeed.toFloat() else if (Registries.BLOCK.get(
-                Registries.BLOCK.getRawId(
+        if (Registry.BLOCK.get(Registry.BLOCK.getRawId(state?.block)).defaultState.isIn(BlockTags.PICKAXE_MINEABLE)) mat!!.miningSpeed.toFloat() else if (Registry.BLOCK.get(
+                Registry.BLOCK.getRawId(
                 state?.block
             )).defaultState.isIn(BlockTags.PICKAXE_MINEABLE)) 0.0f else 1.0f
     }
     val HOE = MiningSpeedProcessor { state: BlockState?, mat: Material? ->
-        if (Registries.BLOCK.get(Registries.BLOCK.getRawId(state?.block)).defaultState.isIn(BlockTags.HOE_MINEABLE)) mat!!.miningSpeed.toFloat() else if (Registries.BLOCK.get(
-                Registries.BLOCK.getRawId(
+        if (Registry.BLOCK.get(Registry.BLOCK.getRawId(state?.block)).defaultState.isIn(BlockTags.HOE_MINEABLE)) mat!!.miningSpeed.toFloat() else if (Registry.BLOCK.get(
+                Registry.BLOCK.getRawId(
                 state?.block
             )).defaultState.isIn(BlockTags.PICKAXE_MINEABLE)) 0.0f else 1.0f
     }
@@ -47,7 +47,7 @@ object MiningSpeedProcessors {
         ) {
             mat!!.miningSpeed / 10
         }
-        if (Registries.BLOCK.get(Registries.BLOCK.getRawId(state.block)).defaultState.isIn(BlockTags.PICKAXE_MINEABLE)) 0.0f else 1.0f
+        if (Registry.BLOCK.get(Registry.BLOCK.getRawId(state.block)).defaultState.isIn(BlockTags.PICKAXE_MINEABLE)) 0.0f else 1.0f
     }
     fun interface MiningSpeedProcessor {
         fun getMiningSpeed(state: BlockState?, mat: Material?): Float

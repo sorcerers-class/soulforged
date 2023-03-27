@@ -1,7 +1,7 @@
 package studio.soulforged.soulforged.material
 
-import net.minecraft.registry.Registry
 import net.minecraft.util.Identifier
+import net.minecraft.util.registry.Registry
 import studio.soulforged.soulforged.Soulforged
 import studio.soulforged.soulforged.util.RegistryUtil
 

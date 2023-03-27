@@ -3,6 +3,7 @@ package studio.soulforged.soulforged.mixin.common;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.encryption.PlayerPublicKey;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
@@ -22,8 +23,8 @@ public abstract class AttackQueueMixin extends PlayerEntity implements AttackQue
         return queue;
     }
 
-    public AttackQueueMixin(World world, BlockPos blockPos, float f, GameProfile gameProfile) {
-        super(world, blockPos, f, gameProfile);
+    public AttackQueueMixin(World world, BlockPos blockPos, float f, GameProfile gameProfile, PlayerPublicKey key) {
+        super(world, blockPos, f, gameProfile, key);
     }
     @Inject(method = "tick", at = @At("TAIL"))
     public void soulforged$tick(CallbackInfo ci) {

@@ -1,7 +1,7 @@
 package studio.soulforged.soulforged.item.tool
 
-import net.minecraft.registry.Registry
 import net.minecraft.util.Identifier
+import net.minecraft.util.registry.Registry
 import studio.soulforged.soulforged.item.tool.combat.*
 import studio.soulforged.soulforged.item.tool.part.ToolParts
 import studio.soulforged.soulforged.resource.callback.MiningSpeedProcessors

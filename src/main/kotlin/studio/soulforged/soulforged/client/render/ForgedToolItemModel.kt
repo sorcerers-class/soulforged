@@ -1,6 +1,7 @@
 package studio.soulforged.soulforged.client.render
 
 import com.mojang.datafixers.util.Either
+import com.mojang.datafixers.util.Pair
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext
 import net.minecraft.block.BlockState
@@ -68,12 +69,12 @@ class ForgedToolItemModel : UnbakedModel, BakedModel, FabricBakedModel {
     }
 
     override fun bake(
-        modelBaker: ModelBaker?,
+        modelBaker: ModelLoader?,
         textureGetter: Function<SpriteIdentifier, Sprite>?,
         rotationContainer: ModelBakeSettings?,
         modelId: Identifier?
     ): BakedModel? {
-        val defaultItemModel = modelBaker?.getModel(ITEM_HANDHELD_MODEL) as JsonUnbakedModel
+        val defaultItemModel = modelBaker?.getOrLoadModel(ITEM_HANDHELD_MODEL) as JsonUnbakedModel
         transformation = defaultItemModel.transformations
         for (type in ToolTypes.TOOL_TYPES_REGISTRY.ids.stream().map { obj: Identifier -> obj.path }
             .toList()) {
@@ -89,7 +90,7 @@ class ForgedToolItemModel : UnbakedModel, BakedModel, FabricBakedModel {
                 val sprite = textureGetter?.apply(spriteId)
                 PART_MODELS[id] = JsonUnbakedModel(
                     ITEM_HANDHELD_MODEL,
-                    (ItemModelGenerator() as ItemModelGeneratorInvoker).callAddLayerElements(0, "layer0", sprite?.contents),
+                    (ItemModelGenerator() as ItemModelGeneratorInvoker).callAddLayerElements(0, "layer0", sprite),
                     mapOf("layer0" to Either.left(spriteId)),
                     false,
                     null,
@@ -101,13 +102,16 @@ class ForgedToolItemModel : UnbakedModel, BakedModel, FabricBakedModel {
         return this
     }
 
-    override fun resolveParents(models: Function<Identifier, UnbakedModel>?) {
-        models?.apply(ITEM_HANDHELD_MODEL)
-    }
-
     // Below is all the stuff I don't care about. It's down here because I don't care about it.
     override fun getModelDependencies(): Collection<Identifier> {
         return emptyList()
+    }
+
+    override fun getTextureDependencies(
+        unbakedModelGetter: Function<Identifier, UnbakedModel>?,
+        unresolvedTextureReferences: MutableSet<Pair<String, String>>?
+    ): MutableCollection<SpriteIdentifier> {
+        return unbakedModelGetter?.apply(ITEM_HANDHELD_MODEL)!!.getTextureDependencies(unbakedModelGetter, unresolvedTextureReferences)
     }
 
     override fun getQuads(state: BlockState?, face: Direction?, random: RandomGenerator?): MutableList<BakedQuad> {

@@ -1,9 +1,8 @@
 package studio.soulforged.soulforged.sound
 
-import net.minecraft.registry.Registries
-import net.minecraft.registry.Registry
 import net.minecraft.sound.SoundEvent
 import net.minecraft.util.Identifier
+import net.minecraft.util.registry.Registry
 
 @Suppress("unused")
 object SoulforgedSoundEvents {
@@ -13,8 +12,8 @@ object SoulforgedSoundEvents {
 
     private fun register(identifier: String): SoundEvent {
         val id = Identifier.tryParse(identifier)
-        val se = SoundEvent.createVariableRangeEvent(id)
-        Registry.register(Registries.SOUND_EVENT, id, se)
+        val se = SoundEvent(id)
+        Registry.register(Registry.SOUND_EVENT, id, se)
         return se
     }
     fun register() {
