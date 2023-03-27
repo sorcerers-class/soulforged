@@ -29,7 +29,6 @@ dependencies {
     modImplementation(libs.quilt.loader)
     modImplementation(libs.qfapi)
     modImplementation(libs.qkl) {
-        exclude("org.quiltmc", "quilted-fabric-api")
         exclude("org.quiltmc", "qsl")
     }
     implementation(libs.bundles.imgui) {
