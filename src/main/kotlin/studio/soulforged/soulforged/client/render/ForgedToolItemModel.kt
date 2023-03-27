@@ -108,29 +108,10 @@ class ForgedToolItemModel : UnbakedModel, BakedModel, FabricBakedModel {
     }
 
     override fun getTextureDependencies(
-        unbakedModelGetter: Function<Identifier, UnbakedModel>,
-        unresolvedTextureReferences: Set<Pair<String, String>>
-    ): Collection<SpriteIdentifier> {
-        val ids = Vector<SpriteIdentifier>()
-        for (type in ToolTypes.TOOL_TYPES_REGISTRY.stream().toList()) {
-            val typeName = Objects.requireNonNull(ToolTypes.TOOL_TYPES_REGISTRY.getId(type))?.path
-            val headId = SpriteIdentifier(
-                PlayerScreenHandler.BLOCK_ATLAS_TEXTURE,
-                Identifier("soulforged:item/tools/${typeName}_head")
-            )
-            val bindingId = SpriteIdentifier(
-                PlayerScreenHandler.BLOCK_ATLAS_TEXTURE,
-                Identifier("soulforged:item/tools/${typeName}_binding")
-            )
-            val handleId = SpriteIdentifier(
-                PlayerScreenHandler.BLOCK_ATLAS_TEXTURE,
-                Identifier("soulforged:item/tools/${typeName}_handle")
-            )
-            ids.add(headId)
-            ids.add(bindingId)
-            ids.add(handleId)
-        }
-        return ids
+        unbakedModelGetter: Function<Identifier, UnbakedModel>?,
+        unresolvedTextureReferences: MutableSet<Pair<String, String>>?
+    ): MutableCollection<SpriteIdentifier> {
+        return unbakedModelGetter?.apply(ITEM_HANDHELD_MODEL)!!.getTextureDependencies(unbakedModelGetter, unresolvedTextureReferences)
     }
 
     override fun getQuads(state: BlockState?, face: Direction?, random: RandomGenerator?): MutableList<BakedQuad> {
