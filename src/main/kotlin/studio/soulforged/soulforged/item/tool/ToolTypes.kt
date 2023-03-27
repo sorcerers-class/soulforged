@@ -249,7 +249,7 @@ object ToolTypes {
             null,
             MiningSpeedProcessors.PICKAXE,
             OnRightClickCallbacks.HAMMER_TO_CREATE_WORKSTATION,
-            AttackHandlers.NO_CRIT,
+            AttackHandlers.DEFAULT,
             arrayOf(ToolParts.HAMMER_HEAD, ToolParts.BINDING, ToolParts.HANDLE)
         )
     )

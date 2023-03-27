@@ -10,6 +10,7 @@ import studio.soulforged.soulforged.block.entity.SoulforgedBlockEntityTypes
 import studio.soulforged.soulforged.command.Commands
 import studio.soulforged.soulforged.item.SoulforgedItems
 import studio.soulforged.soulforged.item.tool.ToolTypes
+import studio.soulforged.soulforged.item.tool.combat.AttackHandlers
 import studio.soulforged.soulforged.item.tool.part.ToolParts
 import studio.soulforged.soulforged.material.Materials
 import studio.soulforged.soulforged.network.NetworkReceivers
@@ -21,6 +22,7 @@ class Soulforged : ModInitializer {
         Materials.init()
         ToolTypes.init()
         ToolParts.init()
+        AttackHandlers.init()
         SoulforgedBlocks.init()
         SoulforgedBlockEntityTypes.init()
         SoulforgedItems.init()

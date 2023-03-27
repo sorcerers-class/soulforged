@@ -16,6 +16,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import org.quiltmc.loader.api.minecraft.ClientOnly
 import org.quiltmc.qsl.item.setting.api.QuiltItemSettings
+import studio.soulforged.soulforged.item.tool.combat.AttackTypes
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -134,7 +135,7 @@ class ToolItem : Item(
                 .append(
                     Text.translatable(
                         "item.soulforged.tool.tooltip.speed",
-                        (tool.baseAttackSpeed(tool.attackProperties(1)) * 100.0).roundToInt() / 100.0
+                        (tool.baseAttackSpeed(tool.attackProperties(AttackTypes.NORMAL)) * 100.0).roundToInt() / 100.0
                     ).formatted(
                         Formatting.GREEN, Formatting.BOLD
                     )
@@ -143,7 +144,7 @@ class ToolItem : Item(
                 .append(
                     Text.translatable(
                         "item.soulforged.tool.tooltip.attack",
-                        (tool.baseAttackDamage(tool.attackProperties(1)) * 100.0).roundToInt() / 100.0
+                        (tool.baseAttackDamage(tool.attackProperties(AttackTypes.NORMAL)) * 100.0).roundToInt() / 100.0
                     ).formatted(
                         Formatting.RED, Formatting.BOLD
                     )

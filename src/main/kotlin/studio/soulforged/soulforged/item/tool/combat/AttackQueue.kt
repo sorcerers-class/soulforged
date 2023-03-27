@@ -3,7 +3,7 @@ package studio.soulforged.soulforged.item.tool.combat
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.nbt.NbtCompound
-import net.minecraft.util.ActionResult
+import net.minecraft.util.Identifier
 import studio.soulforged.soulforged.item.tool.ToolInst
 import java.util.concurrent.ConcurrentLinkedQueue
 
@@ -30,12 +30,10 @@ class AttackQueue(private val attacker: PlayerEntity){
             if(attacker.mainHandStack.nbt != null) {
                nbt = attacker.mainHandStack.nbt!!
             } else {
-                AttackHandlers.DEFAULT.attack(attacker, target, clicks)
+                AttackHandler.sendAttack(AttackHandler.Handler(attacker, target, AttackTypes.getAttackType(clicks), AttackHandlers.ATTACK_HANDLERS_REGISTRY.getId(AttackHandlers.DEFAULT) ?: Identifier("soulforged:default")))
                 return
             }
-            if(ToolInst.ToolInstSerializer.deserialize(nbt).type.attackHandler.attack(attacker, target, clicks) != ActionResult.SUCCESS) {
-                AttackHandlers.DEFAULT.attack(attacker, target, clicks);
-            }
+            AttackHandler.sendAttack(AttackHandler.Handler(attacker, target, AttackTypes.getAttackType(clicks), AttackHandlers.ATTACK_HANDLERS_REGISTRY.getId(ToolInst.ToolInstSerializer.deserialize(nbt).type.attackHandler) ?: Identifier("soulforged:default")))
         }
     }
     fun add(target: Entity) {

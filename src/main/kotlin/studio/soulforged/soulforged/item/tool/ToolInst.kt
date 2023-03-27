@@ -7,6 +7,7 @@ import net.minecraft.util.random.RandomGenerator
 import studio.soulforged.soulforged.item.SoulforgedItems
 import studio.soulforged.soulforged.item.tool.attributes.AttributeContainer
 import studio.soulforged.soulforged.item.tool.combat.AttackProperties
+import studio.soulforged.soulforged.item.tool.combat.AttackTypes
 import studio.soulforged.soulforged.item.tool.part.PartPosition
 import studio.soulforged.soulforged.item.tool.part.ToolPartInst
 import studio.soulforged.soulforged.item.tool.part.ToolParts
@@ -131,11 +132,11 @@ class ToolInst(val stack: ItemStack, val type: ToolType, val head: ToolPartInst,
      * @return The attack properties, if it can be found.
      * @author Lilly Rosaline
      */
-    fun attackProperties(attack: Int): AttackProperties {
+    fun attackProperties(attack: AttackTypes): AttackProperties {
         return when(attack) {
-            0 -> type.hcAttack ?: type.defaultAttack
-            1 -> type.defaultAttack
-            else -> type.dcAttack ?: type.defaultAttack
+            AttackTypes.HC -> type.hcAttack ?: type.defaultAttack
+            AttackTypes.NORMAL-> type.defaultAttack
+            AttackTypes.DC -> type.dcAttack ?: type.defaultAttack
         }
     }
     object ToolInstSerializer : NbtSerializer<ToolInst> {
