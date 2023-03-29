@@ -9,16 +9,17 @@ import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.registry.Registry
 import net.minecraft.util.ActionResult
 import net.minecraft.util.Identifier
+import studio.soulforged.soulforged.client.gui.CombatDebuggerClientUI
 import studio.soulforged.soulforged.item.SoulforgedItems
 import studio.soulforged.soulforged.item.tool.ToolInst
 import studio.soulforged.soulforged.util.RegistryUtil
 
 object AttackHandlers {
-    val NONE = AttackHandler { _: PlayerEntity?, _: Entity?, _: AttackTypes ->
+    val NONE = AttackHandler { _: PlayerEntity?, _: Entity?, _: AttackTypes, _: CritDirections? ->
         return@AttackHandler ActionResult.FAIL
     }
     val ATTACK_HANDLERS_REGISTRY: Registry<AttackHandler> = RegistryUtil.createRegistry("soulforged:attack_handlers", NONE)
-    val WITH_CRITS = register(Identifier("soulforged:with_crits"), AttackHandler { attacker: PlayerEntity?, target: Entity?, attackType: AttackTypes ->
+    val WITH_CRITS = register(Identifier("soulforged:with_crits"), AttackHandler { attacker: PlayerEntity?, target: Entity?, attackType: AttackTypes, critDirection: CritDirections? ->
         if(attacker == null || target == null) return@AttackHandler ActionResult.FAIL
         if(attacker.mainHandStack.item != SoulforgedItems.TOOL) return@AttackHandler ActionResult.FAIL
         if(attacker.mainHandStack.nbt == null) return@AttackHandler ActionResult.FAIL
@@ -26,23 +27,24 @@ object AttackHandlers {
 
         if (target.isAttackable) {
             if (!target.handleAttack(attacker)) {
-                target.damage(target.damageSources.playerAttack(attacker),
-                tool.baseAttackDamage(tool.attackProperties(attackType)).toFloat())
+                val attackProperties = tool.attackProperties(attackType)
+                val multiplier = if(critDirection == attackProperties.critDirection) critDirection.multiplier else 1.0f
+                val damage = tool.baseAttackDamage(attackProperties).toFloat() * multiplier
+                target.damage(target.damageSources.playerAttack(attacker), damage)
+                CombatDebuggerClientUI.debuggerAttackCallback(damage, critDirection, attackType, multiplier)
             }
         }
         return@AttackHandler ActionResult.SUCCESS
     })
-    val DEFAULT = register(Identifier("soulforged:default"), AttackHandler { attacker: PlayerEntity?, target: Entity?, _: AttackTypes ->
+    val DEFAULT = register(Identifier("soulforged:default"), AttackHandler { attacker: PlayerEntity?, target: Entity?, type: AttackTypes, _: CritDirections? ->
         if(attacker == null || target == null) return@AttackHandler ActionResult.FAIL
         if (target.isAttackable) {
             if (!target.handleAttack(attacker)) {
-                target.damage(
-                    target.damageSources.playerAttack(attacker),
-                    attacker.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE).toFloat()
-                            + EnchantmentHelper.getAttackDamage(attacker.mainHandStack,
-                        if(target is LivingEntity) target.group else EntityGroup.DEFAULT
-                    )
+                val damage = attacker.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE).toFloat()+ EnchantmentHelper.getAttackDamage(attacker.mainHandStack,
+                    if(target is LivingEntity) target.group else EntityGroup.DEFAULT
                 )
+                target.damage(target.damageSources.playerAttack(attacker), damage)
+                CombatDebuggerClientUI.debuggerAttackCallback(damage, null, null, -1.0f)
             }
         }
         return@AttackHandler ActionResult.SUCCESS

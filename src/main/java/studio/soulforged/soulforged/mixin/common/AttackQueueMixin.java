@@ -24,6 +24,7 @@ public abstract class AttackQueueMixin extends PlayerEntity implements AttackQue
 
     public AttackQueueMixin(World world, BlockPos blockPos, float f, GameProfile gameProfile) {
         super(world, blockPos, f, gameProfile);
+
     }
     @Inject(method = "tick", at = @At("TAIL"))
     public void soulforged$tick(CallbackInfo ci) {

@@ -14,7 +14,7 @@ object NetworkReceivers {
         ServerPlayNetworking.registerGlobalReceiver(NetworkIdentifiers.ATTACK_PACKET) { _: MinecraftServer, client: ServerPlayerEntity, _: ServerPlayNetworkHandler, buf: PacketByteBuf, _: PacketSender ->
             val handler = AttackHandler.deserialize(buf, client)
             val ah = AttackHandlers.ATTACK_HANDLERS_REGISTRY.get(handler.handler) ?: AttackHandlers.DEFAULT
-            ah.attack(handler.attacker, handler.target, handler.attackType)
+            ah.attack(handler.attacker, handler.target, handler.attackType, handler.critDirection)
         }
     }
 }
