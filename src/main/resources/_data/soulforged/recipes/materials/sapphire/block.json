@@ -1,8 +1,0 @@
-{
-  "type": "soulforged:workstation_material",
-  "ingredient": {
-    "block": "c:sapphire_blocks"
-  },
-  "result": "soulforged:sapphire",
-  "count": 9
-}

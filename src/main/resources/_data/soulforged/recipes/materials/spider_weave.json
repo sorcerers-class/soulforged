@@ -1,8 +1,0 @@
-{
-  "type": "soulforged:workstation_material",
-  "ingredient": {
-    "item": "soulforged:spider_weave"
-  },
-  "result": "soulforged:spider_weave",
-  "count": 1
-}

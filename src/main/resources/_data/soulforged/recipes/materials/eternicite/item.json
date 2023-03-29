@@ -1,8 +1,0 @@
-{
-  "type": "soulforged:workstation_material",
-  "ingredient": {
-    "block": "soulforged:eternicite"
-  },
-  "result": "soulforged:eternicite",
-  "count": 1
-}

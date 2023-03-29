@@ -1,8 +1,0 @@
-{
-  "type": "soulforged:workstation_material",
-  "ingredient": {
-    "item": "minecraft:raw_iron"
-  },
-  "result": "soulforged:iron",
-  "count": 1
-}

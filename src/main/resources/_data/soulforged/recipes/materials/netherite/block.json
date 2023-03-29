@@ -1,8 +1,0 @@
-{
-  "type": "soulforged:workstation_material",
-  "ingredient": {
-    "item": "minecraft:netherite_block"
-  },
-  "result": "soulforged:netherite",
-  "count": 9
-}

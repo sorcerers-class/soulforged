@@ -1,8 +1,0 @@
-{
-  "type": "soulforged:workstation_material",
-  "ingredient": {
-    "tag": "minecraft:copper_ores"
-  },
-  "result": "soulforged:copper",
-  "count": 1
-}

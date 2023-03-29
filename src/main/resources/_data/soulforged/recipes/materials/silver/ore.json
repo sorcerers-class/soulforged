@@ -1,8 +1,0 @@
-{
-  "type": "soulforged:workstation_material",
-  "ingredient": {
-    "tag": "c:silver_ores"
-  },
-  "result": "soulforged:silver",
-  "count": 1
-}

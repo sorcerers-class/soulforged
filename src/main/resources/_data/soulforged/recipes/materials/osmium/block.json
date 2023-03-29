@@ -1,8 +1,0 @@
-{
-  "type": "soulforged:workstation_material",
-  "ingredient": {
-    "tag": "c:osmium_blocks"
-  },
-  "result": "soulforged:osmium",
-  "count": 9
-}

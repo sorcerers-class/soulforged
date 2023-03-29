@@ -1,8 +1,0 @@
-{
-  "type": "soulforged:workstation_material",
-  "ingredient": {
-    "tag": "c:raw_titanium"
-  },
-  "result": "soulforged:titanium",
-  "count": 1
-}

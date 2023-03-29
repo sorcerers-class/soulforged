@@ -1,8 +1,0 @@
-{
-  "type": "soulforged:workstation_material",
-  "ingredient": {
-    "item": "soulforged:mercurium"
-  },
-  "result": "soulforged:mercurium",
-  "count": 1
-}

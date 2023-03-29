@@ -1,8 +1,0 @@
-{
-  "type": "soulforged:workstation_material",
-  "ingredient": {
-    "block": "minecraft:diamond_block"
-  },
-  "result": "soulforged:diamond",
-  "count": 9
-}

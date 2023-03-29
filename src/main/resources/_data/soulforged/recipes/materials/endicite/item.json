@@ -1,8 +1,0 @@
-{
-  "type": "soulforged:workstation_material",
-  "ingredient": {
-    "block": "soulforged:endicite"
-  },
-  "result": "soulforged:endicite",
-  "count": 1
-}

@@ -1,8 +1,0 @@
-{
-  "type": "soulforged:workstation_material",
-  "ingredient": {
-    "tag": "minecraft:gold_ores"
-  },
-  "result": "soulforged:gold",
-  "count": 1
-}
