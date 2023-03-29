@@ -159,7 +159,7 @@ class ToolItem : Item(
                         .lowercase(Locale.getDefault())
                 ),
                 Text.translatable(
-                    "item.soulforged.tool.tooltip.attackdirection." + toolType.defaultAttack.type.name
+                    "item.soulforged.tool.tooltip.attackdirection." + toolType.defaultAttack.critDirection.name
                         .lowercase(Locale.getDefault())
                 )
             ).formatted(
@@ -176,7 +176,7 @@ class ToolItem : Item(
                                 ?.lowercase(Locale.getDefault())
                         ),
                         Text.translatable(
-                            "item.soulforged.tool.tooltip.attackdirection." + (toolType.hcAttack?.type?.name
+                            "item.soulforged.tool.tooltip.attackdirection." + (toolType.hcAttack?.critDirection?.name
                                 ?.lowercase(Locale.getDefault())
                                     )
                         ).formatted(
@@ -195,7 +195,7 @@ class ToolItem : Item(
                                 ?.lowercase(Locale.getDefault())
                         ),
                         Text.translatable(
-                            "item.soulforged.tool.tooltip.attackdirection." + toolType.dcAttack?.type?.name
+                            "item.soulforged.tool.tooltip.attackdirection." + toolType.dcAttack?.critDirection?.name
                                 ?.lowercase(Locale.getDefault())
                         )
                     ).formatted(

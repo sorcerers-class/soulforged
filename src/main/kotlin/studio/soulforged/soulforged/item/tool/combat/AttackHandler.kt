@@ -11,8 +11,8 @@ import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking
 import studio.soulforged.soulforged.network.NetworkIdentifiers
 
 fun interface AttackHandler {
-    data class Handler(val attacker: PlayerEntity?, val target: Entity?, val attackType: AttackTypes, val handler: Identifier)
-    fun attack(attacker: PlayerEntity?, target: Entity?, critType: AttackTypes): ActionResult
+    data class Handler(val attacker: PlayerEntity?, val target: Entity?, val attackType: AttackTypes, val handler: Identifier, val critDirection: CritDirections?)
+    fun attack(attacker: PlayerEntity?, target: Entity?, critType: AttackTypes, critDirection: CritDirections?): ActionResult
     companion object {
         fun serialize(handler: Handler): PacketByteBuf {
             val packet = PacketByteBufs.create()
@@ -20,6 +20,7 @@ fun interface AttackHandler {
             packet.writeInt(handler.target?.id ?: -1)
             packet.writeInt(handler.attackType.ordinal)
             packet.writeIdentifier(handler.handler)
+            packet.writeInt(handler.critDirection?.ordinal ?: -1)
             return packet
         }
         fun deserialize(packet: PacketByteBuf, player: ServerPlayerEntity): Handler {
@@ -27,10 +28,10 @@ fun interface AttackHandler {
             val target = player.world.getEntityById(packet.readInt())
             val attackType = AttackTypes.values()[packet.readInt()]
             val handler = packet.readIdentifier()
-            return Handler(attacker, target, attackType, handler)
+            val critDirection = CritDirections[packet.readInt()]
+            return Handler(attacker, target, attackType, handler, critDirection)
         }
         fun sendAttack(handler: Handler) {
-            val handler = Handler(handler.attacker, handler.target, handler.attackType, handler.handler)
             ClientPlayNetworking.send(NetworkIdentifiers.ATTACK_PACKET, serialize(handler))
         }
     }

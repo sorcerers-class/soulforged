@@ -23,20 +23,23 @@ class AttackQueue(private val attacker: PlayerEntity){
             entry.clicks++
         }
     }
-    data class Entry(val attacker: PlayerEntity, val target: Entity, var timer: UInt, var clicks: Int) {
+    data class Entry(val attacker: PlayerEntity, val target: Entity, var timer: UInt, var clicks: Int, val critDirection: CritDirections?) {
 
         fun finish() {
             val nbt: NbtCompound
             if(attacker.mainHandStack.nbt != null) {
                nbt = attacker.mainHandStack.nbt!!
             } else {
-                AttackHandler.sendAttack(AttackHandler.Handler(attacker, target, AttackTypes.getAttackType(clicks), AttackHandlers.ATTACK_HANDLERS_REGISTRY.getId(AttackHandlers.DEFAULT) ?: Identifier("soulforged:default")))
+                AttackHandler.sendAttack(AttackHandler.Handler(attacker, target, AttackTypes.getAttackType(clicks), AttackHandlers.ATTACK_HANDLERS_REGISTRY.getId(AttackHandlers.DEFAULT) ?: Identifier("soulforged:default"), critDirection))
                 return
             }
-            AttackHandler.sendAttack(AttackHandler.Handler(attacker, target, AttackTypes.getAttackType(clicks), AttackHandlers.ATTACK_HANDLERS_REGISTRY.getId(ToolInst.ToolInstSerializer.deserialize(nbt).type.attackHandler) ?: Identifier("soulforged:default")))
+            AttackHandler.sendAttack(AttackHandler.Handler(attacker, target, AttackTypes.getAttackType(clicks), AttackHandlers.ATTACK_HANDLERS_REGISTRY.getId(ToolInst.ToolInstSerializer.deserialize(nbt).type.attackHandler) ?: Identifier("soulforged:default"), critDirection))
         }
     }
     fun add(target: Entity) {
-        queue.add(Entry(this.attacker, target, 4u, 0))
+        queue.add(Entry(this.attacker, target, 4u, 0, CritDirections.getCritDirection(attacker)))
+    }
+    internal fun getQueue(): ConcurrentLinkedQueue<Entry> {
+        return queue
     }
 }
