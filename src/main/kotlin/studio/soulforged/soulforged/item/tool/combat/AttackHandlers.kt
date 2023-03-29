@@ -5,10 +5,11 @@ import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityGroup
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.attribute.EntityAttributes
+import net.minecraft.entity.damage.DamageSource
 import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.registry.Registry
 import net.minecraft.util.ActionResult
 import net.minecraft.util.Identifier
+import net.minecraft.util.registry.Registry
 import studio.soulforged.soulforged.client.gui.CombatDebuggerClientUI
 import studio.soulforged.soulforged.item.SoulforgedItems
 import studio.soulforged.soulforged.item.tool.ToolInst
@@ -30,7 +31,7 @@ object AttackHandlers {
                 val attackProperties = tool.attackProperties(attackType)
                 val multiplier = if(critDirection == attackProperties.critDirection) critDirection.multiplier else 1.0f
                 val damage = tool.baseAttackDamage(attackProperties).toFloat() * multiplier
-                target.damage(target.damageSources.playerAttack(attacker), damage)
+                target.damage(DamageSource.player(attacker), damage)
                 CombatDebuggerClientUI.debuggerAttackCallback(damage, critDirection, attackType, multiplier)
             }
         }
@@ -43,7 +44,7 @@ object AttackHandlers {
                 val damage = attacker.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE).toFloat()+ EnchantmentHelper.getAttackDamage(attacker.mainHandStack,
                     if(target is LivingEntity) target.group else EntityGroup.DEFAULT
                 )
-                target.damage(target.damageSources.playerAttack(attacker), damage)
+                target.damage(DamageSource.player(attacker), damage)
                 CombatDebuggerClientUI.debuggerAttackCallback(damage, null, null, -1.0f)
             }
         }
