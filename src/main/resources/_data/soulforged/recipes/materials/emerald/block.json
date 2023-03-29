@@ -1,8 +1,0 @@
-{
-  "type": "soulforged:workstation_material",
-  "ingredient": {
-    "block": "minecraft:emerald_block"
-  },
-  "result": "soulforged:emerald",
-  "count": 9
-}

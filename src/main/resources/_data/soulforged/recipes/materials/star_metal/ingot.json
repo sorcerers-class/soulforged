@@ -1,8 +1,0 @@
-{
-  "type": "soulforged:workstation_material",
-  "ingredient": {
-    "item": "soulforged:star_metal"
-  },
-  "result": "soulforged:star_metal",
-  "count": 1
-}

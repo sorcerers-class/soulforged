@@ -1,8 +1,0 @@
-{
-  "type": "soulforged:workstation_material",
-  "ingredient": {
-    "item": "minecraft:iron_ingot"
-  },
-  "result": "soulforged:iron",
-  "count": 9
-}

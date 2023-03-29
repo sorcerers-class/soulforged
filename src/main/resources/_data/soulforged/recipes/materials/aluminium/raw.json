@@ -1,8 +1,0 @@
-{
-  "type": "soulforged:workstation_material",
-  "ingredient": {
-    "tag": "c:raw_aluminium"
-  },
-  "result": "soulforged:aluminium",
-  "count": 1
-}

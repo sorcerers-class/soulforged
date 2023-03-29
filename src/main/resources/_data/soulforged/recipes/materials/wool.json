@@ -1,8 +1,0 @@
-{
-  "type": "soulforged:workstation_material",
-  "ingredient": {
-    "tag": "minecraft:wool"
-  },
-  "result": "soulforged:wool",
-  "count": 1
-}

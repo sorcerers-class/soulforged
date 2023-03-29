@@ -1,8 +1,0 @@
-{
-  "type": "soulforged:workstation_material",
-  "ingredient": {
-    "item": "minecraft:amethyst_shard"
-  },
-  "result": "soulforged:amethyst",
-  "count": 1
-}

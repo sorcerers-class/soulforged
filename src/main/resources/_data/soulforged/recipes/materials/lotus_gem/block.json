@@ -1,8 +1,0 @@
-{
-  "type": "soulforged:workstation_material",
-  "ingredient": {
-    "item": "soulforged:lotus_gem_block"
-  },
-  "result": "soulforged:lotus_gem",
-  "count": 4
-}
