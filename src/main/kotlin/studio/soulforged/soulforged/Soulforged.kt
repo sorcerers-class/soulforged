@@ -15,6 +15,7 @@ import studio.soulforged.soulforged.item.tool.part.ToolParts
 import studio.soulforged.soulforged.material.Materials
 import studio.soulforged.soulforged.network.NetworkReceivers
 import studio.soulforged.soulforged.sound.SoulforgedSoundEvents
+import studio.soulforged.soulforged.world.SoulforgedOres
 
 class Soulforged : ModInitializer {
     override fun onInitialize(mod: ModContainer) {
@@ -27,6 +28,7 @@ class Soulforged : ModInitializer {
         SoulforgedBlockEntityTypes.init()
         SoulforgedItems.init()
         SoulforgedBlockTags.init()
+        SoulforgedOres.init()
         NetworkReceivers.register()
         Commands.register()
         SoulforgedSoundEvents.register()
