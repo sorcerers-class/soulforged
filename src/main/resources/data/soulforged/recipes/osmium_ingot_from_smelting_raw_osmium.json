@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.7,
+  "group": "soulforged:osmium",
+  "ingredient": {
+    "item": "soulforged:raw_osmium"
+  },
+  "result": "soulforged:osmium_ingot"
+}

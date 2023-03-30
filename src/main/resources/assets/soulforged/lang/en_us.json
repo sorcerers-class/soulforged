@@ -1,6 +1,23 @@
 {
   "soulforged.name": "Soulforged",
-  "key.soulforgedcombatdebugger.toggle": "Toggle Soulforged Combat Debugger",
+  "key.soulforged.toggle": "Toggle Debug Mode",
+  "itemGroup.soulforged.soulforged": "Soulforged",
+
+  "block.soulforged.workstation": "Workstation",
+  "block.soulforged.silver_ore": "Silver Ore",
+  "block.soulforged.deepslate_silver_ore": "Deepslate Silver Ore",
+  "block.soulforged.lead_ore": "Lead Ore",
+  "block.soulforged.cinnabar_ore": "Cinnabar Ore",
+  "block.soulforged.osmium_ore": "Osmium Ore",
+  "block.soulforged.aluminum_ore": "Aluminum Ore",
+  "block.soulforged.end_aluminum_ore": "End Aluminum Ore",
+  "block.soulforged.titanium_ore": "Titanium Ore",
+  "block.soulforged.end_titanium_ore": "End Titanium Ore",
+  "block.soulforged.sapphire_ore": "Sapphire Ore",
+  "block.soulforged.ruby_ore": "Ruby Ore",
+  "block.soulforged.padparadscha_ore": "Padparadscha Ore",
+  "block.soulforged.star_gem_ore": "Star Gem Ore",
+
   "item.soulforged.tool.material.wood": "Wooden",
   "item.soulforged.tool.material.stone": "Stone",
   "item.soulforged.tool.material.leather": "Leather",
@@ -138,9 +155,29 @@
   "item.soulforged.part.shovel_head": "%s Shovel Head",
   "item.soulforged.part.hoe_head": "%s Hoe Head",
 
+
+  "block.soulforged.endicite_ore": "Endicite Ore",
+
+  "item.soulforged.raw_silver": "Raw Silver",
+  "item.soulforged.raw_lead": "Raw Lead",
+  "item.soulforged.raw_cinnabar": "Raw Cinnabar",
+  "item.soulforged.raw_osmium": "Raw Osmium",
+  "item.soulforged.raw_aluminum": "Raw Aluminum",
+  "item.soulforged.raw_titanium": "Raw Titanium",
+  "item.soulforged.sapphire": "Sapphire",
+  "item.soulforged.ruby": "Ruby",
+  "item.soulforged.padparadscha": "Padparadscha",
+  "item.soulforged.star_gem": "Star Gem",
+  "item.soulforged.endicite": "Endicite",
+  "item.soulforged.silver_ingot": "Silver Ingot",
+  "item.soulforged.lead_ingot": "Lead Ingot",
+  "item.soulforged.osmium_ingot": "Osmium Ingot",
+  "item.soulforged.aluminum_ingot": "Aluminum Ingot",
+  "item.soulforged.titanium_ingot": "Titanium Ingot",
+  "item.soulforged.cinnabar_dust_bottle": "Bottle of Cinnabar Dust",
+  "item.soulforged.mercury_bottle": "Bottle of Quicksilver",
+
   "subtitles.soulforged.crit_thrusting": "Something gets impaled",
   "subtitles.soulforged.crit_slashing": "Something gets stabbed",
-  "subtitles.soulforged.crit_crushing": "Something's bones break",
-
-  "key.soulforged.toggle": "Toggle Debug Mode"
+  "subtitles.soulforged.crit_crushing": "Something's bones break"
 }

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 1.0,
+  "group": "soulforged:titanium",
+  "ingredient": {
+    "item": "soulforged:titanium_ore"
+  },
+  "result": "soulforged:titanium_ingot"
+}

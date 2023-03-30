@@ -2,6 +2,20 @@
   "replace": false,
   "values": [
     "soulforged:iron_anvil",
-    "soulforged:blast_furnace"
+    "soulforged:blast_furnace",
+    "soulforged:silver_ore",
+    "soulforged:deepslate_silver_ore",
+    "soulforged:lead_ore",
+    "soulforged:cinnabar_ore",
+    "soulforged:osmium_ore",
+    "soulforged:sapphire_ore",
+    "soulforged:ruby_ore",
+    "soulforged:padparadscha_ore",
+    "soulforged:star_gem_ore",
+    "soulforged:aluminum_ore",
+    "soulforged:end_aluminum_ore",
+    "soulforged:titanium_ore",
+    "soulforged:end_titanium_ore",
+    "soulforged:endicite_ore"
   ]
 }
