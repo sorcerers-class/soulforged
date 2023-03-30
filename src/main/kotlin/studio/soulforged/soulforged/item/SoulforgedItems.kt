@@ -56,6 +56,12 @@ object SoulforgedItems {
     val ALUMINUM_INGOT = register("aluminum_ingot", Item(QuiltItemSettings()))
     val TITANIUM_INGOT = register("titanium_ingot", Item(QuiltItemSettings()))
 
+    val WITHER_BONE = register("wither_bone", Item(QuiltItemSettings()))
+    val MONSTER_LEATHER = register("monster_leather", Item(QuiltItemSettings()))
+    val SCALES = register("scales", Item(QuiltItemSettings()))
+    val SPIDER_WEAVE = register("spider_weave", Item(QuiltItemSettings()))
+    val SLIME_WEAVE = register("slime_weave", Item(QuiltItemSettings()))
+
     val GROUP: ItemGroup = FabricItemGroup.builder(Identifier("soulforged", "soulforged"))
         .icon { ItemStack(MERCURY_BOTTLE) }
         .entries {_, content ->
@@ -97,6 +103,12 @@ object SoulforgedItems {
 
             content.addItem(CINNABAR_DUST_BOTTLE)
             content.addItem(MERCURY_BOTTLE)
+
+            content.addItem(WITHER_BONE)
+            content.addItem(MONSTER_LEATHER)
+            content.addItem(SCALES)
+            content.addItem(SPIDER_WEAVE)
+            content.addItem(SLIME_WEAVE)
         }
         .build()
     fun register(id: String, item: Item): Item {

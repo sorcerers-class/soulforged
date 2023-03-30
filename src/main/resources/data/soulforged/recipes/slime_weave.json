@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " S ",
+    "SWS",
+    " S "
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:slime_ball"
+    },
+    "W": {
+      "item": "soulforged:spider_weave"
+    }
+  },
+  "result": {
+    "item": "soulforged:slime_weave",
+    "count": 1
+  }
+}
