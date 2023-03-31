@@ -21,22 +21,16 @@ object SoulforgedItems {
     )
 
     // Ores
-    val SILVER_ORE = registerBlockItem("silver_ore", SoulforgedBlocks.SILVER_ORE)
-    val DEEPSLATE_SILVER_ORE = registerBlockItem("deepslate_silver_ore", SoulforgedBlocks.DEEPSLATE_SILVER_ORE)
     val LEAD_ORE = registerBlockItem("lead_ore", SoulforgedBlocks.LEAD_ORE)
     val CINNABAR_ORE = registerBlockItem("cinnabar_ore", SoulforgedBlocks.CINNABAR_ORE)
     val OSMIUM_ORE = registerBlockItem("osmium_ore", SoulforgedBlocks.OSMIUM_ORE)
-    val SAPPHIRE_ORE = registerBlockItem("sapphire_ore", SoulforgedBlocks.SAPPHIRE_ORE)
-    val RUBY_ORE = registerBlockItem("ruby_ore", SoulforgedBlocks.RUBY_ORE)
-    val PADPARADSCHA_ORE = registerBlockItem("padparadscha_ore", SoulforgedBlocks.PADPARADSCHA_ORE)
-    val STAR_GEM_ORE = registerBlockItem("star_gem_ore", SoulforgedBlocks.STAR_GEM_ORE)
+    val CORUNDUM_ORE = registerBlockItem("corundum_ore", SoulforgedBlocks.CORUNDUM_ORE)
     val ALUMINUM_ORE = registerBlockItem("aluminum_ore", SoulforgedBlocks.ALUMINUM_ORE)
     val END_ALUMINUM_ORE = registerBlockItem("end_aluminum_ore", SoulforgedBlocks.END_ALUMINUM_ORE)
     val TITANIUM_ORE = registerBlockItem("titanium_ore", SoulforgedBlocks.TITANIUM_ORE)
     val END_TITANIUM_ORE = registerBlockItem("end_titanium_ore", SoulforgedBlocks.END_TITANIUM_ORE)
     val ENDICITE_ORE = registerBlockItem("endicite_ore", SoulforgedBlocks.ENDICITE_ORE)
     // Raw Ores
-    val RAW_SILVER = register("raw_silver", Item(QuiltItemSettings()))
     val RAW_LEAD = register("raw_lead", Item(QuiltItemSettings()))
     val RAW_CINNABAR = register("raw_cinnabar", Item(QuiltItemSettings()))
     val CINNABAR_DUST_BOTTLE = register("cinnabar_dust_bottle", Item(QuiltItemSettings().maxCount(16)))
@@ -49,7 +43,6 @@ object SoulforgedItems {
     val RAW_TITANIUM = register("raw_titanium", Item(QuiltItemSettings()))
     val ENDICITE = register("endicite", Item(QuiltItemSettings()))
     // Ingots
-    val SILVER_INGOT = register("silver_ingot", Item(QuiltItemSettings()))
     val LEAD_INGOT = register("lead_ingot", Item(QuiltItemSettings()))
     val MERCURY_BOTTLE = register("mercury_bottle", Item(QuiltItemSettings().maxCount(16)))
     val OSMIUM_INGOT = register("osmium_ingot", Item(QuiltItemSettings()))
@@ -66,9 +59,6 @@ object SoulforgedItems {
         .icon { ItemStack(MERCURY_BOTTLE) }
         .entries {_, content ->
             content.addItem(WORKSTATION)
-
-            content.addItem(SILVER_ORE)
-            content.addItem(DEEPSLATE_SILVER_ORE)
             content.addItem(LEAD_ORE)
             content.addItem(CINNABAR_ORE)
             content.addItem(OSMIUM_ORE)
@@ -76,13 +66,9 @@ object SoulforgedItems {
             content.addItem(END_ALUMINUM_ORE)
             content.addItem(TITANIUM_ORE)
             content.addItem(END_TITANIUM_ORE)
-            content.addItem(SAPPHIRE_ORE)
-            content.addItem(RUBY_ORE)
-            content.addItem(PADPARADSCHA_ORE)
-            content.addItem(STAR_GEM_ORE)
+            content.addItem(CORUNDUM_ORE)
             content.addItem(ENDICITE_ORE)
 
-            content.addItem(RAW_SILVER)
             content.addItem(RAW_LEAD)
             content.addItem(RAW_CINNABAR)
             content.addItem(RAW_OSMIUM)
@@ -95,7 +81,6 @@ object SoulforgedItems {
             content.addItem(STAR_GEM)
             content.addItem(ENDICITE)
 
-            content.addItem(SILVER_INGOT)
             content.addItem(LEAD_INGOT)
             content.addItem(OSMIUM_INGOT)
             content.addItem(ALUMINUM_INGOT)

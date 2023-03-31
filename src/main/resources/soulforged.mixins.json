@@ -6,6 +6,7 @@
   "mixins": [
     "common.AttackQueueMixin",
     "common.CheckToolHarvestabilityImpl",
+    "common.EndiciteFallSpeedMixin",
     "common.MakeVanillaToolsUseless",
     "common.SetAttackSpeedMixin"
   ],

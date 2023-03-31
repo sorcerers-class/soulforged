@@ -41,23 +41,22 @@ class ForgedToolItemModel : UnbakedModel, BakedModel, FabricBakedModel {
         val bindingName = Identifier(type.namespace, "item/tools/" + type.path.toString() + "_" + ModelToolParts.BINDING.toString().lowercase())
         val handleName = Identifier(type.namespace, "item/tools/" +  type.path.toString() + "_" + ModelToolParts.HANDLE.toString().lowercase())
         val missingno = MinecraftClient.getInstance().bakedModelManager.missingModel
-        //TODO recolor instead of loading model from file for all 3 of these
         context.pushTransform(tool.head.mat.transform)
-        (PART_MODELS[headName] as FabricBakedModel?)!!.emitItemQuads(
+        ((PART_MODELS[headName] ?: missingno) as FabricBakedModel).emitItemQuads(
             stack,
             randomSupplier,
             context
         )
         context.popTransform()
         context.pushTransform(tool.binding.mat.transform)
-        (PART_MODELS[bindingName] as FabricBakedModel?)!!.emitItemQuads(
+        ((PART_MODELS[bindingName] ?: missingno) as FabricBakedModel).emitItemQuads(
             stack,
             randomSupplier,
             context
         )
         context.popTransform()
         context.pushTransform(tool.handle.mat.transform)
-        (PART_MODELS[handleName] as FabricBakedModel?)!!.emitItemQuads(
+        ((PART_MODELS[handleName] ?: missingno) as FabricBakedModel).emitItemQuads(
             stack,
             randomSupplier,
             context
@@ -150,7 +149,7 @@ class ForgedToolItemModel : UnbakedModel, BakedModel, FabricBakedModel {
         randomSupplier: Supplier<RandomGenerator>?,
         context: RenderContext?
     ) {
-        TODO("Not yet implemented")
+
     }
 
     companion object {

@@ -4,8 +4,6 @@
   "itemGroup.soulforged.soulforged": "Soulforged",
 
   "block.soulforged.workstation": "Workstation",
-  "block.soulforged.silver_ore": "Silver Ore",
-  "block.soulforged.deepslate_silver_ore": "Deepslate Silver Ore",
   "block.soulforged.lead_ore": "Lead Ore",
   "block.soulforged.cinnabar_ore": "Cinnabar Ore",
   "block.soulforged.osmium_ore": "Osmium Ore",
@@ -13,10 +11,7 @@
   "block.soulforged.end_aluminum_ore": "End Aluminum Ore",
   "block.soulforged.titanium_ore": "Titanium Ore",
   "block.soulforged.end_titanium_ore": "End Titanium Ore",
-  "block.soulforged.sapphire_ore": "Sapphire Ore",
-  "block.soulforged.ruby_ore": "Ruby Ore",
-  "block.soulforged.padparadscha_ore": "Padparadscha Ore",
-  "block.soulforged.star_gem_ore": "Star Gem Ore",
+  "block.soulforged.corundum_ore": "Corundum Ore",
 
   "item.soulforged.tool.material.wood": "Wooden",
   "item.soulforged.tool.material.stone": "Stone",
