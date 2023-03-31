@@ -48,8 +48,7 @@ class ToolItem : Item(
     override fun getMiningSpeedMultiplier(stack: ItemStack, state: BlockState): Float {
         val nbt = stack.nbt ?: return 1.0f
         val tool = ToolInst.ToolInstSerializer.deserialize(nbt)
-        val msp = tool.type.miningSpeedProcessor
-        return msp.getMiningSpeed(state, tool.head.mat)
+        return tool.type.callbacks.getMiningSpeed(state, tool.head.mat)
     }
 
     override fun postMine(stack: ItemStack, world: World, state: BlockState, pos: BlockPos, miner: LivingEntity): Boolean {
@@ -76,8 +75,7 @@ class ToolItem : Item(
         val nbt = context.stack.nbt ?: return ActionResult.FAIL
         val tool = ToolInst.ToolInstSerializer.deserialize(nbt)
         if (tool.shouldBreak()) return ActionResult.FAIL
-        val rcep = tool.type.rightClickEventProcessor
-        val result = rcep.onRightClick(context)!!
+        val result = tool.type.callbacks.onRightClick(context)
         if(result == ActionResult.SUCCESS) {
             tool.damage(context.world.random)
             context.stack.nbt = ToolInst.ToolInstSerializer.serialize(tool)

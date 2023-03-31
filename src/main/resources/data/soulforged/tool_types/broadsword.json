@@ -27,7 +27,7 @@
     "crit_type": "forward"
   },
   "callbacks": {
-    "getMiningSpeed": "soulforged:msp/sword",
+    "getMiningSpeed": "soulforged:sword"
   },
   "recipe": {
     "head": "soulforged:broadsword_blade",

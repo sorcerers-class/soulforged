@@ -18,8 +18,8 @@
     "crit_type": "down"
   },
   "callbacks": {
-    "getMiningSpeed": "soulforged:msp/pickaxe",
-    "onUse": "soulforged:rcep/hammer",
+    "getMiningSpeed": "soulforged:pickaxe",
+    "onUse": "soulforged:hammer"
   },
   "recipe": {
     "head": "soulforged:greathammer_head",

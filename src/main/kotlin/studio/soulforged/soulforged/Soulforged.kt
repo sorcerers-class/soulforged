@@ -14,12 +14,16 @@ import studio.soulforged.soulforged.item.tool.combat.AttackHandlers
 import studio.soulforged.soulforged.item.tool.part.ToolParts
 import studio.soulforged.soulforged.material.Materials
 import studio.soulforged.soulforged.network.NetworkReceivers
+import studio.soulforged.soulforged.resource.callback.MiningSpeedProcessors
+import studio.soulforged.soulforged.resource.callback.OnRightClickCallbacks
 import studio.soulforged.soulforged.sound.SoulforgedSoundEvents
 import studio.soulforged.soulforged.world.SoulforgedOres
 
 class Soulforged : ModInitializer {
     override fun onInitialize(mod: ModContainer) {
         LOGGER.info("Soulforged version {} start!", mod.metadata().version().raw())
+        MiningSpeedProcessors.init()
+        OnRightClickCallbacks.init()
         Materials.init()
         ToolTypes.init()
         ToolParts.init()

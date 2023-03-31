@@ -22,9 +22,7 @@ import net.minecraft.world.BlockRenderView
 import org.quiltmc.loader.api.minecraft.ClientOnly
 import studio.soulforged.soulforged.client.SoulforgedClient
 import studio.soulforged.soulforged.item.tool.ToolInst
-import studio.soulforged.soulforged.item.tool.ToolTypes
 import studio.soulforged.soulforged.mixin.client.ItemModelGeneratorInvoker
-import java.util.*
 import java.util.function.Function
 import java.util.function.Supplier
 
@@ -39,27 +37,27 @@ class ForgedToolItemModel : UnbakedModel, BakedModel, FabricBakedModel {
     override fun emitItemQuads(stack: ItemStack, randomSupplier: Supplier<RandomGenerator>, context: RenderContext) {
         val tool = ToolInst.ToolInstSerializer.deserialize(stack.nbt!!)
         val type = tool.type.id
-        val headName = modelNameConcat(type.path, ModelToolParts.HEAD)
-        val bindingName = modelNameConcat(type.path, ModelToolParts.BINDING)
-        val handleName = modelNameConcat(type.path, ModelToolParts.HANDLE)
+        val headName = Identifier(type.namespace, "item/tools/" + type.path.toString() + "_" + ModelToolParts.HEAD.toString().lowercase())
+        val bindingName = Identifier(type.namespace, "item/tools/" + type.path.toString() + "_" + ModelToolParts.BINDING.toString().lowercase())
+        val handleName = Identifier(type.namespace, "item/tools/" +  type.path.toString() + "_" + ModelToolParts.HANDLE.toString().lowercase())
         val missingno = MinecraftClient.getInstance().bakedModelManager.missingModel
         //TODO recolor instead of loading model from file for all 3 of these
         context.pushTransform(tool.head.mat.transform)
-        (PART_MODELS.getOrDefault(headName, missingno) as FabricBakedModel?)!!.emitItemQuads(
+        (PART_MODELS[headName] as FabricBakedModel?)!!.emitItemQuads(
             stack,
             randomSupplier,
             context
         )
         context.popTransform()
         context.pushTransform(tool.binding.mat.transform)
-        (PART_MODELS.getOrDefault(bindingName, missingno) as FabricBakedModel?)!!.emitItemQuads(
+        (PART_MODELS[bindingName] as FabricBakedModel?)!!.emitItemQuads(
             stack,
             randomSupplier,
             context
         )
         context.popTransform()
         context.pushTransform(tool.handle.mat.transform)
-        (PART_MODELS.getOrDefault(handleName, missingno) as FabricBakedModel?)!!.emitItemQuads(
+        (PART_MODELS[handleName] as FabricBakedModel?)!!.emitItemQuads(
             stack,
             randomSupplier,
             context
@@ -69,34 +67,31 @@ class ForgedToolItemModel : UnbakedModel, BakedModel, FabricBakedModel {
 
     override fun bake(
         modelBaker: ModelBaker?,
-        textureGetter: Function<SpriteIdentifier, Sprite>?,
+        textureGetter: Function<SpriteIdentifier, Sprite>,
         rotationContainer: ModelBakeSettings?,
         modelId: Identifier?
-    ): BakedModel? {
+    ): BakedModel {
         val defaultItemModel = modelBaker?.getModel(ITEM_HANDHELD_MODEL) as JsonUnbakedModel
         transformation = defaultItemModel.transformations
-        for (type in ToolTypes.TOOL_TYPES_REGISTRY.ids.stream().map { obj: Identifier -> obj.path }
-            .toList()) {
-            for (part in ModelToolParts.values()) {
-                val id = modelNameConcat(type, part)
-                val spriteId = SpriteIdentifier(
-                    PlayerScreenHandler.BLOCK_ATLAS_TEXTURE,
-                    Identifier(
-                        "soulforged:item/tools/$id"
-                            .lowercase(Locale.getDefault())
-                    )
-                )
-                val sprite = textureGetter?.apply(spriteId)
+        val resources = MinecraftClient.getInstance().resourceManager.findResources("textures/item/tools") { path ->
+            return@findResources path.path.endsWith(".png")
+        }
+        SoulforgedClient.LOGGER.info("Client known tool type parts: ${resources.size}")
+        for(id in resources.keys.map {id ->
+            Identifier(id.namespace, id.path.substring(9 until id.path.length - 4))
+        }) {
+            SoulforgedClient.LOGGER.info("Adding model part $id")
+                val spriteId = SpriteIdentifier(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, id)
+                val sprite = textureGetter.apply(spriteId)
                 PART_MODELS[id] = JsonUnbakedModel(
                     ITEM_HANDHELD_MODEL,
-                    (ItemModelGenerator() as ItemModelGeneratorInvoker).callAddLayerElements(0, "layer0", sprite?.contents),
+                    (ItemModelGenerator() as ItemModelGeneratorInvoker).callAddLayerElements(0, "layer0", sprite.contents),
                     mapOf("layer0" to Either.left(spriteId)),
                     false,
                     null,
                     transformation,
                     listOf()
                 ).bake(modelBaker, textureGetter, rotationContainer, modelId)
-            }
         }
         return this
     }
@@ -160,9 +155,6 @@ class ForgedToolItemModel : UnbakedModel, BakedModel, FabricBakedModel {
 
     companion object {
         private val ITEM_HANDHELD_MODEL = Identifier("minecraft:item/handheld")
-        val PART_MODELS = HashMap<String, BakedModel?>()
-        fun modelNameConcat(type: String, part: ModelToolParts): String {
-            return type + "_" + part.toString().lowercase(Locale.getDefault())
-        }
+        val PART_MODELS = HashMap<Identifier, BakedModel?>()
     }
 }

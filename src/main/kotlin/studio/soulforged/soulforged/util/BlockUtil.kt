@@ -8,7 +8,7 @@ import net.minecraft.registry.tag.BlockTags
 import net.minecraft.util.Identifier
 import studio.soulforged.soulforged.item.tool.ToolTypes
 import studio.soulforged.soulforged.material.Materials
-import studio.soulforged.soulforged.resource.callback.MiningSpeedProcessors
+import studio.soulforged.soulforged.resource.callback.CallbackHolder
 import java.util.*
 
 object BlockUtil {
@@ -21,10 +21,10 @@ object BlockUtil {
                 )]?.miningLevel!!
             if (Registries.BLOCK.get(Registries.BLOCK.getRawId(state.block)).defaultState.isIn(BlockTags.PICKAXE_MINEABLE)) {
                 return if (Objects.requireNonNull(
-                        ToolTypes.TOOL_TYPES_REGISTRY[Identifier(
+                        ToolTypes.TOOL_TYPES[Identifier(
                             tool.nbt!!.getString("sf_tool_type")
                         )]
-                    )?.miningSpeedProcessor === MiningSpeedProcessors.PICKAXE
+                    )?.callbacks?.callbacks?.get(CallbackHolder.Callbacks.GET_MINING_SPEED) == Identifier("soulforged:pickaxe")
                 ) {
                     level >= MiningLevelManager.getRequiredMiningLevel(state)
                 } else false

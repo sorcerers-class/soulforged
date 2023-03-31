@@ -9,8 +9,8 @@
     "crit_type": "down"
   },
   "callbacks": {
-    "getMiningSpeed": "soulforged:msp/shovel",
-    "onUse": "soulforged:rcep/shovel",
+    "getMiningSpeed": "soulforged:shovel",
+    "onUse": "soulforged:shovel"
   },
   "recipe": {
     "head": "soulforged:shovel_head",

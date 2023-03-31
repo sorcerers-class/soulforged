@@ -18,7 +18,7 @@
     "crit_type": "side"
   },
   "callbacks": {
-    "getMiningSpeed": "soulforged:msp/sword",
+    "getMiningSpeed": "soulforged:sword"
   },
   "recipe": {
     "head": "soulforged:greatsword_blade",

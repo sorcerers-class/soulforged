@@ -9,8 +9,8 @@
     "crit_type": "down"
   },
   "callbacks": {
-    "getMiningSpeed": "soulforged:msp/hoe",
-    "onUse": "soulforged:rcep/hoe",
+    "getMiningSpeed": "soulforged:hoe",
+    "onUse": "soulforged:hoe"
   },
   "recipe": {
     "head": "soulforged:hoe_head",

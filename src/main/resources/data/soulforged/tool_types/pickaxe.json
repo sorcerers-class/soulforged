@@ -9,7 +9,7 @@
     "crit_type": "down"
   },
   "callbacks": {
-    "getMiningSpeed": "soulforged:msp/pickaxe",
+    "getMiningSpeed": "soulforged:pickaxe"
   },
   "recipe": {
     "head": "soulforged:pickaxe_head",

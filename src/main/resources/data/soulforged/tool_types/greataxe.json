@@ -27,8 +27,8 @@
     "crit_type": "down"
   },
   "callbacks": {
-    "getMiningSpeed": "soulforged:msp/axe",
-    "onUse": "soulforged:rcep/axe",
+    "getMiningSpeed": "soulforged:axe",
+    "onUse": "soulforged:axe"
   },
   "recipe": {
     "head": "soulforged:greataxe_head",

@@ -4,7 +4,6 @@ import net.minecraft.entity.Entity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.util.Identifier
-import studio.soulforged.soulforged.item.tool.ToolInst
 import java.util.concurrent.ConcurrentLinkedQueue
 
 class AttackQueue(private val attacker: PlayerEntity){
@@ -33,7 +32,8 @@ class AttackQueue(private val attacker: PlayerEntity){
                 AttackHandler.sendAttack(AttackHandler.Handler(attacker, target, AttackTypes.getAttackType(clicks), AttackHandlers.ATTACK_HANDLERS_REGISTRY.getId(AttackHandlers.DEFAULT) ?: Identifier("soulforged:default"), critDirection))
                 return
             }
-            AttackHandler.sendAttack(AttackHandler.Handler(attacker, target, AttackTypes.getAttackType(clicks), AttackHandlers.ATTACK_HANDLERS_REGISTRY.getId(ToolInst.ToolInstSerializer.deserialize(nbt).type.attackHandler) ?: Identifier("soulforged:default"), critDirection))
+            AttackHandler.sendAttack(AttackHandler.Handler(attacker, target, AttackTypes.getAttackType(clicks),
+                Identifier("soulforged:with_crits"), critDirection))
         }
     }
     fun add(target: Entity) {

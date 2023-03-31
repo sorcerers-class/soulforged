@@ -45,6 +45,7 @@ object Materials {
         ResourceLoader.get(ResourceType.SERVER_DATA).registerReloader(object : SimpleSynchronousResourceReloader {
             override fun reload(manager: ResourceManager) {
                 MATERIALS.clear()
+//                RAW_MATERIALS.clear()
                 for(id in manager.findResources("tool_materials") { path ->
                     return@findResources path.path.endsWith(".json")
                 }) {
@@ -58,9 +59,8 @@ object Materials {
                 for(rm in RAW_MATERIALS) {
                     MATERIALS[rm.key] = Material(rm.value.resolve(), rm.key)
                 }
-                for(mat in MATERIALS.values) {
-                    Soulforged.LOGGER.info("Material in registry: $mat")
-                }
+                RAW_MATERIALS.clear()
+                Soulforged.LOGGER.info("Registered ${MATERIALS.size} tool materials!")
             }
 
             override fun getQuiltId(): Identifier {

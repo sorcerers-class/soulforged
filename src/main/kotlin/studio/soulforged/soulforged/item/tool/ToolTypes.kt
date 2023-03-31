@@ -1,265 +1,98 @@
 package studio.soulforged.soulforged.item.tool
 
-import net.minecraft.registry.Registry
+import com.google.gson.Gson
+import net.minecraft.resource.ResourceManager
+import net.minecraft.resource.ResourceType
 import net.minecraft.util.Identifier
+import org.quiltmc.qsl.resource.loader.api.ResourceLoader
+import org.quiltmc.qsl.resource.loader.api.reloader.SimpleSynchronousResourceReloader
+import studio.soulforged.soulforged.Soulforged
 import studio.soulforged.soulforged.item.tool.combat.*
+import studio.soulforged.soulforged.item.tool.part.ToolPart
 import studio.soulforged.soulforged.item.tool.part.ToolParts
-import studio.soulforged.soulforged.resource.callback.MiningSpeedProcessors
-import studio.soulforged.soulforged.resource.callback.OnRightClickCallbacks
+import studio.soulforged.soulforged.material.Materials
+import studio.soulforged.soulforged.resource.callback.CallbackHolder
 import studio.soulforged.soulforged.util.RegistryUtil
+import java.io.BufferedReader
+import java.io.InputStreamReader
 
 @Suppress("unused")
 object ToolTypes {
-    val DEFAULT = ToolType(Identifier("soulforged:none"), "missingno",
-        AttackProperties(0.0, 0.0, 0.0, 0.0, 0.0, WeaponCategories.THRUSTING, CritDirections.SIDE),
-        null,
-        null,
-        MiningSpeedProcessors.HAND,
-        OnRightClickCallbacks.NONE,
-        AttackHandlers.WITH_CRITS,
-        arrayOf(ToolParts.DEFAULT, ToolParts.DEFAULT, ToolParts.DEFAULT))
-    val TOOL_TYPES_REGISTRY: Registry<ToolType> = RegistryUtil.createRegistry("soulforged:tool_types", DEFAULT)
-    val SHORTSWORD = register(
-        ToolType(
-            Identifier("soulforged", "shortsword"),
-            "item.soulforged.tool.type.shortsword",
-            AttackProperties(0.7, 0.2, 10.0, 1.2, 0.1, WeaponCategories.THRUSTING, CritDirections.SIDE),
-            null,
-            AttackProperties(0.5, 0.2, 18.0, 1.2, 0.8, WeaponCategories.THRUSTING, CritDirections.FORWARD),
-            MiningSpeedProcessors.SWORD,
-            OnRightClickCallbacks.NONE,
-            AttackHandlers.WITH_CRITS,
-            arrayOf(ToolParts.SHORTSWORD_BLADE, ToolParts.HILT, ToolParts.HANDLE)
-        )
-    )
-    val BROADSWORD = register(
-        ToolType(
-            Identifier("soulforged", "broadsword"),
-            "item.soulforged.tool.type.broadsword",
-            AttackProperties(1.0, 0.2, 8.0, 1.0, 0.2, WeaponCategories.SLASHING, CritDirections.SIDE),
-            AttackProperties(0.9, 0.2, 1.0, 1.0, 0.2, WeaponCategories.SLASHING, CritDirections.SIDE),
-            AttackProperties(0.75, 0.2, 15.0, 1.0, 0.8, WeaponCategories.THRUSTING, CritDirections.FORWARD),
-            MiningSpeedProcessors.SWORD,
-            OnRightClickCallbacks.NONE,
-            AttackHandlers.WITH_CRITS,
-            arrayOf(ToolParts.BROADSWORD_BLADE, ToolParts.WIDE_HILT, ToolParts.HANDLE)
-        )
-    )
-    val LONGSWORD = register(
-        ToolType(
-            Identifier("soulforged", "longsword"),
-            "item.soulforged.tool.type.longsword",
-            AttackProperties(1.3, 0.25, 3.0, 0.8, 0.35, WeaponCategories.SLASHING, CritDirections.SIDE),
-            AttackProperties(1.1, 0.25, 1.0, 0.8, 0.3, WeaponCategories.SLASHING, CritDirections.SIDE),
-            AttackProperties(1.0, 0.25, 10.0, 0.8, 0.8, WeaponCategories.THRUSTING, CritDirections.FORWARD),
-            MiningSpeedProcessors.SWORD,
-            OnRightClickCallbacks.NONE,
-            AttackHandlers.WITH_CRITS,
-            arrayOf(ToolParts.LONGSWORD_BLADE, ToolParts.WIDE_HILT, ToolParts.LONG_HANDLE)
-        )
-    )
-    val GREATSWORD = register(
-        ToolType(
-            Identifier("soulforged", "greatsword"),
-            "item.soulforged.tool.type.greatsword",
-            AttackProperties(1.5, 0.3, 1.0, 0.6, 0.4, WeaponCategories.SLASHING, CritDirections.SIDE),
-            AttackProperties(1.3, 0.3, 1.0, 0.6, 0.3, WeaponCategories.SLASHING, CritDirections.SIDE),
-            null,
-            MiningSpeedProcessors.SWORD,
-            OnRightClickCallbacks.NONE,
-            AttackHandlers.WITH_CRITS,
-            arrayOf(ToolParts.GREATSWORD_BLADE, ToolParts.WIDE_HILT, ToolParts.LONG_HANDLE)
-        )
-    )
-    val RAPIER = register(
-        ToolType(
-            Identifier("soulforged", "rapier"),
-            "item.soulforged.tool.type.rapier",
-            AttackProperties(0.6, 0.1, 20.0, 1.3, 0.4, WeaponCategories.THRUSTING, CritDirections.FORWARD),
-            null,
-            null,
-            MiningSpeedProcessors.SWORD,
-            OnRightClickCallbacks.NONE,
-            AttackHandlers.WITH_CRITS,
-            arrayOf(ToolParts.RAPIER_BLADE, ToolParts.SLIM_HILT, ToolParts.HANDLE)
-        )
-    )
-    val SHORTSPEAR = register(
-        ToolType(
-            Identifier("soulforged", "shortspear"),
-            "item.soulforged.tool.type.shortspear",
-            AttackProperties(0.75, 0.25, 5.0, 0.8, 1.0, WeaponCategories.THRUSTING, CritDirections.FORWARD),
-            AttackProperties(0.75, 0.25, 0.0, 0.8, 0.9, WeaponCategories.THRUSTING, CritDirections.FORWARD),
-            null,
-            MiningSpeedProcessors.HAND,
-            OnRightClickCallbacks.NONE,
-            AttackHandlers.WITH_CRITS,
-            arrayOf(ToolParts.SPEARHEAD, ToolParts.BINDING, ToolParts.LONG_SHAFT)
-        )
-    )
-    val LONGSPEAR = register(
-        ToolType(
-            Identifier("soulforged", "longspear"),
-            "item.soulforged.tool.type.longspear",
-            AttackProperties(0.8, 0.3, 3.0, 0.5, 1.3, WeaponCategories.THRUSTING, CritDirections.FORWARD),
-            AttackProperties(0.8, 0.3, 0.0, 0.5, 1.2, WeaponCategories.THRUSTING, CritDirections.FORWARD),
-            null,
-            MiningSpeedProcessors.HAND,
-            OnRightClickCallbacks.NONE,
-            AttackHandlers.WITH_CRITS,
-            arrayOf(ToolParts.SPEARHEAD, ToolParts.BINDING, ToolParts.VERY_LONG_SHAFT)
-        )
-    )
-    val JAVELIN = register(
-        ToolType(
-            Identifier("soulforged", "javelin"),
-            "item.soulforged.tool.type.javelin",
-            AttackProperties(0.8, 0.3, 3.0, 0.5, 1.3, WeaponCategories.THRUSTING, CritDirections.FORWARD),
-            AttackProperties(0.8, 0.25, 0.0, 0.9, 0.85, WeaponCategories.THRUSTING, CritDirections.FORWARD),
-            null,
-            MiningSpeedProcessors.HAND,
-            OnRightClickCallbacks.NONE,
-            AttackHandlers.WITH_CRITS,
-            arrayOf(ToolParts.SPEARHEAD, ToolParts.BINDING, ToolParts.JAVELIN_SHAFT)
-        )
-    )
-    val MACE = register(
-        ToolType(
-            Identifier("soulforged", "mace"),
-            "item.soulforged.tool.type.mace",
-            AttackProperties(0.0, 0.8, 10.0, 1.2, 0.0, WeaponCategories.CRUSHING, CritDirections.DOWN),
-            null,
-            null,
-            MiningSpeedProcessors.HAND,
-            OnRightClickCallbacks.NONE,
-            AttackHandlers.WITH_CRITS,
-            arrayOf(ToolParts.MACEHEAD, ToolParts.BINDING, ToolParts.SHORT_SHAFT)
-        )
-    )
-    val MORNINGSTAR = register(
-        ToolType(
-            Identifier("soulforged", "morningstar"),
-            "item.soulforged.tool.type.morningstar",
-            AttackProperties(1.0, 1.0, 5.0, 0.75, 0.75, WeaponCategories.CRUSHING, CritDirections.DOWN),
-            null,
-            null,
-            MiningSpeedProcessors.HAND,
-            OnRightClickCallbacks.NONE,
-            AttackHandlers.WITH_CRITS,
-            arrayOf(ToolParts.MORNINGSTAR_HEAD, ToolParts.BINDING, ToolParts.SHORT_SHAFT)
-        )
-    )
-    val GREATAXE = register(
-        ToolType(
-            Identifier("soulforged", "greataxe"),
-            "item.soulforged.tool.type.greataxe",
-            AttackProperties(1.2, 0.6, 3.0, 0.5, 0.4, WeaponCategories.SLASHING, CritDirections.DOWN),
-            AttackProperties(1.0, 0.4, 1.0, 0.5, 0.3, WeaponCategories.SLASHING, CritDirections.SIDE),
-            AttackProperties(1.4, 0.7, 1.0, 0.5, 0.6, WeaponCategories.CRUSHING, CritDirections.DOWN),
-            MiningSpeedProcessors.AXE,
-            OnRightClickCallbacks.AXE_INTERACTIONS,
-            AttackHandlers.WITH_CRITS,
-            arrayOf(ToolParts.GREATAXE_HEAD, ToolParts.TOUGH_BINDING, ToolParts.LONG_HANDLE)
-        )
-    )
-    val GREATHAMMER = register(
-        ToolType(
-            Identifier("soulforged", "greathammer"),
-            "item.soulforged.tool.type.greathammer",
-            AttackProperties(0.0, 1.3, 1.0, 0.35, 0.0, WeaponCategories.CRUSHING, CritDirections.DOWN),
-            AttackProperties(0.0, 1.4, 1.0, 0.35, 0.0, WeaponCategories.CRUSHING, CritDirections.DOWN),
-            null,
-            MiningSpeedProcessors.PICKAXE,
-            OnRightClickCallbacks.NONE,
-            AttackHandlers.WITH_CRITS,
-            arrayOf(ToolParts.GREATHAMMER_HEAD, ToolParts.TOUGH_BINDING, ToolParts.LONG_HANDLE)
-        )
-    )
-    val WARHAMMER = register(
-        ToolType(
-            Identifier("soulforged", "warhammer"),
-            "item.soulforged.tool.type.warhammer",
-            AttackProperties(0.0, 1.0, 1.5, 0.8, 0.0, WeaponCategories.CRUSHING, CritDirections.DOWN),
-            null,
-            AttackProperties(0.75, 0.75, 2.0, 0.8, 1.0, WeaponCategories.THRUSTING, CritDirections.DOWN),
-            MiningSpeedProcessors.PICKAXE,
-            OnRightClickCallbacks.NONE,
-            AttackHandlers.WITH_CRITS,
-            arrayOf(ToolParts.WARHAMMER_HEAD, ToolParts.BINDING, ToolParts.LONG_HANDLE)
-        )
-    )
-    val AXE = register(
-        ToolType(
-            Identifier("soulforged", "axe"),
-            "item.soulforged.tool.type.axe",
-            AttackProperties(0.9, 0.5, 4.0, 0.9, 0.3, WeaponCategories.SLASHING, CritDirections.DOWN),
-            null,
-            AttackProperties(0.8, 0.6, 1.0, 0.9, 0.4, WeaponCategories.CRUSHING, CritDirections.DOWN),
-            MiningSpeedProcessors.AXE,
-            OnRightClickCallbacks.AXE_INTERACTIONS,
-            AttackHandlers.WITH_CRITS,
-            arrayOf(ToolParts.AXE_HEAD, ToolParts.BINDING, ToolParts.SHORT_SHAFT)
-        )
-    )
-    val PICKAXE = register(
-        ToolType(
-            Identifier("soulforged", "pickaxe"),
-            "item.soulforged.tool.type.pickaxe",
-            AttackProperties(1.0, 0.3, 4.0, 0.6, 1.3, WeaponCategories.THRUSTING, CritDirections.DOWN),
-            null,
-            null,
-            MiningSpeedProcessors.PICKAXE,
-            OnRightClickCallbacks.NONE,
-            AttackHandlers.WITH_CRITS,
-            arrayOf(ToolParts.PICKAXE_HEAD, ToolParts.BINDING, ToolParts.LONG_HANDLE)
-        )
-    )
-    val SHOVEL = register(
-        ToolType(
-            Identifier("soulforged", "shovel"),
-            "item.soulforged.tool.type.shovel",
-            AttackProperties(0.1, 0.75, 3.0, 1.3, 0.0, WeaponCategories.CRUSHING, CritDirections.DOWN),
-            null,
-            null,
-            MiningSpeedProcessors.SHOVEL,
-            OnRightClickCallbacks.SHOVEL_INTERACTIONS,
-            AttackHandlers.WITH_CRITS,
-            arrayOf(ToolParts.SHOVEL_HEAD, ToolParts.BINDING, ToolParts.LONG_HANDLE)
-        )
-    )
-    val HOE = register(
-        ToolType(
-            Identifier("soulforged", "hoe"),
-            "item.soulforged.tool.type.hoe",
-            AttackProperties(0.2, 0.2, 5.0, 1.4, 0.2, WeaponCategories.CRUSHING, CritDirections.DOWN),
-            null,
-            null,
-            MiningSpeedProcessors.HOE,
-            OnRightClickCallbacks.HOE_INTERACTIONS,
-            AttackHandlers.WITH_CRITS,
-            arrayOf(ToolParts.HOE_HEAD, ToolParts.BINDING, ToolParts.LONG_HANDLE)
-        )
-    )
-    val HAMMER = register(
-        ToolType(
-            Identifier("soulforged", "hammer"),
-            "item.soulforged.tool.type.hammer",
-            AttackProperties(0.0, 0.75, 0.0, 1.4, 0.0, WeaponCategories.CRUSHING, CritDirections.DOWN),
-            null,
-            null,
-            MiningSpeedProcessors.PICKAXE,
-            OnRightClickCallbacks.HAMMER_TO_CREATE_WORKSTATION,
-            AttackHandlers.DEFAULT,
-            arrayOf(ToolParts.HAMMER_HEAD, ToolParts.BINDING, ToolParts.HANDLE)
-        )
-    )
-
-    private fun register(type: ToolType): ToolType {
-        return Registry.register(TOOL_TYPES_REGISTRY, type.id, type)
-    }
+    val RAW_TOOL_TYPES: HashMap<Identifier, RawToolType> = hashMapOf()
+    val TOOL_TYPES: HashMap<Identifier, ToolType> = hashMapOf()
     fun init() {
-        register(DEFAULT)
+        ResourceLoader.get(ResourceType.SERVER_DATA).registerReloader(object : SimpleSynchronousResourceReloader {
+            override fun reload(manager: ResourceManager) {
+                TOOL_TYPES.clear()
+                for(id in manager.findResources("tool_types") { path ->
+                    return@findResources path.path.endsWith(".json")
+                }) {
+                    try {
+                        val rid = RegistryUtil.stripJson(id.key, "tool_types/")
+                        RAW_TOOL_TYPES[rid] = Gson().fromJson(BufferedReader(InputStreamReader(manager.open(id.key), "UTF-8")).use { it.readText() }, RawToolType::class.java)
+                    } catch (e: Exception) {
+                        Soulforged.LOGGER.error("Error occurred while loading resource json $id", e)
+                    }
+                }
+                for(rm in RAW_TOOL_TYPES) {
+                    TOOL_TYPES[rm.key] = rm.value.intoToolType(rm.key)
+                }
+                RAW_TOOL_TYPES.clear()
+                Soulforged.LOGGER.info("Registered ${Materials.MATERIALS.size} tool types!")
+            }
+
+            override fun getQuiltId(): Identifier {
+                return Identifier("soulforged", "tool_types")
+            }
+
+        })
+    }
+    data class RawToolType(val default_attack: RawAttackProperties, val hc_attack: RawAttackProperties?, val dc_attack: RawAttackProperties?, val callbacks: HashMap<String, String>, val recipe: HashMap<String, String>) {
+        fun intoToolType(id: Identifier): ToolType {
+            return ToolType(id,
+                RegistryUtil.resolveTranslationKey(id, "item", "tool.type"),
+                default_attack.intoAttackProperties(),
+                hc_attack?.intoAttackProperties(),
+                dc_attack?.intoAttackProperties(),
+                CallbackHolder(callbacks),
+                listOf(
+                    ToolParts.TOOL_PARTS[Identifier(recipe["head"])],
+                    ToolParts.TOOL_PARTS[Identifier(recipe["binding"])],
+                    ToolParts.TOOL_PARTS[Identifier(recipe["handle"])]
+                )
+            )
+        }
+    }
+    data class RawAttackProperties(val piercing_damage: Double, val blunt_damage: Double, val finesse: Double, val speed: Double, val piercing: Double, val category: String, val crit_type: String) {
+        fun intoAttackProperties(): AttackProperties {
+            return AttackProperties(piercing_damage,
+                blunt_damage,
+                finesse,
+                speed,
+                piercing,
+                when(category) {
+                    "slashing" -> WeaponCategories.SLASHING
+                    "crushing" -> WeaponCategories.CRUSHING
+                    "thrusting" -> WeaponCategories.THRUSTING
+                    else -> throw IllegalArgumentException()
+                },
+                when(crit_type) {
+                    "forward" -> CritDirections.FORWARD
+                    "side" -> CritDirections.SIDE
+                    "down" -> CritDirections.DOWN
+                    else -> throw IllegalArgumentException()
+                })
+        }
     }
 }
+data class ToolType(
+    val id: Identifier,
+    val name: String,
+    val defaultAttack: AttackProperties,
+    val hcAttack: AttackProperties?,
+    val dcAttack: AttackProperties?,
+    val callbacks: CallbackHolder,
+    val parts: List<ToolPart?>
+)
 
 

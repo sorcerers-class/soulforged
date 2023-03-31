@@ -9,18 +9,22 @@ import net.minecraft.item.AxeItem
 import net.minecraft.item.HoneycombItem
 import net.minecraft.item.ItemUsageContext
 import net.minecraft.registry.Registries
+import net.minecraft.registry.Registry
 import net.minecraft.registry.tag.BlockTags
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvents
 import net.minecraft.util.ActionResult
+import net.minecraft.util.Identifier
 import net.minecraft.world.WorldEvents
 import studio.soulforged.soulforged.resource.callback.OnRightClickCallbacks.OnRightClickCallback
+import studio.soulforged.soulforged.util.RegistryUtil
 import java.util.*
 
 object OnRightClickCallbacks {
-
-    val AXE_INTERACTIONS: OnRightClickCallback = OnRightClickCallback { ctx ->
+    val DEFAULT: OnRightClickCallback = OnRightClickCallback { ActionResult.FAIL }
+    val RIGHT_CLICK_CALLBACK_REGISTRY: Registry<OnRightClickCallback> = RegistryUtil.createRegistry("right_click_callbacks", DEFAULT)
+    val AXE_INTERACTIONS: OnRightClickCallback = register(Identifier("soulforged:axe")) { ctx ->
         val world = ctx?.world
         val blockPos = ctx?.blockPos
         val playerEntity = ctx?.player
@@ -52,7 +56,7 @@ object OnRightClickCallbacks {
         }
         ActionResult.PASS
     }
-    val HOE_INTERACTIONS: OnRightClickCallback = OnRightClickCallback { ctx ->
+    val HOE_INTERACTIONS: OnRightClickCallback = register(Identifier("soulforged:hoe")) { ctx ->
         val world = ctx?.world
         val pos = ctx?.blockPos
         val player = ctx?.player
@@ -69,7 +73,7 @@ object OnRightClickCallbacks {
         }
         ActionResult.PASS
     }
-    val SHOVEL_INTERACTIONS: OnRightClickCallback = OnRightClickCallback { ctx ->
+    val SHOVEL_INTERACTIONS: OnRightClickCallback = register(Identifier("soulforged:shovel")) { ctx ->
         val world = ctx?.world
         val pos = ctx?.blockPos
         val playerEntity = ctx?.player
@@ -85,18 +89,24 @@ object OnRightClickCallbacks {
         }
         ActionResult.PASS
     }
-    val HAMMER_TO_CREATE_WORKSTATION: OnRightClickCallback = OnRightClickCallback { ctx ->
+    val HAMMER_TO_CREATE_WORKSTATION: OnRightClickCallback = register(Identifier("soulforged:hammer")) { ctx ->
         val world = ctx?.world
         val pos = ctx?.blockPos
         val playerEntity = ctx?.player
-        for(i in -3..3) {
-            for(j in -3..3) {
+        for (i in -3..3) {
+            for (j in -3..3) {
                 val block = world?.getBlockState(pos?.add(i, 0, j))?.block ?: Blocks.AIR
             }
         }
         ActionResult.PASS
     }
-    val NONE: OnRightClickCallback = OnRightClickCallback { ActionResult.PASS }
+    val NONE: OnRightClickCallback = register(Identifier("soulforged:none")) { ActionResult.PASS }
+
+
+    fun register(id: Identifier, orcc: OnRightClickCallback): OnRightClickCallback {
+        return Registry.register(RIGHT_CLICK_CALLBACK_REGISTRY, id, orcc)
+    }
+    fun init() {}
     fun interface OnRightClickCallback {
         fun onRightClick(ctx: ItemUsageContext?): ActionResult?
     }
