@@ -9,6 +9,7 @@ import net.minecraft.server.command.ServerCommandSource
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
+import studio.soulforged.soulforged.Soulforged
 import studio.soulforged.soulforged.item.SoulforgedItems
 import studio.soulforged.soulforged.item.tool.ToolInst
 
@@ -53,19 +54,23 @@ object GiveToolCommand {
         pattern: Identifier
     ): Int {
         for (target in targets) {
-            val stack = SoulforgedItems.TOOL.defaultStack
-            val tool = ToolInst(type, head, binding, handle, pattern)
-            tool.setDurability(tool.head.maxDurability, tool.binding.maxDurability, tool.handle.maxDurability)
-            stack.nbt = ToolInst.ToolInstSerializer.serialize(tool)
-            target.giveItemStack(stack)
-            source.sendFeedback(
-                Text.translatable(
-                    "commands.give.success.single",
-                    1,
-                    SoulforgedItems.TOOL.getName(stack),
-                    targets.iterator().next().displayName
-                ), true
-            )
+            try {
+                val stack = SoulforgedItems.TOOL.defaultStack
+                val tool = ToolInst(type, head, binding, handle, pattern)
+                tool.setDurability(tool.head.maxDurability, tool.binding.maxDurability, tool.handle.maxDurability)
+                stack.nbt = ToolInst.ToolInstSerializer.serialize(tool)
+                target.giveItemStack(stack)
+                source.sendFeedback(
+                    Text.translatable(
+                        "commands.give.success.single",
+                        1,
+                        SoulforgedItems.TOOL.getName(stack),
+                        targets.iterator().next().displayName
+                    ), true
+                )
+            } catch(e: Throwable) {
+                Soulforged.LOGGER.error(e.stackTraceToString())
+            }
         }
         return targets.size
     }

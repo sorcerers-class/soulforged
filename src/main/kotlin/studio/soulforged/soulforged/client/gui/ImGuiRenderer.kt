@@ -39,21 +39,25 @@ class ImGuiRenderer {
      * Begin a new frame.
      */
     fun beginFrame() {
-        imGuiGlfw.newFrame()
-        ImGui.newFrame()
+        if(SCD_ENABLED) {
+            imGuiGlfw.newFrame()
+            ImGui.newFrame()
+        }
     }
 
     /**
      * End a frame and update the windows.
      */
     fun finishFrame() {
-        ImGui.render()
-        imGuiGl3.renderDrawData(ImGui.getDrawData())
-        if (ImGui.getIO().hasConfigFlags(ImGuiConfigFlags.ViewportsEnable)) {
-            val backupWindowPointer = GLFW.glfwGetCurrentContext()
-            ImGui.updatePlatformWindows()
-            ImGui.renderPlatformWindowsDefault()
-            GLFW.glfwMakeContextCurrent(backupWindowPointer)
+        if(SCD_ENABLED) {
+            ImGui.render()
+            imGuiGl3.renderDrawData(ImGui.getDrawData())
+            if (ImGui.getIO().hasConfigFlags(ImGuiConfigFlags.ViewportsEnable)) {
+                val backupWindowPointer = GLFW.glfwGetCurrentContext()
+                ImGui.updatePlatformWindows()
+                ImGui.renderPlatformWindowsDefault()
+                GLFW.glfwMakeContextCurrent(backupWindowPointer)
+            }
         }
     }
 

@@ -2,12 +2,11 @@ package studio.soulforged.soulforged.item.tool.part
 
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.util.Identifier
-import studio.soulforged.soulforged.material.Material
 import studio.soulforged.soulforged.material.Materials
 import studio.soulforged.soulforged.util.NbtSerializer
 
-class ToolPartInst(val part: ToolPart, val mat: Material, var durability: Int, val maxDurability: Int) {
-    constructor(toolPart: ToolPart, mat: Material) : this(toolPart, mat, mat.durability, mat.durability)
+class ToolPartInst(val part: ToolPart, val mat: Materials.Material, var durability: Int, val maxDurability: Int) {
+    constructor(toolPart: ToolPart, mat: Materials.Material) : this(toolPart, mat, mat.durability, mat.durability)
     object ToolPartInstSerializer : NbtSerializer<ToolPartInst> {
         override fun serialize(target: ToolPartInst): NbtCompound {
             val nbt = NbtCompound()
@@ -20,7 +19,7 @@ class ToolPartInst(val part: ToolPart, val mat: Material, var durability: Int, v
 
         override fun deserialize(nbt: NbtCompound): ToolPartInst {
             val part = ToolParts.TOOL_PARTS_REGISTRY.get(Identifier(nbt.getString("part"))) ?: ToolParts.DEFAULT
-            val mat = Materials.MATERIAL_REGISTRY.get(Identifier(nbt.getString("material"))) ?: Materials.DEFAULT
+            val mat = Materials.MATERIALS[Identifier(nbt.getString("material"))] ?: throw IllegalArgumentException()
             val durability = nbt.getInt("durability")
             val maxDurability = nbt.getInt("max_durability")
             return ToolPartInst(part, mat, durability, maxDurability)

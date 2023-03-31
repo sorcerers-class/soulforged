@@ -11,7 +11,6 @@ import studio.soulforged.soulforged.item.tool.combat.AttackTypes
 import studio.soulforged.soulforged.item.tool.part.PartPosition
 import studio.soulforged.soulforged.item.tool.part.ToolPartInst
 import studio.soulforged.soulforged.item.tool.part.ToolParts
-import studio.soulforged.soulforged.material.Material
 import studio.soulforged.soulforged.material.Materials
 import studio.soulforged.soulforged.util.NbtSerializer
 
@@ -20,16 +19,16 @@ import studio.soulforged.soulforged.util.NbtSerializer
  * @author Lilly Rosaline
  * @see ToolType
  * @see studio.soulforged.soulforged.item.tool.part.ToolPart
- * @see studio.soulforged.soulforged.material.Material
+ * @see studio.soulforged.soulforged.material.Materials.Material
  */
-class ToolInst(val stack: ItemStack, val type: ToolType, val head: ToolPartInst, val binding: ToolPartInst, val handle: ToolPartInst, val pattern: Material, val attributes: AttributeContainer) {
+class ToolInst(val stack: ItemStack, val type: ToolType, val head: ToolPartInst, val binding: ToolPartInst, val handle: ToolPartInst, val pattern: Materials.Material, val attributes: AttributeContainer) {
     constructor(type: Identifier, head: Identifier, binding: Identifier, handle: Identifier, pattern: Identifier) : this(
         SoulforgedItems.TOOL.defaultStack,
         ToolTypes.TOOL_TYPES_REGISTRY.get(type) ?: ToolTypes.DEFAULT,
-        ToolPartInst(ToolTypes.TOOL_TYPES_REGISTRY.get(type)?.parts?.get(0) ?: ToolParts.DEFAULT, Materials.MATERIAL_REGISTRY.get(head) ?: Materials.DEFAULT),
-        ToolPartInst(ToolTypes.TOOL_TYPES_REGISTRY.get(type)?.parts?.get(1) ?: ToolParts.DEFAULT, Materials.MATERIAL_REGISTRY.get(binding) ?: Materials.DEFAULT),
-        ToolPartInst(ToolTypes.TOOL_TYPES_REGISTRY.get(type)?.parts?.get(2) ?: ToolParts.DEFAULT, Materials.MATERIAL_REGISTRY.get(handle) ?: Materials.DEFAULT),
-        Materials.MATERIAL_REGISTRY.get(pattern) ?: Materials.DEFAULT,
+        ToolPartInst(ToolTypes.TOOL_TYPES_REGISTRY.get(type)?.parts?.get(0) ?: ToolParts.DEFAULT, Materials.MATERIALS[head] ?: throw IllegalArgumentException()),
+        ToolPartInst(ToolTypes.TOOL_TYPES_REGISTRY.get(type)?.parts?.get(1) ?: ToolParts.DEFAULT, Materials.MATERIALS[binding] ?: throw IllegalArgumentException()),
+        ToolPartInst(ToolTypes.TOOL_TYPES_REGISTRY.get(type)?.parts?.get(2) ?: ToolParts.DEFAULT, Materials.MATERIALS[handle] ?: throw IllegalArgumentException()),
+        Materials.MATERIALS[pattern] ?: throw IllegalArgumentException(),
         AttributeContainer()
     )
     constructor() : this(Identifier("soulforged:none"), Identifier("soulforged:none"), Identifier("soulforged:none"), Identifier("soulforged:none"), Identifier("soulforged:none"))
@@ -156,7 +155,7 @@ class ToolInst(val stack: ItemStack, val type: ToolType, val head: ToolPartInst,
             val head = ToolPartInst.ToolPartInstSerializer.deserialize(nbt.getCompound("sf_head"))
             val binding = ToolPartInst.ToolPartInstSerializer.deserialize(nbt.getCompound("sf_binding"))
             val handle = ToolPartInst.ToolPartInstSerializer.deserialize(nbt.getCompound("sf_handle"))
-            val pattern = Materials.MATERIAL_REGISTRY.get(Identifier(nbt.getString("sf_pattern"))) ?: Materials.WOOD
+            val pattern = Materials.MATERIALS[Identifier(nbt.getString("sf_pattern"))] ?: throw IllegalArgumentException()
             val attributeContainer = AttributeContainer.AttributeContainerSerializer.deserialize(nbt.getCompound("sf_attribs"))
             return ToolInst(SoulforgedItems.TOOL.defaultStack, type, head, binding, handle, pattern, attributeContainer)
             //return ToolInst(SoulforgedItems.TOOL.defaultStack, type, head, binding, handle, pattern)

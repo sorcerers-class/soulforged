@@ -21,7 +21,6 @@ object SoulforgedOres {
     val ORE_PADPARADSCHA = register("ore_padparadscha", BiomeSelectors.foundInTheNether())
     val ORE_RUBY = register("ore_ruby", BiomeSelectors.foundInTheNether())
     val ORE_SAPPHIRE = register("ore_sapphire", BiomeSelectors.foundInTheNether())
-    val ORE_SILVER = register("ore_silver", BiomeSelectors.foundInOverworld())
     val ORE_STAR_GEM = register("ore_star_gem", BiomeSelectors.foundInTheNether())
     val ORE_TITANIUM = register("ore_titanium", BiomeSelectors.foundInTheNether())
     val ORE_TITANIUM_END = register("ore_titanium_end", BiomeSelectors.foundInTheEnd())
