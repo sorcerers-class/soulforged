@@ -14,5 +14,13 @@
   "color": "C9E0E5",
   "resources": {
     "#c:lead_ingots": 1.0
-  }
+  },
+  pattern_effects: [
+    {
+      "field": "poison_damage",
+      "conditions": ["soulforged:is_tool"],
+      "method": "add_pct",
+      "value": 10
+    }
+  ]
 }

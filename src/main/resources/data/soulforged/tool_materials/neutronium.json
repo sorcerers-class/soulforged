@@ -14,5 +14,13 @@
   "color": "FFFF00",
   "resources": {
     "soulforged:neutronium": 1.0
-  }
+  },
+  "pattern_effects": [
+    {
+      "field": "weight",
+      "conditions": [],
+      "method": "add_pct",
+      "value": 100
+    }
+  ]
 }

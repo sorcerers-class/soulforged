@@ -14,5 +14,13 @@
   "color": "2D2727",
   "resources": {
     "minecraft:netherite_ingot": 1.0
-  }
+  },
+  "pattern_effects": [
+    {
+      "field": "can_burn",
+      "conditions": [],
+      "method": "set",
+      "value": 1
+    }
+  ]
 }

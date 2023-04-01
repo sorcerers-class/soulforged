@@ -13,5 +13,13 @@
   "color": "8014FCEE",
   "resources": {
     "minecraft:amethyst_shard": 1.0
-  }
+  },
+  "pattern_effects": [
+    {
+      "field": "base_attack_damage",
+      "conditions": ["soulforged:is_tool"],
+      "method": "add_pct",
+      "value": 5
+    },
+  ]
 }

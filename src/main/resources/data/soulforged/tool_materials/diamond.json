@@ -13,5 +13,37 @@
   "color": "05FCFCEE",
   "resources": {
     "minecraft:diamond": 1.0
-  }
+  },
+  "pattern_effects": [
+    {
+      "field": "piercing_damage",
+      "conditions": ["soulforged:is_tool"],
+      "method": "add_pct",
+      "value": 2
+    },
+    {
+      "field": "blunt_damage",
+      "conditions": ["soulforged:is_tool"],
+      "method": "add_pct",
+      "value": 2
+    },
+    {
+      "field": "finesse",
+      "conditions": ["soulforged:is_tool"],
+      "method": "add_pct",
+      "value": 2
+    },
+    {
+      "field": "speed",
+      "conditions": ["soulforged:is_tool"],
+      "method": "add_pct",
+      "value": 2
+    },
+    {
+      "field": "piercing",
+      "conditions": ["soulforged:is_tool"],
+      "method": "add_pct",
+      "value": 2
+    }
+  ]
 }

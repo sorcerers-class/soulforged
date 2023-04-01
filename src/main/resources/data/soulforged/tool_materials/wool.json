@@ -11,5 +11,19 @@
   "color": "FFEAE9DE",
   "resources": {
     "#minecraft:wool": 1.0
-  }
+  },
+  "pattern_effects": [
+    {
+      "field": "padding",
+      "conditions": ["soulforged:is_armor"],
+      "method": "add",
+      "value": 5
+    },
+    {
+      "field": "weight",
+      "conditions": ["soulforged:is_tool"],
+      "method": "add_pct",
+      "value": -5
+    }
+  ]
 }

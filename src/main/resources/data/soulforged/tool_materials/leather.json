@@ -11,5 +11,13 @@
   color: "AA6C1B",
   "resources": {
     "minecraft:leather": 1.0
-  }
+  },
+  "pattern_effects": [
+    {
+      "field": "padding",
+      "condition": ["soulforged:is_armor"],
+      "method": "add_pct",
+      "value": 5
+    }
+  ]
 }

@@ -11,5 +11,19 @@
   "color": "D1FCCC",
   "resources": {
     "soulforged:slime_weave": 1.0
-  }
+  },
+  pattern_effects: [
+    {
+      "field": "bounce",
+      "conditions": ["soulforged:is_boots"],
+      "method": "set",
+      "value": 1
+    },
+    {
+      "field": "knockback",
+      "conditions": [],
+      "method": "add_pct",
+      "value": 50
+    },
+  ]
 }

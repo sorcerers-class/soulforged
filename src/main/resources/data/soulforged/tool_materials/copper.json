@@ -14,5 +14,19 @@
   "color": "FC800C",
   "resources": {
     "minecraft:copper_ingot": 1.0
-  }
+  },
+  "pattern_effects": [
+    {
+      "field": "thunder_damage",
+      "conditions": ["soulforged:is_tool"],
+      "method": "add_pct",
+      "value": 8
+    },
+    {
+      "field": "thunder_resistance",
+      "conditions": ["soulforged:is_armor"],
+      "method": "add_pct",
+      "value": 10
+    }
+  ]
 }

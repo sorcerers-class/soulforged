@@ -14,5 +14,13 @@
   "color": "FFFFFF",
   "resources": {
     "soulforged:divinium": 1.0
-  }
+  },
+  "pattern_effects": [
+    {
+      "field": "smite_damage",
+      "conditions": [],
+      "method": "add_pct",
+      "value": 7
+    }
+  ]
 }

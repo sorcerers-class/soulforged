@@ -1,0 +1,5 @@
+{
+  "parent": "soulforged:material",
+  "can_tool": false,
+  "can_armor": false
+}

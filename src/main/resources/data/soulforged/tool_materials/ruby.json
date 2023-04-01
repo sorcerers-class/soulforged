@@ -3,5 +3,19 @@
   "color": "BC0101DD",
   "resources": {
     "#c:rubies": 1.0
-  }
+  },
+  "pattern_effects": [
+    {
+      "field": "durability",
+      "conditions": ["soulforged:is_tool"],
+      "method": "add_pct",
+      "value": -25
+    },
+    {
+      "field": "hardness",
+      "conditions": ["soulforged:tool_head"],
+      "method": "add",
+      "value": 1
+    }
+  ]
 }

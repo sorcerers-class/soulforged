@@ -11,5 +11,13 @@
   "color": "A8410A",
   "resources": {
     "soulforged:monster_leather": 1.0
-  }
+  },
+  "pattern_effects": [
+    {
+      "field": "mob_spotting",
+      "conditions": ["soulforged:is_armor"],
+      "method": "add_pct",
+      "value": -50
+    }
+  ]
 }

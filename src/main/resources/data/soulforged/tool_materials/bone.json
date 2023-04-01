@@ -17,5 +17,19 @@
     "minecraft:bone": 1.0,
     "#c:bone_blocks": 3.0,
     "#c:bones": 1.0
-  }
+  },
+  "pattern_effects": [
+    {
+      "field": "looting",
+      "conditions": ["soulforged:target_undead", "soulforged:is_tool"],
+      "method": "set",
+      "value": 1
+    },
+    {
+      "field": "decay_resistance",
+      "conditions": ["soulforged:is_armor"],
+      "method": "add_pct",
+      "value": 1
+    }
+  ]
 }

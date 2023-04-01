@@ -11,5 +11,13 @@
   "color": "2D8C1E",
   "resources": {
     "minecraft:scute": 1.0
-  }
+  },
+  pattern_effects: [
+    {
+      "field": "water_breathing",
+      "conditions": ["soulforged:is_armor"],
+      "method": "add",
+      "value": 100
+    }
+  ]
 }

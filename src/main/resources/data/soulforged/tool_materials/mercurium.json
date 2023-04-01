@@ -14,5 +14,13 @@
   "color": "757575",
   "resources": {
     "soulforged:mercurium": 1.0
-  }
+  },
+  pattern_effects: [
+    {
+      "field": "durability_regen",
+      "conditions": [],
+      "method": "set",
+      "value": 1
+    }
+  ]
 }

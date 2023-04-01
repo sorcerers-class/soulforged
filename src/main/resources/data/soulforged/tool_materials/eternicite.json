@@ -13,5 +13,13 @@
   "color": "7D50D8",
   "resources": {
     "soulforged:eternicite": 1.0
-  }
+  },
+  pattern_effects: [
+    {
+      "field": "unbreaking",
+      "conditions": [],
+      "method": "set",
+      "value": 1
+    }
+  ]
 }

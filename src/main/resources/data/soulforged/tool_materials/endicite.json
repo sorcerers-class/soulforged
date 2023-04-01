@@ -13,5 +13,13 @@
   "color": "D874FCCC",
   "resources": {
     "soulforged:endicite": 1.0
-  }
+  },
+  "pattern_effects": [
+    {
+      "field": "gravity",
+      "conditions": [],
+      "method": "set",
+      "value": -0.005
+    }
+  ]
 }

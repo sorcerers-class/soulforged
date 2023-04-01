@@ -3,5 +3,13 @@
   color: "F4A790DD",
   "resources": {
     "soulforged:padparadscha": 1.0
-  }
+  },
+  "pattern_effects": [
+    {
+      "field": "durability",
+      "conditions": ["soulforged:is_tool"],
+      "method": "add_pct",
+      "value": 15
+    }
+  ]
 }

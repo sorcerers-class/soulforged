@@ -14,5 +14,13 @@
   "color": "E6F1F4",
   "resources": {
     "#c:aluminum_ingots": 1.0
-  }
+  },
+  "pattern_effects": [
+    {
+      "field": "ice_damage",
+      "conditions": ["soulforged:is_tool"],
+      "method": "add_pct",
+      "value": 10
+    }
+  ]
 }

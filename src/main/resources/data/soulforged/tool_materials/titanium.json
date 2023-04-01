@@ -14,5 +14,13 @@
   "color": "AEAFAF",
   "resources": {
     "#c:titanium_ingots": 1.0
-  }
+  },
+  "pattern_effects": [
+    {
+      "field": "invisible_with_effect",
+      "conditions": [],
+      "method": "set",
+      "value": 1
+    }
+  ]
 }

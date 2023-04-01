@@ -3,5 +3,19 @@
   "color": "0117BCDD",
   "resources": {
     "#c:sapphires": 1.0
-  }
+  },
+  "pattern_effects": [
+    {
+      "field": "durability",
+      "conditions": ["soulforged:is_tool"],
+      "method": "add_pct",
+      "value": 20
+    },
+    {
+      "field": "hardness",
+      "conditions": ["soulforged:tool_head"],
+      "method": "add",
+      "value": -1
+    }
+  ]
 }

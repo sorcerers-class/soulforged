@@ -16,5 +16,13 @@
     "#minecraft:logs": 4.0,
     "#minecraft:planks": 1.0,
     "minecraft:stick": 0.5
-  }
+  },
+  "pattern_effects": [
+    {
+      "field": "xp_absorption",
+      "conditions": [],
+      "method": "add",
+      "value": 20
+    },
+  ]
 }

@@ -14,5 +14,13 @@
   "color": "605344",
   "resources": {
     "soulforged:netherium_ingot": 1.0
-  }
+  },
+  pattern_effects: [
+    {
+      "field": "indestructible",
+      "conditions": [],
+      "method": "set",
+      "value": 1
+    }
+  ]
 }

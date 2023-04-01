@@ -13,5 +13,19 @@
   "color": "1C0038",
   "resources": {
     "minecraft:obsidian": 1.0
-  }
+  },
+  "pattern_effects": [
+    {
+      "field": "fire_resistance",
+      "conditions": [],
+      "method": "set",
+      "value": 100
+    },
+    {
+      "field": "durability",
+      "conditions": [],
+      "method": "add_pct",
+      "value": 30
+    }
+  ]
 }

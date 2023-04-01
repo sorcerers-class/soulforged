@@ -14,5 +14,19 @@
   "color": "90BBF4",
   "resources": {
     "#c:osmium_ingots": 1.0
-  }
+  },
+  "pattern_effects": [
+    {
+      "field": "hardness",
+      "conditions": [],
+      "method": "add_pct",
+      "value": 20
+    },
+    {
+      "field": "weight",
+      "conditions": [],
+      "method": "add_pct",
+      "value": 20
+    }
+  ]
 }

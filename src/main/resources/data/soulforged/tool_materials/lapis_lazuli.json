@@ -1,0 +1,14 @@
+{
+  "parent": "soulforged:pattern_material",
+  "resources": {
+    "minecraft:lapis_lazuli": 1.0
+  },
+  "pattern_effects": [
+    {
+      "field": "xp",
+      "conditions": ["soulforged:is_tool"],
+      "method": "add_pct",
+      "value": 40
+    }
+  ]
+}

@@ -14,5 +14,19 @@
   "color": "FF7F00",
   "resources": {
     "soulforged:star_metal_ingot": 1.0
-  }
+  },
+  "pattern_effects": [
+    {
+      "field": "magic_resistance",
+      "conditions": ["soulforged:is_armor"],
+      "method": "add_pct",
+      "value": 50
+    },
+    {
+      "field": "durability",
+      "conditions": ["soulforged:is_tool"],
+      "method": "add_pct",
+      "value": 25
+    }
+  ]
 }

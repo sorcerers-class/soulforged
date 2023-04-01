@@ -14,5 +14,13 @@
   "color": "EAE9E3",
   "resources": {
     "minecraft:iron_ingot": 1.0
-  }
+  },
+  "pattern_effects": [
+    {
+      "field": "attack_speed",
+      "conditions": ["soulforged:is_tool"],
+      "method": "add_pct",
+      "value": 1
+    }
+  ]
 }

@@ -11,5 +11,13 @@
   "color": "EAEAEA",
   "resources": {
     "soulforged:spider_weave": 1.0
-  }
+  },
+  pattern_effects: [
+    {
+      "field": "hardness",
+      "conditions": ["soulforged:enemy_is_passive"],
+      "method": "add",
+      "value": 2
+    }
+  ]
 }

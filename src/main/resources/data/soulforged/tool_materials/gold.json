@@ -14,5 +14,25 @@
   "color": "F9E71D",
   "resources": {
     "minecraft:gold_ingot": 1.0
-  }
+  },
+  "pattern_effects": [
+    {
+      "field": "xp_capacity",
+      "conditions": [],
+      "method": "add",
+      "value": 10
+    },
+    {
+      "field": "xp_absorption",
+      "conditions": [],
+      "method": "add",
+      "value": 10
+    },
+    {
+      "field": "piglin_ignore",
+      "conditions": ["soulforged:is_armor"],
+      "method": "set",
+      "value": 1
+    }
+  ]
 }

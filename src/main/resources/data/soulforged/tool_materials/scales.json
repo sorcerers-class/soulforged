@@ -11,5 +11,13 @@
   "color": "AA6C1B",
   "resources": {
     "soulforged:scales": 1.0
-  }
+  },
+  pattern_effects: [
+    {
+      "field": "hardness",
+      "conditions": ["soulforged:enemy_is_boss"],
+      "method": "add",
+      "value": 2
+    }
+  ]
 }

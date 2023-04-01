@@ -3,5 +3,43 @@
   "color": "FF4A790DD",
   "resources": {
     "soulforged:star_gem": 1.0
-  }
+  },
+  "pattern_effects": [
+    {
+      "field": "durability",
+      "conditions": ["soulforged:is_tool"],
+      "method": "add_pct",
+      "value": -25
+    },
+    {
+      "field": "piercing_damage",
+      "conditions": ["soulforged:is_tool"],
+      "method": "add_pct",
+      "value": 4
+    },
+    {
+      "field": "blunt_damage",
+      "conditions": ["soulforged:is_tool"],
+      "method": "add_pct",
+      "value": 4
+    },
+    {
+      "field": "finesse",
+      "conditions": ["soulforged:is_tool"],
+      "method": "add_pct",
+      "value": 4
+    },
+    {
+      "field": "speed",
+      "conditions": ["soulforged:is_tool"],
+      "method": "add_pct",
+      "value": 4
+    },
+    {
+      "field": "piercing",
+      "conditions": ["soulforged:is_tool"],
+      "method": "add_pct",
+      "value": 4
+    }
+  ]
 }

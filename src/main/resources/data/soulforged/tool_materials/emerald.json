@@ -13,5 +13,13 @@
   "color": "32FC05EE",
   "resources": {
     "minecraft:emerald": 1.0
-  }
+  },
+  "pattern_effects": [
+    {
+      "field": "looting",
+      "conditions": ["soulforged:is_tool"],
+      "method": "set",
+      "value": 1
+    },
+  ]
 }

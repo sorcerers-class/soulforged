@@ -14,5 +14,19 @@
   "color": "000000",
   "resources": {
     "soulforged:void_metal_ingot": 1.0
-  }
+  },
+  pattern_effects: [
+    {
+      "field": "player_translucency",
+      "conditions": ["soulforged:all_armor_patterned"],
+      "method": "set",
+      "value": 1
+    },
+    {
+      "field": "invisible_with_effect",
+      "conditions": [],
+      "method": "set",
+      "value": 1
+    }
+  ]
 }

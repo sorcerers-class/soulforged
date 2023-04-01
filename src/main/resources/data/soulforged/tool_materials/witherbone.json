@@ -14,5 +14,19 @@
   "color": "190000",
   "resources": {
     "soulforged:witherbone": 1.0
-  }
+  },
+  "pattern_effects": [
+    {
+      "field": "durability",
+      "conditions": [],
+      "method": "add_pct",
+      "value": 50
+    },
+    {
+      "field": "enchantability",
+      "conditions": [],
+      "method": "set",
+      "value": 0
+    }
+  ]
 }

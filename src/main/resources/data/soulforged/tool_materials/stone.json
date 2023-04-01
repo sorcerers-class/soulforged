@@ -16,5 +16,13 @@
     "minecraft:cobblestone": 1.0,
     "#c:stone": 1.0,
     "#c:cobblestone": 1.0
-  }
+  },
+  "pattern_effects": [
+    {
+      "field": "weight",
+      "condition": [],
+      "method": "add_pct",
+      "value": 5
+    }
+  ]
 }

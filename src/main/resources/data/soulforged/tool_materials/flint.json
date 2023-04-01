@@ -15,5 +15,13 @@
     "minecraft:flint": 1.0,
     "minecraft:gravel": 0.1,
     "#c:gravel": 0.1
-  }
+  },
+  "pattern_effects": [
+    {
+      "field": "fire_damage",
+      "condition": ["soulforged:is_tool"],
+      "method": "add_pct",
+      "value": 5
+    }
+  ]
 }
