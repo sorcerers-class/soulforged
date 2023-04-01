@@ -37,7 +37,7 @@ class ToolItem : Item(
 
     override fun postHit(stack: ItemStack, target: LivingEntity, attacker: LivingEntity): Boolean {
         val nbt = attacker.mainHandStack.nbt ?: return false
-        val tool = ToolInst.ToolInstSerializer.deserialize(nbt)
+        val tool = ToolInst.ToolInstSerializer.deserialize(nbt) ?: return false
         tool.damage(target.world.random)
         if (tool.shouldBreak()) breakTool(attacker as PlayerEntity)
         stack.nbt = ToolInst.ToolInstSerializer.serialize(tool)
@@ -47,13 +47,13 @@ class ToolItem : Item(
 
     override fun getMiningSpeedMultiplier(stack: ItemStack, state: BlockState): Float {
         val nbt = stack.nbt ?: return 1.0f
-        val tool = ToolInst.ToolInstSerializer.deserialize(nbt)
+        val tool = ToolInst.ToolInstSerializer.deserialize(nbt) ?: return 1.0f
         return tool.type.callbacks.getMiningSpeed(state, tool.head.mat)
     }
 
     override fun postMine(stack: ItemStack, world: World, state: BlockState, pos: BlockPos, miner: LivingEntity): Boolean {
         val nbt = miner.mainHandStack.nbt ?: return false
-        val tool = ToolInst.ToolInstSerializer.deserialize(nbt)
+        val tool = ToolInst.ToolInstSerializer.deserialize(nbt) ?: return false
         tool.damage(world.random)
         if(tool.shouldBreak()) breakTool(miner as PlayerEntity)
         stack.nbt = ToolInst.ToolInstSerializer.serialize(tool)
@@ -63,7 +63,7 @@ class ToolItem : Item(
 
     override fun canMine(state: BlockState, world: World, pos: BlockPos, miner: PlayerEntity): Boolean {
         val nbt = miner.mainHandStack.nbt ?: return false
-        val tool = ToolInst.ToolInstSerializer.deserialize(nbt)
+        val tool = ToolInst.ToolInstSerializer.deserialize(nbt) ?: return false
         return !tool.shouldBreak()
     }
 
@@ -73,21 +73,21 @@ class ToolItem : Item(
 
     override fun useOnBlock(context: ItemUsageContext): ActionResult {
         val nbt = context.stack.nbt ?: return ActionResult.FAIL
-        val tool = ToolInst.ToolInstSerializer.deserialize(nbt)
-        if (tool.shouldBreak()) return ActionResult.FAIL
-        val result = tool.type.callbacks.onRightClick(context)
-        if(result == ActionResult.SUCCESS) {
-            tool.damage(context.world.random)
-            context.stack.nbt = ToolInst.ToolInstSerializer.serialize(tool)
-            context.stack.damage = tool.getDisplayDurability().toInt()
-        }
-        return result
+            val tool = ToolInst.ToolInstSerializer.deserialize(nbt) ?: return ActionResult.FAIL
+            if (tool.shouldBreak()) return ActionResult.FAIL
+            val result = tool.type.callbacks.onRightClick(context)
+            if(result == ActionResult.SUCCESS) {
+                tool.damage(context.world.random)
+                context.stack.nbt = ToolInst.ToolInstSerializer.serialize(tool)
+                context.stack.damage = tool.getDisplayDurability().toInt()
+            }
+            return result
     }
 
     @ClientOnly
     override fun appendTooltip(stack: ItemStack, world: World?, tooltip: MutableList<Text>, context: TooltipContext) {
         val nbt = stack.nbt ?: return
-        val tool = ToolInst.ToolInstSerializer.deserialize(nbt)
+        val tool = ToolInst.ToolInstSerializer.deserialize(nbt) ?: return
         val headMaterial = Text.translatable(tool.head.mat.name)
         val headType = tool.head.part.name
         val bindingMaterial = Text.translatable(tool.binding.mat.name)
@@ -104,9 +104,8 @@ class ToolItem : Item(
             || bindingType == "missingno"
             || handleMaterial == Text.literal("missingno")
             || handleType == "missingno"
-            || toolType.name == "missingno"
-            ) return
-        //tooltip.add(new TranslatableText("item.soulforged.tool.type." + type + ".desc").formatted(Formatting.GRAY, Formatting.ITALIC));
+            || toolType.name == "missingno") return
+            //tooltip.add(new TranslatableText("item.soulforged.tool.type." + type + ".desc").formatted(Formatting.GRAY, Formatting.ITALIC));
         tooltip.add(
             Text.translatable(headType, headMaterial)
                 .append(" + ").formatted(Formatting.RESET)
@@ -179,7 +178,8 @@ class ToolItem : Item(
                                     )
                         ).formatted(
                             Formatting.DARK_GREEN
-                        )) else Text.translatable("item.soulforged.tool.tooltip.hc.false").formatted(
+                        )
+                    ) else Text.translatable("item.soulforged.tool.tooltip.hc.false").formatted(
                         Formatting.DARK_RED,
                         Formatting.BOLD
                     )
@@ -200,16 +200,15 @@ class ToolItem : Item(
                         Formatting.DARK_GREEN
                     ) else Text.translatable("item.soulforged.tool.tooltip.dc.false").formatted(
                         Formatting.DARK_RED,
-                        Formatting.BOLD
-                    )
+                        Formatting.BOLD)
                 )
         )
     }
 
     @ClientOnly
     override fun getName(stack: ItemStack): Text {
-        val nbt = stack.nbt ?: return Text.literal("missingno")
-        val tool = ToolInst.ToolInstSerializer.deserialize(nbt)
+        val nbt = stack.nbt ?: return Text.literal("Invalid Tool!")
+        val tool = ToolInst.ToolInstSerializer.deserialize(nbt) ?: return Text.literal("Invalid Tool!")
         return Text.translatable(
             tool.type.name, Text.translatable(tool.head.mat.name)
         )

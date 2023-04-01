@@ -5,7 +5,6 @@ import net.minecraft.nbt.NbtCompound
 import net.minecraft.util.Identifier
 import net.minecraft.util.random.RandomGenerator
 import studio.soulforged.soulforged.item.SoulforgedItems
-import studio.soulforged.soulforged.item.tool.attributes.AttributeContainer
 import studio.soulforged.soulforged.item.tool.combat.AttackProperties
 import studio.soulforged.soulforged.item.tool.combat.AttackTypes
 import studio.soulforged.soulforged.item.tool.part.PartPosition
@@ -20,15 +19,14 @@ import studio.soulforged.soulforged.util.NbtSerializer
  * @see studio.soulforged.soulforged.item.tool.part.ToolPart
  * @see studio.soulforged.soulforged.material.Materials.Material
  */
-class ToolInst(val stack: ItemStack, val type: ToolType, val head: ToolPartInst, val binding: ToolPartInst, val handle: ToolPartInst, val pattern: Materials.Material, val attributes: AttributeContainer) {
+class ToolInst(val stack: ItemStack, val type: ToolType, val head: ToolPartInst, val binding: ToolPartInst, val handle: ToolPartInst, val pattern: Materials.Material) {
     constructor(type: Identifier, head: Identifier, binding: Identifier, handle: Identifier, pattern: Identifier) : this(
         SoulforgedItems.TOOL.defaultStack,
         ToolTypes.TOOL_TYPES[type] ?: throw IllegalArgumentException(),
         ToolPartInst(ToolTypes.TOOL_TYPES[type]?.parts?.get(0) ?: throw IllegalArgumentException(), Materials.MATERIALS[head] ?: throw IllegalArgumentException()),
         ToolPartInst(ToolTypes.TOOL_TYPES[type]?.parts?.get(1) ?: throw IllegalArgumentException(), Materials.MATERIALS[binding] ?: throw IllegalArgumentException()),
         ToolPartInst(ToolTypes.TOOL_TYPES[type]?.parts?.get(2) ?: throw IllegalArgumentException(), Materials.MATERIALS[handle] ?: throw IllegalArgumentException()),
-        Materials.MATERIALS[pattern] ?: throw IllegalArgumentException(),
-        AttributeContainer()
+        Materials.MATERIALS[pattern] ?: throw IllegalArgumentException()
     )
     constructor() : this(Identifier("soulforged:none"), Identifier("soulforged:none"), Identifier("soulforged:none"), Identifier("soulforged:none"), Identifier("soulforged:none"))
     /**
@@ -145,19 +143,17 @@ class ToolInst(val stack: ItemStack, val type: ToolType, val head: ToolPartInst,
             nbt.put("sf_binding", ToolPartInst.ToolPartInstSerializer.serialize(target.binding))
             nbt.put("sf_handle", ToolPartInst.ToolPartInstSerializer.serialize(target.handle))
             nbt.putString("sf_pattern", target.pattern.id.toString())
-            nbt.put("sf_attribs", AttributeContainer.AttributeContainerSerializer.serialize(target.attributes))
             return nbt
         }
 
-        override fun deserialize(nbt: NbtCompound): ToolInst {
-            val type = ToolTypes.TOOL_TYPES[Identifier(nbt.getString("sf_tool_type"))] ?: throw IllegalArgumentException()
-            val head = ToolPartInst.ToolPartInstSerializer.deserialize(nbt.getCompound("sf_head"))
-            val binding = ToolPartInst.ToolPartInstSerializer.deserialize(nbt.getCompound("sf_binding"))
-            val handle = ToolPartInst.ToolPartInstSerializer.deserialize(nbt.getCompound("sf_handle"))
-            val pattern = Materials.MATERIALS[Identifier(nbt.getString("sf_pattern"))] ?: throw IllegalArgumentException()
-            val attributeContainer = AttributeContainer.AttributeContainerSerializer.deserialize(nbt.getCompound("sf_attribs"))
-            return ToolInst(SoulforgedItems.TOOL.defaultStack, type, head, binding, handle, pattern, attributeContainer)
-            //return ToolInst(SoulforgedItems.TOOL.defaultStack, type, head, binding, handle, pattern)
+        @Throws(IllegalArgumentException::class)
+        override fun deserialize(nbt: NbtCompound): ToolInst? {
+            val type = ToolTypes.TOOL_TYPES[Identifier(nbt.getString("sf_tool_type"))] ?: return null
+            val head = ToolPartInst.ToolPartInstSerializer.deserialize(nbt.getCompound("sf_head")) ?: return null
+            val binding = ToolPartInst.ToolPartInstSerializer.deserialize(nbt.getCompound("sf_binding")) ?: return null
+            val handle = ToolPartInst.ToolPartInstSerializer.deserialize(nbt.getCompound("sf_handle")) ?: return null
+            val pattern = Materials.MATERIALS[Identifier(nbt.getString("sf_pattern"))] ?: return null
+            return ToolInst(SoulforgedItems.TOOL.defaultStack, type, head, binding, handle, pattern)
         }
 
     }

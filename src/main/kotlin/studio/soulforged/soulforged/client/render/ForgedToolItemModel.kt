@@ -35,33 +35,40 @@ class ForgedToolItemModel : UnbakedModel, BakedModel, FabricBakedModel {
 
     @ClientOnly
     override fun emitItemQuads(stack: ItemStack, randomSupplier: Supplier<RandomGenerator>, context: RenderContext) {
-        val tool = ToolInst.ToolInstSerializer.deserialize(stack.nbt!!)
-        val type = tool.type.id
-        val headName = Identifier(type.namespace, "item/tools/" + type.path.toString() + "_" + ModelToolParts.HEAD.toString().lowercase())
-        val bindingName = Identifier(type.namespace, "item/tools/" + type.path.toString() + "_" + ModelToolParts.BINDING.toString().lowercase())
-        val handleName = Identifier(type.namespace, "item/tools/" +  type.path.toString() + "_" + ModelToolParts.HANDLE.toString().lowercase())
-        val missingno = MinecraftClient.getInstance().bakedModelManager.missingModel
-        context.pushTransform(tool.head.mat.transform)
-        ((PART_MODELS[headName] ?: missingno) as FabricBakedModel).emitItemQuads(
-            stack,
-            randomSupplier,
-            context
-        )
-        context.popTransform()
-        context.pushTransform(tool.binding.mat.transform)
-        ((PART_MODELS[bindingName] ?: missingno) as FabricBakedModel).emitItemQuads(
-            stack,
-            randomSupplier,
-            context
-        )
-        context.popTransform()
-        context.pushTransform(tool.handle.mat.transform)
-        ((PART_MODELS[handleName] ?: missingno) as FabricBakedModel).emitItemQuads(
-            stack,
-            randomSupplier,
-            context
-        )
-        context.popTransform()
+        val missingno = MinecraftClient.getInstance().bakedModelManager.missingModel as FabricBakedModel
+            val tool = ToolInst.ToolInstSerializer.deserialize(stack.nbt!!)
+            if(tool == null) {
+                missingno.emitItemQuads(stack, randomSupplier, context)
+                return
+            }
+            val type = tool.type.id
+            val headName = Identifier(type.namespace, "item/tools/" + type.path.toString() + "_" + ModelToolParts.HEAD.toString().lowercase())
+            val bindingName = Identifier(type.namespace, "item/tools/" + type.path.toString() + "_" + ModelToolParts.BINDING.toString().lowercase())
+            val handleName = Identifier(type.namespace, "item/tools/" +  type.path.toString() + "_" + ModelToolParts.HANDLE.toString().lowercase())
+
+            context.pushTransform(tool.head.mat.transform)
+            ((PART_MODELS[headName] ?: missingno) as FabricBakedModel).emitItemQuads(
+                stack,
+                randomSupplier,
+                context
+            )
+            context.popTransform()
+            context.pushTransform(tool.binding.mat.transform)
+            ((PART_MODELS[bindingName] ?: missingno) as FabricBakedModel).emitItemQuads(
+                stack,
+                randomSupplier,
+                context
+            )
+            context.popTransform()
+            context.pushTransform(tool.handle.mat.transform)
+            ((PART_MODELS[handleName] ?: missingno) as FabricBakedModel).emitItemQuads(
+                stack,
+                randomSupplier,
+                context
+            )
+            context.popTransform()
+
+
     }
 
     override fun bake(

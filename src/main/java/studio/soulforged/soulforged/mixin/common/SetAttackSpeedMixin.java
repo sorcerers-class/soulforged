@@ -24,8 +24,11 @@ public abstract class SetAttackSpeedMixin extends LivingEntity {
     private void soulforged$injectCalculatedAttackSpeed(CallbackInfoReturnable<Float> cir) {
         ItemStack stack = this.getMainHandStack();
         if(stack.isOf(SoulforgedItems.INSTANCE.getTOOL())) {
-            assert stack.getNbt() != null;
             ToolInst tool = ToolInst.ToolInstSerializer.INSTANCE.deserialize(stack.getNbt());
+            if(tool == null) {
+                cir.setReturnValue(1.0f);
+                return;
+            }
             cir.setReturnValue((float) ((this.getAttributeValue(EntityAttributes.GENERIC_ATTACK_SPEED) / 4.0f) / tool.baseAttackSpeed(tool.attackProperties(AttackTypes.NORMAL)) * 20.0f));
         }
     }

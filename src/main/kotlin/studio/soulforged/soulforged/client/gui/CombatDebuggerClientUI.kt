@@ -21,9 +21,16 @@ object CombatDebuggerClientUI {
                 val stack = player.mainHandStack
                 if (stack.item == SoulforgedItems.TOOL) {
                     val tool = ToolInst.ToolInstSerializer.deserialize(stack.nbt!!)
+                    if(tool == null) {
+                        ImGui.begin("SCD v2")
+                        ImGui.text("Invalid tool!")
+                        ImGui.end()
+                        return
+                    }
                     drawCritsWindow(player, tool)
                     drawAttackPacketsWindow(player, tool)
                     drawToolProperties(player, tool)
+
                 }
             }
         }

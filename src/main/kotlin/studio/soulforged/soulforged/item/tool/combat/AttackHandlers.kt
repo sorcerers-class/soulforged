@@ -23,18 +23,18 @@ object AttackHandlers {
         if(attacker == null || target == null) return@AttackHandler ActionResult.FAIL
         if(attacker.mainHandStack.item != SoulforgedItems.TOOL) return@AttackHandler ActionResult.FAIL
         if(attacker.mainHandStack.nbt == null) return@AttackHandler ActionResult.FAIL
-        val tool = ToolInst.ToolInstSerializer.deserialize(attacker.mainHandStack.nbt!!)
-
-        if (target.isAttackable) {
-            if (!target.handleAttack(attacker)) {
-                val attackProperties = tool.attackProperties(attackType)
-                val multiplier = if(critDirection == attackProperties.critDirection) critDirection.multiplier else 1.0f
-                val damage = tool.baseAttackDamage(attackProperties).toFloat() * multiplier
-                target.damage(target.damageSources.playerAttack(attacker), damage)
-                CombatDebuggerClientUI.debuggerAttackCallback(damage, critDirection, attackType, multiplier)
+            val tool = ToolInst.ToolInstSerializer.deserialize(attacker.mainHandStack.nbt!!) ?: return@AttackHandler ActionResult.FAIL
+            if (target.isAttackable) {
+                if (!target.handleAttack(attacker)) {
+                    val attackProperties = tool.attackProperties(attackType)
+                    val multiplier = if(critDirection == attackProperties.critDirection) critDirection.multiplier else 1.0f
+                    val damage = tool.baseAttackDamage(attackProperties).toFloat() * multiplier
+                    target.damage(target.damageSources.playerAttack(attacker), damage)
+                    CombatDebuggerClientUI.debuggerAttackCallback(damage, critDirection, attackType, multiplier)
+                }
             }
-        }
-        return@AttackHandler ActionResult.SUCCESS
+            return@AttackHandler ActionResult.SUCCESS
+
     })
     val DEFAULT = register(Identifier("soulforged:default"), AttackHandler { attacker: PlayerEntity?, target: Entity?, type: AttackTypes, _: CritDirections? ->
         if(attacker == null || target == null) return@AttackHandler ActionResult.FAIL
