@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "soulforged:block/deepslate_forge_controller_off",
+    "side": "soulforged:block/deepslate_forge_burner_1_off",
+    "top": "minecraft:block/deepslate_bricks"
+  }
+}

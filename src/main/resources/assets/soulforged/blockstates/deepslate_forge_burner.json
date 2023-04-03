@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "lit=false,tier=1": {
+      "model": "soulforged:block/deepslate_forge_burner_1_off"
+    },
+    "lit=true,tier=1": {
+      "model": "soulforged:block/deepslate_forge_burner_1_on"
+    },
+    "lit=false,tier=2": {
+      "model": "soulforged:block/deepslate_forge_burner_2_off"
+    },
+    "lit=true,tier=2": {
+      "model": "soulforged:block/deepslate_forge_burner_2_on"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+
+{
+  "variants": {
+    "lit=false": {
+      "model": "soulforged:block/deepslate_forge_bunker_off"
+    },
+    "lit=true": {
+      "model": "soulforged:block/deepslate_forge_bunker_on"
+    }
+  }
+}

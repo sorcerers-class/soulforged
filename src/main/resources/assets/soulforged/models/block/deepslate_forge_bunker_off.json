@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "minecraft:block/deepslate_bricks",
+    "side": "soulforged:block/deepslate_forge_bunker_off"
+  }
+}

@@ -16,6 +16,10 @@ object SoulforgedBlocks {
     val IRON_ANVIL: Block = register("iron_anvil", IronAnvilBlock())
     val SMITHING_TABLE: Block = register("smithing_table", SmithingTableBlock())
     val WORKSTATION: Block = register("workstation", WorkstationBlock(QuiltBlockSettings.of(Material.WOOD)))
+
+    val DEEPSLATE_FORGE_CONTROLLER: Block = register("deepslate_forge_controller", DeepslateForgeBlocks.DeepslateForgeController())
+    val DEEPSLATE_FORGE_BURNER: Block = register("deepslate_forge_burner", DeepslateForgeBlocks.DeepslateForgeBurner())
+    val DEEPSLATE_FORGE_BUNKER: Block = register("deepslate_forge_bunker", DeepslateForgeBlocks.DeepslateForgeBunker())
     // Ores
     val SILVER_ORE: Block = register("silver_ore", Block(QuiltBlockSettings.of(Material.STONE)))
     val DEEPSLATE_SILVER_ORE: Block = register("deepslate_silver_ore", Block(QuiltBlockSettings.of(Material.STONE)))

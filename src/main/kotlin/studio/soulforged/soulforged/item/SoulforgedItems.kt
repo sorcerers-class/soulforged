@@ -19,7 +19,9 @@ object SoulforgedItems {
     val WORKSTATION: Item = register("workstation", BlockItem(
         SoulforgedBlocks.WORKSTATION, QuiltItemSettings())
     )
-
+    val DEEPSLATE_FORGE_CONTROLLER = registerBlockItem("deepslate_forge_controller", SoulforgedBlocks.DEEPSLATE_FORGE_CONTROLLER)
+    val DEEPSLATE_FORGE_BUNKER = registerBlockItem("deepslate_forge_bunker", SoulforgedBlocks.DEEPSLATE_FORGE_BUNKER)
+    val DEEPSLATE_FORGE_BURNER = registerBlockItem("deepslate_forge_burner", SoulforgedBlocks.DEEPSLATE_FORGE_BURNER)
     // Ores
     val LEAD_ORE = registerBlockItem("lead_ore", SoulforgedBlocks.LEAD_ORE)
     val CINNABAR_ORE = registerBlockItem("cinnabar_ore", SoulforgedBlocks.CINNABAR_ORE)
@@ -58,7 +60,6 @@ object SoulforgedItems {
     val GROUP: ItemGroup = FabricItemGroup.builder(Identifier("soulforged", "soulforged"))
         .icon { ItemStack(MERCURY_BOTTLE) }
         .entries {_, content ->
-            content.addItem(WORKSTATION)
             content.addItem(LEAD_ORE)
             content.addItem(CINNABAR_ORE)
             content.addItem(OSMIUM_ORE)
@@ -94,6 +95,11 @@ object SoulforgedItems {
             content.addItem(SCALES)
             content.addItem(SPIDER_WEAVE)
             content.addItem(SLIME_WEAVE)
+
+            content.addItem(WORKSTATION)
+            content.addItem(DEEPSLATE_FORGE_CONTROLLER)
+            content.addItem(DEEPSLATE_FORGE_BURNER)
+            content.addItem(DEEPSLATE_FORGE_BUNKER)
         }
         .build()
     fun register(id: String, item: Item): Item {
