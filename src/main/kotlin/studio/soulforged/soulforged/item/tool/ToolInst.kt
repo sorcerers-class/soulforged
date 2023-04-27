@@ -28,6 +28,15 @@ class ToolInst(val stack: ItemStack, val type: ToolType, val head: ToolPartInst,
         ToolPartInst(ToolTypes.TOOL_TYPES[type]?.parts?.get(2) ?: throw IllegalArgumentException(), Materials.MATERIALS[handle] ?: throw IllegalArgumentException()),
         Materials.MATERIALS[pattern] ?: throw IllegalArgumentException()
     )
+    constructor(type: ToolType, head: Materials.Material, binding: Materials.Material, handle: Materials.Material, pattern: Materials.Material) : this(
+        SoulforgedItems.TOOL.defaultStack,
+        type,
+        ToolPartInst(type.parts[0] ?: throw IllegalArgumentException(), head),
+        ToolPartInst(type.parts[1] ?: throw IllegalArgumentException(), binding),
+        ToolPartInst(type.parts[2] ?: throw IllegalArgumentException(), handle),
+        pattern
+
+    )
     constructor() : this(Identifier("soulforged:none"), Identifier("soulforged:none"), Identifier("soulforged:none"), Identifier("soulforged:none"), Identifier("soulforged:none"))
     /**
      * Gets the durability of the tool to display.

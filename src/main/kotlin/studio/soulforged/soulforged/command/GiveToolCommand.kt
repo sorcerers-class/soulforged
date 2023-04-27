@@ -3,37 +3,52 @@ package studio.soulforged.soulforged.command
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.context.CommandContext
 import net.minecraft.command.argument.EntityArgumentType
-import net.minecraft.command.argument.IdentifierArgumentType
 import net.minecraft.server.command.CommandManager
 import net.minecraft.server.command.ServerCommandSource
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.Text
-import net.minecraft.util.Identifier
 import studio.soulforged.soulforged.Soulforged
 import studio.soulforged.soulforged.item.SoulforgedItems
 import studio.soulforged.soulforged.item.tool.ToolInst
+import studio.soulforged.soulforged.item.tool.ToolType
+import studio.soulforged.soulforged.material.Materials
+import org.quiltmc.qkl.library.brigadier.*
+import org.quiltmc.qkl.library.brigadier.argument.*
 
 object GiveToolCommand {
     fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
-        dispatcher.register(
+        dispatcher.register("givetool") {
+            requires { source -> source.hasPermissionLevel(2) }
+            required(
+                players("targets"),
+                toolType("type"),
+                toolMaterial("head"),
+                toolMaterial("binding"),
+                toolMaterial("handle"),
+                toolMaterial("pattern")) {players, type, head, binding, handle, pattern ->
+                    execute {
+                        GiveToolCommand.execute(source, players, type, head, binding, handle, pattern)
+                    }
+            }
+        }
             CommandManager.literal("givetool")
                 .requires { source: ServerCommandSource -> source.hasPermissionLevel(2) }
                 .then(CommandManager.argument("targets", EntityArgumentType.players())
-                    .then(CommandManager.argument("type", IdentifierArgumentType.identifier())
-                        .then(CommandManager.argument("head", IdentifierArgumentType.identifier())
-                            .then(CommandManager.argument("binding", IdentifierArgumentType.identifier())
-                                .then(CommandManager.argument("handle", IdentifierArgumentType.identifier())
-                                    .then(CommandManager.argument("pattern", IdentifierArgumentType.identifier())
-                                        .executes { context: CommandContext<ServerCommandSource> ->
-                                            execute(
+                    .then(CommandManager.argument("type", ToolTypeArgumentType.toolType())
+                        .then(CommandManager.argument("head", MaterialArgumentType.toolMaterial())
+                            .then(CommandManager.argument("binding", MaterialArgumentType.toolMaterial())
+                                .then(CommandManager.argument("handle", MaterialArgumentType.toolMaterial())
+                                    .then(CommandManager.argument("pattern", MaterialArgumentType.toolMaterial())
+                                        .executes { context: CommandContext<ServerCommandSource> -> 0
+                                            /*execute(
                                                 context.source,
                                                 EntityArgumentType.getPlayers(context, "targets"),
-                                                IdentifierArgumentType.getIdentifier(context, "type"),
+                                                ToolTypeArgumentType.getToolType(context, "type"),
                                                 IdentifierArgumentType.getIdentifier(context, "head"),
                                                 IdentifierArgumentType.getIdentifier(context, "binding"),
                                                 IdentifierArgumentType.getIdentifier(context, "handle"),
                                                 IdentifierArgumentType.getIdentifier(context, "pattern")
-                                            )
+                                            )*/
                                         }
                                     )
                                 )
@@ -47,11 +62,11 @@ object GiveToolCommand {
     private fun execute(
         source: ServerCommandSource,
         targets: Collection<ServerPlayerEntity>,
-        type: Identifier,
-        head: Identifier,
-        binding: Identifier,
-        handle: Identifier,
-        pattern: Identifier
+        type: ToolType,
+        head: Materials.Material,
+        binding: Materials.Material,
+        handle: Materials.Material,
+        pattern: Materials.Material
     ): Int {
         for (target in targets) {
             try {
