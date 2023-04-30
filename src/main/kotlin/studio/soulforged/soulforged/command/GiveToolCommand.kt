@@ -37,6 +37,7 @@ object GiveToolCommand {
                                                 tool.setDurability(tool.head.maxDurability, tool.binding.maxDurability, tool.handle.maxDurability)
                                                 stack.nbt = ToolInst.ToolInstSerializer.serialize(tool)
                                                 target.giveItemStack(stack)
+
                                                 source.sendFeedback(
                                                     Text.translatable(
                                                         "commands.give.success.single",
