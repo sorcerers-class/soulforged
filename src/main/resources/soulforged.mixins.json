@@ -4,6 +4,7 @@
   "package": "studio.soulforged.soulforged.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "common.ArgumentTypesImpl",
     "common.AttackQueueMixin",
     "common.CheckToolHarvestabilityImpl",
     "common.EndiciteFallSpeedMixin",

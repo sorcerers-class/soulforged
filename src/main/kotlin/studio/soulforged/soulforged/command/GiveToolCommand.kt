@@ -1,10 +1,14 @@
 package studio.soulforged.soulforged.command
 
 import com.mojang.brigadier.CommandDispatcher
+import net.minecraft.command.argument.ArgumentTypeInfos
+import net.minecraft.command.argument.EntityArgumentType.players
 import net.minecraft.server.command.ServerCommandSource
+import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 import org.quiltmc.qkl.library.brigadier.*
+import org.quiltmc.qkl.library.brigadier.argument.players
 import studio.soulforged.soulforged.Soulforged
 import studio.soulforged.soulforged.item.SoulforgedItems
 import studio.soulforged.soulforged.item.tool.ToolInst
@@ -12,8 +16,10 @@ import studio.soulforged.soulforged.material.Materials
 
 object GiveToolCommand {
     fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
+        Soulforged.LOGGER.info(ArgumentTypeInfos.isClassRecognized(MaterialArgumentType::class.java))
+        Soulforged.LOGGER.info(ArgumentTypeInfos.isClassRecognized(ToolTypeArgumentType::class.java))
         dispatcher.register("givetool") {
-//            required(players("targets")) { targets ->
+            required(players("targets")) { targets ->
                 required(toolType("type")) { type ->
                     required(toolMaterial("head")) { head ->
                         required(toolMaterial("binding")) { binding ->
@@ -23,8 +29,7 @@ object GiveToolCommand {
                                             it.hasPermissionLevel(2)
                                     }
                                     execute {
-//                                        val targets: Collection<ServerPlayerEntity> = this[targets].required()
-                                        val targets = listOf(source.playerOrThrow)
+                                        val targets: Collection<ServerPlayerEntity> = this[targets].value()
                                         for (target in targets) {
                                             try {
                                                 val stack = SoulforgedItems.TOOL.defaultStack
@@ -50,7 +55,7 @@ object GiveToolCommand {
                         }
                     }
                 }
-//            }
+            }
         }
     }
 }
