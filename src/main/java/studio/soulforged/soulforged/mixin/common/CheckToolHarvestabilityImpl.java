@@ -24,7 +24,7 @@ public class CheckToolHarvestabilityImpl {
     private static void soulforged$injectGetDroppedStacks(BlockState state, ServerWorld world, BlockPos pos, @Nullable BlockEntity blockEntity, @Nullable Entity entity, ItemStack stack, CallbackInfoReturnable<List<Object>> info) {
         if(entity instanceof PlayerEntity) {
             ItemStack tool = ((PlayerEntity)entity).getMainHandStack();
-            if(tool.isOf(SoulforgedItems.INSTANCE.getTOOL()) && !BlockUtil.INSTANCE.isMineable(state, tool)) {
+            if(tool.isOf(SoulforgedItems.TOOL) && !BlockUtil.INSTANCE.isMineable(state, tool)) {
                     info.setReturnValue(List.of(ItemStack.EMPTY));
             }
         }

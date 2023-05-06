@@ -1,7 +1,7 @@
 package studio.soulforged.soulforged.network
 
-import net.minecraft.util.Identifier
+import studio.soulforged.soulforged.Soulforged.id
 
 object NetworkIdentifiers {
-    var ATTACK_PACKET = Identifier("soulforged:attack")
+    var ATTACK_PACKET = "attack".id()
 }

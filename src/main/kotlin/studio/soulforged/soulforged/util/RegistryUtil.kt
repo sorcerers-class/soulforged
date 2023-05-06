@@ -20,6 +20,8 @@ object RegistryUtil {
     fun resolveTranslationKey(id: Identifier, ns: String, group: String): String {
         return "$ns.${id.namespace}.$group.${id.path}"
     }
+
+
 }
 
 typealias ItemOrTag = Pair<Item?, Identifier?>

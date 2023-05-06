@@ -26,12 +26,12 @@ class ToolTypeArgumentType : IdentifierArgumentType() {
 }
 object ToolTypeArgumentDescriptor : ArgumentDescriptor<ToolTypeArgumentType>
 @BrigadierDsl
-public fun<S> toolType(name: String) : RequiredArgumentConstructor<S, ToolTypeArgumentDescriptor> {
+fun<S> toolType(name: String) : RequiredArgumentConstructor<S, ToolTypeArgumentDescriptor> {
     return argument(name, ToolTypeArgumentType(), ToolTypeArgumentDescriptor)
 }
 @JvmName("toolTypeArg")
 @BrigadierDsl
-public fun ArgumentReader<ServerCommandSource, ToolTypeArgumentDescriptor>.value(): ToolType {
+fun ArgumentReader<ServerCommandSource, ToolTypeArgumentDescriptor>.value(): ToolType {
     return ToolTypes.TOOL_TYPES[IdentifierArgumentType.getIdentifier(context, name)] ?: throw CommandSyntaxException(
         CommandSyntaxException.BUILT_IN_EXCEPTIONS.literalIncorrect(), {""})
 }

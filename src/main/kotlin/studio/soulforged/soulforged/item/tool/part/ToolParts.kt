@@ -15,7 +15,7 @@ import java.io.InputStreamReader
 object ToolParts {
     val RAW_TOOL_PARTS: HashMap<Identifier, RawToolPart> = hashMapOf()
     val TOOL_PARTS: HashMap<Identifier, ToolPart> = hashMapOf()
-    fun init() {
+    internal fun init() {
         ResourceLoader.get(ResourceType.SERVER_DATA).registerReloader(object : SimpleSynchronousResourceReloader {
             override fun reload(manager: ResourceManager) {
                 TOOL_PARTS.clear()

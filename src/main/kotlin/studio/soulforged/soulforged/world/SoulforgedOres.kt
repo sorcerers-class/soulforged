@@ -2,12 +2,12 @@ package studio.soulforged.soulforged.world
 
 import net.minecraft.registry.RegistryKey
 import net.minecraft.registry.RegistryKeys
-import net.minecraft.util.Identifier
 import net.minecraft.world.gen.GenerationStep
 import net.minecraft.world.gen.feature.PlacedFeature
 import org.quiltmc.qsl.worldgen.biome.api.BiomeModifications
 import org.quiltmc.qsl.worldgen.biome.api.BiomeSelectionContext
 import org.quiltmc.qsl.worldgen.biome.api.BiomeSelectors
+import studio.soulforged.soulforged.Soulforged.id
 import java.util.function.Predicate
 
 @Suppress("unused")
@@ -21,10 +21,10 @@ object SoulforgedOres {
     val ORE_CORUNDUM = register("ore_corundum", BiomeSelectors.foundInTheNether())
     val ORE_TITANIUM = register("ore_titanium", BiomeSelectors.foundInTheNether())
     val ORE_TITANIUM_END = register("ore_titanium_end", BiomeSelectors.foundInTheEnd())
-    fun register(id: String, sel: Predicate<BiomeSelectionContext>): RegistryKey<PlacedFeature> {
-        val key = RegistryKey.of(RegistryKeys.PLACED_FEATURE, Identifier("soulforged", id))
+    private fun register(id: String, sel: Predicate<BiomeSelectionContext>): RegistryKey<PlacedFeature> {
+        val key = RegistryKey.of(RegistryKeys.PLACED_FEATURE, id.id())
         BiomeModifications.addFeature(sel, GenerationStep.Feature.UNDERGROUND_ORES, key)
         return key
     }
-    fun init() {}
+    internal fun init() {}
 }

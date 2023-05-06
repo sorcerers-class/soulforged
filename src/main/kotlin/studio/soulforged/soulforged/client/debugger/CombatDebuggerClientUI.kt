@@ -1,4 +1,4 @@
-package studio.soulforged.soulforged.client.gui
+package studio.soulforged.soulforged.client.debugger
 
 import imgui.ImGui
 import net.minecraft.client.MinecraftClient
@@ -100,9 +100,9 @@ object CombatDebuggerClientUI {
     private var attack: AttackTypes? = null
     private var multiplier: Float? = null
     fun debuggerAttackCallback(damage: Float, crit: CritDirections?, attack: AttackTypes?, multiplier: Float) {
-        this.damage = damage
-        this.crit = crit
-        this.attack = attack
-        this.multiplier = multiplier
+        CombatDebuggerClientUI.damage = damage
+        CombatDebuggerClientUI.crit = crit
+        CombatDebuggerClientUI.attack = attack
+        CombatDebuggerClientUI.multiplier = multiplier
     }
 }

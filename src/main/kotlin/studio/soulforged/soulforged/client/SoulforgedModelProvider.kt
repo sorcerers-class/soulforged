@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.client.model.ModelProviderContext
 import net.fabricmc.fabric.api.client.model.ModelResourceProvider
 import net.minecraft.client.render.model.UnbakedModel
 import net.minecraft.util.Identifier
+import studio.soulforged.soulforged.Soulforged.id
 import studio.soulforged.soulforged.client.render.ForgedToolItemModel
 
 class SoulforgedModelProvider : ModelResourceProvider {
@@ -15,7 +16,7 @@ class SoulforgedModelProvider : ModelResourceProvider {
     }
 
     companion object {
-        val FORGED_TOOL_MODEL = Identifier("soulforged:item/tool")
-        val BROKEN_FORGED_TOOL_MODEL = Identifier("soulforged:item/broken_tool")
+        val FORGED_TOOL_MODEL = "item/tool".id()
+        val BROKEN_FORGED_TOOL_MODEL = "item/broken_tool".id()
     }
 }

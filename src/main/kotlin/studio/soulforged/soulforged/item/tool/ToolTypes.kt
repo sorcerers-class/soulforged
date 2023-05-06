@@ -20,7 +20,7 @@ import java.io.InputStreamReader
 object ToolTypes {
     val RAW_TOOL_TYPES: HashMap<Identifier, RawToolType> = hashMapOf()
     val TOOL_TYPES: HashMap<Identifier, ToolType> = hashMapOf()
-    fun init() {
+    internal fun init() {
         ResourceLoader.get(ResourceType.SERVER_DATA).registerReloader(object : SimpleSynchronousResourceReloader {
             override fun reload(manager: ResourceManager) {
                 TOOL_TYPES.clear()

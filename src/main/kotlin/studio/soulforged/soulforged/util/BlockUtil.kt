@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.registry.Registries
 import net.minecraft.registry.tag.BlockTags
 import net.minecraft.util.Identifier
+import studio.soulforged.soulforged.Soulforged.id
 import studio.soulforged.soulforged.item.tool.ToolTypes
 import studio.soulforged.soulforged.material.Materials
 import studio.soulforged.soulforged.resource.callback.CallbackHolder
@@ -24,7 +25,7 @@ object BlockUtil {
                         ToolTypes.TOOL_TYPES[Identifier(
                             tool.nbt!!.getString("sf_tool_type")
                         )]
-                    )?.callbacks?.callbacks?.get(CallbackHolder.Callbacks.GET_MINING_SPEED) == Identifier("soulforged:pickaxe")
+                    )?.callbacks?.callbacks?.get(CallbackHolder.Callbacks.GET_MINING_SPEED) == "pickaxe".id()
                 ) {
                     level >= MiningLevelManager.getRequiredMiningLevel(state)
                 } else false

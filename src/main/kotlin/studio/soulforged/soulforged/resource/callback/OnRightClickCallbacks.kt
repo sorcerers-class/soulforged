@@ -15,16 +15,18 @@ import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvents
 import net.minecraft.util.ActionResult
-import net.minecraft.util.Identifier
 import net.minecraft.world.WorldEvents
+import org.quiltmc.qkl.library.registry.invoke
+import studio.soulforged.soulforged.Soulforged
+import studio.soulforged.soulforged.Soulforged.sid
 import studio.soulforged.soulforged.resource.callback.OnRightClickCallbacks.OnRightClickCallback
 import studio.soulforged.soulforged.util.RegistryUtil
 import java.util.*
 
 object OnRightClickCallbacks {
     val DEFAULT: OnRightClickCallback = OnRightClickCallback { ActionResult.FAIL }
-    val RIGHT_CLICK_CALLBACK_REGISTRY: Registry<OnRightClickCallback> = RegistryUtil.createRegistry("right_click_callbacks", DEFAULT)
-    val AXE_INTERACTIONS: OnRightClickCallback = register(Identifier("soulforged:axe")) { ctx ->
+    val RIGHT_CLICK_CALLBACK_REGISTRY: Registry<OnRightClickCallback> = RegistryUtil.createRegistry("right_click_callbacks".sid(), DEFAULT)
+    val AXE = OnRightClickCallback { ctx ->
         val world = ctx?.world
         val blockPos = ctx?.blockPos
         val playerEntity = ctx?.player
@@ -56,7 +58,7 @@ object OnRightClickCallbacks {
         }
         ActionResult.PASS
     }
-    val HOE_INTERACTIONS: OnRightClickCallback = register(Identifier("soulforged:hoe")) { ctx ->
+    val HOE = OnRightClickCallback { ctx ->
         val world = ctx?.world
         val pos = ctx?.blockPos
         val player = ctx?.player
@@ -73,7 +75,7 @@ object OnRightClickCallbacks {
         }
         ActionResult.PASS
     }
-    val SHOVEL_INTERACTIONS: OnRightClickCallback = register(Identifier("soulforged:shovel")) { ctx ->
+    val SHOVEL = OnRightClickCallback { ctx ->
         val world = ctx?.world
         val pos = ctx?.blockPos
         val playerEntity = ctx?.player
@@ -89,7 +91,7 @@ object OnRightClickCallbacks {
         }
         ActionResult.PASS
     }
-    val HAMMER_TO_CREATE_WORKSTATION: OnRightClickCallback = register(Identifier("soulforged:hammer")) { ctx ->
+    val HAMMER = OnRightClickCallback { ctx ->
         val world = ctx?.world
         val pos = ctx?.blockPos
         val playerEntity = ctx?.player
@@ -100,13 +102,16 @@ object OnRightClickCallbacks {
         }
         ActionResult.PASS
     }
-    val NONE: OnRightClickCallback = register(Identifier("soulforged:none")) { ActionResult.PASS }
-
-
-    fun register(id: Identifier, orcc: OnRightClickCallback): OnRightClickCallback {
-        return Registry.register(RIGHT_CLICK_CALLBACK_REGISTRY, id, orcc)
+    val NONE = OnRightClickCallback{ ActionResult.PASS }
+    internal fun init() {
+        RIGHT_CLICK_CALLBACK_REGISTRY(Soulforged.NAME) {
+            AXE withId "axe"
+            HOE withId "hoe"
+            SHOVEL withId "shovel"
+            HAMMER withId "hammer"
+            NONE withId "none"
+        }
     }
-    fun init() {}
     fun interface OnRightClickCallback {
         fun onRightClick(ctx: ItemUsageContext?): ActionResult?
     }

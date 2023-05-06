@@ -10,7 +10,7 @@ import studio.soulforged.soulforged.item.tool.combat.AttackHandler
 import studio.soulforged.soulforged.item.tool.combat.AttackHandlers
 
 object NetworkReceivers {
-    fun register() {
+    internal fun register() {
         ServerPlayNetworking.registerGlobalReceiver(NetworkIdentifiers.ATTACK_PACKET) { _: MinecraftServer, client: ServerPlayerEntity, _: ServerPlayNetworkHandler, buf: PacketByteBuf, _: PacketSender ->
             val handler = AttackHandler.deserialize(buf, client)
             val ah = AttackHandlers.ATTACK_HANDLERS_REGISTRY.get(handler.handler) ?: AttackHandlers.DEFAULT

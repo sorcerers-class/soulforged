@@ -22,7 +22,7 @@ public class MouseMixin {
     private void soulforged$injectOnMouseButton(long window, int button, int action, int mods, CallbackInfo ci) {
         if(client.player != null) {
             if(client.player.getMainHandStack() != null) {
-                if(client.player.getMainHandStack().isOf(SoulforgedItems.INSTANCE.getTOOL())) {
+                if(client.player.getMainHandStack().isOf(SoulforgedItems.TOOL)) {
                     ((AttackQueueHolder)client.player).getQueue().addClickPacket();
                 }
             }

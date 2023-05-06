@@ -9,7 +9,10 @@ import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.registry.Registry
 import net.minecraft.util.ActionResult
 import net.minecraft.util.Identifier
-import studio.soulforged.soulforged.client.gui.CombatDebuggerClientUI
+import org.quiltmc.qkl.library.registry.invoke
+import studio.soulforged.soulforged.Soulforged
+import studio.soulforged.soulforged.Soulforged.sid
+import studio.soulforged.soulforged.client.debugger.CombatDebuggerClientUI
 import studio.soulforged.soulforged.item.SoulforgedItems
 import studio.soulforged.soulforged.item.tool.ToolInst
 import studio.soulforged.soulforged.util.RegistryUtil
@@ -18,8 +21,8 @@ object AttackHandlers {
     val NONE = AttackHandler { _: PlayerEntity?, _: Entity?, _: AttackTypes, _: CritDirections? ->
         return@AttackHandler ActionResult.FAIL
     }
-    val ATTACK_HANDLERS_REGISTRY: Registry<AttackHandler> = RegistryUtil.createRegistry("soulforged:attack_handlers", NONE)
-    val WITH_CRITS = register(Identifier("soulforged:with_crits"), AttackHandler { attacker: PlayerEntity?, target: Entity?, attackType: AttackTypes, critDirection: CritDirections? ->
+    val ATTACK_HANDLERS_REGISTRY: Registry<AttackHandler> = RegistryUtil.createRegistry("attack_handlers".sid(), NONE)
+    val WITH_CRITS = AttackHandler { attacker: PlayerEntity?, target: Entity?, attackType: AttackTypes, critDirection: CritDirections? ->
         if(attacker == null || target == null) return@AttackHandler ActionResult.FAIL
         if(attacker.mainHandStack.item != SoulforgedItems.TOOL) return@AttackHandler ActionResult.FAIL
         if(attacker.mainHandStack.nbt == null) return@AttackHandler ActionResult.FAIL
@@ -35,8 +38,8 @@ object AttackHandlers {
             }
             return@AttackHandler ActionResult.SUCCESS
 
-    })
-    val DEFAULT = register(Identifier("soulforged:default"), AttackHandler { attacker: PlayerEntity?, target: Entity?, type: AttackTypes, _: CritDirections? ->
+    }
+    val DEFAULT = AttackHandler { attacker: PlayerEntity?, target: Entity?, type: AttackTypes, _: CritDirections? ->
         if(attacker == null || target == null) return@AttackHandler ActionResult.FAIL
         if (target.isAttackable) {
             if (!target.handleAttack(attacker)) {
@@ -48,12 +51,16 @@ object AttackHandlers {
             }
         }
         return@AttackHandler ActionResult.SUCCESS
-    })
+    }
     fun register(id: Identifier, handler: AttackHandler): AttackHandler {
         return Registry.register(ATTACK_HANDLERS_REGISTRY, id, handler)
     }
-    fun init() {
-        register(Identifier("soulforged:none"), NONE)
+    internal fun init() {
+        ATTACK_HANDLERS_REGISTRY(Soulforged.NAME) {
+            NONE withId "none"
+            WITH_CRITS withId "with_crits"
+            DEFAULT withId "default"
+        }
     }
 
 }

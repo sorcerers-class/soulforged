@@ -1,5 +1,6 @@
 package studio.soulforged.soulforged
 
+import net.minecraft.util.Identifier
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.quiltmc.loader.api.ModContainer
@@ -8,6 +9,7 @@ import studio.soulforged.soulforged.block.SoulforgedBlockTags
 import studio.soulforged.soulforged.block.SoulforgedBlocks
 import studio.soulforged.soulforged.block.entity.SoulforgedBlockEntityTypes
 import studio.soulforged.soulforged.command.Commands
+import studio.soulforged.soulforged.item.SoulforgedItemGroups
 import studio.soulforged.soulforged.item.SoulforgedItems
 import studio.soulforged.soulforged.item.tool.ToolTypes
 import studio.soulforged.soulforged.item.tool.combat.AttackHandlers
@@ -19,7 +21,14 @@ import studio.soulforged.soulforged.resource.callback.OnRightClickCallbacks
 import studio.soulforged.soulforged.sound.SoulforgedSoundEvents
 import studio.soulforged.soulforged.world.SoulforgedOres
 
-class Soulforged : ModInitializer {
+public object Soulforged : ModInitializer {
+    @get:JvmName("getLogger")
+    val LOGGER: Logger = LogManager.getLogger("Soulforged")
+
+    @JvmName("getSoulforgedId")
+    internal fun String.id(): Identifier = Identifier(Soulforged.NAME, this)
+    internal fun String.sid(): String = Soulforged.NAME + ":" + this
+    internal val NAME = "soulforged"
     override fun onInitialize(mod: ModContainer) {
         LOGGER.info("Soulforged version {} start!", mod.metadata().version().raw())
         MiningSpeedProcessors.init()
@@ -31,14 +40,12 @@ class Soulforged : ModInitializer {
         SoulforgedBlocks.init()
         SoulforgedBlockEntityTypes.init()
         SoulforgedItems.init()
+        SoulforgedItemGroups.init()
         SoulforgedBlockTags.init()
         SoulforgedOres.init()
         NetworkReceivers.register()
         Commands.register()
-        SoulforgedSoundEvents.register()
+        SoulforgedSoundEvents.init()
     }
 
-    companion object {
-        val LOGGER: Logger = LogManager.getLogger("Soulforged")
-    }
 }

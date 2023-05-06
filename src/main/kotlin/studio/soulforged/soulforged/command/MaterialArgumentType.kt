@@ -25,12 +25,12 @@ class MaterialArgumentType : IdentifierArgumentType() {
 }
 object MaterialArgumentDescriptor : ArgumentDescriptor<MaterialArgumentType>
 @BrigadierDsl
-public fun<S> toolMaterial(name: String) : RequiredArgumentConstructor<S, MaterialArgumentDescriptor> {
+fun<S> toolMaterial(name: String) : RequiredArgumentConstructor<S, MaterialArgumentDescriptor> {
     return argument(name, MaterialArgumentType(), MaterialArgumentDescriptor)
 }
 @JvmName("toolMaterialArg")
 @BrigadierDsl
-public fun ArgumentReader<ServerCommandSource, MaterialArgumentDescriptor>.value(): Materials.Material {
+fun ArgumentReader<ServerCommandSource, MaterialArgumentDescriptor>.value(): Materials.Material {
     return Materials.MATERIALS[IdentifierArgumentType.getIdentifier(context, name)] ?: throw CommandSyntaxException(
         CommandSyntaxException.BUILT_IN_EXCEPTIONS.literalIncorrect(), {""})
 }

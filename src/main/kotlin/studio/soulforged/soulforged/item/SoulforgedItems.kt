@@ -1,112 +1,104 @@
 package studio.soulforged.soulforged.item
 
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup
 import net.minecraft.block.Block
 import net.minecraft.item.BlockItem
 import net.minecraft.item.Item
-import net.minecraft.item.ItemGroup
-import net.minecraft.item.ItemStack
 import net.minecraft.registry.Registries
-import net.minecraft.registry.Registry
-import net.minecraft.util.Identifier
+import org.quiltmc.qkl.library.registry.*
 import org.quiltmc.qsl.item.setting.api.QuiltItemSettings
+import studio.soulforged.soulforged.Soulforged
 import studio.soulforged.soulforged.block.SoulforgedBlocks
 import studio.soulforged.soulforged.item.tool.ToolItem
 
 @Suppress("unused")
 object SoulforgedItems {
-    val TOOL: Item = register("tool", ToolItem())
-    val WORKSTATION: Item = register("workstation", BlockItem(
-        SoulforgedBlocks.WORKSTATION, QuiltItemSettings())
-    )
-    val DEEPSLATE_FORGE_CONTROLLER = registerBlockItem("deepslate_forge_controller", SoulforgedBlocks.DEEPSLATE_FORGE_CONTROLLER)
-    val DEEPSLATE_FORGE_BUNKER = registerBlockItem("deepslate_forge_bunker", SoulforgedBlocks.DEEPSLATE_FORGE_BUNKER)
-    val DEEPSLATE_FORGE_BURNER = registerBlockItem("deepslate_forge_burner", SoulforgedBlocks.DEEPSLATE_FORGE_BURNER)
+    @JvmField
+    val TOOL = ToolItem()
+
+    val WORKSTATION = blockItem(SoulforgedBlocks.WORKSTATION)
+    val DEEPSLATE_FORGE_CONTROLLER = blockItem(SoulforgedBlocks.DEEPSLATE_FORGE_CONTROLLER)
+    val DEEPSLATE_FORGE_BUNKER = blockItem(SoulforgedBlocks.DEEPSLATE_FORGE_BUNKER)
+    val DEEPSLATE_FORGE_BURNER = blockItem(SoulforgedBlocks.DEEPSLATE_FORGE_BURNER)
     // Ores
-    val LEAD_ORE = registerBlockItem("lead_ore", SoulforgedBlocks.LEAD_ORE)
-    val CINNABAR_ORE = registerBlockItem("cinnabar_ore", SoulforgedBlocks.CINNABAR_ORE)
-    val OSMIUM_ORE = registerBlockItem("osmium_ore", SoulforgedBlocks.OSMIUM_ORE)
-    val CORUNDUM_ORE = registerBlockItem("corundum_ore", SoulforgedBlocks.CORUNDUM_ORE)
-    val ALUMINUM_ORE = registerBlockItem("aluminum_ore", SoulforgedBlocks.ALUMINUM_ORE)
-    val END_ALUMINUM_ORE = registerBlockItem("end_aluminum_ore", SoulforgedBlocks.END_ALUMINUM_ORE)
-    val TITANIUM_ORE = registerBlockItem("titanium_ore", SoulforgedBlocks.TITANIUM_ORE)
-    val END_TITANIUM_ORE = registerBlockItem("end_titanium_ore", SoulforgedBlocks.END_TITANIUM_ORE)
-    val ENDICITE_ORE = registerBlockItem("endicite_ore", SoulforgedBlocks.ENDICITE_ORE)
+    val LEAD_ORE = blockItem(SoulforgedBlocks.LEAD_ORE)
+    val CINNABAR_ORE = blockItem(SoulforgedBlocks.CINNABAR_ORE)
+    val OSMIUM_ORE = blockItem(SoulforgedBlocks.OSMIUM_ORE)
+    val CORUNDUM_ORE = blockItem(SoulforgedBlocks.CORUNDUM_ORE)
+    val ALUMINUM_ORE = blockItem(SoulforgedBlocks.ALUMINUM_ORE)
+    val END_ALUMINUM_ORE = blockItem(SoulforgedBlocks.END_ALUMINUM_ORE)
+    val TITANIUM_ORE = blockItem(SoulforgedBlocks.TITANIUM_ORE)
+    val END_TITANIUM_ORE = blockItem(SoulforgedBlocks.END_TITANIUM_ORE)
+    val ENDICITE_ORE = blockItem(SoulforgedBlocks.ENDICITE_ORE)
     // Raw Ores
-    val RAW_LEAD = register("raw_lead", Item(QuiltItemSettings()))
-    val RAW_CINNABAR = register("raw_cinnabar", Item(QuiltItemSettings()))
-    val CINNABAR_DUST_BOTTLE = register("cinnabar_dust_bottle", Item(QuiltItemSettings().maxCount(16)))
-    val RAW_OSMIUM = register("raw_osmium", Item(QuiltItemSettings()))
-    val SAPPHIRE = register("sapphire", Item(QuiltItemSettings()))
-    val RUBY = register("ruby", Item(QuiltItemSettings()))
-    val PADPARADSCHA = register("padparadscha", Item(QuiltItemSettings()))
-    val STAR_GEM = register("star_gem", Item(QuiltItemSettings()))
-    val RAW_ALUMINUM = register("raw_aluminum", Item(QuiltItemSettings()))
-    val RAW_TITANIUM = register("raw_titanium", Item(QuiltItemSettings()))
-    val ENDICITE = register("endicite", Item(QuiltItemSettings()))
+    val RAW_LEAD = item()
+    val RAW_CINNABAR = item()
+    val CINNABAR_DUST_BOTTLE = Item(QuiltItemSettings().maxCount(16))
+    val RAW_OSMIUM = item()
+    val SAPPHIRE = item()
+    val RUBY = item()
+    val PADPARADSCHA = item()
+    val STAR_GEM = item()
+    val RAW_ALUMINUM = item()
+    val RAW_TITANIUM = item()
+    val ENDICITE = item()
     // Ingots
-    val LEAD_INGOT = register("lead_ingot", Item(QuiltItemSettings()))
-    val MERCURY_BOTTLE = register("mercury_bottle", Item(QuiltItemSettings().maxCount(16)))
-    val OSMIUM_INGOT = register("osmium_ingot", Item(QuiltItemSettings()))
-    val ALUMINUM_INGOT = register("aluminum_ingot", Item(QuiltItemSettings()))
-    val TITANIUM_INGOT = register("titanium_ingot", Item(QuiltItemSettings()))
+    val LEAD_INGOT = item()
+    val MERCURY_BOTTLE = Item(QuiltItemSettings().maxCount(16))
+    val OSMIUM_INGOT = item()
+    val ALUMINUM_INGOT = item()
+    val TITANIUM_INGOT = item()
 
-    val WITHER_BONE = register("wither_bone", Item(QuiltItemSettings()))
-    val MONSTER_LEATHER = register("monster_leather", Item(QuiltItemSettings()))
-    val SCALES = register("scales", Item(QuiltItemSettings()))
-    val SPIDER_WEAVE = register("spider_weave", Item(QuiltItemSettings()))
-    val SLIME_WEAVE = register("slime_weave", Item(QuiltItemSettings()))
+    val WITHER_BONE = item()
+    val MONSTER_LEATHER = item()
+    val SCALES = item()
+    val SPIDER_WEAVE = item()
+    val SLIME_WEAVE = item()
 
-    val GROUP: ItemGroup = FabricItemGroup.builder(Identifier("soulforged", "soulforged"))
-        .icon { ItemStack(MERCURY_BOTTLE) }
-        .entries {_, content ->
-            content.addItem(LEAD_ORE)
-            content.addItem(CINNABAR_ORE)
-            content.addItem(OSMIUM_ORE)
-            content.addItem(ALUMINUM_ORE)
-            content.addItem(END_ALUMINUM_ORE)
-            content.addItem(TITANIUM_ORE)
-            content.addItem(END_TITANIUM_ORE)
-            content.addItem(CORUNDUM_ORE)
-            content.addItem(ENDICITE_ORE)
+    private fun blockItem(block: Block): BlockItem = BlockItem(block, QuiltItemSettings())
+    private fun item() = Item(QuiltItemSettings())
+    internal fun init() {
+        Registries.ITEM(Soulforged.NAME) {
+            TOOL withId "tool"
 
-            content.addItem(RAW_LEAD)
-            content.addItem(RAW_CINNABAR)
-            content.addItem(RAW_OSMIUM)
-            content.addItem(RAW_ALUMINUM)
-            content.addItem(RAW_TITANIUM)
+            WORKSTATION withId "workstation"
 
-            content.addItem(SAPPHIRE)
-            content.addItem(RUBY)
-            content.addItem(PADPARADSCHA)
-            content.addItem(STAR_GEM)
-            content.addItem(ENDICITE)
+            DEEPSLATE_FORGE_CONTROLLER withId "deepslate_forge_controller"
+            DEEPSLATE_FORGE_BUNKER withId "deepslate_forge_bunker"
+            DEEPSLATE_FORGE_BURNER withId "deepslate_forge_burner"
 
-            content.addItem(LEAD_INGOT)
-            content.addItem(OSMIUM_INGOT)
-            content.addItem(ALUMINUM_INGOT)
-            content.addItem(TITANIUM_INGOT)
+            LEAD_ORE withId "lead_ore"
+            CINNABAR_ORE withId "cinnabar_ore"
+            OSMIUM_ORE withId "osmium_ore"
+            CORUNDUM_ORE withId "corundum_ore"
+            ALUMINUM_ORE withId "aluminum_ore"
+            END_ALUMINUM_ORE withId "end_aluminum_ore"
+            TITANIUM_ORE withId "titanium_ore"
+            END_TITANIUM_ORE withId "end_titanium_ore"
+            ENDICITE_ORE withId "endicite_ore"
 
-            content.addItem(CINNABAR_DUST_BOTTLE)
-            content.addItem(MERCURY_BOTTLE)
+            RAW_LEAD withId "raw_lead"
+            RAW_CINNABAR withId "raw_cinnabar"
+            CINNABAR_DUST_BOTTLE withId "cinnabar_dust_bottle"
+            RAW_OSMIUM withId "raw_osmium"
+            SAPPHIRE withId "sapphire"
+            RUBY withId "ruby"
+            PADPARADSCHA withId "padparadscha"
+            STAR_GEM withId "star_gem"
+            RAW_ALUMINUM withId "raw_aluminum"
+            RAW_TITANIUM withId "raw_titanium"
+            ENDICITE withId "endicite"
 
-            content.addItem(WITHER_BONE)
-            content.addItem(MONSTER_LEATHER)
-            content.addItem(SCALES)
-            content.addItem(SPIDER_WEAVE)
-            content.addItem(SLIME_WEAVE)
+            LEAD_INGOT withId "lead_ingot"
+            MERCURY_BOTTLE withId "mercury_bottle"
+            OSMIUM_INGOT withId "osmium_ingot"
+            ALUMINUM_INGOT withId "aluminum_ingot"
+            TITANIUM_INGOT withId "titanium_ingot"
 
-            content.addItem(WORKSTATION)
-            content.addItem(DEEPSLATE_FORGE_CONTROLLER)
-            content.addItem(DEEPSLATE_FORGE_BURNER)
-            content.addItem(DEEPSLATE_FORGE_BUNKER)
+            WITHER_BONE withId "wither_bone"
+            MONSTER_LEATHER withId "monster_leather"
+            SCALES withId "scales"
+            SPIDER_WEAVE withId "spider_weave"
+            SLIME_WEAVE withId "slime_weave"
         }
-        .build()
-    fun register(id: String, item: Item): Item {
-        return Registry.register(Registries.ITEM, Identifier("soulforged", id), item)
     }
-    fun registerBlockItem(id: String, block: Block): BlockItem {
-        return register(id, BlockItem(block, QuiltItemSettings())) as BlockItem
-    }
-    fun init() {}
 }

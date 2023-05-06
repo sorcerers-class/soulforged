@@ -11,6 +11,7 @@ import org.quiltmc.loader.api.minecraft.ClientOnly
 import org.quiltmc.qsl.resource.loader.api.ResourceLoader
 import org.quiltmc.qsl.resource.loader.api.reloader.SimpleSynchronousResourceReloader
 import studio.soulforged.soulforged.Soulforged
+import studio.soulforged.soulforged.Soulforged.id
 import studio.soulforged.soulforged.util.ItemOrTag
 import studio.soulforged.soulforged.util.NumberUtils
 import studio.soulforged.soulforged.util.RegistryUtil
@@ -21,7 +22,7 @@ import java.util.*
 @Suppress("unused")
 object Materials {
     val RAW_MATERIALS: HashMap<Identifier, RawMaterial> = hashMapOf(Pair(
-        Identifier("soulforged:builtin/material"),
+        "builtin/material".id(),
         RawMaterial("",
             0.0,
             0.0,
@@ -41,7 +42,7 @@ object Materials {
         )))
     val MATERIALS: HashMap<Identifier, Material> = hashMapOf()
 
-    fun init() {
+    internal fun init() {
         ResourceLoader.get(ResourceType.SERVER_DATA).registerReloader(object : SimpleSynchronousResourceReloader {
             override fun reload(manager: ResourceManager) {
                 MATERIALS.clear()
@@ -86,7 +87,7 @@ object Materials {
         val resources: HashMap<String, Float>?
     ) {
         fun resolve(): RawMaterial {
-            if(parent == null || parent == "") return RAW_MATERIALS[Identifier("soulforged:builtin/material")]!!
+            if(parent == null || parent == "") return RAW_MATERIALS["builtin/material".id()]!!
             var p = RAW_MATERIALS[Identifier(parent)]
             if(p?.hardness == null
                 || p.edgeholding == null

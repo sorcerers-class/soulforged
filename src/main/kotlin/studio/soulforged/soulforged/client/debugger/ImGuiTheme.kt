@@ -1,4 +1,4 @@
-package studio.soulforged.soulforged.client.gui
+package studio.soulforged.soulforged.client.debugger
 
 import imgui.ImFontConfig
 import imgui.ImGui
