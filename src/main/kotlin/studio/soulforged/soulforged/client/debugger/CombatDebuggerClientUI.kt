@@ -4,10 +4,10 @@ import imgui.ImGui
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.network.ClientPlayerEntity
 import org.quiltmc.loader.api.minecraft.ClientOnly
+import studio.soulforged.soulforged.client.attack.AttackQueue
+import studio.soulforged.soulforged.client.attack.AttackQueueHolder
 import studio.soulforged.soulforged.item.SoulforgedItems
 import studio.soulforged.soulforged.item.tool.ToolInst
-import studio.soulforged.soulforged.item.tool.combat.AttackQueue
-import studio.soulforged.soulforged.item.tool.combat.AttackQueueHolder
 import studio.soulforged.soulforged.item.tool.combat.AttackTypes
 import studio.soulforged.soulforged.item.tool.combat.CritDirections
 import kotlin.math.abs
@@ -42,10 +42,10 @@ object CombatDebuggerClientUI {
         ImGui.text(
             """
                 Cooldown: ${player.getAttackCooldownProgress(0.0f)}
-                Facing: ${player.yaw % 360.0f}"
+                Facing: ${player.yaw % 360.0f}
                 Moving: ${player.velocity}
-                Adjusted Velocity: $velocity"
-                Movement: x=${abs(velocity.x) > 0.01} y=${abs(velocity.y) > 0.1} z=${abs(velocity.z) > 0.01}"
+                Adjusted Velocity: $velocity
+                Movement: x=${abs(velocity.x) > 0.01} y=${abs(velocity.y) > 0.1} z=${abs(velocity.z) > 0.01}
                 Resultant Crit: ${CritDirections.getCritDirection(player)}
             """.trimIndent()
         )
@@ -60,6 +60,7 @@ object CombatDebuggerClientUI {
         ImGui.text(
             """
                 Queue size: ${queue.size}
+                Timestamp: ${latestPacket?.timestamp}
                 Latest Packet Clicks: ${latestPacket?.clicks}
                 Time remaining: ${latestPacket?.timer}
                 Latest Packet Target: ${latestPacket?.target?.uuidAsString}

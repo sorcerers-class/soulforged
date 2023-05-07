@@ -6,7 +6,8 @@
     "speed": 0.9,
     "piercing": 0.3,
     "category": "slashing",
-    "crit_type": "down"
+    "crit_type": "down",
+    "range": 3.5
   },
   "dc_attack": {
     "piercing_damage": 0.8,
@@ -15,7 +16,8 @@
     "speed": 0.9,
     "piercing": 0.4,
     "category": "crushing",
-    "crit_type": "down"
+    "crit_type": "down",
+    "range": 3.5
   },
   "callbacks": {
     "getMiningSpeed": "soulforged:axe",

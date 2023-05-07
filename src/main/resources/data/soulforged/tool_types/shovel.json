@@ -6,7 +6,8 @@
     "speed": 1.3,
     "piercing": 0.0,
     "category": "crushing",
-    "crit_type": "down"
+    "crit_type": "down",
+    "range": 3.5
   },
   "callbacks": {
     "getMiningSpeed": "soulforged:shovel",

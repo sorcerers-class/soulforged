@@ -7,5 +7,6 @@ data class AttackProperties(
     val speed: Double,
     val piercing: Double,
     val category: WeaponCategories,
-    val critDirection: CritDirections
+    val critDirection: CritDirections,
+    val range: Double
 )

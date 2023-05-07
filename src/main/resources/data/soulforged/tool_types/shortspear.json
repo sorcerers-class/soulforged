@@ -6,7 +6,8 @@
     "speed": 0.8,
     "piercing": 1.0,
     "category": "thrusting",
-    "crit_type": "forward"
+    "crit_type": "forward",
+    "range": 3.5
   },
   "hc_attack": {
     "piercing_damage": 0.75,
@@ -15,7 +16,8 @@
     "speed": 0.8,
     "piercing": 0.9,
     "category": "thrusting",
-    "crit_type": "forward"
+    "crit_type": "forward",
+    "range": 3.5
   },
   "callbacks": {
     "getMiningSpeed": "soulforged:hand"

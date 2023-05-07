@@ -4,13 +4,13 @@
   "package": "studio.soulforged.soulforged.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "common.AttackQueueMixin",
     "common.CheckToolHarvestabilityImpl",
     "common.EndiciteFallSpeedMixin",
     "common.MakeVanillaToolsUseless",
     "common.SetAttackSpeedMixin"
   ],
   "client": [
+    "client.AttackQueueMixin",
     "client.ClientDebuggerMixin",
     "client.ItemModelGeneratorInvoker",
     "client.MouseMixin",

@@ -63,9 +63,10 @@ object ToolTypes {
             )
         }
     }
-    data class RawAttackProperties(val piercing_damage: Double, val blunt_damage: Double, val finesse: Double, val speed: Double, val piercing: Double, val category: String, val crit_type: String) {
+    data class RawAttackProperties(val piercing_damage: Double, val blunt_damage: Double, val finesse: Double, val speed: Double, val piercing: Double, val category: String, val crit_type: String, val range: Double) {
         fun intoAttackProperties(): AttackProperties {
-            return AttackProperties(piercing_damage,
+            return AttackProperties(
+                piercing_damage,
                 blunt_damage,
                 finesse,
                 speed,
@@ -81,7 +82,8 @@ object ToolTypes {
                     "side" -> CritDirections.SIDE
                     "down" -> CritDirections.DOWN
                     else -> throw IllegalArgumentException()
-                })
+                }, range
+            )
         }
     }
 }

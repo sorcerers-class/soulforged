@@ -29,13 +29,11 @@ dependencies {
     modImplementation(libs.quilt.loader)
     modImplementation(libs.qfapi)
     modImplementation(libs.qkl) {
-        exclude("org.quiltmc", "qsl")
+        exclude("org.quiltmc:qsl")
     }
     implementation(libs.bundles.imgui) {
         exclude(group = "org.lwjgl")
     }
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("commons-codec:commons-codec:1.15")
 
 }
 loom {

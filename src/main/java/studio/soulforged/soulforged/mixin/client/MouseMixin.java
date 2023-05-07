@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import studio.soulforged.soulforged.item.SoulforgedItems;
-import studio.soulforged.soulforged.item.tool.combat.AttackQueueHolder;
+import studio.soulforged.soulforged.client.attack.AttackQueueHolder;
 
 @ClientOnly
 @Mixin(Mouse.class)

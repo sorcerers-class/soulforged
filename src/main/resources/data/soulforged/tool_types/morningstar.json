@@ -6,7 +6,8 @@
     "speed": 0.75,
     "piercing": 0.75,
     "category": "crushing",
-    "crit_type": "down"
+    "crit_type": "down",
+    "range": 3.5
   },
   "callbacks": {
     "getMiningSpeed": "soulforged:hand"

@@ -30,10 +30,12 @@ object AttackHandlers {
             if (target.isAttackable) {
                 if (!target.handleAttack(attacker)) {
                     val attackProperties = tool.attackProperties(attackType)
-                    val multiplier = if(critDirection == attackProperties.critDirection) critDirection.multiplier else 1.0f
-                    val damage = tool.baseAttackDamage(attackProperties).toFloat() * multiplier
-                    target.damage(target.damageSources.playerAttack(attacker), damage)
-                    CombatDebuggerClientUI.debuggerAttackCallback(damage, critDirection, attackType, multiplier)
+                    if(attacker.pos.isInRange(target.pos, attackProperties.range)) {
+                        val multiplier = if(critDirection == attackProperties.critDirection) critDirection.multiplier else 1.0f
+                        val damage = tool.baseAttackDamage(attackProperties).toFloat() * multiplier
+                        target.damage(target.damageSources.playerAttack(attacker), damage)
+                        CombatDebuggerClientUI.debuggerAttackCallback(damage, critDirection, attackType, multiplier)
+                    }
                 }
             }
             return@AttackHandler ActionResult.SUCCESS

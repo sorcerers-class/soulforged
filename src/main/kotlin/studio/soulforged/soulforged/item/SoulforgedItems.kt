@@ -4,8 +4,8 @@ import net.minecraft.block.Block
 import net.minecraft.item.BlockItem
 import net.minecraft.item.Item
 import net.minecraft.registry.Registries
+import org.quiltmc.qkl.library.items.itemSettingsOf
 import org.quiltmc.qkl.library.registry.*
-import org.quiltmc.qsl.item.setting.api.QuiltItemSettings
 import studio.soulforged.soulforged.Soulforged
 import studio.soulforged.soulforged.block.SoulforgedBlocks
 import studio.soulforged.soulforged.item.tool.ToolItem
@@ -32,7 +32,7 @@ object SoulforgedItems {
     // Raw Ores
     val RAW_LEAD = item()
     val RAW_CINNABAR = item()
-    val CINNABAR_DUST_BOTTLE = Item(QuiltItemSettings().maxCount(16))
+    val CINNABAR_DUST_BOTTLE = Item(itemSettingsOf(maxCount = 16))
     val RAW_OSMIUM = item()
     val SAPPHIRE = item()
     val RUBY = item()
@@ -43,7 +43,7 @@ object SoulforgedItems {
     val ENDICITE = item()
     // Ingots
     val LEAD_INGOT = item()
-    val MERCURY_BOTTLE = Item(QuiltItemSettings().maxCount(16))
+    val MERCURY_BOTTLE = Item(itemSettingsOf(maxCount = 16))
     val OSMIUM_INGOT = item()
     val ALUMINUM_INGOT = item()
     val TITANIUM_INGOT = item()
@@ -54,8 +54,8 @@ object SoulforgedItems {
     val SPIDER_WEAVE = item()
     val SLIME_WEAVE = item()
 
-    private fun blockItem(block: Block): BlockItem = BlockItem(block, QuiltItemSettings())
-    private fun item() = Item(QuiltItemSettings())
+    private fun blockItem(block: Block): BlockItem = BlockItem(block, itemSettingsOf())
+    private fun item() = Item(itemSettingsOf())
     internal fun init() {
         Registries.ITEM(Soulforged.NAME) {
             TOOL withId "tool"

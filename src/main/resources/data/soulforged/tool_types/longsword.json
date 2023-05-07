@@ -6,7 +6,8 @@
     "speed": 0.8,
     "piercing": 0.35,
     "category": "slashing",
-    "crit_type": "side"
+    "crit_type": "side",
+    "range": 3.5
   },
   "hc_attack": {
     "piercing_damage": 1.1,
@@ -15,7 +16,8 @@
     "speed": 0.8,
     "piercing": 0.3,
     "category": "slashing",
-    "crit_type": "side"
+    "crit_type": "side",
+    "range": 3.5
   },
   "dc_attack": {
     "piercing_damage": 1.0,
@@ -24,7 +26,8 @@
     "speed": 0.8,
     "piercing": 0.8,
     "category": "thrusting",
-    "crit_type": "forward"
+    "crit_type": "forward",
+    "range": 3.5
   },
   "callbacks": {
     "getMiningSpeed": "soulforged:sword"

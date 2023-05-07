@@ -1,4 +1,4 @@
-package studio.soulforged.soulforged.mixin.common;
+package studio.soulforged.soulforged.mixin.client;
 
 import com.mojang.authlib.GameProfile;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -11,8 +11,8 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import studio.soulforged.soulforged.item.tool.combat.AttackQueue;
-import studio.soulforged.soulforged.item.tool.combat.AttackQueueHolder;
+import studio.soulforged.soulforged.client.attack.AttackQueue;
+import studio.soulforged.soulforged.client.attack.AttackQueueHolder;
 
 @Mixin(ClientPlayerEntity.class)
 public abstract class AttackQueueMixin extends PlayerEntity implements AttackQueueHolder {
