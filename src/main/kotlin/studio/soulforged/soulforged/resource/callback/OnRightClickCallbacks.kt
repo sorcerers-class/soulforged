@@ -19,6 +19,7 @@ import net.minecraft.world.WorldEvents
 import org.quiltmc.qkl.library.registry.invoke
 import studio.soulforged.soulforged.Soulforged
 import studio.soulforged.soulforged.Soulforged.sid
+import studio.soulforged.soulforged.block.multiblock.DeepslateForgeBlocks
 import studio.soulforged.soulforged.resource.callback.OnRightClickCallbacks.OnRightClickCallback
 import studio.soulforged.soulforged.util.RegistryUtil
 import java.util.*
@@ -92,12 +93,16 @@ object OnRightClickCallbacks {
         ActionResult.PASS
     }
     val HAMMER = OnRightClickCallback { ctx ->
-        val world = ctx?.world
-        val pos = ctx?.blockPos
-        val playerEntity = ctx?.player
+        val world = ctx?.world!!
+        val pos = ctx.blockPos
+        val playerEntity = ctx.player
+        Soulforged.LOGGER.info("Trying to create Deepslate forge multiblock at $pos")
+        if(world.getBlockState(pos).block == DeepslateForgeBlocks.DeepslateForgeController) {
+            (world.getBlockEntity(pos) as DeepslateForgeBlocks.DeepslateForgeControllerBlockEntity).createMultiblock()
+        }
         for (i in -3..3) {
             for (j in -3..3) {
-                val block = world?.getBlockState(pos?.add(i, 0, j))?.block ?: Blocks.AIR
+                val block = world.getBlockState(pos?.add(i, 0, j))?.block ?: Blocks.AIR
             }
         }
         ActionResult.PASS

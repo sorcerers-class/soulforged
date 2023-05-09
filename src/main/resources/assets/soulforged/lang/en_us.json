@@ -4,6 +4,9 @@
   "itemGroup.soulforged.soulforged": "Soulforged",
 
   "block.soulforged.workstation": "Workstation",
+  "block.soulforged.deepslate_forge_controller": "Deepslate Forge Controller",
+  "block.soulforged.deepslate_forge_bunker": "Deepslate Forge Bunker",
+  "block.soulforged.deepslate_forge_burner": "Deepslate Forge Burner",
   "block.soulforged.lead_ore": "Lead Ore",
   "block.soulforged.cinnabar_ore": "Cinnabar Ore",
   "block.soulforged.osmium_ore": "Osmium Ore",
@@ -12,6 +15,7 @@
   "block.soulforged.titanium_ore": "Titanium Ore",
   "block.soulforged.end_titanium_ore": "End Titanium Ore",
   "block.soulforged.corundum_ore": "Corundum Ore",
+  "block.soulforged.endicite_ore": "Endicite Ore",
 
   "item.soulforged.tool.material.wood": "Wooden",
   "item.soulforged.tool.material.stone": "Stone",
@@ -47,7 +51,7 @@
 
   "item.soulforged.tool.material.osmium": "Osmium",
   "item.soulforged.tool.material.netherite": "Netherite",
-  "item.soulforged.tool.material.aluminium": "Aluminium",
+  "item.soulforged.tool.material.aluminum": "Aluminum",
   "item.soulforged.tool.material.titanium": "Titanium",
 
   "item.soulforged.tool.material.void_metal": "Void Metal",
@@ -59,44 +63,28 @@
   "item.soulforged.tool.material.eternicite": "Eternicite",
 
   "item.soulforged.tool.type.shortsword": "%s Shortsword",
-  "item.soulforged.tool.type.shortsword.desc": "",
   "item.soulforged.tool.type.broadsword": "%s Broadsword",
-  "item.soulforged.tool.type.broadsword.desc": "",
   "item.soulforged.tool.type.longsword": "%s Longsword",
-  "item.soulforged.tool.type.longsword.desc": "",
   "item.soulforged.tool.type.greatsword": "%s Greatsword",
-  "item.soulforged.tool.type.greatsword.desc": "",
   "item.soulforged.tool.type.rapier": "%s Rapier",
-  "item.soulforged.tool.type.rapier.desc": "\"You killed my father. Prepare to die.\"",
 
   "item.soulforged.tool.type.shortspear": "%s Shortspear",
-  "item.soulforged.tool.type.shortspear.desc": "",
   "item.soulforged.tool.type.longspear": "%s Longspear",
-  "item.soulforged.tool.type.longspear.desc": "",
   "item.soulforged.tool.type.javelin": "%s Javelin",
-  "item.soulforged.tool.type.javelin.desc": "",
 
   "item.soulforged.tool.type.mace": "%s Mace",
-  "item.soulforged.tool.type.mace.desc": "",
   "item.soulforged.tool.type.morningstar": "%s Morningstar",
-  "item.soulforged.tool.type.morningstar.desc": "",
 
   "item.soulforged.tool.type.greataxe": "%s Greataxe",
-  "item.soulforged.tool.type.greataxe.desc": "",
 
   "item.soulforged.tool.type.greathammer": "%s Greathammer",
-  "item.soulforged.tool.type.greathammer.desc": "",
   "item.soulforged.tool.type.warhammer": "%s Warhammer",
-  "item.soulforged.tool.type.warhammer.desc": "",
+  "item.soulforged.tool.type.hammer": "%s Hammer",
 
   "item.soulforged.tool.type.axe": "%s Axe",
-  "item.soulforged.tool.type.axe.desc": "",
   "item.soulforged.tool.type.pickaxe": "%s Pickaxe",
-  "item.soulforged.tool.type.pickaxe.desc": "\"I have a pickaxe, and I'll put it through your teeth!\"",
   "item.soulforged.tool.type.shovel": "%s Shovel",
-  "item.soulforged.tool.type.shovel.desc": "",
   "item.soulforged.tool.type.hoe": "%s Hoe",
-  "item.soulforged.tool.type.hoe.desc": "",
 
   "item.soulforged.tool.tooltip.part": "Parts:",
   "item.soulforged.tool.tooltip.weight":"Weight: %f",
@@ -144,14 +132,12 @@
   "item.soulforged.part.greataxe_head": "%s Greataxe Head",
   "item.soulforged.part.greathammer_head": "%s Greathammer Head",
   "item.soulforged.part.warhammer_head": "%s Warhammer Head",
+  "item.soulforged.part.hammer_head": "%s Hammer Head",
 
   "item.soulforged.part.axe_head": "%s Axe Head",
   "item.soulforged.part.pickaxe_head": "%s Pickaxe Head",
   "item.soulforged.part.shovel_head": "%s Shovel Head",
   "item.soulforged.part.hoe_head": "%s Hoe Head",
-
-
-  "block.soulforged.endicite_ore": "Endicite Ore",
 
   "item.soulforged.raw_silver": "Raw Silver",
   "item.soulforged.raw_lead": "Raw Lead",

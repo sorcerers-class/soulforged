@@ -20,7 +20,7 @@ class CallbackHolder(raw: HashMap<String, String>) {
         }
     }
     private val miningSpeedProcessor: MiningSpeedProcessors.MiningSpeedProcessor? = MiningSpeedProcessors.MINING_SPEED_REGISTRY.get(Identifier(raw["getMiningSpeed"] ?: "soulforged:hand"))
-    private val onRightClickCallback: OnRightClickCallbacks.OnRightClickCallback? = OnRightClickCallbacks.RIGHT_CLICK_CALLBACK_REGISTRY.get(Identifier(raw["onRightClick"] ?: "soulforged:none"))
+    private val onRightClickCallback: OnRightClickCallbacks.OnRightClickCallback? = OnRightClickCallbacks.RIGHT_CLICK_CALLBACK_REGISTRY.get(Identifier(raw["onUse"] ?: "soulforged:none"))
     fun getMiningSpeed(blockState: BlockState, material: Materials.Material): Float {
         return miningSpeedProcessor?.getMiningSpeed(blockState, material) ?: MiningSpeedProcessors.HAND.getMiningSpeed(blockState, material)
     }

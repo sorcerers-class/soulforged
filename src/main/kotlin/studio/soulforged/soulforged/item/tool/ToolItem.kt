@@ -20,7 +20,7 @@ import studio.soulforged.soulforged.item.tool.combat.AttackTypes
 import java.util.*
 import kotlin.math.roundToInt
 
-class ToolItem : Item(
+object ToolItem : Item(
     QuiltItemSettings()
         .rarity(Rarity.RARE)
         .fireproof()

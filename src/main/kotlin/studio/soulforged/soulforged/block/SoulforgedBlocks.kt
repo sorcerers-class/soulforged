@@ -6,6 +6,7 @@ import net.minecraft.registry.Registries
 import org.quiltmc.qkl.library.registry.*
 import org.quiltmc.qsl.block.extensions.api.QuiltBlockSettings
 import studio.soulforged.soulforged.Soulforged
+import studio.soulforged.soulforged.block.multiblock.DeepslateForgeBlocks
 import java.util.*
 
 @Suppress("unused")
@@ -13,9 +14,6 @@ object SoulforgedBlocks {
     // Crafting-related stuff. TODO
     val WORKSTATION = WorkstationBlock(QuiltBlockSettings.of(Material.WOOD))
 
-    val DEEPSLATE_FORGE_CONTROLLER = DeepslateForgeBlocks.DeepslateForgeController()
-    val DEEPSLATE_FORGE_BURNER = DeepslateForgeBlocks.DeepslateForgeBurner()
-    val DEEPSLATE_FORGE_BUNKER = DeepslateForgeBlocks.DeepslateForgeBunker()
     // Ores
     val LEAD_ORE = Block(QuiltBlockSettings.of(Material.STONE))
     val CINNABAR_ORE = Block(QuiltBlockSettings.of(Material.STONE))
@@ -29,9 +27,10 @@ object SoulforgedBlocks {
     internal fun init() {
         Registries.BLOCK(Soulforged.NAME) {
             WORKSTATION withId "workstation"
-            DEEPSLATE_FORGE_CONTROLLER withId "deepslate_forge_controller"
-            DEEPSLATE_FORGE_BURNER withId "deepslate_forge_burner"
-            DEEPSLATE_FORGE_BUNKER withId "deepslate_forge_bunker"
+            DeepslateForgeBlocks.DeepslateForgeController withId "deepslate_forge_controller"
+            DeepslateForgeBlocks.DeepslateForgeBurner withId "deepslate_forge_burner"
+            DeepslateForgeBlocks.DeepslateForgeBunker withId "deepslate_forge_bunker"
+            DeepslateForgeBlocks.DeepslateForgeDeepslateBrickBlock withId "deepslate_forge_bricks"
             LEAD_ORE withId "lead_ore"
             CINNABAR_ORE withId "cinnabar_ore"
             OSMIUM_ORE withId "osmium_ore"
