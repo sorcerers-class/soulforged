@@ -6,7 +6,10 @@ import net.minecraft.registry.Registries
 import org.quiltmc.qkl.library.registry.*
 import org.quiltmc.qsl.block.extensions.api.QuiltBlockSettings
 import studio.soulforged.soulforged.Soulforged
-import studio.soulforged.soulforged.block.multiblock.DeepslateForgeBlocks
+import studio.soulforged.soulforged.block.multiblock.DeepslateForgeBunker
+import studio.soulforged.soulforged.block.multiblock.DeepslateForgeBurner
+import studio.soulforged.soulforged.block.multiblock.DeepslateForgeController
+import studio.soulforged.soulforged.block.multiblock.DeepslateForgeDeepslateBrickBlock
 import java.util.*
 
 @Suppress("unused")
@@ -27,10 +30,10 @@ object SoulforgedBlocks {
     internal fun init() {
         Registries.BLOCK(Soulforged.NAME) {
             WORKSTATION withId "workstation"
-            DeepslateForgeBlocks.DeepslateForgeController withId "deepslate_forge_controller"
-            DeepslateForgeBlocks.DeepslateForgeBurner withId "deepslate_forge_burner"
-            DeepslateForgeBlocks.DeepslateForgeBunker withId "deepslate_forge_bunker"
-            DeepslateForgeBlocks.DeepslateForgeDeepslateBrickBlock withId "deepslate_forge_bricks"
+            DeepslateForgeController withId "deepslate_forge_controller"
+            DeepslateForgeBurner withId "deepslate_forge_burner"
+            DeepslateForgeBunker withId "deepslate_forge_bunker"
+            DeepslateForgeDeepslateBrickBlock withId "deepslate_forge_bricks"
             LEAD_ORE withId "lead_ore"
             CINNABAR_ORE withId "cinnabar_ore"
             OSMIUM_ORE withId "osmium_ore"

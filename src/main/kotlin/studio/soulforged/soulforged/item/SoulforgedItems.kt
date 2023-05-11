@@ -8,7 +8,9 @@ import org.quiltmc.qkl.library.items.itemSettingsOf
 import org.quiltmc.qkl.library.registry.*
 import studio.soulforged.soulforged.Soulforged
 import studio.soulforged.soulforged.block.SoulforgedBlocks
-import studio.soulforged.soulforged.block.multiblock.DeepslateForgeBlocks
+import studio.soulforged.soulforged.block.multiblock.DeepslateForgeBunker
+import studio.soulforged.soulforged.block.multiblock.DeepslateForgeBurner
+import studio.soulforged.soulforged.block.multiblock.DeepslateForgeController
 import studio.soulforged.soulforged.item.tool.ToolItem
 
 @Suppress("unused")
@@ -17,9 +19,9 @@ object SoulforgedItems {
     val TOOL = ToolItem
 
     val WORKSTATION = blockItem(SoulforgedBlocks.WORKSTATION)
-    val DEEPSLATE_FORGE_CONTROLLER = blockItem(DeepslateForgeBlocks.DeepslateForgeController)
-    val DEEPSLATE_FORGE_BUNKER = blockItem(DeepslateForgeBlocks.DeepslateForgeBunker)
-    val DEEPSLATE_FORGE_BURNER = blockItem(DeepslateForgeBlocks.DeepslateForgeBurner)
+    val DEEPSLATE_FORGE_CONTROLLER = blockItem(DeepslateForgeController)
+    val DEEPSLATE_FORGE_BUNKER = blockItem(DeepslateForgeBunker)
+    val DEEPSLATE_FORGE_BURNER = blockItem(DeepslateForgeBurner)
     // Ores
     val LEAD_ORE = blockItem(SoulforgedBlocks.LEAD_ORE)
     val CINNABAR_ORE = blockItem(SoulforgedBlocks.CINNABAR_ORE)

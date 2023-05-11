@@ -11,23 +11,22 @@ object SoulforgedMultiblocks {
         .aisle("BRB", "R R", "BRB")
         .aisle("BCB", "C C", "BCB")
         .aisle("BNB", "NBN", "BNB")
-        .where('B', CachedBlockPosition.matchesBlockState(BlockStatePredicate.forBlock(Blocks.DEEPSLATE_BRICKS).or(BlockStatePredicate.forBlock(DeepslateForgeBlocks.DeepslateForgeDeepslateBrickBlock))))
+        .where('B', CachedBlockPosition.matchesBlockState(BlockStatePredicate.forBlock(Blocks.DEEPSLATE_BRICKS).or(BlockStatePredicate.forBlock(DeepslateForgeDeepslateBrickBlock))))
         .where('R', CachedBlockPosition.matchesBlockState(
             BlockStatePredicate.forBlock(Blocks.DEEPSLATE_BRICKS)
-                .or(BlockStatePredicate.forBlock(DeepslateForgeBlocks.DeepslateForgeDeepslateBrickBlock))
-                .or(BlockStatePredicate.forBlock(DeepslateForgeBlocks.DeepslateForgeBurner))
+                .or(BlockStatePredicate.forBlock(DeepslateForgeDeepslateBrickBlock))
+                .or { it.block == DeepslateForgeBurner && it.get(TIER) == 1 }
         ))
         .where('C', CachedBlockPosition.matchesBlockState(
             BlockStatePredicate.forBlock(Blocks.DEEPSLATE_BRICKS)
-                .or(BlockStatePredicate.forBlock(DeepslateForgeBlocks.DeepslateForgeDeepslateBrickBlock))
-                .or(
-                BlockStatePredicate.forBlock(DeepslateForgeBlocks.DeepslateForgeBurner))
-                .or(BlockStatePredicate.forBlock(DeepslateForgeBlocks.DeepslateForgeController))
+                .or(BlockStatePredicate.forBlock(DeepslateForgeDeepslateBrickBlock))
+                .or(BlockStatePredicate.forBlock(DeepslateForgeBurner))
+                .or(BlockStatePredicate.forBlock(DeepslateForgeController))
         ))
         .where('N', CachedBlockPosition.matchesBlockState(
             BlockStatePredicate.forBlock(Blocks.DEEPSLATE_BRICKS)
-                .or(BlockStatePredicate.forBlock(DeepslateForgeBlocks.DeepslateForgeDeepslateBrickBlock))
-                .or(BlockStatePredicate.forBlock(DeepslateForgeBlocks.DeepslateForgeBunker))
+                .or(BlockStatePredicate.forBlock(DeepslateForgeDeepslateBrickBlock))
+                .or(BlockStatePredicate.forBlock(DeepslateForgeBunker))
         ))
         .where(' ', CachedBlockPosition.matchesBlockState(
             BlockStatePredicate.forBlock(Blocks.AIR)

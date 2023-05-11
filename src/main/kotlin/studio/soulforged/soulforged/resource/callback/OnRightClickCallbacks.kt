@@ -15,17 +15,20 @@ import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvents
 import net.minecraft.util.ActionResult
+import net.minecraft.util.math.Direction
 import net.minecraft.world.WorldEvents
 import org.quiltmc.qkl.library.registry.invoke
 import studio.soulforged.soulforged.Soulforged
 import studio.soulforged.soulforged.Soulforged.sid
-import studio.soulforged.soulforged.block.multiblock.DeepslateForgeBlocks
+import studio.soulforged.soulforged.block.multiblock.DeepslateForgeController
+import studio.soulforged.soulforged.block.multiblock.DeepslateForgeControllerBlockEntity
+import studio.soulforged.soulforged.block.multiblock.TIER
 import studio.soulforged.soulforged.resource.callback.OnRightClickCallbacks.OnRightClickCallback
 import studio.soulforged.soulforged.util.RegistryUtil
 import java.util.*
 
 object OnRightClickCallbacks {
-    val DEFAULT: OnRightClickCallback = OnRightClickCallback { ActionResult.FAIL }
+    val DEFAULT: OnRightClickCallback = OnRightClickCallback { return@OnRightClickCallback ActionResult.FAIL }
     val RIGHT_CLICK_CALLBACK_REGISTRY: Registry<OnRightClickCallback> = RegistryUtil.createRegistry("right_click_callbacks".sid(), DEFAULT)
     val AXE = OnRightClickCallback { ctx ->
         val world = ctx?.world
@@ -55,9 +58,9 @@ object OnRightClickCallbacks {
                 Criteria.ITEM_USED_ON_BLOCK.trigger(playerEntity as ServerPlayerEntity?, blockPos, itemStack)
             }
             world?.setBlockState(blockPos, actionExecuted.get(), Block.NOTIFY_ALL or Block.REDRAW_ON_MAIN_THREAD)
-            ActionResult.success(world!!.isClient)
+            return@OnRightClickCallback ActionResult.success(world!!.isClient)
         }
-        ActionResult.PASS
+        return@OnRightClickCallback ActionResult.PASS
     }
     val HOE = OnRightClickCallback { ctx ->
         val world = ctx?.world
@@ -72,9 +75,9 @@ object OnRightClickCallbacks {
                 Criteria.ITEM_USED_ON_BLOCK.trigger(player as ServerPlayerEntity?, pos, ctx.stack)
             }
             world?.setBlockState(pos, state, Block.NOTIFY_ALL or Block.REDRAW_ON_MAIN_THREAD)
-            ActionResult.success(world!!.isClient)
+            return@OnRightClickCallback ActionResult.success(world!!.isClient)
         }
-        ActionResult.PASS
+        return@OnRightClickCallback ActionResult.PASS
     }
     val SHOVEL = OnRightClickCallback { ctx ->
         val world = ctx?.world
@@ -88,24 +91,19 @@ object OnRightClickCallbacks {
                 Criteria.ITEM_USED_ON_BLOCK.trigger(playerEntity as ServerPlayerEntity?, pos, ctx.stack)
             }
             world?.setBlockState(pos, state, Block.NOTIFY_ALL or Block.REDRAW_ON_MAIN_THREAD)
-            ActionResult.success(world!!.isClient)
+            return@OnRightClickCallback ActionResult.success(world!!.isClient)
         }
-        ActionResult.PASS
+        return@OnRightClickCallback ActionResult.PASS
     }
     val HAMMER = OnRightClickCallback { ctx ->
         val world = ctx?.world!!
         val pos = ctx.blockPos
-        val playerEntity = ctx.player
         Soulforged.LOGGER.info("Trying to create Deepslate forge multiblock at $pos")
-        if(world.getBlockState(pos).block == DeepslateForgeBlocks.DeepslateForgeController) {
-            (world.getBlockEntity(pos) as DeepslateForgeBlocks.DeepslateForgeControllerBlockEntity).createMultiblock()
+        if(world.getBlockState(pos).block == DeepslateForgeController && world.getBlockState(pos.offset(Direction.UP)).get(TIER) == 1) {
+            (world.getBlockEntity(pos) as DeepslateForgeControllerBlockEntity).createMultiblock()
+            return@OnRightClickCallback ActionResult.success(world.isClient)
         }
-        for (i in -3..3) {
-            for (j in -3..3) {
-                val block = world.getBlockState(pos?.add(i, 0, j))?.block ?: Blocks.AIR
-            }
-        }
-        ActionResult.PASS
+        return@OnRightClickCallback ActionResult.PASS
     }
     val NONE = OnRightClickCallback{ ActionResult.PASS }
     internal fun init() {
