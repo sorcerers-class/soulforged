@@ -8,6 +8,7 @@ import org.quiltmc.qsl.base.api.entrypoint.ModInitializer
 import studio.soulforged.soulforged.block.SoulforgedBlockTags
 import studio.soulforged.soulforged.block.SoulforgedBlocks
 import studio.soulforged.soulforged.block.entity.SoulforgedBlockEntityTypes
+import studio.soulforged.soulforged.client.gui.SoulforgedScreenHandlerTypes
 import studio.soulforged.soulforged.command.Commands
 import studio.soulforged.soulforged.item.SoulforgedItemGroups
 import studio.soulforged.soulforged.item.SoulforgedItems
@@ -38,6 +39,7 @@ public object Soulforged : ModInitializer {
         ToolParts.init()
         AttackHandlers.init()
         SoulforgedBlocks.init()
+        SoulforgedScreenHandlerTypes.init()
         SoulforgedBlockEntityTypes.init()
         SoulforgedItems.init()
         SoulforgedItemGroups.init()
