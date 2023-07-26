@@ -10,8 +10,8 @@ import net.minecraft.client.render.model.json.ItemModelGenerator
 import net.minecraft.client.render.model.json.JsonUnbakedModel
 import net.minecraft.client.render.model.json.ModelOverrideList
 import net.minecraft.client.render.model.json.ModelTransformation
+import net.minecraft.client.resource.Material
 import net.minecraft.client.texture.Sprite
-import net.minecraft.client.util.SpriteIdentifier
 import net.minecraft.item.ItemStack
 import net.minecraft.screen.PlayerScreenHandler
 import net.minecraft.util.Identifier
@@ -73,7 +73,7 @@ class ForgedToolItemModel : UnbakedModel, BakedModel, FabricBakedModel {
 
     override fun bake(
         modelBaker: ModelBaker?,
-        textureGetter: Function<SpriteIdentifier, Sprite>,
+        textureGetter: Function<Material, Sprite>,
         rotationContainer: ModelBakeSettings?,
         modelId: Identifier?
     ): BakedModel {
@@ -87,7 +87,7 @@ class ForgedToolItemModel : UnbakedModel, BakedModel, FabricBakedModel {
             Identifier(id.namespace, id.path.substring(9 until id.path.length - 4))
         }) {
             SoulforgedClient.LOGGER.info("Adding model part $id")
-                val spriteId = SpriteIdentifier(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, id)
+                val spriteId = Material(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, id)
                 val sprite = textureGetter.apply(spriteId)
                 PART_MODELS[id] = JsonUnbakedModel(
                     ITEM_HANDHELD_MODEL,

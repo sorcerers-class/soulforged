@@ -1,32 +1,31 @@
 package studio.soulforged.soulforged.block
 
 import net.minecraft.block.Block
-import net.minecraft.block.Material
+import net.minecraft.block.Blocks
 import net.minecraft.registry.Registries
-import org.quiltmc.qkl.library.registry.*
+import org.quiltmc.qkl.library.registry.invoke
 import org.quiltmc.qsl.block.extensions.api.QuiltBlockSettings
 import studio.soulforged.soulforged.Soulforged
 import studio.soulforged.soulforged.block.multiblock.DeepslateForgeBunker
 import studio.soulforged.soulforged.block.multiblock.DeepslateForgeBurner
 import studio.soulforged.soulforged.block.multiblock.DeepslateForgeController
 import studio.soulforged.soulforged.block.multiblock.DeepslateForgeDeepslateBrickBlock
-import java.util.*
 
 @Suppress("unused")
 object SoulforgedBlocks {
     // Crafting-related stuff. TODO
-    val WORKSTATION = WorkstationBlock(QuiltBlockSettings.of(Material.WOOD))
+    val WORKSTATION = WorkstationBlock(QuiltBlockSettings.create())
 
     // Ores
-    val LEAD_ORE = Block(QuiltBlockSettings.of(Material.STONE))
-    val CINNABAR_ORE = Block(QuiltBlockSettings.of(Material.STONE))
-    val OSMIUM_ORE = Block(QuiltBlockSettings.of(Material.STONE))
-    val CORUNDUM_ORE = Block(QuiltBlockSettings.of(Material.AMETHYST))
-    val ALUMINUM_ORE = Block(QuiltBlockSettings.of(Material.STONE))
-    val END_ALUMINUM_ORE = Block(QuiltBlockSettings.of(Material.STONE))
-    val TITANIUM_ORE = Block(QuiltBlockSettings.of(Material.STONE))
-    val END_TITANIUM_ORE = Block(QuiltBlockSettings.of(Material.STONE))
-    val ENDICITE_ORE = Block(QuiltBlockSettings.of(Material.STONE))
+    val LEAD_ORE = Block(QuiltBlockSettings.copyOf(Blocks.IRON_ORE))
+    val CINNABAR_ORE = Block(QuiltBlockSettings.copyOf(Blocks.IRON_ORE))
+    val OSMIUM_ORE = Block(QuiltBlockSettings.copyOf(Blocks.IRON_ORE))
+    val CORUNDUM_ORE = Block(QuiltBlockSettings.copyOf(Blocks.IRON_ORE))
+    val ALUMINUM_ORE = Block(QuiltBlockSettings.copyOf(Blocks.IRON_ORE))
+    val END_ALUMINUM_ORE = Block(QuiltBlockSettings.copyOf(Blocks.IRON_ORE))
+    val TITANIUM_ORE = Block(QuiltBlockSettings.copyOf(Blocks.IRON_ORE))
+    val END_TITANIUM_ORE = Block(QuiltBlockSettings.copyOf(Blocks.IRON_ORE))
+    val ENDICITE_ORE = Block(QuiltBlockSettings.copyOf(Blocks.IRON_ORE))
     internal fun init() {
         Registries.BLOCK(Soulforged.NAME) {
             WORKSTATION withId "workstation"

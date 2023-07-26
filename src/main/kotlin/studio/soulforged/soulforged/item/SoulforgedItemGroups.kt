@@ -3,12 +3,15 @@ package studio.soulforged.soulforged.item
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup
 import net.minecraft.item.ItemGroup
 import net.minecraft.item.ItemStack
-import studio.soulforged.soulforged.Soulforged
+import net.minecraft.registry.Registries
+import net.minecraft.registry.Registry
+import net.minecraft.text.Text
 import studio.soulforged.soulforged.Soulforged.id
 
 object SoulforgedItemGroups {
-    val GROUP: ItemGroup = FabricItemGroup.builder(Soulforged.NAME.id())
+    val GROUP: ItemGroup = FabricItemGroup.builder()
         .icon { ItemStack(SoulforgedItems.MERCURY_BOTTLE) }
+        .name(Text.translatable("soulforged.name"))
         .entries {_, content ->
             content.addItem(SoulforgedItems.LEAD_ORE)
             content.addItem(SoulforgedItems.CINNABAR_ORE)
@@ -53,6 +56,6 @@ object SoulforgedItemGroups {
         }
         .build()
     internal fun init() {
-
+        Registry.register(Registries.ITEM_GROUP, "soulforged".id(), GROUP)
     }
 }

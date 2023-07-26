@@ -60,10 +60,7 @@ object MiningSpeedProcessors {
         if (state!!.isOf(Blocks.COBWEB)) {
             mat!!.miningSpeed
         }
-        val material = state.material
-        if (material == net.minecraft.block.Material.PLANT || material == net.minecraft.block.Material.REPLACEABLE_PLANT || state.isIn(
-                BlockTags.LEAVES
-            ) || material == net.minecraft.block.Material.GOURD
+        if (state.isIn(BlockTags.SWORD_EFFICIENT)
         ) {
             mat!!.miningSpeed / 10
         }

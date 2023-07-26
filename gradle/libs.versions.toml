@@ -1,12 +1,13 @@
 [versions]
 # The latest versions are available at https://lambdaurora.dev/tools/import_quilt.html
 kotlin = "1.8.20"
-minecraft = "1.19.4"
-quilt_mappings = "1.19.4+build.10"
-quilt_loader = "0.19.0-beta.13"
-qfapi = "6.0.0-beta.6+0.79.0-1.19.4"
-qkl = "2.0.2+kt.1.8.20+flk.1.9.3"
+minecraft = "1.20.1"
+quilt_mappings = "1.20.1+build.21"
+quilt_loader = "0.20.0-beta.4"
+qfapi = "7.0.6+0.85.0-1.20.1"
+qkl = "2.1.0+kt.1.8.22+flk.1.9.4"
 imgui = "1.86.7"
+
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
 quilt_mappings = { module = "org.quiltmc:quilt-mappings", version.ref = "quilt_mappings" }
@@ -15,6 +16,7 @@ qfapi = { module = "org.quiltmc.quilted-fabric-api:quilted-fabric-api", version.
 qkl = { module = "org.quiltmc.quilt-kotlin-libraries:quilt-kotlin-libraries", version.ref = "qkl" }
 imgui-java-binding = {module = "io.github.spair:imgui-java-binding", version.ref="imgui"}
 imgui-java-lwjgl3 = {module = "io.github.spair:imgui-java-lwjgl3", version.ref= "imgui"}
+
 [bundles]
 imgui = ["imgui-java-binding", "imgui-java-lwjgl3"]
 

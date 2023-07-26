@@ -1,6 +1,9 @@
 package studio.soulforged.soulforged.block
 
-import net.minecraft.block.*
+import net.minecraft.block.Block
+import net.minecraft.block.BlockEntityProvider
+import net.minecraft.block.BlockState
+import net.minecraft.block.HorizontalFacingBlock
 import net.minecraft.block.entity.BlockEntity
 import net.minecraft.item.ItemPlacementContext
 import net.minecraft.item.ItemStack
@@ -8,11 +11,10 @@ import net.minecraft.state.StateManager
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.world.BlockView
-import org.quiltmc.qsl.block.extensions.api.QuiltBlockSettings
 import studio.soulforged.soulforged.block.entity.WorkstationBlockEntity
 import studio.soulforged.soulforged.item.SoulforgedItems
 
-class WorkstationBlock(settings: QuiltBlockSettings) : HorizontalFacingBlock(settings.material(Material.WOOD).strength(1.0f)), BlockEntityProvider {
+class WorkstationBlock(settings: Settings) : HorizontalFacingBlock(settings.strength(1.0f)), BlockEntityProvider {
     init {
         defaultState = this.stateManager.defaultState
             .with(FACING, Direction.NORTH)

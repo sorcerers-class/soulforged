@@ -39,12 +39,14 @@ object GiveToolCommand {
                                                 target.giveItemStack(stack)
 
                                                 source.sendFeedback(
-                                                    Text.translatable(
-                                                        "commands.give.success.single",
-                                                        1,
-                                                        SoulforgedItems.TOOL.getName(stack),
-                                                        targets.iterator().next().displayName
-                                                    ), true
+                                                    {
+                                                        Text.translatable(
+                                                            "commands.give.success.single",
+                                                            1,
+                                                            SoulforgedItems.TOOL.getName(stack),
+                                                            targets.iterator().next().displayName
+                                                        )
+                                                    }, true
                                                 )
                                             } catch(e: Throwable) {
                                                 Soulforged.LOGGER.error(e.stackTraceToString())
