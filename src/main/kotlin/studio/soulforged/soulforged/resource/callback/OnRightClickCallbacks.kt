@@ -98,9 +98,8 @@ object OnRightClickCallbacks {
     val HAMMER = OnRightClickCallback { ctx ->
         val world = ctx?.world!!
         val pos = ctx.blockPos
-        Soulforged.LOGGER.info("Trying to create Deepslate forge multiblock at $pos")
         if(world.getBlockState(pos).block == DeepslateForgeController && world.getBlockState(pos.offset(Direction.UP)).get(TIER) == 1) {
-            (world.getBlockEntity(pos) as DeepslateForgeControllerBlockEntity).createMultiblock()
+            (world.getBlockEntity(pos) as DeepslateForgeControllerBlockEntity).createMultiblock(world)
             return@OnRightClickCallback ActionResult.success(world.isClient)
         }
         return@OnRightClickCallback ActionResult.PASS

@@ -19,7 +19,7 @@ import studio.soulforged.soulforged.block.entity.SoulforgedBlockEntityTypes
 
 
 val TIER: IntProperty = IntProperty.of("tier", 1, 2)
-object DeepslateForgeBurner : DeepslateForgeDummyBlock(QuiltBlockSettings.copyOf(Blocks.DEEPSLATE_BRICKS).sounds(BlockSoundGroup.DEEPSLATE_BRICKS).luminance { state -> return@luminance if(state.get(Properties.LIT)) 7 else 0 }) {
+object DeepslateForgeBurner : DeepslateForgeComponentBlock(QuiltBlockSettings.copyOf(Blocks.DEEPSLATE_BRICKS).sounds(BlockSoundGroup.DEEPSLATE_BRICKS).luminance { state -> return@luminance if(state.get(Properties.LIT)) 7 else 0 }) {
     init {
         defaultState = this.stateManager.defaultState
             .with(TIER, 1)
@@ -34,11 +34,14 @@ object DeepslateForgeBurner : DeepslateForgeDummyBlock(QuiltBlockSettings.copyOf
         return defaultState
     }
 }
-open class DeepslateForgeDummyBlock(settings: QuiltBlockSettings) : BlockWithEntity(settings) {
+open class DeepslateForgeComponentBlock(settings: QuiltBlockSettings) : BlockWithEntity(settings) {
     override fun getRenderType(state: BlockState?) = BlockRenderType.MODEL
-    override fun onBreak(world: World, pos: BlockPos, state: BlockState, player: PlayerEntity) {
+    override fun onBreak(world: World, pos: BlockPos?, state: BlockState?, player: PlayerEntity?) {
         super.onBreak(world, pos, state, player)
-        (world.getBlockEntity((world.getBlockEntity(pos) as DeepslateForgeMultiblockComponent).controllerPos) as? DeepslateForgeControllerBlockEntity)?.deleteMultiblock()
+        val controller = (world.getBlockEntity(pos) as? DeepslateForgeMultiblockComponent)?.controllerPos
+        if (world.getBlockEntity(controller) is DeepslateForgeControllerBlockEntity) {
+            (world.getBlockEntity(controller) as DeepslateForgeControllerBlockEntity).deleteMultiblock(world)
+        }
     }
 
     override fun createBlockEntity(pos: BlockPos, state: BlockState): BlockEntity? {
@@ -49,7 +52,7 @@ open class DeepslateForgeDummyBlock(settings: QuiltBlockSettings) : BlockWithEnt
         }
     }
 }
-object DeepslateForgeDeepslateBrickBlock : DeepslateForgeDummyBlock(QuiltBlockSettings.copyOf(Blocks.DEEPSLATE_BRICKS)) {
+object DeepslateForgeDeepslateBrickBlock : DeepslateForgeComponentBlock(QuiltBlockSettings.copyOf(Blocks.DEEPSLATE_BRICKS)) {
     override fun getPickStack(world: BlockView?, pos: BlockPos?, state: BlockState?): ItemStack {
         return Items.DEEPSLATE_BRICKS.defaultStack
     }
@@ -70,11 +73,11 @@ class DeepslateForgeDeepslateBrickBlockEntity(pos: BlockPos, state: BlockState) 
 sealed interface DeepslateForgeMultiblockComponent {
     var controllerPos: BlockPos?
     fun writeNbt(nbt: NbtCompound?) {
-        nbt?.putIntArray("ControllerPos", with(controllerPos) {intArrayOf(this?.x ?: 0, this?.y ?: -65, this?.z ?: 0)})
+        nbt?.putIntArray("ControllerPos", with(controllerPos) {intArrayOf(this?.x ?: Int.MAX_VALUE, this?.y ?: Int.MAX_VALUE, this?.z ?: Int.MAX_VALUE)})
     }
 
     fun readNbt(nbt: NbtCompound?) {
         val pos = nbt?.getIntArray("ControllerPos")
-        controllerPos = BlockPos(pos?.get(0) ?: -1, pos?.get(1) ?: -65, pos?.get(2) ?: -1)
+        controllerPos = BlockPos(pos?.get(0) ?: -Int.MAX_VALUE, pos?.get(1) ?: -Int.MAX_VALUE, pos?.get(2) ?: -Int.MAX_VALUE)
     }
 }

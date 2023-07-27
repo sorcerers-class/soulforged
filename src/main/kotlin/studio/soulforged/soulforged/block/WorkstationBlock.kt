@@ -25,7 +25,7 @@ class WorkstationBlock(settings: Settings) : HorizontalFacingBlock(settings.stre
 
     override fun getPlacementState(ctx: ItemPlacementContext?): BlockState? {
         for (direction in ctx?.placementDirections!!) {
-            var blockState: BlockState = if (direction.axis === Direction.Axis.Y) {
+            val blockState: BlockState = if (direction.axis === Direction.Axis.Y) {
                 defaultState
                     .with(FACING, ctx.playerFacing) as BlockState
             } else {
@@ -44,7 +44,7 @@ class WorkstationBlock(settings: Settings) : HorizontalFacingBlock(settings.stre
     override fun getPickStack(world: BlockView?, pos: BlockPos?, state: BlockState?): ItemStack {
         return SoulforgedItems.WORKSTATION.defaultStack
     }
-    override fun createBlockEntity(pos: BlockPos?, state: BlockState?): BlockEntity? {
+    override fun createBlockEntity(pos: BlockPos?, state: BlockState?): BlockEntity {
         return WorkstationBlockEntity(pos!!, state!!)
     }
 }

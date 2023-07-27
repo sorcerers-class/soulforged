@@ -47,21 +47,21 @@ class ForgedToolItemModel : UnbakedModel, BakedModel, FabricBakedModel {
             val handleName = Identifier(type.namespace, "item/tools/" +  type.path.toString() + "_" + ModelToolParts.HANDLE.toString().lowercase())
 
             context.pushTransform(tool.head.mat.transform)
-            ((PART_MODELS[headName] ?: missingno) as FabricBakedModel).emitItemQuads(
+            (PART_MODELS[headName] ?: missingno).emitItemQuads(
                 stack,
                 randomSupplier,
                 context
             )
             context.popTransform()
             context.pushTransform(tool.binding.mat.transform)
-            ((PART_MODELS[bindingName] ?: missingno) as FabricBakedModel).emitItemQuads(
+            (PART_MODELS[bindingName] ?: missingno).emitItemQuads(
                 stack,
                 randomSupplier,
                 context
             )
             context.popTransform()
             context.pushTransform(tool.handle.mat.transform)
-            ((PART_MODELS[handleName] ?: missingno) as FabricBakedModel).emitItemQuads(
+            (PART_MODELS[handleName] ?: missingno).emitItemQuads(
                 stack,
                 randomSupplier,
                 context

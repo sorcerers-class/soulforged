@@ -33,7 +33,7 @@ import studio.soulforged.soulforged.block.SoulforgedInventory
 import studio.soulforged.soulforged.block.entity.SoulforgedBlockEntityTypes
 import studio.soulforged.soulforged.client.gui.SoulforgedScreenHandlerTypes
 
-object DeepslateForgeBunker : DeepslateForgeDummyBlock(
+object DeepslateForgeBunker : DeepslateForgeComponentBlock(
     QuiltBlockSettings.copyOf(Blocks.DEEPSLATE_BRICKS).sounds(
         BlockSoundGroup.DEEPSLATE_BRICKS).luminance { state -> return@luminance if(state.get(Properties.LIT)) 7 else 0 }),
     BlockEntityProvider {

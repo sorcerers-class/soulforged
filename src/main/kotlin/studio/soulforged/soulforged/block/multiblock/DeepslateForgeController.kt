@@ -38,7 +38,7 @@ import studio.soulforged.soulforged.block.SoulforgedInventory
 import studio.soulforged.soulforged.block.entity.SoulforgedBlockEntityTypes
 import studio.soulforged.soulforged.client.gui.SoulforgedScreenHandlerTypes
 
-object DeepslateForgeController : DeepslateForgeDummyBlock(QuiltBlockSettings.copyOf(Blocks.DEEPSLATE_BRICKS).sounds(BlockSoundGroup.DEEPSLATE_BRICKS).luminance { state -> return@luminance if(state.get(
+object DeepslateForgeController : DeepslateForgeComponentBlock(QuiltBlockSettings.copyOf(Blocks.DEEPSLATE_BRICKS).sounds(BlockSoundGroup.DEEPSLATE_BRICKS).luminance { state -> return@luminance if(state.get(
         Properties.LIT)) 7 else 0 }) {
     init {
         defaultState = this.stateManager.defaultState
@@ -64,6 +64,7 @@ object DeepslateForgeController : DeepslateForgeDummyBlock(QuiltBlockSettings.co
     ) {
         super.afterBreak(world, player, pos, state, blockEntity, stack)
     }
+
     override fun onUse(
         state: BlockState?,
         world: World?,
@@ -122,7 +123,8 @@ class DeepslateForgeControllerBlockEntity(pos: BlockPos, val state: BlockState) 
         return array
     }
 
-    fun deleteMultiblock() {
+    fun deleteMultiblock(world: World) {
+        Soulforged.LOGGER.info("Trying to delete Deepslate forge multiblock at {}", pos)
         val facing = state.get(HorizontalFacingBlock.FACING)
         for(x in -1..1)
             for(y in -1..2)
@@ -131,30 +133,25 @@ class DeepslateForgeControllerBlockEntity(pos: BlockPos, val state: BlockState) 
                         .offset(facing.rotateYClockwise(), x)
                         .offset(Direction.UP, y)
                         .offset(facing.opposite, z)
-                    world?.setBlockState(pos, when(world!!.getBlockState(pos).block) {
+                    world.setBlockState(pos, when(world.getBlockState(pos)?.block) {
                         DeepslateForgeDeepslateBrickBlock -> Blocks.DEEPSLATE_BRICKS.defaultState
                         DeepslateForgeBurner -> DeepslateForgeBurner.defaultState
                         DeepslateForgeBunker -> DeepslateForgeBunker.defaultState
                         DeepslateForgeController -> DeepslateForgeController.defaultState.with(HorizontalFacingBlock.FACING, facing)
-                        else -> world?.getBlockState(pos)
+                        else -> world.getBlockState(pos)
                     })
-                    val entity = world?.getBlockEntity(pos)
-                    if(entity is DeepslateForgeMultiblockComponent) {
-                        entity.controllerPos = pos
-                    }
-                    world?.addBlockBreakParticles(pos, state)
+                    world.addBlockBreakParticles(pos, state)
                 }
         bunkers = 0
-        world?.playSound(pos, SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 1.0f, 0.25f, false)
+        world.playSound(pos, SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 1.0f, 0.25f, false)
     }
-    fun createMultiblock() {
-        Soulforged.LOGGER.info("Trying to create Deepslate forge multiblock at $pos")
+    fun createMultiblock(world: World) {
         val facing = state.get(HorizontalFacingBlock.FACING)
         val result = SoulforgedMultiblocks.MULTIBLOCK_PATTERN.searchAround(world, pos)
         if(
             result != null
-            && world?.getBlockState(pos.offset(Direction.DOWN))?.block == DeepslateForgeBunker
-            && world?.getBlockState(pos.offset(Direction.UP))?.block == DeepslateForgeBurner
+            && world.getBlockState(pos.offset(Direction.DOWN))?.block == DeepslateForgeBunker
+            && world.getBlockState(pos.offset(Direction.UP))?.block == DeepslateForgeBurner
         ) {
             val bottomCenter = pos.offset(Direction.DOWN).offset(facing.opposite)
             bunkers = 1 or bunkerAt(bottomCenter.offset(facing.rotateYCounterclockwise()), 2) or bunkerAt(bottomCenter.offset(facing.opposite), 4) or bunkerAt(bottomCenter.offset(facing.rotateYClockwise()), 8)
@@ -166,19 +163,20 @@ class DeepslateForgeControllerBlockEntity(pos: BlockPos, val state: BlockState) 
                             .offset(facing.rotateYClockwise(), x)
                             .offset(Direction.UP, y)
                             .offset(facing.opposite, z)
-                        world?.setBlockState(pos, when(world?.getBlockState(pos)?.block) {
+                        world.setBlockState(pos, when(world.getBlockState(pos)?.block) {
                             Blocks.DEEPSLATE_BRICKS -> DeepslateForgeDeepslateBrickBlock.defaultState
                             DeepslateForgeBurner -> DeepslateForgeBurner.defaultState.with(
                                 TIER, (y + 1).coerceIn(1..2))
+
                             DeepslateForgeBunker -> DeepslateForgeBunker.defaultState
                             DeepslateForgeController -> DeepslateForgeController.defaultState.with(HorizontalFacingBlock.FACING, facing)
-                            else -> world?.getBlockState(pos)
+                            else -> world.getBlockState(pos)
                         })
-                        val entity = world?.getBlockEntity(pos)
+                        val entity = world.getBlockEntity(pos)
                         (entity as? DeepslateForgeMultiblockComponent)?.controllerPos = controllerPos
-                        world?.addBlockBreakParticles(pos, state)
+                        world.addBlockBreakParticles(pos, state)
                     }
-            world?.playSound(pos, SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 1.0f, 1.0f, false)
+            world.playSound(pos, SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 1.0f, 1.0f, false)
         }
     }
     override fun createMenu(syncId: Int, playerInventory: PlayerInventory, playerEntity: PlayerEntity?): ScreenHandler {
@@ -193,8 +191,8 @@ class DeepslateForgeControllerScreenHandler(syncId: Int, playerInventory: Player
     init {
         checkSize(inventory, 3)
         inventory.onOpen(playerInventory.player)
-        addSlot(Slot(inventory, 0, 56, 17))
-        addSlot(Slot(inventory, 1, 56, 35))
+        addSlot(Slot(inventory, 0, 56, 35))
+        addSlot(Slot(inventory, 1, 56, 17))
         addSlot(FurnaceOutputSlot(playerInventory.player, inventory, 2, 116, 26))
         for (i in 0..2) {
             for (j in 0..8) {
@@ -217,11 +215,23 @@ class DeepslateForgeControllerScreenHandler(syncId: Int, playerInventory: Player
         if (slot.hasStack()) {
             val itemStack2 = slot.stack
             itemStack = itemStack2.copy()
-            if (fromIndex < 1) {
+            if (fromIndex == 2) {
                 if (!insertItem(itemStack2, 3, 39, true)) {
                     return ItemStack.EMPTY
                 }
-            } else if (!insertItem(itemStack2, 0, 3, false)) {
+                slot.onQuickTransfer(itemStack2, itemStack)
+            } else if (fromIndex != 1 && fromIndex != 0) {
+                if (!insertItem(itemStack2, 0, 2, true)) {
+                    return ItemStack.EMPTY;
+                }
+                if (fromIndex in 3..29) {
+                    if (!insertItem(itemStack2, 30, 39, false)) {
+                        return ItemStack.EMPTY
+                    }
+                } else if (fromIndex in 30..38 && !insertItem(itemStack2, 3, 30, false)) {
+                    return ItemStack.EMPTY
+                }
+            } else if (!insertItem(itemStack2, 3, 39, false)) {
                 return ItemStack.EMPTY
             }
             if (itemStack2.isEmpty) {
@@ -234,6 +244,7 @@ class DeepslateForgeControllerScreenHandler(syncId: Int, playerInventory: Player
             }
             slot.onTakeItem(player, itemStack2)
         }
+
         return itemStack
     }
 
